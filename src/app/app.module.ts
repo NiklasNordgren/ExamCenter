@@ -30,8 +30,6 @@ import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NavToolbarComponent } from './nav-toolbar/nav-toolbar.component';
-import { NavSidenavComponent } from './nav-sidenav/nav-sidenav.component';
 
 @NgModule({
   declarations: [
@@ -41,9 +39,7 @@ import { NavSidenavComponent } from './nav-sidenav/nav-sidenav.component';
     TableComponent,
     DashboardComponent,
     TreeComponent,
-    DragDropComponent,
-    NavToolbarComponent,
-    NavSidenavComponent
+    DragDropComponent
   ],
   imports: [
     BrowserModule,
