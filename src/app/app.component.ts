@@ -14,35 +14,13 @@ import { map, shareReplay } from 'rxjs/operators';
 export class AppComponent {
   title = 'testApp';
 
-  constructor(private oauthService: OAuthService, private breakpointObserver: BreakpointObserver) {
-    this.configureSingleSignOn();
-  }
+  constructor(private breakpointObserver: BreakpointObserver) { }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
-
-  configureSingleSignOn() {
-    this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
-  }
-
-  login(){
-    this.oauthService.initImplicitFlow();
-  }
-
-  logout(){
-    this.oauthService.logOut();
-  }
-
-  get token(){
-    let claims:any = this.oauthService.getIdentityClaims();
-    //return claims ? claims : null;
-    return true;
-  }
 
 }
 
