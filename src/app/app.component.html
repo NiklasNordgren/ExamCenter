@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-    <div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
+    <div *ngIf="isHandset$ | async as mobileBrowser; then mobileBrowser else webBrowser"></div>
     <ng-template #webBrowser>
         <mat-toolbar-row style="padding-top: 50px; padding-bottom: 50px;">
             <img src="../../assets/HiG_vit_text.svg" class="logo">
@@ -8,10 +8,7 @@
     <ng-template #mobileBrowser>
         <mat-toolbar-row>
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-                *ngIf="isHandset$ | async">
-                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-            <button disabled type="button" aria-label="Toggle sidenav" mat-icon-button *ngIf="isHandset$ | async">
+                *ngIf="mobileBrowser">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
         </mat-toolbar-row>
