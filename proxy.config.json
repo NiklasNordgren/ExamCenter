@@ -1,0 +1,8 @@
+{
+    "/sso": {
+        "target": "https://idp3.hig.se/idp/profile/SAML/Redirect/SSO",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+} 
