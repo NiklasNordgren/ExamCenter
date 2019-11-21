@@ -7,37 +7,37 @@ import { TableComponent } from './table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { MatInput } from '@angular/material/input';
-
 
 const routes: Routes = [
-  /*
-  {
-    path: '**',
-    component: HomeComponent,
-    //TODO: PageNotFoundComponent
-  },
-  */
   {
     path: "",
-    component: LoginComponent,
+    redirectTo: "login",
     pathMatch: "full",
+  },
+  {
+    path: "login",
+    component: LoginComponent,
   },
   {
     path: "home",
     component: HomeComponent,
     children: [
       {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "dashboard"
+      },
+      {
         path: "address-form",
-        component: AddressFormComponent
+        component: AddressFormComponent,
       },
       {
         path: "dashboard",
-        component: DashboardComponent
+        component: DashboardComponent,
       },
       {
         path: "drag-drop",
-        component: DragDropComponent
+        component: DragDropComponent,
       },
       {
         path: "table",
@@ -45,7 +45,7 @@ const routes: Routes = [
       },
       {
         path: "tree",
-        component: TreeComponent
+        component: TreeComponent,
       },
     ]
   },

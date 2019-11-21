@@ -1,7 +1,6 @@
 <div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
 <ng-template #webBrowser>
 </ng-template>
-
 <ng-template #mobileBrowser>
     <mat-toolbar color="accent">
         <mat-toolbar-row>
@@ -12,9 +11,6 @@
         </mat-toolbar-row>
     </mat-toolbar>
 </ng-template>
-
-<router-outlet></router-outlet>
-
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
@@ -24,10 +20,10 @@
             <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
             <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
             <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
+            <app-logout></app-logout>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
