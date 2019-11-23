@@ -16,6 +16,6 @@ RUN npm run build --prod --output-path=dist
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.15
 
-COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
