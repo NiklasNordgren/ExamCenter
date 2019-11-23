@@ -31,7 +31,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { OAuthModule } from 'angular-oauth2-oidc';
+//import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -74,7 +74,7 @@ import { LogoutComponent } from './logout/logout.component';
     MatMenuModule,
     MatTreeModule,
     DragDropModule,
-    OAuthModule.forRoot()
+    //OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

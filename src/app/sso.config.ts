@@ -1,4 +1,4 @@
-import { AuthConfig } from 'angular-oauth2-oidc';
+/*import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const authConfig: AuthConfig = {
 
@@ -20,3 +20,4 @@ export const authConfig: AuthConfig = {
     // The first three are defined by OIDC. The 4th is a usecase-specific one
     scope: 'openid profile email voucher',
 }
+*/
