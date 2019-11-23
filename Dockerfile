@@ -9,7 +9,7 @@ RUN npm install
 
 COPY ./ /app/
 
-RUN npm run test --browsers ChromeHeadlessNoSandbox --watch=false
+# RUN npm run test --browsers ChromeHeadlessNoSandbox --watch=false
 
 RUN npm run build --prod --output-path=dist
 
