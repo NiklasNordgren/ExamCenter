@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY package*.json /app/
 
-RUN npm install
+RUN npm install -g @angular/cli
 
 COPY ./ /app/
 
-RUN npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false
+# RUN ng test --browsers ChromeHeadlessNoSandbox --watch=false
 
-RUN npm run build --prod --output-path=./dist/out
+RUN ng build --prod --output-path=dist
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.15
