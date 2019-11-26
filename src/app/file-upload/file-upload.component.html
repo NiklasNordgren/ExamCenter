@@ -1,25 +1,9 @@
-<div class="dropzone-container">
-    <ngx-file-drop class="drop-zone" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
-        (onFileLeave)="fileLeave($event)">
-        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-            <button mat-raised-button color="accent" (click)="openFileSelector()">
-                Browse Files
-            </button>
-        </ng-template>
-    </ngx-file-drop>
+<div>
+    <input #fileInput type="file" ng2FileSelect [uploader]="uploader" />
 
-    <div class="upload-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Files:</th>
-                </tr>
-            </thead>
-            <tbody class="upload-name-style">
-                <tr *ngFor="let item of files; let i=index">
-                    <td><strong>{{ item.relativePath }}</strong></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isDropOver}" [uploader]="uploader"
+        (fileOver)="fileOverAnother($event)" (click)="fileClicked()">
+        <span class="drag-in-title">Import or drag file here</span>
+        <span class="drag-over-title">Drop the file</span>
     </div>
 </div>

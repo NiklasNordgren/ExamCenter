@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { FileService } from '../file.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-file-upload',
@@ -9,62 +9,26 @@ import { FileService } from '../file.service';
 })
 export class FileUploadComponent implements OnInit {
 
-  public files: NgxFileDropEntry[] = [];
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
-  constructor(private fileService: FileService) { }
+  uploader: FileUploader;
+  isDropOver: boolean;
+
+  constructor() { }
 
   ngOnInit() {
+    const headers = [{ name: 'Accept', value: 'application/json' }];
+    this.uploader = new FileUploader({ url: 'localhost:9000/file/upload', autoUpload: true, headers: headers });
+    this.uploader.onCompleteAll = () => alert('File uploaded');
   }
 
-  public dropped(files: NgxFileDropEntry[]) {
-    this.files = files;
-    for (const droppedFile of files) {
-
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-
-          // Here you can access the real file
-          
-          console.log(droppedFile.relativePath, file);
-
-          this.fileService.uploadFile(file);
-
-          /*
-          // You could upload it like this:
-          const formData = new FormData()
-          formData.append('logo', file, droppedFile.relativePath)
- 
-          // Headers
-          const headers = new HttpHeaders({
-            'security-token': 'mytoken'
-          })
- 
-          this.http.post('/upload', formData, { headers: headers, responseType: 'blob' })
-          .subscribe(data => {
-            console.log("test")
-            // Sanitized logo returned from backend
-          })
-          */
-
-
-        });
-      } else {
-        // It was a directory (empty directories are added, otherwise only files)
-        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
-      }
-      
-    }
+  fileOverAnother(e: any): void {
+    this.isDropOver = e;
+    console.log("test1");
   }
 
-  public fileOver(event) {
-    console.log(event);
-  }
-
-  public fileLeave(event) {
-    console.log(event);
+  fileClicked() {
+    this.fileInput.nativeElement.click();
   }
 
 }

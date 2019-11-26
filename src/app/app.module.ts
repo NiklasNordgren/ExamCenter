@@ -38,6 +38,8 @@ import { HomeComponent } from './home/home.component';
 import { LogoutComponent } from './logout/logout.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 
+import {FileUploadModule} from 'ng2-file-upload';
+
 import { NgxFileDropModule } from 'ngx-file-drop';
 
 @NgModule({
@@ -79,7 +81,8 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     MatTreeModule,
     DragDropModule,
     //OAuthModule.forRoot()
-    NgxFileDropModule
+    NgxFileDropModule,
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]
