@@ -36,6 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { LogoutComponent } from './logout/logout.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { LogoutComponent } from './logout/logout.component';
     DragDropComponent,
     LoginComponent,
     HomeComponent,
-    LogoutComponent
+    LogoutComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
