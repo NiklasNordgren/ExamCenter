@@ -7,6 +7,7 @@ import { TableComponent } from './table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: "tree",
         component: TreeComponent,
+      },
+      {
+        path: "file-upload",
+        component: FileUploadComponent,
       },
     ]
   },

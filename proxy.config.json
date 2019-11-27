@@ -1,6 +1,6 @@
 {
-    "/upload": {
-        "target": "http://localhost:9000/upload",
+    "/file/upload": {
+        "target": "http://localhost:9000/file/upload",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
