@@ -3,7 +3,8 @@
   background: #f8f8f8;
   border: 5px dashed #ddd;
   text-align: center;
-  padding: 40px;
+  padding: 50px;
+  margin: 10px;
 }
 
 .drag-over-title {
@@ -24,4 +25,22 @@
 
 input[type="file"] {
   display: none;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+  text-align: center;
+}
+
+.button-group {
+  margin-left: 10px;
+}
+
+button {
+  margin-top: 10px;
+  margin-right: 10px;
 }

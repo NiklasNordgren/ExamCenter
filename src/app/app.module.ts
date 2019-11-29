@@ -41,6 +41,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import {FileUploadModule} from 'ng2-file-upload';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     DragDropModule,
     //OAuthModule.forRoot()
     NgxFileDropModule,
-    FileUploadModule
+    FileUploadModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileItem } from 'ng2-file-upload';
+import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const headers = [{ name: 'Accept', value: 'application/json' }];
 
@@ -13,21 +13,30 @@ export class FileUploadComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  public uploader: FileUploader = new FileUploader({ url: 'http://localhost:9000/file/upload', autoUpload: true, headers: headers });;
-  isDropOver: boolean;
+  private uploader: FileUploader = new FileUploader({ url: 'http://localhost:9000/file/upload', autoUpload: false, headers: headers });;
+  private isOverDropZone: boolean;
+  //private fileItems: FileItem[] = [];
+
+  faUpload = faUpload;
+  faTrash = faTrash;
 
   constructor() { }
 
   ngOnInit() {
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+      console.log(file);
+    };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('FileUpload:uploaded:', item, status, response);
-      alert('File uploaded successfully');
+      console.log("response:" + response);
+      //alert('File uploaded successfully');
     };
+
   }
 
-  fileOverAnother(e: any): void {
-    this.isDropOver = e;
+  fileOverDropZone(e: any): void {
+    this.isOverDropZone = e;
   }
 
   fileClicked() {
