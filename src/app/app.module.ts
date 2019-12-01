@@ -30,6 +30,7 @@ import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatProgressBarModule} from '@angular/material';
 
 //import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
@@ -80,6 +81,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatGridListModule,
     MatMenuModule,
     MatTreeModule,
+    MatProgressBarModule,
     DragDropModule,
     //OAuthModule.forRoot()
     NgxFileDropModule,

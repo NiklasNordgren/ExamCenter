@@ -36,11 +36,32 @@ input[type="file"] {
   text-align: center;
 }
 
-.button-group {
+.margin-10 {
+  margin: 10px;
+}
+
+.margin-left-10 {
   margin-left: 10px;
 }
 
-button {
-  margin-top: 10px;
-  margin-right: 10px;
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  //background-color: #ddd;
+}
+
+.mat-column-name {
+  max-width: 50%;
+}
+
+.mat-column-size {
+  max-width: 20%;
+}
+
+.mat-column-actions {
+  max-width: 30%;
+  text-align: center;
 }

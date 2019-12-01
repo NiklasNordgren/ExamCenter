@@ -1,78 +1,68 @@
-<input #fileInput type="file" ng2FileSelect [uploader]="uploader" multiple />
+<input #fileInput type="file" accept=".pdf" ng2FileSelect [uploader]="uploader" multiple />
 
-<div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isOverDropZone}" [uploader]="uploader"
+<div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isFileOverDropZone}" [uploader]="uploader"
     (fileOver)="fileOverDropZone($event)" (click)="fileClicked()">
-    <span class="drag-in-title">Import or drag file here</span>
-    <span class="drag-over-title">Drop the file</span>
+    <span class="drag-in-title" style="pointer-events: none;">
+        <h3>Import or drag PDF file here</h3>
+    </span>
+    <span class="drag-over-title" style="pointer-events: none;">
+        <h3>Drop the PDF file</h3>
+    </span>
 </div>
 
-
-
-
-<mat-radio-group class="button-group">
-    <button mat-raised-button color="accent" (click)="uploader.uploadAll()"
-        [disabled]="!uploader.getNotUploadedItems().length">
-        <fa-icon [icon]="faUpload"></fa-icon> Upload all
-    </button>
-    <button mat-raised-button color="warn" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-        <fa-icon [icon]="faTrash"></fa-icon> Remove all
-    </button>
-</mat-radio-group>
-
-
-<div style="margin-left: 10px;">
+<div class="margin-10">
 
     <h3>Upload queue</h3>
     <p>Queue length: {{ uploader?.queue?.length }}</p>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th width="50%">Name</th>
-                <th>Size</th>
-                <th>Progress</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of uploader.queue">
-                <td><strong>{{ item?.file?.name }}</strong></td>
-                <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                <td *ngIf="uploader.options.isHTML5">
-                    <div class="progress" style="margin-bottom: 0;">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                    </div>
-                </td>
-                <td class="text-center">
-                    <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                    <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                    <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                </td>
-                <td nowrap>
-                    <button type="button" class="btn btn-success btn-xs" (click)="item.upload()"
-                        [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                        <span class="glyphicon glyphicon-upload"></span> Upload
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef> Size </th>
+            <td mat-cell *matCellDef="let element"> {{element.size}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <div>
+                    <button mat-raised-button color="accent" (click)="uploadFromQueue(element)" class="margin-left-10"
+                        [disabled]="!isUploadedFromQueue(element)">
+                        <fa-icon [icon]="faUpload"></fa-icon> Upload
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()"
-                        [disabled]="!item.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    <button mat-raised-button color="warn" (click)="removeFromQueue(element)" class="margin-left-10">
+                        <fa-icon [icon]="faTrash"></fa-icon> Remove
                     </button>
-                    <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
-                        <span class="glyphicon glyphicon-trash"></span> Remove
-                    </button>
-                </td>
-            </tr>
-        </tbody>
+                </div>
+
+            </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
     <div>
-        <div>
-            Queue progress:
-            <div class="progress" style="">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-            </div>
-        </div>
+        <p>Queue progress:</p>
+        <mat-progress-bar [color]="accentColor" [value]="uploader.progress" [mode]="determinate"
+            style=" padding-bottom: 10px;">
+        </mat-progress-bar>
+        <p></p>
     </div>
-
 </div>
+
+<mat-radio-group class="margin-10">
+    <button mat-raised-button color="accent" (click)="uploader.uploadAll()"
+        [disabled]="!uploader.getNotUploadedItems().length">
+        <fa-icon [icon]="faUpload"></fa-icon> Upload all
+    </button>
+    <button mat-raised-button class="margin-left-10 margin-bottom-10" color="warn" (click)="clearQueue()"
+        [disabled]="!uploader.queue.length">
+        <fa-icon [icon]="faTrash"></fa-icon> Reset queue
+    </button>
+</mat-radio-group>

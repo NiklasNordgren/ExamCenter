@@ -1,8 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FileUploader, FileItem } from 'ng2-file-upload';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { FileUploader } from 'ng2-file-upload';
 import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const headers = [{ name: 'Accept', value: 'application/json' }];
+
+export interface FileTableItem {
+  tempFileId: number;
+  name: string;
+  size: string;
+}
 
 @Component({
   selector: 'app-file-upload',
@@ -13,34 +19,77 @@ export class FileUploadComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  private uploader: FileUploader = new FileUploader({ url: 'http://localhost:9000/file/upload', autoUpload: false, headers: headers });;
-  private isOverDropZone: boolean;
-  //private fileItems: FileItem[] = [];
+  private uploader: FileUploader = new FileUploader(
+    {
+      url: 'http://localhost:9000/file/upload',
+      autoUpload: false,
+      headers: headers,
+      allowedMimeType: ['application/pdf']
+    }
+  );;
 
-  faUpload = faUpload;
-  faTrash = faTrash;
+  private tempFileId = 1;
+  private isFileOverDropZone: boolean = false;
+  private accentColor = "accent";
+  private faUpload = faUpload;
+  private faTrash = faTrash;
+  private dataSource: FileTableItem[] = [];
+  private displayedColumns: string[] = ['name', 'size', 'actions'];
 
   constructor() { }
 
   ngOnInit() {
+
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
-      console.log(file);
+      file.index = this.tempFileId;
+      this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
+      this.tempFileId++;
+      console.log("Succesfully added file: " + file);
     };
+
+    this.uploader.onWhenAddingFileFailed = (file) => {
+      console.log("Failed to add file: " + file);
+    };
+
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('FileUpload:uploaded:', item, status, response);
       console.log("response:" + response);
-      //alert('File uploaded successfully');
     };
 
   }
 
   fileOverDropZone(e: any): void {
-    this.isOverDropZone = e;
+    this.isFileOverDropZone = e;
   }
 
   fileClicked() {
     this.fileInput.nativeElement.click();
+  }
+
+  clearQueue() {
+    this.uploader.clearQueue();
+    this.dataSource = [];
+  }
+
+  uploadFromQueue(element: any) {
+    this.uploader.queue.find(x => x.index === element.tempFileId).upload();
+  }
+
+  removeFromQueue(element: any) {
+
+    for (let i = 0; i < this.uploader.queue.length; i++)
+      if (this.uploader.queue[i].index === element.tempFileId)
+        this.uploader.queue[i].remove();
+
+    this.dataSource = this.dataSource.filter(x => {
+      return x.tempFileId !== element.tempFileId;
+    });
+
+  }
+
+  isUploadedFromQueue(element: any) {
+    return this.uploader.queue.find(x => x.index === element.tempFileId) ? true : false;
   }
 
 }
