@@ -45,11 +45,11 @@ export class FileUploadComponent implements OnInit {
       file.index = this.tempFileId;
       this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
       this.tempFileId++;
-      console.log("Succesfully added file: " + file);
+      console.log("Succesfully added file: " + file.file.name + " to the queue.");
     };
 
     this.uploader.onWhenAddingFileFailed = (file) => {
-      console.log("Failed to add file: " + file);
+      console.log("Failed to add file: " + file.name + " to the queue.");
     };
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
