@@ -19,7 +19,7 @@ export class FileUploadComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  private uploader: FileUploader = new FileUploader(
+  uploader: FileUploader = new FileUploader(
     {
       url: 'http://localhost:9000/file/upload',
       autoUpload: false,
@@ -28,13 +28,13 @@ export class FileUploadComponent implements OnInit {
     }
   );;
 
-  private tempFileId = 1;
-  private isFileOverDropZone: boolean = false;
-  private accentColor = "accent";
-  private faUpload = faUpload;
-  private faTrash = faTrash;
-  private dataSource: FileTableItem[] = [];
-  private displayedColumns: string[] = ['name', 'size', 'actions'];
+  tempFileId = 1;
+  isFileOverDropZone: boolean = false;
+  accentColor = "accent";
+  faUpload = faUpload;
+  faTrash = faTrash;
+  dataSource: FileTableItem[] = [];
+  displayedColumns: string[] = ['name', 'size', 'actions'];
 
   constructor() { }
 
