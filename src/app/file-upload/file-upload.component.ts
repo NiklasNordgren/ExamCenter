@@ -31,6 +31,7 @@ export class FileUploadComponent implements OnInit {
   tempFileId = 1;
   isFileOverDropZone: boolean = false;
   accentColor = "accent";
+  mode = "determinate";
   faUpload = faUpload;
   faTrash = faTrash;
   dataSource: FileTableItem[] = [];
