@@ -8,16 +8,21 @@ import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FirstPageComponent } from './first-page/first-page.component';
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "login",
+    redirectTo: "firstPage",
     pathMatch: "full",
   },
   {
     path: "login",
     component: LoginComponent,
+  },
+  {
+    path: "firstPage",
+    component: FirstPageComponent,
   },
   {
     path: "home",

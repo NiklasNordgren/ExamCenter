@@ -43,52 +43,57 @@ import {FileUploadModule} from 'ng2-file-upload';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FirstPageComponent } from './first-page/first-page.component';
+import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent,
-    AddressFormComponent,
-    TableComponent,
-    DashboardComponent,
-    TreeComponent,
-    DragDropComponent,
-    LoginComponent,
-    HomeComponent,
-    LogoutComponent,
-    FileUploadComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatGridListModule,
-    MatMenuModule,
-    MatTreeModule,
-    MatProgressBarModule,
-    DragDropModule,
-    //OAuthModule.forRoot()
-    NgxFileDropModule,
-    FileUploadModule,
-    FontAwesomeModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      NavComponent,
+      AddressFormComponent,
+      TableComponent,
+      DashboardComponent,
+      TreeComponent,
+      DragDropComponent,
+      LoginComponent,
+      HomeComponent,
+      LogoutComponent,
+      FileUploadComponent,
+      FirstPageComponent,
+      NavHorizComponent
+   ],
+   imports: [
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      BrowserAnimationsModule,
+      MatSliderModule,
+      LayoutModule,
+      MatToolbarModule,
+      MatButtonModule,
+      MatSidenavModule,
+      MatIconModule,
+      MatListModule,
+      MatInputModule,
+      MatSelectModule,
+      MatRadioModule,
+      MatCardModule,
+      ReactiveFormsModule,
+      MatTableModule,
+      MatPaginatorModule,
+      MatSortModule,
+      MatGridListModule,
+      MatMenuModule,
+      MatTreeModule,
+      MatProgressBarModule,
+      DragDropModule,
+      //OAuthModule.forRoot()\r\nNgxFileDropModule,
+      FileUploadModule,
+      FontAwesomeModule
+   ],
+   providers: [],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule { }

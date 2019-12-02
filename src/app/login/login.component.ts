@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   //TODO: Remove router when SSO is implemented
-  constructor(/*private oauthService: OAuthService,*/ private router: Router) {
+  constructor(/*private oauthService: OAuthService,private router: Router*/) {
     this.configureSingleSignOn();
    }
 
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     //this.oauthService.initImplicitFlow();
-    this.router.navigateByUrl("home");
+    //this.router.navigateByUrl("home");
   }
 
   get token(){
