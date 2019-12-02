@@ -1,15 +1,33 @@
+
+
+
+
+
+
+<!--<div color="primary" class="flex">
+    <div>
+      <router-outlet></router-outlet>
+      <img class="logo" src="../../assets/HiG_vit_text.svg">
+      <br>
+      <span><h6 >Appointment System</h6></span>
+    </div>
+    <div>
+      <mat-toolbar color="primary" class="toolbar-background">
+  
+        <a routerLink="customer" mat-button>Customer Form</a>
+        <a routerLink="showAllCustomer" mat-button>Customer Details</a>
+  
+        <a (click)="logout()" mat-button>Logout</a>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+-->
+
 <mat-toolbar color="primary" style="padding-top: 50px; padding-bottom: 50px;">
-        <img src="../../assets/HiG_vit_text.svg" style="max-block-size: 50pt; position: fixed; right: 30pt; " id="logo" class="logo">
+    <img src="../../assets/HiG_vit_text.svg" style="max-block-size: 50pt; position: fixed; right: 30pt; " id="logo" class="logo">
     <mat-toolbar-row>
-
-
-
-
-
-
-
-
-
 
         
         <div *ngIf="isHandset$ | async; then mobile else desktop"></div>
