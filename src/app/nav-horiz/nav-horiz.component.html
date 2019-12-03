@@ -1,43 +1,37 @@
-<mat-toolbar color="primary" style="padding-top: 50px; padding-bottom: 50px;">
-        <img src="../../assets/HiG_vit_text.svg" style="max-block-size: 50pt; position: fixed; right: 30pt; " id="logo" class="logo">
-    <mat-toolbar-row>
 
 
 
+<mat-toolbar color="primary" class="total-bar">
 
+    <!-- Row for Login and help.-->
+    <mat-toolbar-row class="row top">
+        <span></span>
+        <span class="example-fill-remaining-space"></span>
+        <span>
+            <div class="right-container">
+                <h1 class="login">Login</h1>
+            </div>
 
-
-
-
-
-
-        
-        <div *ngIf="isHandset$ | async; then mobile else desktop"></div>
-        <ng-template #mobile>
-            <h1 style="margin-left: 10px;">Exam Centre</h1>
-        </ng-template>
-        <ng-template #desktop>
-            <h1 style="margin-left: 55px;">Exam Centre</h1>
-        </ng-template>
-
-
-        <h1>Login</h1>
+        </span>
     </mat-toolbar-row>
 
-    <mat-toolbar-row>
-        <div *ngIf="isHandset$ | async; then mobile else desktop"></div>
-        <ng-template #mobile2>
-            <div *ngFor="let academy of academies">
-                <h1 style="margin-left: 10px;">{{academy}}</h1>
+    <!-- Row for Logo and Academy.-->
+    <mat-toolbar-row class="row bottom" >
+        <span>
+            <div> 
+                <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
             </div>
-        </ng-template>
-        <ng-template #desktop2>
-            <div *ngFor="let academy of academies">
-                <button mat-button style="margin-left: 10px;">{{academy}}</button>
-            </div>
-        </ng-template>
+        </span>
 
+        <span class="example-fill-remaining-space academies">
+            <div class="flex-container">
+                <button mat-button class="button" *ngFor="let academy of academies">{{academy}}</button>
+            </div>
+        </span>
+        <span></span>
     </mat-toolbar-row>
+</mat-toolbar> 
+
+        <p>herroe</p>
 
 
-</mat-toolbar>
