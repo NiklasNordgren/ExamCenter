@@ -31,7 +31,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatProgressBarModule} from '@angular/material';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 //import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
@@ -90,7 +91,9 @@ import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
       DragDropModule,
       //OAuthModule.forRoot()\r\nNgxFileDropModule,
       FileUploadModule,
-      FontAwesomeModule
+      FontAwesomeModule,
+      FlexLayoutModule,
+      FormsModule
    ],
    providers: [],
    bootstrap: [

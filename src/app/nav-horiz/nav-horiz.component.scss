@@ -28,10 +28,14 @@
       
   }
   .button{
+      border-radius: 0pt;
       margin-left: 30pt;
   }
+  .button:hover{
+      background-color: #0072BC;
+}
   .login{
-      margin-top: 60pt;
+      margin-top: 50pt;
   }
   .total-bar{
     background-color: rgba($color: #ffffff, $alpha: 0.0);
@@ -42,7 +46,7 @@
   .bottom{
     background-color: black;
     padding-bottom: 42pt;
-   padding-top: 5pt;
+    padding-top: 5pt;
 
   }
   body{
@@ -50,4 +54,7 @@
   
     background-image: url("../../assets/HiG_vit_text.svg");
   
+  }
+  .sidenav-container{
+      min-width: 150pt;
   }

@@ -1,37 +1,51 @@
-
-
-
-<mat-toolbar color="primary" class="total-bar">
-
-    <!-- Row for Login and help.-->
-    <mat-toolbar-row class="row top">
-        <span></span>
-        <span class="example-fill-remaining-space"></span>
-        <span>
-            <div class="right-container">
-                <h1 class="login">Login</h1>
+<div style="height: 100vh;">
+    <mat-toolbar color="primary" class="total-bar">
+        <!-- Row for Login and help.-->
+        <mat-toolbar-row class="row top">
+            <span></span>
+            <span class="example-fill-remaining-space"></span>
+            <span>
+                <div fxShow="true" fxHide.lt-md="true" class="right-container">
+                        <a class="login" mat-button>About</a>
+                    <a class="login" mat-button>Login (Admin)</a>
+                </div>
+            </span>
+        </mat-toolbar-row>
+        <!-- Row for Logo and Academy.-->
+        <mat-toolbar-row class="row bottom">
+            <span>
+                <div>
+                    <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
+                </div>
+            </span>
+            <span class="example-fill-remaining-space academies">
+                <div fxShow="true" fxHide.lt-md="true">
+                    <div class="flex-container">
+                        <button mat-button class="button" *ngFor="let academy of academies">{{academy}}</button>
+                    </div>
+                </div>
+            </span>
+            <span>
+                <div fxShow="true" fxHide.gt-sm="true">
+                    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
+                        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                    </button>
+                </div>
+                <div style="margin-top: 40pt;">
+                    <mat-form-field [style.fontSize.px]=15>
+                        <input type="text" matInput placeholder="Search">
+                    </mat-form-field>
+                </div>
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container fxFlexFill>
+        <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
+            <div fxLayout="column">
+                <a class="sidenav-links" *ngFor="let academy of academies" mat-button>{{academy}}</a>
+                <a mat-button>Login (Admin)</a>
             </div>
-
-        </span>
-    </mat-toolbar-row>
-
-    <!-- Row for Logo and Academy.-->
-    <mat-toolbar-row class="row bottom" >
-        <span>
-            <div> 
-                <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
-            </div>
-        </span>
-
-        <span class="example-fill-remaining-space academies">
-            <div class="flex-container">
-                <button mat-button class="button" *ngFor="let academy of academies">{{academy}}</button>
-            </div>
-        </span>
-        <span></span>
-    </mat-toolbar-row>
-</mat-toolbar> 
-
-        <p>herroe</p>
-
-
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill>Main content</mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

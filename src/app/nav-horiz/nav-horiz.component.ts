@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button'; 
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 
 @Component({
@@ -9,11 +12,14 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrls: ['./nav-horiz.component.scss']
 })
 export class NavHorizComponent implements OnInit {
+  ngOnInit(): void {
+  }
   private academies = ["ATM", "AHA", "AUE"];
 
-  constructor() { }
 
-  ngOnInit() {
-  }
+
+
+  constructor(private breakpointObserver: BreakpointObserver) { }
+
 
 }
