@@ -1,23 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
+
 export class ListComponent implements OnInit {
-  private navigatingText = "Abbriviation";
-  private data = [{
-    name: 'Matematik',
-    shortDesc: 'MA'
-  },{
-    name: 'Datakunskap',
-    shortDesc: 'DA'
-  }];
-  columnsToDisplay = ['shortDesc', 'name'];
-  constructor() { }
+  @Input() data: any[];
+  @Input() shortHeader: string;
+  @Input() name: string;
+  private columnsToDisplay;
+
+  constructor() {  }
 
   ngOnInit() {
+    this.columnsToDisplay = [this.shortHeader, this.name];
   }
 
 }

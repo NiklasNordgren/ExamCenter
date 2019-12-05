@@ -48,6 +48,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FirstPageComponent } from './first-page/first-page.component';
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
+import { AcademyComponent } from './component/academy/academy.component';
 
 @NgModule({
    declarations: [
@@ -64,7 +65,8 @@ import { ListComponent } from './component/list/list.component';
       FileUploadComponent,
       FirstPageComponent,
       NavHorizComponent,
-      ListComponent
+      ListComponent,
+      AcademyComponent
    ],
    imports: [
       BrowserModule,

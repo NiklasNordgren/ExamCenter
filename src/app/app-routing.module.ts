@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FirstPageComponent } from './first-page/first-page.component';
+import { AcademyComponent } from './component/academy/academy.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: "firstPage",
     component: FirstPageComponent,
+  },
+  {
+    path: "academy",
+    component: AcademyComponent,
   },
   {
     path: "home",
