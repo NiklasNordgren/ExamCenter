@@ -3,32 +3,22 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddressFormComponent } from './address-form/address-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { TableComponent } from './component/table/table.component';
+import { TableComponent } from './table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import { FirstPageComponent } from './first-page/first-page.component';
-import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "firstPage",
+    redirectTo: "login",
     pathMatch: "full",
   },
   {
     path: "login",
     component: LoginComponent,
-  },
-  {
-    path: "firstPage",
-    component: FirstPageComponent,
-  },
-  {
-    path: "academy",
-    component: AcademyComponent,
   },
   {
     path: "home",
