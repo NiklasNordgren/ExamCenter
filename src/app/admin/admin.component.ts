@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faCog, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-admin',
@@ -9,6 +9,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 export class AdminComponent implements OnInit {
 
   faUserPlus = faUserPlus;
+  faCog = faCog;
+  faSearch = faSearch;
 
   constructor() { }
 
