@@ -14,8 +14,11 @@
         <!-- Row for Logo and Academy.-->
         <mat-toolbar-row class="row bottom">
             <span>
-                <div>
+                <div fxShow="true" fxHide.lt-md="true">
                     <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
+                </div>
+                <div fxShow="true" fxHide.gt-sm="true">
+                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small" style="background-color: black;">
                 </div>
             </span>
             <span class="example-fill-remaining-space academies">
@@ -27,12 +30,13 @@
             </span>
             <span>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
+                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button
+                        (click)="sidenav.toggle()">
                         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
                     </button>
                 </div>
                 <div style="margin-top: 40pt;">
-                    <mat-form-field class="search-container" [style.fontSize.px]=15 >
+                    <mat-form-field class="search-container" [style.fontSize.px]=15>
                         <input type="text" matInput placeholder="Search">
                     </mat-form-field>
                 </div>
