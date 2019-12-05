@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TableComponent } from './table/table.component';
+import { TableComponent } from './component/table/table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -47,6 +47,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FirstPageComponent } from './first-page/first-page.component';
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
+import { ListComponent } from './component/list/list.component';
 
 @NgModule({
    declarations: [
@@ -62,7 +63,8 @@ import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
       LogoutComponent,
       FileUploadComponent,
       FirstPageComponent,
-      NavHorizComponent
+      NavHorizComponent,
+      ListComponent
    ],
    imports: [
       BrowserModule,

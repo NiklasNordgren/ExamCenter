@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddressFormComponent } from './address-form/address-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { TableComponent } from './table/table.component';
+import { TableComponent } from './component/table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
