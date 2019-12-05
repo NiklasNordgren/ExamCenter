@@ -15,15 +15,31 @@
     <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <mat-nav-list>
+
+            <div *ngFor="let academy of academies">
+                    <a mat-list-item><span class=" side-nav-text">{{ academy.abbreviation }}</span></a>
+            </div>
+
+
+
+            <!--
+            <a mat-list-item><span class=" side-nav-text">AHA</span></a>
+                <a mat-list-item><span class="side-nav-text">ATM</span></a>
+                <a mat-list-item><span class="side-nav-text">AUE</span></a>
+                -->
+                <!--
             <a mat-list-item [routerLink]="['tree']"><span class="side-nav-text">Tree</span></a>
             <a mat-list-item [routerLink]="['table']"><span class="side-nav-text">Table</span></a>
             <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
             <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
             <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
-            <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">File-upload</span></a>
-            <app-logout></app-logout>
+            -->
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">Upload Exams</span></a>
+                <a mat-list-item><span class="side-nav-text">Administration</span></a>
+                <app-logout></app-logout>
         </mat-nav-list>
-    </mat-sidenav>
+    </mat-sidenav>s
     <mat-sidenav-content>
         <router-outlet></router-outlet>
     </mat-sidenav-content>
