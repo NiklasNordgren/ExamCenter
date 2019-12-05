@@ -1,3 +1,7 @@
+<h2 style="margin: 10px; margin-bottom: 22px;">
+    <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
+</h2>
+
 <input #fileInput type="file" accept=".pdf" ng2FileSelect [uploader]="uploader" multiple />
 
 <div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isFileOverDropZone}" [uploader]="uploader"
