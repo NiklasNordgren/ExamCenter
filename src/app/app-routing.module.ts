@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FirstPageComponent } from './first-page/first-page.component';
 import { AcademyComponent } from './component/academy/academy.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,10 @@ const routes: Routes = [
       {
         path: "file-upload",
         component: FileUploadComponent,
+      },
+      {
+        path: "admin",
+        component: AdminComponent,
       },
     ]
   },
