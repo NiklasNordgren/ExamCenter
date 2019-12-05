@@ -34,6 +34,10 @@
   .button:hover{
       background-color: #0072BC;
 }
+.navigation-button{
+    margin-top: 0pt;
+    margin-bottom: 20pt;
+}
   .login{
       margin-top: 50pt;
   }
@@ -48,10 +52,17 @@
   }
   body{
     min-height: max-content;
-  
     background-image: url("../../assets/HiG_vit_text.svg");
-  
+  }
+  .search-container{
+      position: absolute;
+      right: 10pt;
+      top: 45pt;
   }
   .sidenav-container{
       min-width: 150pt;
+  }
+  .navigation-button{
+      position: relative;
+      top: 10pt;
   }
