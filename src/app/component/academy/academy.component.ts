@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-academy',
@@ -6,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./academy.component.scss']
 })
 export class AcademyComponent implements OnInit {
-
+  subscriptions = new Subscription();
   private shortHeader = 'Abbrivation';
   private name = 'Academy';
   private data = [{
@@ -17,9 +19,13 @@ export class AcademyComponent implements OnInit {
     shortDesc: 'DA'
   }];
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.subscriptions.add(this.route.paramMap.subscribe(params => {
+      let academyId = parseInt(params.get("id"));
+      
+    }));
   }
 
 }

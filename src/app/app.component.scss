@@ -1,0 +1,71 @@
+.example-fill-remaining-space {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }
+  .academies{
+      margin-left: 40pt;
+      max-height: 30pt;
+    color: white;
+  }
+  .logo{
+      margin-left: 100%;
+      min-width: 70pt;
+  }
+  .logo-small{
+      margin-left: 10pt;
+      min-width: 70pt;
+  }
+  .right-container{
+      margin-right: 40pt;
+  }
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10pt;
+    margin-top: 20pt;
+  }
+  .row{
+      max-height: 10pt;
+      background-color: rgba($color: #000000, $alpha: 0.7);
+      padding-bottom: 40pt;
+      
+  }
+  .button{
+      border-radius: 0pt;
+      margin-left: 30pt;
+  }
+  .button:hover{
+      background-color: #0072BC;
+}
+.navigation-button{
+    margin-top: 0pt;
+    margin-bottom: 20pt;
+}
+  .login{
+      margin-top: 50pt;
+  }
+  .total-bar{
+    background-color: rgba($color: #ffffff, $alpha: 0.0);
+  }
+  .bottom{
+    background-color: black;
+    padding-bottom: 42pt;
+    padding-top: 5pt;
+
+  }
+  body{
+    min-height: max-content;
+  }
+  .search-container{
+      position: absolute;
+      right: 10pt;
+      top: 45pt;
+  }          
+  .sidenav-container{
+      min-width: 150pt;
+  }
+  .navigation-button{
+      position: relative;
+      top: 10pt;
+  }
