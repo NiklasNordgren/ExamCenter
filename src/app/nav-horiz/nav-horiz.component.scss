@@ -1,11 +1,4 @@
-
-  
-  .flex {
-    display: flex;
-    max-block-size: 50pt;
-    color: primary;
-  }
-  .sidenav-container {
+.sidenav-container {
     height: 100%;
   }
   
@@ -23,6 +16,8 @@
   
   .mat-toolbar.mat-primary {
     position: sticky;
+    margin-top: 10pt;
+
   }
   
   .logo{
