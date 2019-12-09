@@ -18,7 +18,14 @@ export class AcademyComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
+      let tezst = params.get("name");
+
       let academyId = parseInt(params.get("id"));
+     
+      console.log("test: " + tezst);
+      
+      console.log(academyId);
+      
       this.setSubjetsByAcademyId(academyId);
 
     }));

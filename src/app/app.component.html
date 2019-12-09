@@ -7,7 +7,7 @@
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
                     <a class="login" mat-button>About</a>
-                    <a class="login" mat-button>Login (Admino)</a>
+                    <a class="login" mat-button>Login (Admin)</a>
                 </div>
             </span>
         </mat-toolbar-row>
@@ -25,7 +25,7 @@
             <span class="example-fill-remaining-space academies">
                 <div fxShow="true" fxHide.lt-md="true">
                     <div class="flex-container">
-                        <button (click)="goToPage('/academy')" mat-button class="button" *ngFor="let academy of academies">{{academy.shortDesc}}</button>
+                        <button (click)="goToPage('/academy/' + 1)" mat-button class="button" *ngFor="let academy of academies">{{academy.shortDesc}}</button>
                     </div>
                 </div>
             </span>

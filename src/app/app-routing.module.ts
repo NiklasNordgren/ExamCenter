@@ -11,6 +11,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FirstPageComponent } from './first-page/first-page.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
+import { Academy } from './model/academy.model';
 
 const routes: Routes = [
   {
@@ -27,8 +28,9 @@ const routes: Routes = [
     component: FirstPageComponent,
   },
   {
-    path: "academy",
+    path: "academy/:id",
     component: AcademyComponent,
+    data: Academy
   },
   {
     path: "home",

@@ -10,6 +10,6 @@ export class SubjectService {
   constructor(private http: HttpClient) { }
 
   getAllSubjectsByAcademyId(id: any){
-    return this.http.get<Subject[]>("/api/academy/" + id);
+    return this.http.get<Subject[]>("/api/subjects/academy/" + id);
   }
 }
