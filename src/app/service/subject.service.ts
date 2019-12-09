@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Academy } from '../model/academy.model';
+import { Subject } from '../model/subject.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AcademyService {
+export class SubjectService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAcademies(){
-    return this.http.get<Academy[]>("/api/academies/all");
+  getAllSubjectsByAcademyId(id: any){
+    return this.http.get<Subject[]>("/api/academy/" + id);
   }
-
 }
