@@ -15,12 +15,16 @@
     <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <mat-nav-list>
-            <a mat-list-item [routerLink]="['tree']"><span class="side-nav-text">Tree</span></a>
-            <a mat-list-item [routerLink]="['table']"><span class="side-nav-text">Table</span></a>
-            <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
-            <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
-            <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
-            <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">File-upload</span></a>
+
+            <div *ngFor="let academy of academies">
+                <a mat-list-item>{{ academy.name }}</a>
+                <!--<a mat-list-item>{{ academy.abbreviation }}</a>-->
+                <mat-divider></mat-divider>
+            </div>
+            <a mat-list-item [routerLink]="['file-upload']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams</a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['admin']"><fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users</a>
+            <mat-divider></mat-divider>
             <app-logout></app-logout>
         </mat-nav-list>
     </mat-sidenav>

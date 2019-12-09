@@ -1,228 +1,57 @@
-<!-- https://code-maze.com/angular-material-navigation/ -->
 
-
-<mat-toolbar color="primary">
-        <div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
-        <ng-template #webBrowser>
-          <mat-toolbar-row style="padding-top: 50px; padding-bottom: 50px;">
-            <img src="../../assets/HiG_vit_text.svg" class="logo">
-          </mat-toolbar-row>
-        </ng-template>
-        <ng-template #mobileBrowser>
-          <mat-toolbar-row>
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-              *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-          </mat-toolbar-row>
-        </ng-template>
-      </mat-toolbar>
-      
-      <router-outlet></router-outlet>
-      
-      <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-          [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-          <mat-nav-list>
-            <a mat-list-item [routerLink]="['tree']"><span class="side-nav-text">Tree</span></a>
-            <a mat-list-item [routerLink]="['table']"><span class="side-nav-text">Table</span></a>
-            <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
-            <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
-            <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
-            <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">File-upload</span></a>
-          </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-      
-          <router-outlet></router-outlet>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-
-<!--
-<div class="flex">
-  <div>
-    <router-outlet></router-outlet>
-     <img class="img-fluid" src="../../assets/HiG_vit_text.svg"> 
-    
-    <span>
-            <span><h6 style="color:white">Appointment System</h6></span></span>
-  </div> 
-<div>
-    <mat-toolbar class="toolbar-background">
-        <span>
-            <img class="logo" src="../../assets/HiG_vit_text.svg">
-        </span>
-        <span>
-            <a routerLink="customer" mat-button>Customer Form</a>
-            <a routerLink="showAllCustomer" mat-button>Customer Details</a>
-
-            <a (click)="logout()" mat-button>Logout</a>
-        </span>
+<div style="height: 100vh;">
+    <mat-toolbar color="primary" class="total-bar">
+        <!-- Row for Login and help.-->
+        <mat-toolbar-row class="row top">
+            <span></span>
+            <span class="example-fill-remaining-space"></span>
+            <span>
+                <div fxShow="true" fxHide.lt-md="true" class="right-container">
+                    <a class="login" mat-button>About</a>
+                    <a class="login" mat-button>Login (Admin)</a>
+                </div>
+            </span>
+        </mat-toolbar-row>
+        <!-- Row for Logo and Academy.-->
+        <mat-toolbar-row class="row bottom">
+            <span>
+                <div fxShow="true" fxHide.lt-md="true">
+                    <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
+                </div>
+                <div fxShow="true" fxHide.gt-sm="true">
+                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small" style="background-color: black;">
+                </div>
+            </span>
+            <span class="example-fill-remaining-space academies">
+                <div fxShow="true" fxHide.lt-md="true">
+                    <div class="flex-container">
+                        <button mat-button class="button" *ngFor="let academy of academies">{{academy}}</button>
+                    </div>
+                </div>
+            </span>
+            <span>
+                <div fxShow="true" fxHide.gt-sm="true">
+                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button
+                        (click)="sidenav.toggle()">
+                        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                    </button>
+                </div>
+                <div style="margin-top: 40pt;">
+                    <mat-form-field class="search-container" [style.fontSize.px]=15>
+                        <input class="search-field" type="text" matInput placeholder="Search">
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+            </span>
+        </mat-toolbar-row>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <mat-sidenav-container fxFlexFill >
+        <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
+            <div fxLayout="column">
+                <a class="sidenav-links" *ngFor="let academy of academies" mat-button>{{academy}}</a>
+                <a mat-button>Login (Admin)</a>
+            </div>
+        </mat-sidenav>
+    </mat-sidenav-container>
 </div>
 
- -->
-
-<!--
-<mat-toolbar color="primary">
-        <div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
-        <ng-template #webBrowser>
-          <mat-toolbar-row style="padding-top: 50px; padding-bottom: 50px;">
-            <img src="../../assets/HiG_vit_text.svg" class="logo">
-          </mat-toolbar-row>
-        </ng-template>
-        <ng-template #mobileBrowser>
-          <mat-toolbar-row>
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-              *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-          </mat-toolbar-row>
-        </ng-template>
-      </mat-toolbar>
-      
-      <router-outlet></router-outlet>
-      
-<mat-sidenav-container class="sidenav-container">
-        <mat-sidenav #drawer mode="over" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-          [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-          <mat-nav-list>
-            <a mat-list-item [routerLink]="['tree']"><span class="side-nav-text">Tree</span></a>
-            <a mat-list-item [routerLink]="['table']"><span class="side-nav-text">Table</span></a>
-            <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
-            <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
-            <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
-            <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">File-upload</span></a>
-          </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-      
-          <router-outlet></router-outlet>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-
-<mat-toolbar color="primary">
-    <div fxHide.gt-xs>
-        <button mat-icon-button (click)="onToggleSidenav()">
-            <mat-icon>menu</mat-icon>
-        </button>
-    </div>
-    <div>
-        <a routerLink="/home">Owner-Account</a>
-    </div>
-    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-        <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-            <li>
-                <a routerLink="/owner">Owner Actions</a>
-            </li>
-            <li>
-                <a routerLink="/account">Account Actions</a>
-            </li>
-        </ul>
-    </div>
-  </mat-toolbar>
-
-
-
-<mat-toolbar color="primary">
-    <div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
-    <ng-template #webBrowser>
-      <mat-toolbar-row style="padding-top: 50px; padding-bottom: 50px;">
-        <img src="../../assets/HiG_vit_text.svg" class="logo">
-      </mat-toolbar-row>
-    </ng-template>
-    <ng-template #mobileBrowser>
-      <mat-toolbar-row>
-        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </ng-template>
-  </mat-toolbar>
-  
-  <router-outlet></router-outlet>
-  
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-      <mat-nav-list>
-        <a mat-list-item [routerLink]="['tree']"><span class="side-nav-text">Tree</span></a>
-        <a mat-list-item [routerLink]="['table']"><span class="side-nav-text">Table</span></a>
-        <a mat-list-item [routerLink]="['drag-drop']"><span class="side-nav-text">Drag-drop</span></a>
-        <a mat-list-item [routerLink]="['dashboard']"><span class="side-nav-text">Dashboard</span></a>
-        <a mat-list-item [routerLink]="['address-form']"><span class="side-nav-text">Address-form</span></a>
-        <a mat-list-item [routerLink]="['file-upload']"><span class="side-nav-text">File-upload</span></a>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-  
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-
--->
-
-<!--
-    <div color="primary" class="flex">
-    <div>
-      <router-outlet></router-outlet>
-      <img class="logo" src="../../assets/HiG_vit_text.svg">
-      <br>
-      <span><h6 >Appointment System</h6></span>
-    </div>
-    <div>
-      <mat-toolbar color="primary" class="toolbar-background">
-  
-        <a routerLink="customer" mat-button>Customer Form</a>
-        <a routerLink="showAllCustomer" mat-button>Customer Details</a>
-  
-        <a (click)="logout()" mat-button>Logout</a>
-      </mat-toolbar>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-
-
-
-
-  
-        <div *ngIf="isHandset$ | async; then mobile else desktop"></div>
-        <ng-template #mobile>
-            <h1 style="margin-left: 10px;">Exam Centre</h1>
-        </ng-template>
-        <ng-template #desktop>
-            <h1 style="margin-left: 55px;">Exam Centre</h1>
-        </ng-template>
-
-
-
-<mat-toolbar color="primary" style="padding-top: 50px; padding-bottom: 50px;">
-    <img src="../../assets/HiG_vit_text.svg" style="max-block-size: 50pt; position: fixed; right: 30pt; " id="logo" class="logo">
-    <mat-toolbar-row>
-
-        
-
-
-        <h1>Login</h1>
-    </mat-toolbar-row>
-
-    <mat-toolbar-row>
-        <div *ngIf="isHandset$ | async; then mobile else desktop"></div>
-        <ng-template #mobile>
-            <div *ngFor="let academy of academies">
-                <h1 style="margin-left: 10px;">Mobile</h1>
-            </div>
-        </ng-template>
-        <ng-template #desktop>
-            <div *ngFor="let academy of academies">
-                <button mat-button style="margin-left: 10px;">Dekstp</button>
-            </div>
-        </ng-template>
-
-    </mat-toolbar-row>
-
-
-</mat-toolbar>
--->
