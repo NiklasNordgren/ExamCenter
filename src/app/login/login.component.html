@@ -1,12 +1,20 @@
-<mat-form-field>
-<div style="text-align: center; margin-top: 50px;">
-<form [formGroup]="checkoutForm" (ngSubmit)="login(checkoutForm.value)">
-
-        <label for="=username">Username:<br></label>
-        <input type="text" id="username" name="username" formControlName="username" required><br>
-        <label for="password">Password:<br></label>
-        <input type="password" id="password" name="password" formControlName="password" required><br>
-    <button class="button" type="submit">Log in</button>
-</form>
-</div>
-</mat-form-field>
+<mat-toolbar>
+    <span>LOGIN</span>
+</mat-toolbar>
+<mat-card class="my-card">
+    <mat-card-content>
+        <form class="my-form" [formGroup]="checkoutForm">
+            <mat-form-field class="full-width form-entity">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Enter your email" formControlName="email" required>
+            </mat-form-field>
+            <mat-form-field class="full-width form-entity">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="Enter your password" type="password" formControlName="password" required>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="login(checkoutForm.value)" [disabled]="!checkoutForm.valid" color="primary">LOGIN</button>
+    </mat-card-actions>
+</mat-card>

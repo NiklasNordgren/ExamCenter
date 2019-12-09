@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //import { authConfig } from '../sso.config';
 import { Router } from '@angular/router';
 import {FormBuilder} from '@angular/forms';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,11 @@ export class LoginComponent implements OnInit {
   private checkoutForm;
 
   //TODO: Remove router when SSO is implemented
-  constructor(private formBuilder: FormBuilder/*private oauthService: OAuthService,private router: Router*/) {
-    
+  constructor(private formBuilder: FormBuilder/*private oauthService: OAuthService,private router: Router*/, private loginService: LoginService) {
     this.checkoutForm = this.formBuilder.group({
-      username: '',
+      email: '',
       password: ''
     });
-    
     
     this.configureSingleSignOn();
    }
@@ -40,15 +39,8 @@ export class LoginComponent implements OnInit {
   }
 
   login(loginData){
-
     console.log(loginData);
-    console.log(loginData['username']);
-    
-
-
-
-
-
+    this.loginService.login(loginData);
     console.warn("hello u made it LOGIN METHOD");
     //this.oauthService.initImplicitFlow();
     //this.router.navigateByUrl("home");
