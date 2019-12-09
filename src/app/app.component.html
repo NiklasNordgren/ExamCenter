@@ -25,7 +25,8 @@
             <span class="example-fill-remaining-space academies">
                 <div fxShow="true" fxHide.lt-md="true">
                     <div class="flex-container">
-                        <button (click)="goToPage('/academy/' + 1)" mat-button class="button" *ngFor="let academy of academies">{{academy.shortDesc}}</button>
+                        <button (click)="goToPage('/academy/'+ academy.id)" mat-button class="button"
+                            *ngFor="let academy of academies">{{academy.shortDesc}}</button>
                     </div>
                 </div>
             </span>
@@ -45,11 +46,11 @@
             </span>
         </mat-toolbar-row>
     </mat-toolbar>
-        <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
     <mat-sidenav-container fxFlexFill>
         <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
             <div fxLayout="column">
-                <a class="sidenav-links" *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
+                <a class="sidenav-links" (click)="goToPage('/academy/'+ academy.id)" *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
                 <a mat-button>Login (Admin)</a>
             </div>
         </mat-sidenav>

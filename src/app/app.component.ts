@@ -40,7 +40,8 @@ export class AppComponent {
       responseAcademies.forEach(academy => {
         this.academies.push({
           name: academy['name'],
-          shortDesc: academy['abbreviation']
+          shortDesc: academy['abbreviation'],
+          id: academy['id']
         });
       });
     }
