@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-//import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-//import { authConfig } from './sso.config';
+// import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+// import { authConfig } from './sso.config';
 import { Observable } from 'rxjs';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';

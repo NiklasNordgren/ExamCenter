@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-//import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-//import { authConfig } from '../sso.config';
+// import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+// import { authConfig } from '../sso.config';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  //TODO: Remove router when SSO is implemented
+  // TODO: Remove router when SSO is implemented
   constructor(/*private oauthService: OAuthService,*/ private router: Router) {
     this.configureSingleSignOn();
    }
@@ -26,14 +26,14 @@ export class LoginComponent implements OnInit {
     */
   }
 
-  login(){
-    //this.oauthService.initImplicitFlow();
-    this.router.navigateByUrl("home");
+  login() {
+    // this.oauthService.initImplicitFlow();
+    this.router.navigateByUrl('home');
   }
 
-  get token(){
-    //let claims:any = this.oauthService.getIdentityClaims();
-    //return claims ? claims : null;
+  get token() {
+    // let claims:any = this.oauthService.getIdentityClaims();
+    // return claims ? claims : null;
     return true;
   }
 

@@ -11,45 +11,45 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 
 const routes: Routes = [
   {
-    path: "",
-    redirectTo: "login",
-    pathMatch: "full",
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
   {
-    path: "login",
+    path: 'login',
     component: LoginComponent,
   },
   {
-    path: "home",
+    path: 'home',
     component: HomeComponent,
     children: [
       {
-        path: "",
-        pathMatch: "full",
-        redirectTo: "dashboard"
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'dashboard'
       },
       {
-        path: "address-form",
+        path: 'address-form',
         component: AddressFormComponent,
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         component: DashboardComponent,
       },
       {
-        path: "drag-drop",
+        path: 'drag-drop',
         component: DragDropComponent,
       },
       {
-        path: "table",
+        path: 'table',
         component: TableComponent,
       },
       {
-        path: "tree",
+        path: 'tree',
         component: TreeComponent,
       },
       {
-        path: "file-upload",
+        path: 'file-upload',
         component: FileUploadComponent,
       },
     ]

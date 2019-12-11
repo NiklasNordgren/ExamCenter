@@ -13,7 +13,7 @@ import { Academy } from '../model/academy.model';
 })
 export class HomeComponent implements OnInit {
 
-  academies: Academy[] = []
+  academies: Academy[] = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
-    //this.oauthService.logout();
-    this.router.navigateByUrl("login");
+    // this.oauthService.logout();
+    this.router.navigateByUrl('login');
   }
 
 }

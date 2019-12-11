@@ -23,15 +23,15 @@ export class FileUploadComponent implements OnInit {
     {
       url: 'http://localhost:9000/file/upload',
       autoUpload: false,
-      headers: headers,
+      headers,
       allowedMimeType: ['application/pdf']
     }
-  );;
+  );
 
   tempFileId = 1;
-  isFileOverDropZone: boolean = false;
-  accentColor = "accent";
-  mode = "determinate";
+  isFileOverDropZone = false;
+  accentColor = 'accent';
+  mode = 'determinate';
   faUpload = faUpload;
   faTrash = faTrash;
   dataSource: FileTableItem[] = [];
@@ -44,18 +44,18 @@ export class FileUploadComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
       file.index = this.tempFileId;
-      this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
+      this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + 'kB' });
       this.tempFileId++;
-      console.log("Succesfully added file: " + file.file.name + " to the queue.");
+      console.log('Succesfully added file: ' + file.file.name + ' to the queue.');
     };
 
     this.uploader.onWhenAddingFileFailed = (file) => {
-      console.log("Failed to add file: " + file.name + " to the queue.");
+      console.log('Failed to add file: ' + file.name + ' to the queue.');
     };
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('FileUpload:uploaded:', item, status, response);
-      console.log("response:" + response);
+      console.log('response:' + response);
     };
 
   }
@@ -79,9 +79,11 @@ export class FileUploadComponent implements OnInit {
 
   removeFromQueue(element: any) {
 
-    for (let i = 0; i < this.uploader.queue.length; i++)
-      if (this.uploader.queue[i].index === element.tempFileId)
+    for (let i = 0; i < this.uploader.queue.length; i++) {
+      if (this.uploader.queue[i].index === element.tempFileId) {
         this.uploader.queue[i].remove();
+      }
+    }
 
     this.dataSource = this.dataSource.filter(x => {
       return x.tempFileId !== element.tempFileId;

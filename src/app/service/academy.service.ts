@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { Academy } from '../model/academy.model';
 
 @Injectable({
@@ -9,8 +9,8 @@ export class AcademyService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAcademies(){
-    return this.http.get<Academy[]>("api/academy/all");
+  getAllAcademies() {
+    return this.http.get<Academy[]>('api/academy/all');
   }
 
 }

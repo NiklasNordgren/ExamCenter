@@ -55,7 +55,7 @@ export class TreeComponent {
     return {
       name: node.name,
       type: node.type,
-      level: level,
+      level,
       expandable: !!node.children
     };
   }

@@ -12,7 +12,7 @@ export const authConfig: AuthConfig = {
     redirectUri: window.location.origin,
 
     logoutUrl: window.location.origin + 'index.html',
-    
+
     // The SPA's id. The SPA is registered with this id at the auth-server
     clientId: 'spa-demo',
 
