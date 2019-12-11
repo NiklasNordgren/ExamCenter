@@ -51,6 +51,7 @@ import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
+import { CourseComponent } from './course/course.component';
 
 @NgModule({
    declarations: [
@@ -70,7 +71,8 @@ import { SubjectComponent } from './component/subject/subject.component';
       ListComponent,
       AcademyComponent,
       AdminComponent,
-      SubjectComponent
+      SubjectComponent,
+      CourseComponent
    ],
    imports: [
       BrowserModule,

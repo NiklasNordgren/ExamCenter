@@ -39,6 +39,5 @@ export class AcademyComponent implements OnInit, OnDestroy {
         });
       });
     });
-
   }
 }
