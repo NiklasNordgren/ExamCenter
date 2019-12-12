@@ -9,14 +9,9 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  login(loginData: any){
-    console.log("Trying to login, in LoginService...");
-    
-    const data = {'email': "sanna", 'password': "password"};
-    const config = { headers: new HttpHeaders().set('Content-Type', 'application/json') };
-    const kafn = this.http.post<any>("/api/login", JSON.stringify(data), config);
-    debugger;
-    return kafn;
+  login(loginData: any){    
+    let headers = { headers: new HttpHeaders().set('Content-Type', 'application/json') };
+    return this.http.post("/api/login/", loginData, headers);
   }
 
 }

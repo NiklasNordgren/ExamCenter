@@ -1,9 +1,9 @@
-<mat-toolbar>
-    <span>LOGIN</span>
-</mat-toolbar>
-<mat-card class="my-card">
+<mat-card>
+    <mat-card-header>
+        <h3>LOGIN</h3>
+    </mat-card-header>
     <mat-card-content>
-        <form class="my-form" [formGroup]="checkoutForm">
+        <form id="logginform" class="my-form" [formGroup]="checkoutForm">
             <mat-form-field class="full-width form-entity">
                 <mat-label>Email</mat-label>
                 <input matInput placeholder="Enter your email" formControlName="email" required>
@@ -12,9 +12,15 @@
                 <mat-label>Password</mat-label>
                 <input matInput placeholder="Enter your password" type="password" formControlName="password" required>
             </mat-form-field>
+
         </form>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button (click)="login(checkoutForm.value)" [disabled]="!checkoutForm.valid" color="primary">LOGIN</button>
+        <button mat-raised-button (click)="login(checkoutForm.value); checkoutForm.reset();"
+            [disabled]="!checkoutForm.valid" color="primary">LOGIN</button>
+        <div fxFlex></div>
+        <div *ngIf="isLoading">
+            <mat-spinner [diameter]="40" style="max-width: 40pt;"></mat-spinner>
+        </div>
     </mat-card-actions>
 </mat-card>

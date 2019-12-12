@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableComponent } from './component/table/table.component';
 import { MatTableModule } from '@angular/material/table';
@@ -86,6 +87,7 @@ import { AcademyComponent } from './component/academy/academy.component';
       MatSelectModule,
       MatRadioModule,
       MatCardModule,
+      MatProgressSpinnerModule,
       ReactiveFormsModule,
       MatTableModule,
       MatPaginatorModule,

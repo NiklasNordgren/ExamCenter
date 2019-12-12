@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 //import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 //import { authConfig } from '../sso.config';
 import { Router } from '@angular/router';
-import {FormBuilder} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { LoginService } from '../service/login.service';
 
 @Component({
@@ -10,46 +10,36 @@ import { LoginService } from '../service/login.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   private checkoutForm;
+  private isLoading = false;
 
-  //TODO: Remove router when SSO is implemented
-  constructor(private formBuilder: FormBuilder/*private oauthService: OAuthService,private router: Router*/, private loginService: LoginService) {
+  constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
     this.checkoutForm = this.formBuilder.group({
       email: '',
       password: ''
     });
-    
-    this.configureSingleSignOn();
-   }
-
-  ngOnInit() {
   }
 
-  configureSingleSignOn() {
-    /*
-    this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    */
-  }
-  onSubmit(){
-
-  }
-
-  login(loginData){
-    console.log(loginData);
-    this.loginService.login(loginData);
-    console.warn("hello u made it LOGIN METHOD");
-    //this.oauthService.initImplicitFlow();
-    //this.router.navigateByUrl("home");
+  login(loginData) {
+    this.isLoading = true;
+    this.loginService.login(loginData).subscribe(
+      (isLoggedIn) => this.handleResponse(isLoggedIn),
+      error => this.handleError,
+      () => {
+        this.isLoading = false;
+      });
   }
 
-  get token(){
-    //let claims:any = this.oauthService.getIdentityClaims();
-    //return claims ? claims : null;
-    return true;
+  handleResponse(isLoggedIn) {
+    if (isLoggedIn)
+      window.alert("You have successfully logged in!");
+    else
+      window.alert("Email or password is incorrect.");
   }
 
+  handleError(error: any) {
+    console.log(error);
+  }
 }
