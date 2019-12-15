@@ -13,7 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "login",
+    redirectTo: "home",
     pathMatch: "full",
   },
   {

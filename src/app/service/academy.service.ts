@@ -10,7 +10,7 @@ export class AcademyService {
   constructor(private http: HttpClient) { }
 
   getAllAcademies(){
-    return this.http.get<Academy[]>("api/academy/all");
+    return this.http.get<Academy[]>("api/academies/all");
   }
 
 }
