@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { AdminComponent } from './admin/admin.component';
+import { Academy } from './model/academy.model';
 
 const routes: Routes = [
   {
@@ -21,7 +22,16 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'home',
+    path: "firstPage",
+    component: FirstPageComponent,
+  },
+  {
+    path: "academy/:id",
+    component: AcademyComponent,
+    data: Academy
+  },
+  {
+    path: "home",
     component: HomeComponent,
     children: [
       {

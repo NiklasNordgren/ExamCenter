@@ -1,3 +1,4 @@
+
 <div style="height: 100vh;">
     <mat-toolbar color="primary" class="total-bar">
         <!-- Row for Login and help.-->
@@ -18,15 +19,13 @@
                     <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;">
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small"
-                        style="background-color: black;">
+                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small" style="background-color: black;">
                 </div>
             </span>
             <span class="example-fill-remaining-space academies">
                 <div fxShow="true" fxHide.lt-md="true">
                     <div class="flex-container">
-                        <button (click)="goToPage('/academy/'+ academy.id)" mat-button class="button"
-                            *ngFor="let academy of academies">{{academy.shortDesc}}</button>
+                        <button mat-button class="button" *ngFor="let academy of academies">{{academy}}</button>
                     </div>
                 </div>
             </span>
@@ -46,13 +45,13 @@
             </span>
         </mat-toolbar-row>
     </mat-toolbar>
-    <router-outlet></router-outlet>
-    <mat-sidenav-container fxFlexFill>
+    <mat-sidenav-container fxFlexFill >
         <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
             <div fxLayout="column">
-                <a class="sidenav-links" (click)="goToPage('/academy/'+ academy.id)" *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
+                <a class="sidenav-links" *ngFor="let academy of academies" mat-button>{{academy}}</a>
                 <a mat-button>Login (Admin)</a>
             </div>
         </mat-sidenav>
     </mat-sidenav-container>
 </div>
+
