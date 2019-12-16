@@ -8,7 +8,6 @@ import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import { FirstPageComponent } from './first-page/first-page.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';
@@ -20,16 +19,12 @@ import { SubjectComponent } from './component/subject/subject.component';
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "firstPage",
+    redirectTo: "",
     pathMatch: "full",
   },
   {
     path: "login",
     component: LoginComponent,
-  },
-  {
-    path: "firstPage",
-    component: FirstPageComponent,
   },
   {
     path: "academy/:id",
@@ -40,6 +35,11 @@ const routes: Routes = [
     path: "courses/subject/:id",
     component: SubjectComponent,
     data: Subject
+  },
+  {
+    path: "exams/course/:id",
+    component: CourseComponent,
+    data: Course
   },
   {
     path: "home",
