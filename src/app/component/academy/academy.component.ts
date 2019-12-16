@@ -4,40 +4,40 @@ import { Subscription } from 'rxjs';
 import { SubjectService } from 'src/app/service/subject.service';
 
 @Component({
-  selector: 'app-academy',
-  templateUrl: './academy.component.html',
-  styleUrls: ['./academy.component.scss']
+	selector: 'app-academy',
+	templateUrl: './academy.component.html',
+	styleUrls: ['./academy.component.scss']
 })
 export class AcademyComponent implements OnInit, OnDestroy {
-  subscriptions = new Subscription();
-  private shortHeader = 'Abbrivation';
-  private name = 'Subject';
-  private data = [];
+	subscriptions = new Subscription();
+	private shortHeader = 'Abbrivation';
+	private name = 'Subject';
+	private data = [];
 
-  constructor(private route: ActivatedRoute, private service: SubjectService) { }
+	constructor(private route: ActivatedRoute, private service: SubjectService) { }
 
-  ngOnInit() {
-    this.subscriptions.add(this.route.paramMap.subscribe(params => {
-      let academyId = parseInt(params.get("id"));
-    
-      this.setSubjetsByAcademyId(academyId);
+	ngOnInit() {
+		this.subscriptions.add(this.route.paramMap.subscribe(params => {
+			const academyId = parseInt(params.get('id'));
 
-    }));
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
+			this.setSubjetsByAcademyId(academyId);
 
-  setSubjetsByAcademyId(academyId) {
-    this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
-      this.data = [];
-      subjects.forEach(subject => {
-        this.data.push({
-          name: subject['name'],
-          shortDesc: subject['code'],
-          id: subject['id']
-        });
-      });
-    });
-  }
+		}));
+	}
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
+
+	setSubjetsByAcademyId(academyId) {
+		this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
+			this.data = [];
+			subjects.forEach(subject => {
+				this.data.push({
+					name: subject.name,
+					shortDesc: subject.code,
+					id: subject.id
+				});
+			});
+		});
+	}
 }
