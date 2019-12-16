@@ -24,11 +24,9 @@ export class AppComponent {
   ngOnInit(){
       this.service.getAllAcademies().subscribe(responseAcademies => {
         this.convertAndSetAcademies(responseAcademies);
-        console.log(this.academies);
-    });
-    
+      
+    }); 
   }
-
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),

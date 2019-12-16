@@ -10,7 +10,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 export class NavHorizComponent implements OnInit {
   ngOnInit(): void {
   }
-  private academies = ["ATM", "AHA", "AUE"];
+  //private academies = ["ATM", "AHA", "AUE"];
 
   constructor(private breakpointObserver: BreakpointObserver) { }
 

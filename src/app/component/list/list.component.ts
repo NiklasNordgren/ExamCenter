@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -12,10 +13,14 @@ export class ListComponent implements OnInit {
   @Input() name: string;
   private columnsToDisplay;
 
-  constructor() {  }
+  constructor(private router: Router) {  }
 
   ngOnInit() {
     this.columnsToDisplay = [this.shortHeader, this.name];
   }
 
+  goToPage(pageName:string){
+  
+    this.router.navigate([`${pageName}`]);
+  }
 }

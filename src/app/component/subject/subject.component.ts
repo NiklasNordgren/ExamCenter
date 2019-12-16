@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { CourseService } from 'src/app/service/course.service';
 
 @Component({
   selector: 'app-subject',
@@ -10,8 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 export class SubjectComponent implements OnInit, OnDestroy {
 
   subscriptions = new Subscription();
-  private shortHeader = 'Abbrivation';
-  private name = 'Subject';
+  private shortHeader = 'Code';
+  private name = 'Course';
   private data = [];
 
   constructor(private route: ActivatedRoute, private service: CourseService) { }
@@ -19,12 +20,13 @@ export class SubjectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
       let subjectId = parseInt(params.get("id"));
-
       this.setCoursesBySubjectId(subjectId);
+    
+      
     }));
   }
   ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
+    this.subscriptions.unsubscribe();
   }
 
   setCoursesBySubjectId(subjectId) {
@@ -33,7 +35,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
       courses.forEach(course => {
         this.data.push({
           name: course['name'],
-          code: course['code'],
+          shortDesc: course['courseCode'],
           id: course['id']
         });
       });

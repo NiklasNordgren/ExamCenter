@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course',
@@ -8,7 +9,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class CourseComponent implements OnInit, OnDestroy {
   
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     

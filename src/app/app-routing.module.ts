@@ -12,6 +12,10 @@ import { FirstPageComponent } from './first-page/first-page.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';
+import { CourseComponent } from './component/course/course.component';
+import { Course } from './model/course.model';
+import { Subject } from 'rxjs';
+import { SubjectComponent } from './component/subject/subject.component';
 
 const routes: Routes = [
   {
@@ -31,6 +35,11 @@ const routes: Routes = [
     path: "academy/:id",
     component: AcademyComponent,
     data: Academy
+  },
+  {
+    path: "courses/subject/:id",
+    component: SubjectComponent,
+    data: Subject
   },
   {
     path: "home",
