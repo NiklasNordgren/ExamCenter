@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { CourseService } from 'src/app/service/course.service';
 
 @Component({
 	selector: 'app-subject',
@@ -32,10 +33,10 @@ export class SubjectComponent implements OnInit, OnDestroy {
 			this.data = [];
 			courses.forEach(course => {
 				this.data.push({
-					name: course.name,
-					code: course.code,
-					id: course.id
-				});
+          name: course["name"],
+          code: course["code"],
+          id: course["id"]
+        });
 			});
 		});
 	}

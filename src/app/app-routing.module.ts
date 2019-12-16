@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';
+import { AcademyComponent } from './component/academy/academy.component';
 
 const routes: Routes = [
 	{
@@ -20,10 +21,6 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: LoginComponent,
-	},
-	{
-		path: 'firstPage',
-		component: FirstPageComponent,
 	},
 	{
 		path: 'academy/:id',
