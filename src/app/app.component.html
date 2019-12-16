@@ -11,7 +11,7 @@
                 </div>
             </span>
         </mat-toolbar-row>
-        <!-- Row for Logo and Academy.-->
+        <!-- Row for Logo and Academy. wow-->
         <mat-toolbar-row class="row bottom">
             <span>
                 <div fxShow="true" fxHide.lt-md="true">
@@ -46,8 +46,8 @@
             </span>
         </mat-toolbar-row>
     </mat-toolbar>
-    <router-outlet></router-outlet>
     <mat-sidenav-container fxFlexFill>
+        <router-outlet></router-outlet>
         <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
             <div fxLayout="column">
                 <a class="sidenav-links" (click)="goToPage('/academy/'+ academy.id)" *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>

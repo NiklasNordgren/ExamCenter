@@ -1,40 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-// import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-// import { authConfig } from '../sso.config';
+import { Component } from '@angular/core';
+//import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+//import { authConfig } from '../sso.config';
 import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  // TODO: Remove router when SSO is implemented
-  constructor(/*private oauthService: OAuthService,*/ private router: Router) {
-    this.configureSingleSignOn();
-   }
+  private checkoutForm;
+  private isLoading = false;
 
-  ngOnInit() {
+  constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
+    this.checkoutForm = this.formBuilder.group({
+      email: '',
+      password: ''
+    });
   }
 
-  configureSingleSignOn() {
-    /*
-    this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    */
+  login(loginData) {
+    this.isLoading = true;
+    this.loginService.login(loginData).subscribe(
+      (isLoggedIn) => this.handleResponse(isLoggedIn),
+      error => this.handleError,
+      () => {
+        this.isLoading = false;
+      });
   }
 
-  login() {
-    // this.oauthService.initImplicitFlow();
-    this.router.navigateByUrl('home');
+  handleResponse(isLoggedIn) {
+    if (isLoggedIn)
+      window.alert("You have successfully logged in!");
+    else
+      window.alert("Email or password is incorrect.");
   }
 
-  get token() {
-    // let claims:any = this.oauthService.getIdentityClaims();
-    // return claims ? claims : null;
-    return true;
+  handleError(error: any) {
+    console.log(error);
   }
-
 }
