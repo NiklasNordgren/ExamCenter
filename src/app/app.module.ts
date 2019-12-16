@@ -30,7 +30,9 @@ import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatProgressBarModule} from '@angular/material';
+import { MatProgressBarModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
 
 //import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,6 +46,10 @@ import {FileUploadModule} from 'ng2-file-upload';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminComponent } from './admin/admin.component';
+import { SelectAcademyComponent } from './component/select-academy/select-academy.component';
+import { SelectSubjectComponent } from './component/select-subject/select-subject.component';
+import { SelectCourseComponent } from './component/select-course/select-course.component';
+import { SelectExamPropertiesComponent } from './component/select-exam-properties/select-exam-properties.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +64,11 @@ import { AdminComponent } from './admin/admin.component';
     HomeComponent,
     LogoutComponent,
     FileUploadComponent,
-    AdminComponent
+    AdminComponent,
+    SelectAcademyComponent,
+    SelectSubjectComponent,
+    SelectCourseComponent,
+    SelectExamPropertiesComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +98,9 @@ import { AdminComponent } from './admin/admin.component';
     //OAuthModule.forRoot()
     NgxFileDropModule,
     FileUploadModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatAutocompleteModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
