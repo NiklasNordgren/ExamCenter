@@ -7,28 +7,28 @@ import { MatTableModule } from '@angular/material/table';
 import { TableComponent } from './table.component';
 
 describe('TableComponent', () => {
-  let component: TableComponent;
-  let fixture: ComponentFixture<TableComponent>;
+	let component: TableComponent;
+	let fixture: ComponentFixture<TableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ TableComponent ],
-      imports: [
-        NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
-      ]
-    }).compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [ TableComponent ],
+			imports: [
+				NoopAnimationsModule,
+				MatPaginatorModule,
+				MatSortModule,
+				MatTableModule,
+			]
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TableComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should compile', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should compile', () => {
+		expect(component).toBeTruthy();
+	});
 });

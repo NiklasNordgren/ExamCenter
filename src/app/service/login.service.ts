@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { variable } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  login(loginData: any){    
-    let headers = { headers: new HttpHeaders().set('Content-Type', 'application/json') };
-    return this.http.post("/api/login/", loginData, headers);
-  }
+	login(loginData: any) {
+		const headers = { headers: new HttpHeaders().set('Content-Type', 'application/json') };
+		return this.http.post('/api/login/', loginData, headers);
+	}
 
 }

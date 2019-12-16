@@ -12,67 +12,67 @@ import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: "firstPage",
-    component: FirstPageComponent,
-  },
-  {
-    path: "academy/:id",
-    component: AcademyComponent,
-    data: Academy
-  },
-  {
-    path: "home",
-    component: HomeComponent,
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'dashboard'
-      },
-      {
-        path: 'address-form',
-        component: AddressFormComponent,
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'drag-drop',
-        component: DragDropComponent,
-      },
-      {
-        path: 'table',
-        component: TableComponent,
-      },
-      {
-        path: 'tree',
-        component: TreeComponent,
-      },
-      {
-        path: 'file-upload',
-        component: FileUploadComponent,
-      },
-      {
-        path: "admin",
-        component: AdminComponent,
-      },
-    ]
-  },
+	{
+		path: '',
+		redirectTo: 'login',
+		pathMatch: 'full',
+	},
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
+	{
+		path: 'firstPage',
+		component: FirstPageComponent,
+	},
+	{
+		path: 'academy/:id',
+		component: AcademyComponent,
+		data: Academy
+	},
+	{
+		path: 'home',
+		component: HomeComponent,
+		children: [
+			{
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'dashboard'
+			},
+			{
+				path: 'address-form',
+				component: AddressFormComponent,
+			},
+			{
+				path: 'dashboard',
+				component: DashboardComponent,
+			},
+			{
+				path: 'drag-drop',
+				component: DragDropComponent,
+			},
+			{
+				path: 'table',
+				component: TableComponent,
+			},
+			{
+				path: 'tree',
+				component: TreeComponent,
+			},
+			{
+				path: 'file-upload',
+				component: FileUploadComponent,
+			},
+			{
+				path: 'admin',
+				component: AdminComponent,
+			},
+		]
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule { }

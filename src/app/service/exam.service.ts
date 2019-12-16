@@ -5,14 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ExamService {
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  saveExam(exam: Exam): Observable<Exam>{
-    return this.http.post<Exam>("/api/exams", exam);
-  }
+	saveExam(exam: Exam): Observable<Exam> {
+		return this.http.post<Exam>('/api/exams', exam);
+	}
 
 }

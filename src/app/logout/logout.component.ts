@@ -3,22 +3,22 @@ import { Router } from '@angular/router';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss']
+	selector: 'app-logout',
+	templateUrl: './logout.component.html',
+	styleUrls: ['./logout.component.scss']
 })
 export class LogoutComponent implements OnInit {
 
-  faSignOutAlt = faSignOutAlt;
+	faSignOutAlt = faSignOutAlt;
 
-  constructor(private router: Router) { }
+	constructor(private router: Router) { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
-  logout() {
-    // this.oauthService.logout();
-    this.router.navigateByUrl('login');
-  }
+	logout() {
+		// this.oauthService.logout();
+		this.router.navigateByUrl('login');
+	}
 
 }

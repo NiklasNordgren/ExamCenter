@@ -6,27 +6,27 @@ import { MatTreeModule } from '@angular/material/tree';
 import { TreeComponent } from './tree.component';
 
 describe('TreeComponent', () => {
-  let component: TreeComponent;
-  let fixture: ComponentFixture<TreeComponent>;
+	let component: TreeComponent;
+	let fixture: ComponentFixture<TreeComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ TreeComponent ],
-      imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatTreeModule,
-      ]
-    }).compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [ TreeComponent ],
+			imports: [
+				MatButtonModule,
+				MatIconModule,
+				MatTreeModule,
+			]
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TreeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TreeComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should compile', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should compile', () => {
+		expect(component).toBeTruthy();
+	});
 });

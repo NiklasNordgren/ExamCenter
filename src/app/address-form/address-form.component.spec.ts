@@ -10,31 +10,31 @@ import { MatSelectModule } from '@angular/material/select';
 import { AddressFormComponent } from './address-form.component';
 
 describe('AddressFormComponent', () => {
-  let component: AddressFormComponent;
-  let fixture: ComponentFixture<AddressFormComponent>;
+	let component: AddressFormComponent;
+	let fixture: ComponentFixture<AddressFormComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AddressFormComponent ],
-      imports: [
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatCardModule,
-        MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
-      ]
-    }).compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [ AddressFormComponent ],
+			imports: [
+				NoopAnimationsModule,
+				ReactiveFormsModule,
+				MatButtonModule,
+				MatCardModule,
+				MatInputModule,
+				MatRadioModule,
+				MatSelectModule,
+			]
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AddressFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(AddressFormComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should compile', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should compile', () => {
+		expect(component).toBeTruthy();
+	});
 });

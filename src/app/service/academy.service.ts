@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Academy } from '../model/academy.model';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AcademyService {
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  getAllAcademies() {
-    return this.http.get<Academy[]>('api/academy/all');
-  }
+	getAllAcademies() {
+		return this.http.get<Academy[]>('api/academy/all');
+	}
 
 }

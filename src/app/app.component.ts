@@ -9,45 +9,45 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'testApp';
-  private academies = [];
 
-  constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) { 
-    
-  }
+	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {
 
-  ngOnInit(){
-      this.service.getAllAcademies().subscribe(responseAcademies => {
-        this.convertAndSetAcademies(responseAcademies);
-        console.log(this.academies);
-    });
-    
-  }
+	}
+	title = 'testApp';
+	private academies = [];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+		.pipe(
+			map(result => result.matches),
+			shareReplay()
+		);
 
-    convertAndSetAcademies(responseAcademies){
-      this.academies = [];
-      responseAcademies.forEach(academy => {
-        this.academies.push({
-          name: academy['name'],
-          shortDesc: academy['abbreviation'],
-          id: academy['id']
-        });
-      });
-    }
-    goToPage(pageName:string){
-      this.router.navigate([`${pageName}`]);
-    }
+	ngOnInit() {
+			this.service.getAllAcademies().subscribe(responseAcademies => {
+				this.convertAndSetAcademies(responseAcademies);
+				console.log(this.academies);
+		});
+
+	}
+
+		convertAndSetAcademies(responseAcademies) {
+			this.academies = [];
+			responseAcademies.forEach(academy => {
+				this.academies.push({
+					name: academy.name,
+					shortDesc: academy.abbreviation,
+					id: academy.id
+				});
+			});
+		}
+		goToPage(pageName: string) {
+			this.router.navigate([`${pageName}`]);
+		}
 
 }
 
