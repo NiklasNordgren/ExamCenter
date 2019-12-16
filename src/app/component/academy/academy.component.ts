@@ -32,10 +32,10 @@ export class AcademyComponent implements OnInit, OnDestroy {
 			this.data = [];
 			subjects.forEach(subject => {
 				this.data.push({
-					name: subject.name,
-					shortDesc: subject.code,
-					id: subject.id
-				});
+          name: subject["name"],
+          shortDesc: subject["code"],
+          id: subject["id"]
+        });
 			});
 		});
 	}

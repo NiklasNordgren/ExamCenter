@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { MatSliderModule } from '@angular/material/slider';
 import { NavComponent } from './nav/nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -29,7 +27,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
-import { FlexLayoutModule } from '@angular/flex-layout';
+// import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material';
@@ -43,11 +41,11 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 
 import { FileUploadModule } from 'ng2-file-upload';
 
-import { NgxFileDropModule } from 'ngx-file-drop';
+// import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminComponent } from './admin/admin.component';
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
-import { ListComponent } from './component/list/list.component';
+// import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './course/course.component';
@@ -66,7 +64,7 @@ import { CourseComponent } from './course/course.component';
 		LogoutComponent,
 		FileUploadComponent,
 		NavHorizComponent,
-		ListComponent,
+		// ListComponent,
 		AcademyComponent,
 		AdminComponent,
 		SubjectComponent,
@@ -101,7 +99,7 @@ import { CourseComponent } from './course/course.component';
 		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
-		FlexLayoutModule,
+		// FlexLayoutModule,
 		FormsModule,
 		FontAwesomeModule
 	],
