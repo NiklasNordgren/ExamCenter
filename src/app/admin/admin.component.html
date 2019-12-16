@@ -1,0 +1,20 @@
+<div style="margin: 10px; margin-bottom: 2px;">
+    <div style="display: block;">
+        <h2 style="display: inline;">
+            <fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users
+        </h2>
+        <button mat-raised-button color="accent" style="float: right;">
+            <fa-icon [icon]="faUserPlus" style="margin-right: 5pt;"></fa-icon>Add User
+        </button>
+    </div>
+
+
+    <div>
+        <mat-form-field style="display: block;">
+            <input matInput #message maxlength="256" placeholder="Search">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+</div>
+<app-table></app-table>

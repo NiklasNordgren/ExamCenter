@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ExamService } from '../service/exam.service';
+import { Exam } from '../model/exam.model';
 
 const headers = [{ name: 'Accept', value: 'application/json' }];
 
@@ -17,11 +19,21 @@ export interface FileTableItem {
 })
 export class FileUploadComponent implements OnInit {
 
+  exam: Exam = {
+    name:"testUrl",
+    date: "2019-12-09",
+    pdfUrl: "http://testUrl",
+    courseId: 5,
+    unpublishDate: "2022-12-09",
+    unpublished: false
+  }
+
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
   uploader: FileUploader = new FileUploader(
     {
-      url: 'http://localhost:9000/file/upload',
+      //url: 'http://localhost:9000/file/upload',
+      url: 'api/files/upload',
       autoUpload: false,
       headers,
       allowedMimeType: ['application/pdf']
@@ -37,7 +49,7 @@ export class FileUploadComponent implements OnInit {
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'actions'];
 
-  constructor() { }
+  constructor(private examService: ExamService) { }
 
   ngOnInit() {
 
@@ -54,8 +66,14 @@ export class FileUploadComponent implements OnInit {
     };
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('FileUpload:uploaded:', item, status, response);
-      console.log('response:' + response);
+      console.log('Item:' + item);
+      console.log("Status:" + status);
+      console.log("Response:" + response);
+
+      if(status == 200)
+        this.examService.saveExam(this.exam).subscribe(e => {
+          console.log(e);
+        });
     };
 
   }

@@ -43,6 +43,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     LoginComponent,
     HomeComponent,
     LogoutComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
