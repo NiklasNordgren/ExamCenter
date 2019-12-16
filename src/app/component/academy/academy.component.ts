@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SubjectService } from 'src/app/service/subject.service';
+import { Subject } from 'src/app/model/subject.model';
 
 @Component({
 	selector: 'app-academy',
@@ -9,10 +10,11 @@ import { SubjectService } from 'src/app/service/subject.service';
 	styleUrls: ['./academy.component.scss']
 })
 export class AcademyComponent implements OnInit, OnDestroy {
-	subscriptions = new Subscription();
-	private shortHeader = 'Abbrivation';
-	private name = 'Subject';
-	private data = [];
+  subscriptions = new Subscription();
+  private shortHeader = 'Abbrivation';
+  private name = 'Subject';
+  private data = [];
+  private selectedSubject: Subject;
 
 	constructor(private route: ActivatedRoute, private service: SubjectService) { }
 
@@ -27,14 +29,17 @@ export class AcademyComponent implements OnInit, OnDestroy {
 		this.subscriptions.unsubscribe();
 	}
 
-	setSubjetsByAcademyId(academyId) {
-		this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
-			this.data = [];
-			subjects.forEach(subject => {
-				this.data.push({
-          name: subject["name"],
-          shortDesc: subject["code"],
-          id: subject["id"]
+  onSelect(subject: Subject): void {
+    this.selectedSubject = subject;
+  }
+  setSubjetsByAcademyId(academyId) {
+    this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
+      this.data = [];
+      subjects.forEach(subject => {
+        this.data.push({
+          name: subject['name'],
+          shortDesc: subject['code'],
+          id: subject['id']
         });
 			});
 		});

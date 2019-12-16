@@ -8,6 +8,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 	styleUrls: ['./nav-horiz.component.scss']
 })
 export class NavHorizComponent implements OnInit {
+	
+  //private academies = ["ATM", "AHA", "AUE"];
 
 	constructor(private breakpointObserver: BreakpointObserver) { }
 	private academies = ['ATM', 'AHA', 'AUE'];

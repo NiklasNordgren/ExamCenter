@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/service/course.service';
 
@@ -10,10 +10,10 @@ import { CourseService } from 'src/app/service/course.service';
 })
 export class SubjectComponent implements OnInit, OnDestroy {
 
-	subscriptions = new Subscription();
-	private shortHeader = 'Abbrivation';
-	private name = 'Subject';
-	private data = [];
+  subscriptions = new Subscription();
+  private shortHeader = 'Code';
+  private name = 'Course';
+  private data = [];
 
 	constructor(private route: ActivatedRoute, private service: CourseService) { }
 
@@ -33,9 +33,9 @@ export class SubjectComponent implements OnInit, OnDestroy {
 			this.data = [];
 			courses.forEach(course => {
 				this.data.push({
-          name: course["name"],
-          code: course["code"],
-          id: course["id"]
+          name: course['name'],
+          code: course['code'],
+          id: course['id']
         });
 			});
 		});

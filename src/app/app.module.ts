@@ -48,7 +48,7 @@ import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 // import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
-import { CourseComponent } from './course/course.component';
+import { CourseComponent } from './component/course/course.component';
 
 @NgModule({
 	declarations: [
