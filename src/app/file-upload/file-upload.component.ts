@@ -3,6 +3,9 @@ import { FileUploader } from 'ng2-file-upload';
 import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../service/exam.service';
 import { Exam } from '../model/exam.model';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AcademyService } from '../service/academy.service';
+import { Academy } from '../model/academy.model';
 
 const headers = [{ name: 'Accept', value: 'application/json' }];
 
@@ -15,16 +18,24 @@ export interface FileTableItem {
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  styleUrls: ['./file-upload.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class FileUploadComponent implements OnInit {
 
+  expandedElement: FileTableItem | null;
+
   exam: Exam = {
-    name:"testUrl",
-    date: "2019-12-09",
-    pdfUrl: "http://testUrl",
-    courseId: 5,
-    unpublishDate: "2022-12-09",
+    fileName: "",
+    date: new Date("2019-12-09"),
+    courseId: 6,
+    unpublishDate: new Date("2022-12-09"),
     unpublished: false
   }
 
@@ -58,6 +69,7 @@ export class FileUploadComponent implements OnInit {
       file.index = this.tempFileId;
       this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
       this.tempFileId++;
+      this.exam.fileName = file.file.name;
       console.log("Succesfully added file: " + file.file.name + " to the queue.");
     };
 
@@ -70,7 +82,7 @@ export class FileUploadComponent implements OnInit {
       console.log("Status:" + status);
       console.log("Response:" + response);
 
-      if(status == 200)
+      if (status == 200)
         this.examService.saveExam(this.exam).subscribe(e => {
           console.log(e);
         });
