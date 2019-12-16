@@ -15,7 +15,7 @@ import { AcademyComponent } from './component/academy/academy.component';
 const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'login',
+		redirectTo: '',
 		pathMatch: 'full',
 	},
 	{
