@@ -17,13 +17,16 @@
         <mat-nav-list>
 
             <div *ngFor="let academy of academies">
-                <a mat-list-item>{{ academy.name }}</a>
-                <!--<a mat-list-item>{{ academy.abbreviation }}</a>-->
+                <a mat-list-item>{{ academy.abbreviation }}</a>
                 <mat-divider></mat-divider>
             </div>
-            <a mat-list-item [routerLink]="['file-upload']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams</a>
+            <a mat-list-item [routerLink]="['file-upload']">
+                <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
+            </a>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['admin']"><fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users</a>
+            <a mat-list-item [routerLink]="['admin']">
+                <fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users
+            </a>
             <mat-divider></mat-divider>
             <app-logout></app-logout>
         </mat-nav-list>
