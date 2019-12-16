@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 // import { authConfig } from './sso.config';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
 	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {
 

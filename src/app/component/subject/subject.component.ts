@@ -18,7 +18,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.subscriptions.add(this.route.paramMap.subscribe(params => {
-			const subjectId = parseInt(params.get('id'));
+			const subjectId = parseInt(params.get('id'), 10);
 
 			this.setCoursesBySubjectId(subjectId);
 		}));
