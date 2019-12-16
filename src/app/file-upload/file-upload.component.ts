@@ -29,6 +29,9 @@ export interface FileTableItem {
 })
 export class FileUploadComponent implements OnInit {
 
+  academies: Academy[] = [];
+  academyNames: string[] = [];
+
   expandedElement: FileTableItem | null;
 
   exam: Exam = {
@@ -60,9 +63,16 @@ export class FileUploadComponent implements OnInit {
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'actions'];
 
-  constructor(private examService: ExamService) { }
+  constructor(private examService: ExamService, private academyService: AcademyService) { }
 
   ngOnInit() {
+
+    this.academyService.getAllAcademies().subscribe(academies => {
+      this.academies = academies;
+      this.academies.forEach(x => {
+        this.academyNames.push(x.name);
+      });
+    });
 
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;

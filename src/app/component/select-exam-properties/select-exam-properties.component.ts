@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 
@@ -9,14 +9,13 @@ import { AcademyService } from 'src/app/service/academy.service';
 })
 export class SelectExamPropertiesComponent implements OnInit {
 
-  academies: Academy[] = [];
+  @Input() academies: Academy[];
+  @Input() academyNames: string[];
 
-  constructor(private academyService: AcademyService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.academyService.getAllAcademies().subscribe(a => {
-      this.academies = a;
-    })
+    
   }
 
 }
