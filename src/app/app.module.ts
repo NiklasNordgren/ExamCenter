@@ -34,7 +34,7 @@ import {MatProgressBarModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
-//import { OAuthModule } from 'angular-oauth2-oidc';
+// import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -54,61 +54,61 @@ import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      NavComponent,
-      AddressFormComponent,
-      TableComponent,
-      DashboardComponent,
-      TreeComponent,
-      DragDropComponent,
-      LoginComponent,
-      HomeComponent,
-      LogoutComponent,
-      FileUploadComponent,
-      FirstPageComponent,
-      NavHorizComponent,
-      ListComponent,
-      AcademyComponent,
-      AdminComponent,
-      SubjectComponent,
-      CourseComponent
-   ],
-   imports: [
-      BrowserModule,
-      AppRoutingModule,
-      HttpClientModule,
-      BrowserAnimationsModule,
-      MatSliderModule,
-      LayoutModule,
-      MatToolbarModule,
-      MatButtonModule,
-      MatSidenavModule,
-      MatIconModule,
-      MatListModule,
-      MatInputModule,
-      MatSelectModule,
-      MatRadioModule,
-      MatCardModule,
-      ReactiveFormsModule,
-      MatTableModule,
-      MatPaginatorModule,
-      MatSortModule,
-      MatGridListModule,
-      MatMenuModule,
-      MatTreeModule,
-      MatProgressBarModule,
-      DragDropModule,
-      //OAuthModule.forRoot()\r\nNgxFileDropModule,
-      FileUploadModule,
-      FontAwesomeModule,
-      FlexLayoutModule,
-      FormsModule,
-      FontAwesomeModule
-   ],
-   providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+		declarations: [
+			AppComponent,
+			NavComponent,
+			AddressFormComponent,
+			TableComponent,
+			DashboardComponent,
+			TreeComponent,
+			DragDropComponent,
+			LoginComponent,
+			HomeComponent,
+			LogoutComponent,
+			FileUploadComponent,
+			FirstPageComponent,
+			NavHorizComponent,
+			ListComponent,
+			AcademyComponent,
+			AdminComponent,
+			SubjectComponent,
+			CourseComponent
+		],
+		imports: [
+			BrowserModule,
+			AppRoutingModule,
+			HttpClientModule,
+			BrowserAnimationsModule,
+			MatSliderModule,
+			LayoutModule,
+			MatToolbarModule,
+			MatButtonModule,
+			MatSidenavModule,
+			MatIconModule,
+			MatListModule,
+			MatInputModule,
+			MatSelectModule,
+			MatRadioModule,
+			MatCardModule,
+			ReactiveFormsModule,
+			MatTableModule,
+			MatPaginatorModule,
+			MatSortModule,
+			MatGridListModule,
+			MatMenuModule,
+			MatTreeModule,
+			MatProgressBarModule,
+			DragDropModule,
+			// OAuthModule.forRoot()\r\nNgxFileDropModule,
+			FileUploadModule,
+			FontAwesomeModule,
+			FlexLayoutModule,
+			FormsModule,
+			FontAwesomeModule
+		],
+		providers: [],
+		bootstrap: [
+			AppComponent
+		]
 })
 export class AppModule { }

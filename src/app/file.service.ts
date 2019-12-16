@@ -23,21 +23,21 @@ export class FileService {
 
 
 
-		let url = "/upload";
+		const url = '/upload';
 
 		const body = new HttpParams()
-			.set("name", file.name)
-			.set("type", file.type);
+			.set('name', file.name)
+			.set('type', file.type);
 
-		let options = {
+		const options = {
 			headers: new HttpHeaders()
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 		};
 
 		this.http.post(url, body.toString(), options)
 			.subscribe(
-				res => { console.log("POST Request was successful: " + res) },
-				err => { console.log("Error occurred: " + err.toString) });
+				res => { console.log('POST Request was successful: ' + res); },
+				err => { console.log('Error occurred: ' + err.toString); });
 	}
 
 }

@@ -3,13 +3,13 @@ import { Exam } from '../model/exam.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ExamService {
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  getAllExamsByCourseId(id: any){
-    return this.http.get<Exam[]>("/api/subjects/exam/" + id);
-  }
+	getAllExamsByCourseId(id: any) {
+		return this.http.get<Exam[]>('/api/subjects/exam/' + id);
+	}
 }
