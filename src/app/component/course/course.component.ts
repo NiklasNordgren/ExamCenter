@@ -10,8 +10,6 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute) { }
 
-	constructor() { }
-
 	ngOnInit() {
 
 	}
