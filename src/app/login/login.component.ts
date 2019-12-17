@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
 			password: ''
 		});
 
-
 		this.configureSingleSignOn();
 		}
 
@@ -43,11 +42,6 @@ export class LoginComponent implements OnInit {
 
 		console.log(loginData);
 		console.log(loginData.username);
-
-
-
-
-
 
 		console.warn('hello u made it LOGIN METHOD');
 		// this.oauthService.initImplicitFlow();

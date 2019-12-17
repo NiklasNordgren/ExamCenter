@@ -10,11 +10,11 @@ import { ExamService } from 'src/app/service/exam.service';
 })
 export class CourseComponent implements OnInit, OnDestroy {
 
-  subscriptions = new Subscription();
-  private shortHeader = "Size";
-  private name = "Filename";
-  private data = [];
-  private url = "/exam/";
+	subscriptions = new Subscription();
+	private shortHeader = 'Size';
+	private name = 'Filename';
+	private data = [];
+	private url = '/exam/';
 
 	constructor(private route: ActivatedRoute, private service: ExamService) { }
 
@@ -33,10 +33,10 @@ export class CourseComponent implements OnInit, OnDestroy {
 			this.data = [];
 			exams.forEach(exam => {
 				this.data.push({
-					id: exam["id"],
-          name: exam["name"]
-        });
-      });
-    });
- }
+					id: exam.id,
+					name: exam.filename
+				});
+			});
+		});
+	}
 }

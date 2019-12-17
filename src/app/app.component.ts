@@ -7,7 +7,6 @@ import { map, shareReplay } from 'rxjs/operators';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Router } from '@angular/router';
 
-
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
