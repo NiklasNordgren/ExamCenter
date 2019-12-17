@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {
 
 	}
-	title = 'testApp';
+	//title = 'testApp';
 	private academies = [];
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
 		.pipe(
@@ -26,24 +26,22 @@ export class AppComponent implements OnInit {
 		);
 
 	ngOnInit() {
-			this.service.getAllAcademies().subscribe(responseAcademies => {
-				this.convertAndSetAcademies(responseAcademies);
+		this.service.getAllAcademies().subscribe(responseAcademies => {
+			this.convertAndSetAcademies(responseAcademies);
 
 		});
 	}
-
-		convertAndSetAcademies(responseAcademies) {
-			this.academies = [];
-			responseAcademies.forEach(academy => {
-				this.academies.push({
-					name: academy.name,
-					shortDesc: academy.abbreviation,
-					id: academy.id
-				});
+	convertAndSetAcademies(responseAcademies) {
+		this.academies = [];
+		responseAcademies.forEach(academy => {
+			this.academies.push({
+				name: academy.name,
+				shortDesc: academy.abbreviation,
+				id: academy.id
 			});
-		}
-		goToPage(pageName: string) {
-			this.router.navigate([`${pageName}`]);
-		}
-
+		});
+	}
+	goToPage(pageName: string) {
+		this.router.navigate([`${pageName}`]);
+	}
 }

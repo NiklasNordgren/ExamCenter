@@ -15,11 +15,13 @@ import { CourseComponent } from './component/course/course.component';
 import { Course } from './model/course.model';
 import { Subject } from 'rxjs';
 import { SubjectComponent } from './component/subject/subject.component';
+import { Exam } from './model/exam.model';
+import { ExamComponent } from './component/exam/exam.component';
 
 const routes: Routes = [
 	{
 		path: '',
-		redirectTo: '',
+		redirectTo: 'academy',
 		pathMatch: 'full',
 	},
 	{
@@ -27,19 +29,24 @@ const routes: Routes = [
 		component: LoginComponent,
 	},
 	{
-		path: 'subjects/academy/:id',
+		path: 'academy',
 		component: AcademyComponent,
 		data: Academy
 	},
 	{
-		path: 'courses/subject/:id',
+		path: 'subjects/academy/:id',
 		component: SubjectComponent,
 		data: Subject
 	},
 	{
-		path: 'exams/course/:id',
+		path: 'courses/subject/:id',
 		component: CourseComponent,
 		data: Course
+	},
+	{
+		path: 'exams/course/:id',
+		component: ExamComponent,
+		data: Exam
 	},
 	{
 		path: 'home',

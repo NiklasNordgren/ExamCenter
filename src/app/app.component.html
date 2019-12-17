@@ -1,4 +1,5 @@
 <div style="height: 100vh;">
+
     <mat-toolbar color="primary" class="total-bar">
         <!-- Row for Login and help.-->
         <mat-toolbar-row class="row top">
@@ -51,8 +52,8 @@
         <router-outlet></router-outlet>
         <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
             <div fxLayout="column">
-                <a class="sidenav-links" (click)="goToPage('/subjects/academy/'+ academy.id)" *ngFor="let academy of academies"
-                    mat-button>{{academy.shortDesc}}</a>
+                <a class="sidenav-links" (click)="goToPage('/subjects/academy/'+ academy.id)"
+                    *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
                 <a mat-button>Login (Admin)</a>
             </div>
         </mat-sidenav>

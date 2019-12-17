@@ -46,12 +46,12 @@ import {FileUploadModule} from 'ng2-file-upload';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminComponent } from './admin/admin.component';
-import { FirstPageComponent } from './first-page/first-page.component';
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
+import { ExamComponent } from './component/exam/exam.component';
 
 @NgModule({
 		declarations: [
@@ -66,13 +66,13 @@ import { CourseComponent } from './component/course/course.component';
 			HomeComponent,
 			LogoutComponent,
 			FileUploadComponent,
-			FirstPageComponent,
 			NavHorizComponent,
 			ListComponent,
 			AcademyComponent,
 			AdminComponent,
 			SubjectComponent,
-			CourseComponent
+			CourseComponent,
+			ExamComponent
 		],
 		imports: [
 			BrowserModule,

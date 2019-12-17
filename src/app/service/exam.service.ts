@@ -10,6 +10,6 @@ export class ExamService {
 	constructor(private http: HttpClient) { }
 
 	getAllExamsByCourseId(id: any) {
-		return this.http.get<Exam[]>('/api/subjects/exam/' + id);
+		return this.http.get<Exam[]>('/api/exams/course/' + id);
 	}
 }
