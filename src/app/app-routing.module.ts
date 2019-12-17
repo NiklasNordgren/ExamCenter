@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { SubjectComponent } from './component/subject/subject.component';
 import { Exam } from './model/exam.model';
 import { ExamComponent } from './component/exam/exam.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
 	{
@@ -26,7 +27,11 @@ const routes: Routes = [
 	},
 	{
 		path: 'login',
-		component: LoginComponent,
+		component: LoginComponent
+	},
+	{
+		path: 'about',
+		component: AboutComponent
 	},
 	{
 		path: 'academy',

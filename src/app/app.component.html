@@ -7,7 +7,7 @@
             <span class="example-fill-remaining-space"></span>
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
-                    <a class="login" mat-button>About</a>
+                    <button class="login" (click)="goToPage('/about')" mat-button>About</button>
                     <a class="login" mat-button>Login (Admin)</a>
                 </div>
             </span>
@@ -16,11 +16,11 @@
         <mat-toolbar-row class="row bottom">
             <span>
                 <div fxShow="true" fxHide.lt-md="true">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;"
+                    <img src="../../assets/HiG_vit_text.svg" (click)="goToPage('/')"  id="logo" class="logo" style="background-color: black;"
                         alt="University of Gävle logo">
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small"
+                    <img src="../../assets/HiG_vit_text.svg" (click)="goToPage('/')" id="logo-small" class="logo-small"
                         style="background-color: black;" alt="University of Gävle logo">
                 </div>
             </span>
