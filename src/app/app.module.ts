@@ -52,6 +52,7 @@ import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
+import { ExamComponent } from './component/exam/exam.component';
 
 @NgModule({
 		declarations: [
@@ -72,7 +73,8 @@ import { CourseComponent } from './component/course/course.component';
 			AcademyComponent,
 			AdminComponent,
 			SubjectComponent,
-			CourseComponent
+			CourseComponent,
+			ExamComponent
 		],
 		imports: [
 			BrowserModule,

@@ -34,9 +34,9 @@ export class CourseComponent implements OnInit, OnDestroy {
 			exams.forEach(exam => {
 				this.data.push({
 					id: exam["id"],
-					name: exam["name"]
-				});
-			});
-		});
-	}
+          name: exam["name"]
+        });
+      });
+    });
+ }
 }
