@@ -13,7 +13,7 @@ export class ExamComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   name = "Filename";
   data = [];
-  url = "/exam/";
+  url = '/download/';
 
   constructor(
     private route: ActivatedRoute,
@@ -22,30 +22,25 @@ export class ExamComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        const subjectId = parseInt(params.get("id"), 10);
-        this.setExamsByCourseId(subjectId);
-      })
-    );
+    this.subscriptions.add(this.route.paramMap.subscribe(params => {
+      const courseId = parseInt(params.get('id'), 10);
+      this.setExamsByCourseId(courseId);
+    }));
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-  }
-
-  openExamPdf(fileName: string) {
-    this.fileService.downloadFile(fileName).subscribe(pdfBlob => {
-      window.open(URL.createObjectURL(pdfBlob), "_blank");
-    });
   }
 
   setExamsByCourseId(courseId) {
     this.service.getAllExamsByCourseId(courseId).subscribe(exams => {
       this.data = [];
       exams.forEach(exam => {
+        console.log(exam.fileName);
+        
         this.data.push({
-          id: exam.id,
-          name: exam.filename
+          id: exam.fileName,
+          name: exam.fileName,
+          shortDesc: ""
         });
       });
     });
