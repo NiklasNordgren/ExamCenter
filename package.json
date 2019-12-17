@@ -4,11 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
-    "build": "npm run typedoc && ng build",
+    "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint > ./reports/lint.txt --format stylish",
-    "e2e": "ng e2e",
-    "typedoc": "typedoc --mode modules -module commonjs --exclude **/*.spec.ts --out docs/typedoc src/app"
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -53,7 +52,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typedoc": "^0.15.5",
     "typescript": "~3.5.3"
   }
 }
