@@ -11,7 +11,7 @@ import { Subject } from 'src/app/model/subject.model';
 })
 export class AcademyComponent implements OnInit, OnDestroy {
 	subscriptions = new Subscription();
-	private shortHeader = 'Abbrivation';
+	private shortHeader = 'Abbreviation';
 	private name = 'Subject';
 	private data = [];
 	private selectedSubject: Subject;
