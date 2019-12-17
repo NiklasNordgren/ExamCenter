@@ -4,4 +4,5 @@ export class Exam {
     courseId: number;
     unpublishDate: Date;
     unpublished: boolean;
+    tempId: number;
 }

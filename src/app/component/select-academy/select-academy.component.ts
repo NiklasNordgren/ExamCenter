@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Academy } from 'src/app/model/academy.model';
@@ -10,43 +10,27 @@ import { AcademyService } from 'src/app/service/academy.service';
   templateUrl: './select-academy.component.html',
   styleUrls: ['./select-academy.component.scss']
 })
-export class SelectAcademyComponent implements OnInit {
+export class SelectAcademyComponent extends FormControl implements OnInit {
 
   @Input() academies: Academy[];
-  @Input() options: string[];
+
+  @Output() selectedAcademyOutput = new EventEmitter<string>();
 
   selectedAcademy: Academy;
-
-  myControl = new FormControl();
   filteredOptions: Observable<string[]>;
 
-  constructor(private academyService: AcademyService) { }
-
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        debounceTime(300),
-        map(value => this._filter(value))
-      );
+  constructor() {
+    super();
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
+  ngOnInit() { }
 
-  setSelectAcademy(event: any): void{
+  public setSelectedAcademy(academyId: number): void {
     this.academies.forEach(a => {
-      if(a.name === event.option.value)
+      if (a.id == academyId)
         this.selectedAcademy = a;
     });
     console.log(this.selectedAcademy);
-  }
-
-  isSelectedAcademyValid(): boolean{
-    
-    return false;
   }
 
 }

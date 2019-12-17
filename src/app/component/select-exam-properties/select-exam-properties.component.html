@@ -1,3 +1,38 @@
-<app-select-academy [academies]=academies [options]=academyNames></app-select-academy>
-<app-select-subject></app-select-subject>
-<app-select-course></app-select-course>
+<mat-form-field>
+    <mat-label>Select academy</mat-label>
+    <select matNativeControl required (change)="academyChanged($event.target.value)">
+        <div *ngIf="academies && academies.length > 0; then academiesAvailable else academiesUnavailable"></div>
+        <ng-template #academiesAvailable>
+            <option *ngFor="let academy of academies" [value]="academy.id">{{academy.name}}</option>
+        </ng-template>
+        <ng-template #academiesUnavailable>
+            <option [value]="">No academies available</option>
+        </ng-template>
+    </select>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>Select subject</mat-label>
+    <select matNativeControl required (change)="subjectChanged($event.target.value)">
+        <div *ngIf="subjectsFilteredByAcademyId && subjectsFilteredByAcademyId.length > 0; then subjectsAvailable else subjectsUnavailable"></div>
+        <ng-template #subjectsAvailable>
+            <option *ngFor="let subject of subjectsFilteredByAcademyId" [value]="subject.id">{{subject.name}}</option>
+        </ng-template>
+        <ng-template #subjectsUnavailable>
+            <option [value]="">No subjects available</option>
+        </ng-template>
+    </select>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>Select course</mat-label>
+    <select matNativeControl required (change)="setSelectedCourseId($event.target.value)">
+        <div *ngIf="coursesFilteredBySubjectId && coursesFilteredBySubjectId.length > 0; then coursesAvailable else coursesUnavailable"></div>
+        <ng-template #coursesAvailable>
+            <option *ngFor="let course of coursesFilteredBySubjectId" [value]="course.id">{{course.name}}</option>
+        </ng-template>
+        <ng-template #coursesUnavailable>
+            <option [value]="">No courses available</option>
+        </ng-template>
+    </select>
+</mat-form-field>

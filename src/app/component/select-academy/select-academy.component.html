@@ -1,11 +1,6 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Select academy" aria-label="Academy" matInput [formControl]="myControl"
-            [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setSelectAcademy($event)">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-</form>
+<mat-form-field>
+    <mat-label>Select academy</mat-label>
+    <select matNativeControl required (change)="setSelectedAcademy($event.target.value)">
+        <option *ngFor="let academy of academies" [value]="academy.id">{{academy.name}}</option>
+    </select>
+</mat-form-field>
