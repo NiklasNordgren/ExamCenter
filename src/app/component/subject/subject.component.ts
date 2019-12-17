@@ -14,6 +14,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
   private shortHeader = 'Code';
   private name = 'Course';
   private data = [];
+  private url = "/exams/course/";
 
   constructor(private route: ActivatedRoute, private service: CourseService) { }
 

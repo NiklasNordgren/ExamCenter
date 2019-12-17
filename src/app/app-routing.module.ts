@@ -27,7 +27,7 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: "academy/:id",
+    path: "subjects/academy/:id",
     component: AcademyComponent,
     data: Academy
   },

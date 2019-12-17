@@ -15,6 +15,7 @@ export class AcademyComponent implements OnInit, OnDestroy {
   private name = 'Subject';
   private data = [];
   private selectedSubject: Subject;
+  private url = "/courses/subject/";
 
   constructor(private route: ActivatedRoute, private service: SubjectService) { }
 
