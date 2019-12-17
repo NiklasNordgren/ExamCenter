@@ -1,4 +1,4 @@
-<mat-card style="max-width: 700px;">
+<mat-card class="login-wrapper">
     <mat-card-header>
         <h3>LOGIN</h3>
     </mat-card-header>
@@ -6,17 +6,16 @@
         <form id="logginform" class="my-form" [formGroup]="checkoutForm">
             <mat-form-field class="full-width form-entity">
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="Enter your email" checkoutForm="email" required>
+                <input matInput placeholder="Enter your email" formControlName="email" (keyup.enter)="tryToSendForm()" required>
             </mat-form-field>
-            <mat-form-field class="full-width form-entity">
+                <mat-form-field class="full-width form-entity">
                 <mat-label>Password</mat-label>
-                <input matInput placeholder="Enter your password" type="password" checkoutForm="password" required>
+                <input matInput placeholder="Enter your password" (keyup.enter)="tryToSendForm()" type="password" formControlName="password" required>
             </mat-form-field>
         </form>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button (click)="login(checkoutForm.value); checkoutForm.reset();"
-            [disabled]="!checkoutForm.valid" color="primary">LOGIN</button>
+        <button mat-raised-button (click)="tryToSendForm()" [disabled]="!checkoutForm.valid" color="primary">LOGIN</button>
         <div fxFlex></div>
         <div *ngIf="isLoading">
             <mat-spinner [diameter]="40" style="max-width: 40pt;"></mat-spinner>
