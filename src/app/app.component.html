@@ -8,7 +8,9 @@
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
                     <button class="login" (click)="goToPage('/about')" mat-button>About</button>
-                    <a class="login" mat-button>Login (Admin)</a>
+
+                    <a class="login" mat-button href="/login">Login (Admin)</a>
+
                 </div>
             </span>
         </mat-toolbar-row>
@@ -16,12 +18,16 @@
         <mat-toolbar-row class="row bottom">
             <span>
                 <div fxShow="true" fxHide.lt-md="true">
-                    <img src="../../assets/HiG_vit_text.svg" (click)="goToPage('/')"  id="logo" class="logo" style="background-color: black;"
-                        alt="University of Gävle logo">
+                    <a href="/">
+                        <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;"
+                            alt="University of Gävle logo">
+                    </a>
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <img src="../../assets/HiG_vit_text.svg" (click)="goToPage('/')" id="logo-small" class="logo-small"
-                        style="background-color: black;" alt="University of Gävle logo">
+                    <a href="/">
+                        <img src="../../assets/HiG_vit_text.svg" (click)="goToHomePage()" id="logo-small"
+                            class="logo-small" style="background-color: black;" alt="University of Gävle logo">
+                    </a>
                 </div>
             </span>
             <span class="example-fill-remaining-space academies">
@@ -54,7 +60,7 @@
             <div fxLayout="column">
                 <a class="sidenav-links" (click)="goToPage('/subjects/academy/'+ academy.id)"
                     *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
-                <a mat-button>Login (Admin)</a>
+                <a mat-button href="/login">Login (Admin)</a>
             </div>
         </mat-sidenav>
     </mat-sidenav-container>
