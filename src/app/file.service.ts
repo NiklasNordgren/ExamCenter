@@ -9,6 +9,29 @@ export class FileService {
 
 	constructor(private http: HttpClient) { }
 
+	downloadFile(file: File) {
+			const url = "/download";
+
+      const body = new HttpParams()
+        .set("name", file.name);
+
+      // const options = {
+      //   headers: new HttpHeaders().set(
+      //     "Content-Type",
+      //     "application/x-www-form-urlencoded"
+      //   )
+      // };
+
+      this.http.post(url, body.toString()).subscribe(
+        res => {
+          console.log("POST Request was successful: " + res);
+        },
+        err => {
+          console.log("Error occurred: " + err.toString);
+        }
+      );
+	}
+
 	uploadFile(file: File) {
 
 		/*
