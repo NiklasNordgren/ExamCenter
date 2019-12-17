@@ -8,7 +8,7 @@
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
                     <a class="login" mat-button>About</a>
-                    <a class="login" mat-button>Login (Admin)</a>
+                    <a class="login" mat-button href="/login">Login (Admin)</a>
                 </div>
             </span>
         </mat-toolbar-row>
@@ -58,7 +58,7 @@
             <div fxLayout="column">
                 <a class="sidenav-links" (click)="goToPage('/subjects/academy/'+ academy.id)"
                     *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
-                <a mat-button>Login (Admin)</a>
+                <a mat-button href="/login">Login (Admin)</a>
             </div>
         </mat-sidenav>
     </mat-sidenav-container>
