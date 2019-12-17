@@ -10,11 +10,11 @@ import { CourseService } from 'src/app/service/course.service';
 })
 export class SubjectComponent implements OnInit, OnDestroy {
 
-  subscriptions = new Subscription();
-  private shortHeader = 'Code';
-  private name = 'Course';
-  private data = [];
-  private url = '/exams/course/';
+	subscriptions = new Subscription();
+	private shortHeader = 'Code';
+	private name = 'Course';
+	private data = [];
+	private url = '/exams/course/';
 
 	constructor(private route: ActivatedRoute, private service: CourseService) { }
 
@@ -22,8 +22,6 @@ export class SubjectComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(this.route.paramMap.subscribe(params => {
 			const subjectId = parseInt(params.get('id'), 10);
 			this.setCoursesBySubjectId(subjectId);
-
-
 		}));
 	}
 	ngOnDestroy(): void {
@@ -35,10 +33,10 @@ export class SubjectComponent implements OnInit, OnDestroy {
 			this.data = [];
 			courses.forEach(course => {
 				this.data.push({
-          name: course["name"],
-          shortDesc: course["courseCode"],
-          id: course["id"]
-        });
+					name: course.name,
+					shortDesc: course.courseCode,
+					id: course.id
+				});
 			});
 		});
 	}

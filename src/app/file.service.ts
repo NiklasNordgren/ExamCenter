@@ -21,8 +21,6 @@ export class FileService {
 		});
 		*/
 
-
-
 		const url = '/upload';
 
 		const body = new HttpParams()

@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 })
 
 export class ListComponent implements OnInit {
-  @Input() data: any[];
-  @Input() shortHeader: string;
-  @Input() name: string;
-  @Input() url: string;
-  private columnsToDisplay;
+	@Input() data: any[];
+	@Input() shortHeader: string;
+	@Input() name: string;
+	@Input() url: string;
+	private columnsToDisplay;
 
 	constructor(private router: Router) {  }
 
@@ -20,9 +20,9 @@ export class ListComponent implements OnInit {
 		this.columnsToDisplay = [this.shortHeader, this.name];
 	}
 
-  goToPage(pageName:string){
-    console.log(pageName);
-    
-    this.router.navigate([`${pageName}`]);
-  }
+	goToPage(pageName: string) {
+		console.log(pageName);
+
+		this.router.navigate([`${pageName}`]);
+	}
 }
