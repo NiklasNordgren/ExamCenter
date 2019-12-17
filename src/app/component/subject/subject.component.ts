@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Subscription, Subject } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
-import { CourseService } from "src/app/service/course.service";
+import { Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SubjectService } from "src/app/service/subject.service";
-import { FileService } from "src/app/file.service";
+import { Navigator } from "src/app/util/navigator";
 
 @Component({
   selector: "app-subject",
   templateUrl: "./subject.component.html",
-  styleUrls: ["./subject.component.scss"]
+  styleUrls: ["./subject.component.scss"],
+  providers: [Navigator]
 })
 export class SubjectComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
@@ -17,7 +17,12 @@ export class SubjectComponent implements OnInit, OnDestroy {
   data = [];
   url = "/courses/subject/";
 
-  constructor(private route: ActivatedRoute, private service: SubjectService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private service: SubjectService,
+    private router: Router,
+    private navigator: Navigator
+  ) {}
 
   ngOnInit() {
     this.subscriptions.add(
@@ -27,20 +32,24 @@ export class SubjectComponent implements OnInit, OnDestroy {
       })
     );
   }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
   setSubjetsByAcademyId(academyId) {
-    this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
-      this.data = [];
-      subjects.forEach(subject => {
-        this.data.push({
-          name: subject.name,
-          shortDesc: subject.code,
-          id: subject.id
+    let sub = this.service
+      .getAllSubjectsByAcademyId(academyId)
+      .subscribe(subjects => {
+        this.data = [];
+        subjects.forEach(subject => {
+          this.data.push({
+            name: subject.name,
+            shortDesc: subject.code,
+            id: subject.id
+          });
         });
       });
-    });
+    this.subscriptions.add(sub);
   }
 }

@@ -1,28 +1,28 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
-	selector: 'app-list',
-	templateUrl: './list.component.html',
-	styleUrls: ['./list.component.scss']
+  selector: "app-list",
+  templateUrl: "./list.component.html",
+  styleUrls: ["./list.component.scss"]
 })
-
 export class ListComponent implements OnInit {
-	@Input() data: any[];
-	@Input() shortHeader: string;
-	@Input() name: string;
-	@Input() url: string;
-	private columnsToDisplay;
+  @Input() data: any[];
+  @Input() shortHeader: string;
+  @Input() name: string;
+  @Output() clicked = new EventEmitter();
 
-	constructor(private router: Router) {  }
+  private columnsToDisplay;
 
-	ngOnInit() {
-		this.columnsToDisplay = [this.shortHeader, this.name];
-	}
+  constructor(private router: Router) {}
 
-	goToPage(pageName: string) {
-		console.log(pageName);
+  ngOnInit() {
+    this.columnsToDisplay = [this.shortHeader, this.name];
+  }
 
-		this.router.navigate([`${pageName}`]);
-	}
+  rowClicked(clickedRow) {
+    console.log("Row clicked");
+    console.log(clickedRow);
+    this.clicked.emit(clickedRow);
+  }
 }
