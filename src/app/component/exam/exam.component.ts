@@ -13,14 +13,14 @@ export class ExamComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   name = 'Filename';
   data = [];
-  url = '/exam/';
+  url = ''; //Här ska urlen för att ladda ner pdf:en vara! 
 
   constructor(private route: ActivatedRoute, private service: ExamService) { }
 
   ngOnInit() {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
-      const subjectId = parseInt(params.get('id'), 10);
-      this.setExamsByCourseId(subjectId);
+      const courseId = parseInt(params.get('id'), 10);
+      this.setExamsByCourseId(courseId);
     }));
   }
   ngOnDestroy(): void {
@@ -30,9 +30,12 @@ export class ExamComponent implements OnInit, OnDestroy {
     this.service.getAllExamsByCourseId(courseId).subscribe(exams => {
       this.data = [];
       exams.forEach(exam => {
+        console.log(exam.fileName);
+        
         this.data.push({
           id: exam.id,
-          name: exam.filename
+          name: exam.fileName,
+          shortDesc: ""
         });
       });
     });

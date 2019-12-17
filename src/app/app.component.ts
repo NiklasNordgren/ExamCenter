@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {
 
 	}
-	//title = 'testApp';
+
 	private academies = [];
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
 		.pipe(
