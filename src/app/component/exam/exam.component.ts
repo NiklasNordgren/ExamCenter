@@ -13,7 +13,8 @@ export class ExamComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   name = 'Filename';
   data = [];
-  url = ''; //Här ska urlen för att ladda ner pdf:en vara! 
+  url = console.log("yaya exam");
+  ; //Här ska urlen för att ladda ner pdf:en vara! 
 
   constructor(private route: ActivatedRoute, private service: ExamService) { }
 
