@@ -44,4 +44,7 @@ export class AppComponent implements OnInit {
 	goToPage(pageName: string) {
 		this.router.navigate([`${pageName}`]);
 	}
+	goToHomePage(){
+		this.goToPage("/");
+	}
 }

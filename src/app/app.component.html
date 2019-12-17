@@ -16,12 +16,16 @@
         <mat-toolbar-row class="row bottom">
             <span>
                 <div fxShow="true" fxHide.lt-md="true">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;"
-                        alt="University of Gävle logo">
+                    <a href="/">
+                        <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;"
+                            alt="University of Gävle logo">
+                    </a>
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo-small" class="logo-small"
-                        style="background-color: black;" alt="University of Gävle logo">
+                    <a href="/">
+                        <img src="../../assets/HiG_vit_text.svg" (click)="goToHomePage()" id="logo-small"
+                            class="logo-small" style="background-color: black;" alt="University of Gävle logo">
+                    </a>
                 </div>
             </span>
             <span class="example-fill-remaining-space academies">
