@@ -17,69 +17,69 @@ import { Subject } from 'rxjs';
 import { SubjectComponent } from './component/subject/subject.component';
 
 const routes: Routes = [
-  {
-    path: "",
-    redirectTo: "",
-    pathMatch: "full",
-  },
-  {
-    path: "login",
-    component: LoginComponent,
-  },
-  {
-    path: "subjects/academy/:id",
-    component: AcademyComponent,
-    data: Academy
-  },
-  {
-    path: "courses/subject/:id",
-    component: SubjectComponent,
-    data: Subject
-  },
-  {
-    path: "exams/course/:id",
-    component: CourseComponent,
-    data: Course
-  },
-  {
-    path: "home",
-    component: HomeComponent,
-    children: [
-      {
-        path: "",
-        pathMatch: "full",
-        redirectTo: "dashboard"
-      },
-      {
-        path: "address-form",
-        component: AddressFormComponent,
-      },
-      {
-        path: "dashboard",
-        component: DashboardComponent,
-      },
-      {
-        path: "drag-drop",
-        component: DragDropComponent,
-      },
-      {
-        path: "table",
-        component: TableComponent,
-      },
-      {
-        path: "tree",
-        component: TreeComponent,
-      },
-      {
-        path: "file-upload",
-        component: FileUploadComponent,
-      },
-      {
-        path: "admin",
-        component: AdminComponent,
-      },
-    ]
-  },
+	{
+		path: '',
+		redirectTo: '',
+		pathMatch: 'full',
+	},
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
+	{
+		path: 'academy/:id',
+		component: AcademyComponent,
+		data: Academy
+	},
+	{
+		path: 'courses/subject/:id',
+		component: SubjectComponent,
+		data: Subject
+	},
+	{
+		path: 'exams/course/:id',
+		component: CourseComponent,
+		data: Course
+	},
+	{
+		path: 'home',
+		component: HomeComponent,
+		children: [
+			{
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'dashboard'
+			},
+			{
+				path: 'address-form',
+				component: AddressFormComponent,
+			},
+			{
+				path: 'dashboard',
+				component: DashboardComponent,
+			},
+			{
+				path: 'drag-drop',
+				component: DragDropComponent,
+			},
+			{
+				path: 'table',
+				component: TableComponent,
+			},
+			{
+				path: 'tree',
+				component: TreeComponent,
+			},
+			{
+				path: 'file-upload',
+				component: FileUploadComponent,
+			},
+			{
+				path: 'admin',
+				component: AdminComponent,
+			},
+		]
+	},
 ];
 
 @NgModule({

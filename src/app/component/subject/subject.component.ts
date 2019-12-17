@@ -10,11 +10,10 @@ import { CourseService } from 'src/app/service/course.service';
 })
 export class SubjectComponent implements OnInit, OnDestroy {
 
-  subscriptions = new Subscription();
-  private shortHeader = 'Code';
-  private name = 'Course';
-  private data = [];
-  private url = '/exams/course/';
+	subscriptions = new Subscription();
+	private shortHeader = 'Code';
+	private name = 'Course';
+	private data = [];
 
 	constructor(private route: ActivatedRoute, private service: CourseService) { }
 

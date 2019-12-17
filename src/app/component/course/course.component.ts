@@ -10,11 +10,11 @@ import { ExamService } from 'src/app/service/exam.service';
 })
 export class CourseComponent implements OnInit, OnDestroy {
 
-  subscriptions = new Subscription();
-  private shortHeader = "Size";
-  private name = "Filename";
-  private data = [];
-  private url = "/exam/";
+
+	subscriptions = new Subscription();
+	// private shortHeader = "Filename";
+	private name = 'Filename';
+	private data = [];
 
 	constructor(private route: ActivatedRoute, private service: ExamService) { }
 

@@ -2,11 +2,11 @@
     <table mat-table [dataSource]="data" class="full-width-table">
         <ng-container matColumnDef={{shortHeader}}>
             <th mat-header-cell *matHeaderCellDef> {{shortHeader}} </th>
-            <td mat-cell (click)='goToPage(row.id)'*matCellDef="let row"> {{row.shortDesc}} </td>
+            <td mat-cell (click)='whenClicked(row.name)'*matCellDef="let row"> {{row.shortDesc}} </td>
         </ng-container>
         <ng-container matColumnDef={{name}}>
             <th mat-header-cell *matHeaderCellDef> {{name}} </th>
-            <td mat-cell (click)="goToPage(url + row.id)" *matCellDef="let row"> {{row.name}} </td>
+            <td mat-cell (click)="goToPage('/courses/subject/' + row.id)" *matCellDef="let row"> {{row.name}} </td>
         </ng-container>
         <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
 
