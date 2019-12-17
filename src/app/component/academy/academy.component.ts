@@ -10,11 +10,12 @@ import { Subject } from 'src/app/model/subject.model';
 	styleUrls: ['./academy.component.scss']
 })
 export class AcademyComponent implements OnInit, OnDestroy {
-	subscriptions = new Subscription();
-	private shortHeader = 'Abbrivation';
-	private name = 'Subject';
-	private data = [];
-	private selectedSubject: Subject;
+  subscriptions = new Subscription();
+  private shortHeader = 'Abbrivation';
+  private name = 'Subject';
+  private data = [];
+  private selectedSubject: Subject;
+  private url = "/courses/subject/";
 
 	constructor(private route: ActivatedRoute, private service: SubjectService) { }
 
