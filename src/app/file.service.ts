@@ -15,7 +15,7 @@ export class FileService {
   constructor(private http: HttpClient) {}
 
   downloadFile(fileName: string): any {
-    return this.http.get('api/files/download/' + fileName, { responseType: 'blob' }).pipe(
+    return this.http.get('/api/files/download/' + fileName, { responseType: 'blob' }).pipe(
 			map(blob => new Blob([blob], { type: 'application/pdf'} ))
 		);
   }

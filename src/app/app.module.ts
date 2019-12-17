@@ -54,6 +54,8 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+import { ListNewComponent } from './component/list-new/list-new.component';
+import { ExamNewComponent } from './component/exam-new/exam-new.component';
 
 @NgModule({
 		declarations: [
@@ -75,7 +77,9 @@ import { LoginComponent } from './component/login/login.component';
 			SubjectComponent,
 			CourseComponent,
 			ExamComponent,
-			AboutComponent
+			AboutComponent,
+			ListNewComponent,
+			ExamNewComponent
 		],
 		imports: [
 			BrowserModule,

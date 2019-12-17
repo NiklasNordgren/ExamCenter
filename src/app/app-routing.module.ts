@@ -18,6 +18,7 @@ import { Exam } from './model/exam.model';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+import { ExamNewComponent } from './component/exam-new/exam-new.component';
 
 const routes: Routes = [
 	{
@@ -50,7 +51,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'exams/course/:id',
-		component: ExamComponent,
+		component: ExamNewComponent,
 		data: Exam
 	},
 	{
