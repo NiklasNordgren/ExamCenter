@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/service/course.service';
+import { SubjectService } from 'src/app/service/subject.service';
 
 @Component({
 	selector: 'app-subject',
@@ -10,34 +11,35 @@ import { CourseService } from 'src/app/service/course.service';
 })
 export class SubjectComponent implements OnInit, OnDestroy {
 
-	subscriptions = new Subscription();
-	private shortHeader = 'Code';
-	private name = 'Course';
-	private data = [];
-	private url = '/exams/course/';
+	private subscriptions = new Subscription();
+	shortHeader = 'Abbreviation';
+	name = 'Subject';
+	data = [];
+	url = '/courses/subject/';
 
-	constructor(private route: ActivatedRoute, private service: CourseService) { }
+	constructor(private route: ActivatedRoute, private service: SubjectService) { }
 
 	ngOnInit() {
 		this.subscriptions.add(this.route.paramMap.subscribe(params => {
-			const subjectId = parseInt(params.get('id'), 10);
-			this.setCoursesBySubjectId(subjectId);
+			const academyId = parseInt(params.get('id'), 10);
+			this.setSubjetsByAcademyId(academyId);
 		}));
 	}
 	ngOnDestroy(): void {
 		this.subscriptions.unsubscribe();
 	}
 
-	setCoursesBySubjectId(subjectId) {
-		this.service.getAllCoursesBySubjectId(subjectId).subscribe(courses => {
+	setSubjetsByAcademyId(academyId) {
+		this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
 			this.data = [];
-			courses.forEach(course => {
+			subjects.forEach(subject => {
 				this.data.push({
-					name: course.name,
-					shortDesc: course.courseCode,
-					id: course.id
+					name: subject.name,
+					shortDesc: subject.code,
+					id: subject.id
 				});
 			});
 		});
 	}
 }
+
