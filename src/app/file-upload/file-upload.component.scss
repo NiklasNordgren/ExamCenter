@@ -50,7 +50,6 @@ input[type="file"] {
 
 table {
   width: 100%;
-  //background-color: #ddd;
 }
 
 .mat-column-name {
@@ -86,6 +85,9 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-detail {
   overflow: hidden;
   display: block;
+
+
+  position: relative;
 }
 
 .example-element-diagram {

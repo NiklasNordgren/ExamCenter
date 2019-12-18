@@ -47,8 +47,9 @@ export class SelectExamPropertiesComponent implements OnInit {
   }
 
   setSelectedCourseId(courseId: any) {
-    courseId = parseInt(courseId);
-    console.log(parseInt(courseId));
+    if (typeof courseId === "string"){
+      courseId = parseInt(courseId);
+    }
     this.selectedCourseId = courseId;
     this.courseIdEmitter.emit(this.selectedCourseId);
   }

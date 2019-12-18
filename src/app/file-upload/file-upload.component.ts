@@ -144,10 +144,20 @@ export class FileUploadComponent implements OnInit {
   clearQueue() {
     this.uploader.clearQueue();
     this.dataSource = [];
+    this.examsToUpload = [];
   }
 
   uploadFromQueue(element: any) {
     this.uploader.queue.find(x => x.index === element.tempFileId).upload();
+
+    this.activeExam = null;
+    var index = this.examsToUpload.findIndex(x => x.tempId === element.tempFileId);
+    if (index > -1) {
+      this.examsToUpload.splice(index, 1);
+    }
+
+    //TODO: Freeze dropdowns values of select-exam-properties
+
   }
 
   removeFromQueue(element: any) {
@@ -159,6 +169,11 @@ export class FileUploadComponent implements OnInit {
     this.dataSource = this.dataSource.filter(x => {
       return x.tempFileId !== element.tempFileId;
     });
+
+    var index = this.examsToUpload.findIndex(x => x.tempId === element.tempFileId);
+    if (index > -1) {
+      this.examsToUpload.splice(index, 1);
+    }
 
   }
 
@@ -188,8 +203,10 @@ export class FileUploadComponent implements OnInit {
   }
 
   selectedCourseIdChanged(courseId: number) {
-    this.activeExam.courseId = courseId;
-    if (this.expandedElement){
+    if (this.activeExam) {
+      this.activeExam.courseId = courseId;
+    }
+    if (this.expandedElement) {
       this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId).courseId = courseId;
     }
     console.log(this.activeExam);
