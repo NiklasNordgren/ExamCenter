@@ -12,4 +12,5 @@ export class SubjectService {
 	getAllSubjectsByAcademyId(id: any) {
 		return this.http.get<Subject[]>('/api/subjects/academy/' + id);
 	}
+
 }
