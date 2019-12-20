@@ -7,8 +7,10 @@
             <span class="example-fill-remaining-space"></span>
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
-                    <a class="login" mat-button>About</a>
+                    <button class="login" (click)="goToPage('/about')" mat-button>About</button>
+
                     <a class="login" mat-button href="/login">Login (Admin)</a>
+
                 </div>
             </span>
         </mat-toolbar-row>

@@ -52,6 +52,7 @@ import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
+import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
 
 @NgModule({
@@ -73,7 +74,8 @@ import { LoginComponent } from './component/login/login.component';
 			AdminComponent,
 			SubjectComponent,
 			CourseComponent,
-			ExamComponent
+			ExamComponent,
+			AboutComponent
 		],
 		imports: [
 			BrowserModule,
