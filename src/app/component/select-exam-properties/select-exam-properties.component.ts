@@ -11,8 +11,6 @@ import { Exam } from 'src/app/model/exam.model';
 })
 export class SelectExamPropertiesComponent implements OnInit {
 
-  @Input() examsToUpload: Exam[];
-
   @Input() academies: Academy[];
   @Input() subjects: Subject[];
   @Input() courses: Course[];

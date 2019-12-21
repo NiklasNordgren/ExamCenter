@@ -11,6 +11,7 @@ import { Course } from '../model/course.model';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../service/subject.service';
 import { CourseService } from '../service/course.service';
+import { MatTable } from '@angular/material';
 
 const headers = [{ name: 'Accept', value: 'application/json' }];
 
@@ -45,17 +46,8 @@ export class FileUploadComponent implements OnInit {
 
   expandedElement: FileTableItem | null;
 
-  /*
-  exam: Exam = {
-    fileName: "",
-    date: new Date("2019-12-09"),
-    courseId: 6,
-    unpublishDate: new Date("2022-12-09"),
-    unpublished: false
-  }
-  */
-
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
 
   uploader: FileUploader = new FileUploader(
     {
@@ -75,7 +67,7 @@ export class FileUploadComponent implements OnInit {
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'actions'];
 
-  constructor(private examService: ExamService, private academyService: AcademyService, private subjectService: SubjectService, private courseService: CourseService) { }
+  constructor(private changeDetectorRef: ChangeDetectorRef, private examService: ExamService, private academyService: AcademyService, private subjectService: SubjectService, private courseService: CourseService) { }
 
   ngOnInit() {
 
@@ -85,30 +77,29 @@ export class FileUploadComponent implements OnInit {
 
     this.uploader.onAfterAddingFile = (file) => {
 
+      this.expandedElement = null;
+
       let exam = new Exam();
       exam.fileName = file.file.name;
-      //TODO: hämta från input eller automatchning
       exam.date = new Date();
       exam.unpublished = false;
-      //exam.unpublishDate = new Date(exam.date.getFullYear + "-" + exam.date.getMonth + "-" + exam.date.getDay);
       exam.unpublishDate = new Date();
       exam.tempId = this.tempFileId;
 
-      this.examsToUpload.push(exam);
-
+      exam.courseId = 0;
       this.activeExam = exam;
-
+      this.examsToUpload.push(exam);
       file.withCredentials = false;
       file.index = this.tempFileId;
       this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
+      debugger;
+      this.changeDetectorRef.detectChanges();
       this.tempFileId++;
 
       console.log("Succesfully added file: " + file.file.name + " to the queue.");
     };
 
-
     this.uploader.onBeforeUploadItem = (file) => {
-
 
     };
 
@@ -120,6 +111,7 @@ export class FileUploadComponent implements OnInit {
       console.log('Item:' + item);
       console.log("Status:" + status);
       console.log("Response:" + response);
+      debugger;
       /*
       if (status == 200)
         this.examService.saveExam(this.exam).subscribe(e => {
@@ -128,10 +120,7 @@ export class FileUploadComponent implements OnInit {
       */
     };
 
-
-
   }
-
 
   fileOverDropZone(e: any): void {
     this.isFileOverDropZone = e;
@@ -177,8 +166,20 @@ export class FileUploadComponent implements OnInit {
 
   }
 
+  isValidUpload(element: any) {
+    //test
+    return !this.isUploadedFromQueue(element) && this.hasValidCourseId(element);
+  }
+
   isUploadedFromQueue(element: any) {
-    return this.uploader.queue.find(x => x.index === element.tempFileId) ? true : false;
+    return this.uploader.queue.find(x => x.index === element.tempFileId);
+  }
+
+  hasValidCourseId(element: any) {
+    //test
+    if (this.examsToUpload.length > 0)
+      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
+    else false;
   }
 
   getAllAcademies() {
@@ -203,19 +204,23 @@ export class FileUploadComponent implements OnInit {
   }
 
   selectedCourseIdChanged(courseId: number) {
+
+    //TODO: expandElement = active
+    //If not expandedElement get from defaultValue or autoMatch
+
+    if (this.expandedElement) {
+      this.activeExam = this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId);
+    }
     if (this.activeExam) {
       this.activeExam.courseId = courseId;
     }
-    if (this.expandedElement) {
-      this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId).courseId = courseId;
-    }
+
     console.log(this.activeExam);
     console.log(this.examsToUpload);
   }
 
   onTableRowClick(event: any) {
-    console.log('test');
-    //debugger;
+    //console.log('test');
   }
 
 }
