@@ -13,7 +13,13 @@ import { SubjectService } from '../service/subject.service';
 import { CourseService } from '../service/course.service';
 import { MatTable } from '@angular/material';
 
-const headers = [{ name: 'Accept', value: 'application/json' }];
+/**
+ * TODO:
+ * 
+ * Validering:
+ * Kontrollera filnamn med de som finns i uppladdningskön och i databasen.
+ * 
+ */
 
 export interface FileTableItem {
   tempFileId: number;
@@ -40,6 +46,7 @@ export class FileUploadComponent implements OnInit {
   academies: Academy[] = [];
   subjects: Subject[] = [];
   courses: Course[] = [];
+  exams: Exam[] = [];
 
   examsToUpload: Exam[] = [];
   activeExam: Exam;
@@ -53,8 +60,9 @@ export class FileUploadComponent implements OnInit {
     {
       url: 'api/files/upload',
       autoUpload: false,
-      headers: headers,
-      allowedMimeType: ['application/pdf']
+      headers: [{ name: 'Accept', value: 'application/json' }],
+      allowedMimeType: ['application/pdf'],
+      maxFileSize: 5 * 1024 * 1024 //5MB
     }
   );;
 
@@ -74,17 +82,33 @@ export class FileUploadComponent implements OnInit {
     this.getAllAcademies();
     this.getAllSubjects();
     this.getAllCourses();
+    this.getAllExams();
 
     this.uploader.onAfterAddingFile = (file) => {
-      this.expandedElement = null;
-      this.addExam(file.file.name);
-      file.withCredentials = false;
-      file.index = this.tempFileId;
 
-      this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
-      this.changeDetectorRef.detectChanges();
-      this.tempFileId++;
-      console.log("Succesfully added file: " + file.file.name + " to the queue.");
+      this.expandedElement = null;
+
+      debugger;
+
+      if (!this.isExamInUploadQueue(file.file.name) && !this.isExamInDatabase(file.file.name)) {
+        this.addExam(file.file.name);
+        file.withCredentials = false;
+        file.index = this.tempFileId;
+
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
+        this.changeDetectorRef.detectChanges();
+        this.tempFileId++;
+        console.log("Succesfully added file: " + file.file.name + " to the queue.");
+      }else{
+        if(this.isExamInUploadQueue(file.file.name)){
+          alert("Exam already exists in upload queue.");
+        }
+        if(this.isExamInDatabase(file.file.name)){
+          alert("Exam already exists in the database.");
+        }
+        this.removeFromQueue(file);
+      }
+
     };
 
     this.uploader.onBeforeUploadItem = (file) => {
@@ -100,13 +124,15 @@ export class FileUploadComponent implements OnInit {
       console.log("Status: " + status);
       console.log("Response: " + response);
       debugger;
-      
-      if (status == 200){
-        this.examService.saveExam(this.examsToUpload.find(x => x.fileName == item.file.name)).subscribe(e => {
+
+      if (status == 200) {
+        let exam = this.examsToUpload.find(x => x.fileName == item.file.name);
+        this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
         });
+        this.removeExam(exam.courseId);
       }
-      
+
     };
 
   }
@@ -128,12 +154,6 @@ export class FileUploadComponent implements OnInit {
   uploadFromQueue(element: any) {
     this.uploader.queue.find(x => x.index === element.tempFileId).upload();
 
-    this.activeExam = null;
-    var index = this.examsToUpload.findIndex(x => x.tempId === element.tempFileId);
-    if (index > -1) {
-      this.examsToUpload.splice(index, 1);
-    }
-
     //TODO: Freeze dropdowns values of select-exam-properties
 
   }
@@ -148,27 +168,8 @@ export class FileUploadComponent implements OnInit {
       return x.tempFileId !== element.tempFileId;
     });
 
-    var index = this.examsToUpload.findIndex(x => x.tempId === element.tempFileId);
-    if (index > -1) {
-      this.examsToUpload.splice(index, 1);
-    }
+    this.removeExam(element.tempFileId);
 
-  }
-
-  isValidUpload(element: any) {
-    //test
-    return !this.isUploadedFromQueue(element) && this.hasValidCourseId(element);
-  }
-
-  isUploadedFromQueue(element: any) {
-    return this.uploader.queue.find(x => x.index === element.tempFileId);
-  }
-
-  hasValidCourseId(element: any) {
-    //test
-    if (this.examsToUpload.length > 0)
-      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
-    else false;
   }
 
   getAllAcademies() {
@@ -192,20 +193,20 @@ export class FileUploadComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 
+  getAllExams() {
+    let sub = this.examService.getAllExams().subscribe(exams => {
+      this.exams = exams;
+    });
+    this.subscriptions.add(sub);
+  }
+
   selectedCourseIdChanged(courseId: number) {
-
-    //TODO: expandElement = active
-    //If not expandedElement get from defaultValue or autoMatch
-
     if (this.expandedElement) {
       this.activeExam = this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId);
     }
     if (this.activeExam) {
       this.activeExam.courseId = courseId;
     }
-
-    console.log(this.activeExam);
-    console.log(this.examsToUpload);
   }
 
   addExam(name: string): void {
@@ -218,6 +219,38 @@ export class FileUploadComponent implements OnInit {
     exam.courseId = 0;
     this.activeExam = exam;
     this.examsToUpload.push(exam);
+  }
+
+  removeExam(tempId: number) {
+    this.activeExam = null;
+    var index = this.examsToUpload.findIndex(x => x.tempId === tempId);
+    if (index > -1) {
+      this.examsToUpload.splice(index, 1);
+    }
+  }
+
+  isValidUpload(element: any) {
+    //test
+    return !this.isUploadedFromQueue(element) && this.hasValidCourseId(element);
+  }
+
+  isUploadedFromQueue(element: any) {
+    return this.uploader.queue.find(x => x.index === element.tempFileId);
+  }
+
+  hasValidCourseId(element: any) {
+    //test
+    if (this.examsToUpload.length > 0)
+      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
+    else false;
+  }
+
+  isExamInDatabase(fileName: string): boolean {
+    return this.exams.find(x => x.fileName === fileName) !== undefined ? true : false;
+  }
+
+  isExamInUploadQueue(fileName: string): boolean {
+    return this.examsToUpload.find(x => x.fileName === fileName) !== undefined ? true : false;
   }
 
 }

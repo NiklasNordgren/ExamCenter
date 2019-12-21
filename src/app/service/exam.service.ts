@@ -15,4 +15,8 @@ export class ExamService {
     return this.http.post<Exam>("/api/exams", exam);
   }
 
+  getAllExams(){
+    return this.http.get<Exam[]>("api/exams/all");
+  }
+ 
 }
