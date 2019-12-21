@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileItem } from 'ng2-file-upload';
 import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../service/exam.service';
 import { Exam } from '../model/exam.model';
@@ -47,7 +47,7 @@ export class FileUploadComponent implements OnInit {
   expandedElement: FileTableItem | null;
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   uploader: FileUploader = new FileUploader(
     {
@@ -76,26 +76,14 @@ export class FileUploadComponent implements OnInit {
     this.getAllCourses();
 
     this.uploader.onAfterAddingFile = (file) => {
-
       this.expandedElement = null;
-
-      let exam = new Exam();
-      exam.fileName = file.file.name;
-      exam.date = new Date();
-      exam.unpublished = false;
-      exam.unpublishDate = new Date();
-      exam.tempId = this.tempFileId;
-
-      exam.courseId = 0;
-      this.activeExam = exam;
-      this.examsToUpload.push(exam);
+      this.addExam(file.file.name);
       file.withCredentials = false;
       file.index = this.tempFileId;
+
       this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
-      debugger;
       this.changeDetectorRef.detectChanges();
       this.tempFileId++;
-
       console.log("Succesfully added file: " + file.file.name + " to the queue.");
     };
 
@@ -107,17 +95,18 @@ export class FileUploadComponent implements OnInit {
       console.log("Failed to add file: " + file.name + " to the queue.");
     };
 
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('Item:' + item);
-      console.log("Status:" + status);
-      console.log("Response:" + response);
+    this.uploader.onCompleteItem = (item: FileItem, response: any, status: any, headers: any) => {
+      console.log('Item: ' + item.file.name);
+      console.log("Status: " + status);
+      console.log("Response: " + response);
       debugger;
-      /*
-      if (status == 200)
-        this.examService.saveExam(this.exam).subscribe(e => {
+      
+      if (status == 200){
+        this.examService.saveExam(this.examsToUpload.find(x => x.fileName == item.file.name)).subscribe(e => {
           console.log(e);
         });
-      */
+      }
+      
     };
 
   }
@@ -219,8 +208,16 @@ export class FileUploadComponent implements OnInit {
     console.log(this.examsToUpload);
   }
 
-  onTableRowClick(event: any) {
-    //console.log('test');
+  addExam(name: string): void {
+    let exam = new Exam();
+    exam.fileName = name;
+    exam.date = new Date();
+    exam.unpublished = false;
+    exam.unpublishDate = new Date();
+    exam.tempId = this.tempFileId;
+    exam.courseId = 0;
+    this.activeExam = exam;
+    this.examsToUpload.push(exam);
   }
 
 }
