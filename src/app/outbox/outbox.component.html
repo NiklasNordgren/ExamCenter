@@ -1,0 +1,26 @@
+<p>outbox works!</p>
+<!--
+<ul *ngFor= "let subject of subjects">
+    <h1>Hej {{subject.name}}</h1>
+</ul> -->
+
+
+
+
+<div>
+    <table mat-table [dataSource]="data" class="full-width-table">
+        <ng-container matColumnDef={{subject.name}}>
+            <th mat-header-cell *matHeaderCellDef> {{subject.name}} </th>
+         <!--  <td mat-cell (click)='goToPage(url + row.id)'*matCellDef="let row"> {{row.shortDesc}} </td> --> 
+        </ng-container>
+        <ng-container matColumnDef={{subject.id}}>
+            <th mat-header-cell *matHeaderCellDef> {{subject.id}} </th>
+        <!--    <td mat-cell (click)="goToPage(url + row.id)" *matCellDef="let row"> {{row.name}} </td> -->
+        </ng-container>
+        <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+
+    </table>
+</div>
