@@ -72,11 +72,28 @@ tr.example-detail-row {
 
 tr.example-element-row:not(.example-expanded-row):hover {
   background: #e1e1ea;
+  cursor: pointer;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
   background: #e1e1ea;
 }
+
+tr.example-expanded-row {
+  //Skifta färg vid expandering på huvudraden
+  //background: #e1e1ea;
+  &:hover {
+    cursor: pointer;
+  }
+  
+}
+
+.mat-column-expandedDetail{
+  //Skifta färg vid expandering på detaljvyn
+  //background: #e1e1ea;
+}
+
+
 
 .example-element-row td {
   border-bottom-width: 0;
@@ -85,7 +102,6 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-detail {
   overflow: hidden;
   display: block;
-
 
   position: relative;
 }

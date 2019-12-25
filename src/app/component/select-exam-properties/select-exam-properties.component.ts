@@ -1,13 +1,18 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Subject } from 'src/app/model/subject.model';
 import { Course } from 'src/app/model/course.model';
-import { Exam } from 'src/app/model/exam.model';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppDateAdapter, APP_DATE_FORMATS } from './format-datepicker';
 
 @Component({
   selector: 'app-select-exam-properties',
   templateUrl: './select-exam-properties.component.html',
-  styleUrls: ['./select-exam-properties.component.scss']
+  styleUrls: ['./select-exam-properties.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
 export class SelectExamPropertiesComponent implements OnInit {
 
@@ -16,16 +21,19 @@ export class SelectExamPropertiesComponent implements OnInit {
   @Input() courses: Course[];
 
   @Output() courseIdEmitter = new EventEmitter<number>();
+  @Output() examDateEmitter = new EventEmitter<Date>();
 
   subjectsFilteredByAcademyId: Subject[];
   coursesFilteredBySubjectId: Course[];
 
   selectedCourseId: number = 0;
+  selectedDate = new Date();
 
   constructor() { }
 
   ngOnInit() {
     this.academyChanged(this.academies[0].id);
+    this.setSelectedExamDate(this.selectedDate);
   }
 
   academyChanged(academyId: number): void {
@@ -45,11 +53,15 @@ export class SelectExamPropertiesComponent implements OnInit {
   }
 
   setSelectedCourseId(courseId: any) {
-    if (typeof courseId === "string"){
+    if (typeof courseId === "string") {
       courseId = parseInt(courseId);
     }
     this.selectedCourseId = courseId;
     this.courseIdEmitter.emit(this.selectedCourseId);
+  }
+
+  setSelectedExamDate(examDate: Date) {
+    this.examDateEmitter.emit(this.selectedDate);
   }
 
 }

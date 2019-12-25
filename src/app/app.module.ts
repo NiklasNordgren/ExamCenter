@@ -30,7 +30,7 @@ import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatProgressBarModule } from '@angular/material';
+import { MatProgressBarModule, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
 
@@ -39,17 +39,27 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { LogoutComponent } from './logout/logout.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadComponent } from './component/file-upload/file-upload.component';
 
-import {FileUploadModule} from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminComponent } from './admin/admin.component';
-import { SelectAcademyComponent } from './component/select-academy/select-academy.component';
-import { SelectSubjectComponent } from './component/select-subject/select-subject.component';
-import { SelectCourseComponent } from './component/select-course/select-course.component';
 import { SelectExamPropertiesComponent } from './component/select-exam-properties/select-exam-properties.component';
+
+export const DateFormats = {
+  parse: {
+    dateInput: ['YYYY-MM-DD']
+  },
+  display: {
+    dateInput: 'YYYY-MM-DD',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -65,9 +75,6 @@ import { SelectExamPropertiesComponent } from './component/select-exam-propertie
     LogoutComponent,
     FileUploadComponent,
     AdminComponent,
-    SelectAcademyComponent,
-    SelectSubjectComponent,
-    SelectCourseComponent,
     SelectExamPropertiesComponent
   ],
   imports: [
@@ -100,9 +107,13 @@ import { SelectExamPropertiesComponent } from './component/select-exam-propertie
     FileUploadModule,
     FontAwesomeModule,
     MatAutocompleteModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule
   ],
-  providers: [],
+  providers: [
+    //{ provide: DateAdapter, useClass: NativeDateAdapter , deps: [MAT_DATE_LOCALE] },
+    //{ provide: MAT_DATE_FORMATS, useValue: DateFormats }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

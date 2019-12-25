@@ -1,23 +1,23 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ExamService } from '../service/exam.service';
-import { Exam } from '../model/exam.model';
+import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { ExamService } from '../../service/exam.service';
+import { Exam } from '../../model/exam.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { AcademyService } from '../service/academy.service';
-import { Academy } from '../model/academy.model';
-import { Subject } from '../model/subject.model';
-import { Course } from '../model/course.model';
+import { AcademyService } from '../../service/academy.service';
+import { Academy } from '../../model/academy.model';
+import { Subject } from '../../model/subject.model';
+import { Course } from '../../model/course.model';
 import { Subscription } from 'rxjs';
-import { SubjectService } from '../service/subject.service';
-import { CourseService } from '../service/course.service';
+import { SubjectService } from '../../service/subject.service';
+import { CourseService } from '../../service/course.service';
 import { MatTable } from '@angular/material';
 
 /**
  * TODO:
  * 
  * Validering:
- * Kontrollera filnamn med de som finns i uppladdningskön och i databasen.
+ * Kontrollera att courseId > 0
  * 
  */
 
@@ -72,69 +72,79 @@ export class FileUploadComponent implements OnInit {
   mode = "determinate";
   faUpload = faUpload;
   faTrash = faTrash;
+  faArrowCircleDown = faArrowCircleDown;
+  faArrowCircleUp = faArrowCircleUp;
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'actions'];
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private examService: ExamService, private academyService: AcademyService, private subjectService: SubjectService, private courseService: CourseService) { }
 
   ngOnInit() {
-
     this.getAllAcademies();
     this.getAllSubjects();
     this.getAllCourses();
     this.getAllExams();
+    this.initUploader();
+  }
 
-    this.uploader.onAfterAddingFile = (file) => {
+  initUploader(): void {
+    this.uploader.onAfterAddingFile = (fileItem) => {
 
       this.expandedElement = null;
 
-      debugger;
+      if (!this.isExamInUploadQueue(fileItem.file.name) && !this.isExamInDatabase(fileItem.file.name)) {
 
-      if (!this.isExamInUploadQueue(file.file.name) && !this.isExamInDatabase(file.file.name)) {
-        this.addExam(file.file.name);
-        file.withCredentials = false;
-        file.index = this.tempFileId;
+        this.addExam(fileItem.file.name);
+        fileItem.withCredentials = false;
+        fileItem.index = this.tempFileId;
 
-        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: file.file.name, size: Math.round(file.file.size / 1000) + "kB" });
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB" });
         this.changeDetectorRef.detectChanges();
         this.tempFileId++;
-        console.log("Succesfully added file: " + file.file.name + " to the queue.");
-      }else{
-        if(this.isExamInUploadQueue(file.file.name)){
-          alert("Exam already exists in upload queue.");
+        console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
+      } else {
+        if (this.isExamInUploadQueue(fileItem.file.name)) {
+          alert("Exam already exists in the upload queue.");
         }
-        if(this.isExamInDatabase(file.file.name)){
+        if (this.isExamInDatabase(fileItem.file.name)) {
           alert("Exam already exists in the database.");
         }
-        this.removeFromQueue(file);
+        this.removeFromQueue(fileItem);
       }
 
     };
 
-    this.uploader.onBeforeUploadItem = (file) => {
-
+    this.uploader.onBeforeUploadItem = (fileItem) => {
+      /*
+      if (this.examsToUpload.find(x => x.tempId === fileItem.index).courseId <= 0) {
+        this.uploader.removeFromQueue(fileItem);
+        this.fileItemsWithInvalidCourseId.push(fileItem);
+      }
+      */
     };
 
     this.uploader.onWhenAddingFileFailed = (file) => {
+      if (!this.isFileSizeValid(file.size)) {
+        alert("Max file size is 5MB.");
+      }
       console.log("Failed to add file: " + file.name + " to the queue.");
     };
 
-    this.uploader.onCompleteItem = (item: FileItem, response: any, status: any, headers: any) => {
-      console.log('Item: ' + item.file.name);
+    this.uploader.onCompleteItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
+      console.log('Item: ' + fileItem.file.name);
       console.log("Status: " + status);
       console.log("Response: " + response);
-      debugger;
 
       if (status == 200) {
-        let exam = this.examsToUpload.find(x => x.fileName == item.file.name);
+        let exam = this.examsToUpload.find(x => x.fileName == fileItem.file.name);
         this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
         });
         this.removeExam(exam.courseId);
+        this.exams.push(exam);
       }
 
     };
-
   }
 
   fileOverDropZone(e: any): void {
@@ -153,9 +163,6 @@ export class FileUploadComponent implements OnInit {
 
   uploadFromQueue(element: any) {
     this.uploader.queue.find(x => x.index === element.tempFileId).upload();
-
-    //TODO: Freeze dropdowns values of select-exam-properties
-
   }
 
   removeFromQueue(element: any) {
@@ -200,12 +207,23 @@ export class FileUploadComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 
-  selectedCourseIdChanged(courseId: number) {
+  selectedCourseIdChanged(courseId: number): void {
     if (this.expandedElement) {
       this.activeExam = this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId);
     }
     if (this.activeExam) {
       this.activeExam.courseId = courseId;
+    }
+  }
+
+  selectedExamDateChanged(examDate: Date): void {
+    if (this.expandedElement) {
+      this.activeExam = this.examsToUpload.find(x => x.tempId == this.expandedElement.tempFileId);
+    }
+    if (this.activeExam) {
+      var convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
+      this.activeExam.date = convertedDate;
+      this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + 5, convertedDate.getMonth(), convertedDate.getDate());
     }
   }
 
@@ -230,20 +248,26 @@ export class FileUploadComponent implements OnInit {
   }
 
   isValidUpload(element: any) {
-    //test
     return !this.isUploadedFromQueue(element) && this.hasValidCourseId(element);
   }
 
   isUploadedFromQueue(element: any) {
-    return this.uploader.queue.find(x => x.index === element.tempFileId);
+    return this.uploader.queue.find(x => x.index === element.tempFileId) === undefined ? true : false;
   }
 
   hasValidCourseId(element: any) {
-    //test
-    if (this.examsToUpload.length > 0)
-      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
-    else false;
+    return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
   }
+
+  //test start
+  isUploadAllDisabled(): boolean {
+    return this.uploader.getNotUploadedItems.length <= 0 || this.isExamCourseIdsValid();
+  }
+
+  isExamCourseIdsValid(): boolean {
+    return this.examsToUpload.find(x => x.courseId <= 0) === undefined ? true : false;
+  }
+  //test end
 
   isExamInDatabase(fileName: string): boolean {
     return this.exams.find(x => x.fileName === fileName) !== undefined ? true : false;
@@ -251,6 +275,14 @@ export class FileUploadComponent implements OnInit {
 
   isExamInUploadQueue(fileName: string): boolean {
     return this.examsToUpload.find(x => x.fileName === fileName) !== undefined ? true : false;
+  }
+
+  isFileSizeValid(fileSize: number): boolean {
+    return fileSize < 5 * 1024 * 1024;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
 }

@@ -7,7 +7,7 @@ import { TableComponent } from './table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [

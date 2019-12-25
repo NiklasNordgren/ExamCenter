@@ -1,6 +1,0 @@
-<mat-form-field>
-    <mat-label>Select academy</mat-label>
-    <select matNativeControl required (change)="setSelectedAcademy($event.target.value)">
-        <option *ngFor="let academy of academies" [value]="academy.id">{{academy.name}}</option>
-    </select>
-</mat-form-field>
