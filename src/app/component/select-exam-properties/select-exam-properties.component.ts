@@ -64,4 +64,8 @@ export class SelectExamPropertiesComponent implements OnInit {
     this.examDateEmitter.emit(this.selectedDate);
   }
 
+  isExamUploaded(): boolean{
+    return true;
+  }
+
 }

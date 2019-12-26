@@ -1,6 +1,6 @@
 <mat-form-field>
     <mat-label>Select academy</mat-label>
-    <select matNativeControl required (change)="academyChanged($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" (change)="academyChanged($event.target.value)">
         <div *ngIf="academies && academies.length > 0; then academiesAvailable else academiesUnavailable"></div>
         <ng-template #academiesAvailable>
             <option *ngFor="let academy of academies" [value]="academy.id">{{academy.name}}</option>
@@ -13,7 +13,7 @@
 
 <mat-form-field>
     <mat-label>Select subject</mat-label>
-    <select matNativeControl required (change)="subjectChanged($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" (change)="subjectChanged($event.target.value)">
         <div
             *ngIf="subjectsFilteredByAcademyId && subjectsFilteredByAcademyId.length > 0; then subjectsAvailable else subjectsUnavailable">
         </div>
@@ -28,7 +28,7 @@
 
 <mat-form-field>
     <mat-label>Select course</mat-label>
-    <select matNativeControl required (change)="setSelectedCourseId($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" (change)="setSelectedCourseId($event.target.value)">
         <div
             *ngIf="coursesFilteredBySubjectId && coursesFilteredBySubjectId.length > 0; then coursesAvailable else coursesUnavailable">
         </div>
@@ -42,7 +42,7 @@
 </mat-form-field>
 
 <mat-form-field (click)="picker.open()">
-    <input matInput required readonly [matDatepicker]="picker" placeholder="Exam date" [(ngModel)]="selectedDate" (dateChange)="setSelectedExamDate($event.target.value)">
+    <input matInput required [disabled]="isExamUploaded()" readonly [matDatepicker]="picker" placeholder="Exam date" [(ngModel)]="selectedDate" (dateChange)="setSelectedExamDate($event.target.value)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>

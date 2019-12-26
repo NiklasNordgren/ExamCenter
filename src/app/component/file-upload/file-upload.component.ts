@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
@@ -16,15 +16,13 @@ import { MatTable } from '@angular/material';
 /**
  * TODO:
  * 
- * Validering:
- * Kontrollera att courseId > 0
- * 
  */
 
 export interface FileTableItem {
   tempFileId: number;
   name: string;
   size: string;
+  status: string;
 }
 
 @Component({
@@ -75,9 +73,15 @@ export class FileUploadComponent implements OnInit {
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;
   dataSource: FileTableItem[] = [];
-  displayedColumns: string[] = ['name', 'size', 'actions'];
+  displayedColumns: string[] = ['name', 'size', 'status', 'actions'];
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private examService: ExamService, private academyService: AcademyService, private subjectService: SubjectService, private courseService: CourseService) { }
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private examService: ExamService,
+    private academyService: AcademyService,
+    private subjectService: SubjectService,
+    private courseService: CourseService
+  ) { }
 
   ngOnInit() {
     this.getAllAcademies();
@@ -98,16 +102,16 @@ export class FileUploadComponent implements OnInit {
         fileItem.withCredentials = false;
         fileItem.index = this.tempFileId;
 
-        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB" });
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "" });
         this.changeDetectorRef.detectChanges();
         this.tempFileId++;
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
       } else {
         if (this.isExamInUploadQueue(fileItem.file.name)) {
-          alert("Exam already exists in the upload queue.");
+          alert("Exam " + fileItem.file.name + " already exists in the upload queue.");
         }
         if (this.isExamInDatabase(fileItem.file.name)) {
-          alert("Exam already exists in the database.");
+          alert("Exam " + fileItem.file.name + " already exists in the database.");
         }
         this.removeFromQueue(fileItem);
       }
@@ -115,12 +119,7 @@ export class FileUploadComponent implements OnInit {
     };
 
     this.uploader.onBeforeUploadItem = (fileItem) => {
-      /*
-      if (this.examsToUpload.find(x => x.tempId === fileItem.index).courseId <= 0) {
-        this.uploader.removeFromQueue(fileItem);
-        this.fileItemsWithInvalidCourseId.push(fileItem);
-      }
-      */
+
     };
 
     this.uploader.onWhenAddingFileFailed = (file) => {
@@ -140,7 +139,8 @@ export class FileUploadComponent implements OnInit {
         this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
         });
-        this.removeExam(exam.courseId);
+        this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
+        this.removeFromExamsToUpload(exam.courseId);
         this.exams.push(exam);
       }
 
@@ -175,7 +175,7 @@ export class FileUploadComponent implements OnInit {
       return x.tempFileId !== element.tempFileId;
     });
 
-    this.removeExam(element.tempFileId);
+    this.removeFromExamsToUpload(element.tempFileId);
 
   }
 
@@ -214,6 +214,15 @@ export class FileUploadComponent implements OnInit {
     if (this.activeExam) {
       this.activeExam.courseId = courseId;
     }
+    this.setStatus(courseId);
+  }
+
+  setStatus(courseId: number): void {
+    if (courseId <= 0) {
+      this.dataSource.find(x => x.tempFileId === this.activeExam.tempId).status = "Invalid course id";
+    } else {
+      this.dataSource.find(x => x.tempFileId === this.activeExam.tempId).status = "";
+    }
   }
 
   selectedExamDateChanged(examDate: Date): void {
@@ -239,7 +248,7 @@ export class FileUploadComponent implements OnInit {
     this.examsToUpload.push(exam);
   }
 
-  removeExam(tempId: number) {
+  removeFromExamsToUpload(tempId: number) {
     this.activeExam = null;
     var index = this.examsToUpload.findIndex(x => x.tempId === tempId);
     if (index > -1) {
@@ -279,6 +288,10 @@ export class FileUploadComponent implements OnInit {
 
   isFileSizeValid(fileSize: number): boolean {
     return fileSize < 5 * 1024 * 1024;
+  }
+
+  getUploadProgress(): number {
+    return (this.dataSource.filter(x => x.status === "Uploaded").length / this.dataSource.length) * 100;
   }
 
   ngOnDestroy() {
