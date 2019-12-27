@@ -20,8 +20,6 @@ import { MatTable } from '@angular/material';
  * 
  * Attempt automatching by exam date
  * 
- * Make it so that the row doesn´t expand when you click "Upload"
- * 
  */
 
 export interface FileTableItem {
