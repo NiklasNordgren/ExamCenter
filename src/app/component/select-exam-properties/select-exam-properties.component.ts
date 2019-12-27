@@ -4,6 +4,7 @@ import { Subject } from 'src/app/model/subject.model';
 import { Course } from 'src/app/model/course.model';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from './format-datepicker';
+import { Exam } from 'src/app/model/exam.model';
 
 @Component({
   selector: 'app-select-exam-properties',
@@ -16,9 +17,12 @@ import { AppDateAdapter, APP_DATE_FORMATS } from './format-datepicker';
 })
 export class SelectExamPropertiesComponent implements OnInit {
 
+  @Input() tempId: number;
+
   @Input() academies: Academy[];
   @Input() subjects: Subject[];
   @Input() courses: Course[];
+  @Input() uploadedExams: Exam[];
 
   @Output() courseIdEmitter = new EventEmitter<number>();
   @Output() examDateEmitter = new EventEmitter<Date>();
@@ -26,12 +30,14 @@ export class SelectExamPropertiesComponent implements OnInit {
   subjectsFilteredByAcademyId: Subject[];
   coursesFilteredBySubjectId: Course[];
 
+  id: number;
   selectedCourseId: number = 0;
   selectedDate = new Date();
 
   constructor() { }
 
   ngOnInit() {
+    this.id = this.tempId;
     this.academyChanged(this.academies[0].id);
     this.setSelectedExamDate(this.selectedDate);
   }
@@ -65,7 +71,7 @@ export class SelectExamPropertiesComponent implements OnInit {
   }
 
   isExamUploaded(): boolean{
-    return true;
+    return this.uploadedExams.find(x => x.tempId === this.id) === undefined ? false : true;
   }
 
 }

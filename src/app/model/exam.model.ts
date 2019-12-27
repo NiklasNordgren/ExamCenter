@@ -5,4 +5,5 @@ export class Exam {
     unpublishDate: Date;
     unpublished: boolean;
     tempId: number;
+    uploaded: boolean;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
@@ -15,6 +15,12 @@ import { MatTable } from '@angular/material';
 
 /**
  * TODO:
+ * 
+ * Attempt automatching by course name 
+ * 
+ * Attempt automatching by exam date
+ * 
+ * Make it so that the row doesn´t expand when you click "Upload"
  * 
  */
 
@@ -47,6 +53,7 @@ export class FileUploadComponent implements OnInit {
   exams: Exam[] = [];
 
   examsToUpload: Exam[] = [];
+  uploadedExams: Exam[] = [];
   activeExam: Exam;
 
   expandedElement: FileTableItem | null;
@@ -68,10 +75,12 @@ export class FileUploadComponent implements OnInit {
   isFileOverDropZone: boolean = false;
   accentColor = "accent";
   mode = "determinate";
+
   faUpload = faUpload;
   faTrash = faTrash;
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;
+
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'status', 'actions'];
 
@@ -98,7 +107,7 @@ export class FileUploadComponent implements OnInit {
 
       if (!this.isExamInUploadQueue(fileItem.file.name) && !this.isExamInDatabase(fileItem.file.name)) {
 
-        this.addExam(fileItem.file.name);
+        this.addToExamsToUpload(fileItem.file.name);
         fileItem.withCredentials = false;
         fileItem.index = this.tempFileId;
 
@@ -141,7 +150,9 @@ export class FileUploadComponent implements OnInit {
         });
         this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
         this.removeFromExamsToUpload(exam.courseId);
+        exam.uploaded = true;
         this.exams.push(exam);
+        this.uploadedExams.push(exam);
       }
 
     };
@@ -236,7 +247,7 @@ export class FileUploadComponent implements OnInit {
     }
   }
 
-  addExam(name: string): void {
+  addToExamsToUpload(name: string): void {
     let exam = new Exam();
     exam.fileName = name;
     exam.date = new Date();
@@ -244,6 +255,7 @@ export class FileUploadComponent implements OnInit {
     exam.unpublishDate = new Date();
     exam.tempId = this.tempFileId;
     exam.courseId = 0;
+    exam.uploaded = false;
     this.activeExam = exam;
     this.examsToUpload.push(exam);
   }
@@ -268,15 +280,13 @@ export class FileUploadComponent implements OnInit {
     return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
   }
 
-  //test start
   isUploadAllDisabled(): boolean {
-    return this.uploader.getNotUploadedItems.length <= 0 || this.isExamCourseIdsValid();
+    return this.uploader.getNotUploadedItems().length === 0 || !this.isExamCourseIdsValid();
   }
 
   isExamCourseIdsValid(): boolean {
     return this.examsToUpload.find(x => x.courseId <= 0) === undefined ? true : false;
   }
-  //test end
 
   isExamInDatabase(fileName: string): boolean {
     return this.exams.find(x => x.fileName === fileName) !== undefined ? true : false;
