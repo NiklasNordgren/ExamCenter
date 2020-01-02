@@ -1,16 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpEvent, HttpRequest, HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import {
+	HttpEvent,
+	HttpRequest,
+	HttpClient,
+	HttpParams,
+	HttpHeaders
+} from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class FileService {
+	constructor(private http: HttpClient) {}
 
-	constructor(private http: HttpClient) { }
+	downloadFile(fileName: string): any {
+		return this.http
+			.get('/api/files/download/' + fileName, { responseType: 'blob' })
+			.pipe(
+				map(blob => new Blob([blob], { type: 'application/pdf'} ))
+			);
+	}
 
 	uploadFile(file: File) {
-
 		/*
 		const formdata: FormData = new FormData();
 		formdata.append('file', file);
@@ -23,19 +35,22 @@ export class FileService {
 
 		const url = '/upload';
 
-		const body = new HttpParams()
-			.set('name', file.name)
-			.set('type', file.type);
+		const body = new HttpParams().set('name', file.name).set('type', file.type);
 
 		const options = {
-			headers: new HttpHeaders()
-				.set('Content-Type', 'application/x-www-form-urlencoded')
+			headers: new HttpHeaders().set(
+				'Content-Type',
+				'application/x-www-form-urlencoded'
+			)
 		};
 
-		this.http.post(url, body.toString(), options)
-			.subscribe(
-				res => { console.log('POST Request was successful: ' + res); },
-				err => { console.log('Error occurred: ' + err.toString); });
+		this.http.post(url, body.toString(), options).subscribe(
+			res => {
+				console.log('POST Request was successful: ' + res);
+			},
+			err => {
+				console.log('Error occurred: ' + err.toString);
+			}
+		);
 	}
-
 }
