@@ -53,8 +53,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	}
 
 	openPdf(row) {
-		console.log('Row: ' + row);
-		console.log('Row class: ' + row.class);
+		console.log(JSON.stringify(row));
+		
 		const fileName = row.id;
 		const sub = this.fileService.downloadFile(fileName).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
