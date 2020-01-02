@@ -1,15 +1,12 @@
-<div style="margin: 10px; margin-bottom: 2px;">
-    <div style="display: block;">
-        <h2 style="display: inline;">
-            <fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users
-        </h2>
-        <button mat-raised-button color="accent" style="float: right;">
-            <fa-icon [icon]="faUserPlus" style="margin-right: 5pt;"></fa-icon>Add User
-        </button>
-    </div>
+<div style="margin: 10px; margin-bottom: 5px;">
+    <h1>
+        <fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administration
+    </h1>
+    <button mat-raised-button color="accent">
+        <fa-icon [icon]="faUserPlus" style="margin-right: 5pt;"></fa-icon>Add Administrator
+    </button>
 
-
-    <div>
+    <div style="margin-top: 35px;">
         <mat-form-field style="display: block;">
             <input matInput #message maxlength="256" placeholder="Search">
             <mat-icon matSuffix>search</mat-icon>
