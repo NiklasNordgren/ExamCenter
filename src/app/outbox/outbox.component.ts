@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UnpublishService } from '../service/unpublish.service';
+import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-outbox',
@@ -12,15 +14,21 @@ export class OutboxComponent implements OnInit {
 
   constructor(private router: Router, private service: UnpublishService) { }
 
+  faFileMedical = faFileMedical;
+  faTrash = faTrash;
+
   private subjects = [];
+  private exams = [];
+  private displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
   ngOnInit() {
-		this.service.getUnpublishedSubjects().subscribe(responseSubjects => {
-			this.convertAndSetSubjects(responseSubjects);
+		this.service.getUnpublishedExams().subscribe(responseExams => {
+			console.log(responseExams);
+			
+			this.convertAndSetExams(responseExams);
 		});
+		// this.displayedColumns = [ 'Filename', 'code', 'actions'];
   }
-
-	
 	
 	convertAndSetSubjects(responseSubjects) {
 		this.subjects = [];
@@ -35,4 +43,27 @@ export class OutboxComponent implements OnInit {
 		}); 
 	} 
 
+	convertAndSetExams(responseExams) {
+		this.exams = [];
+		responseExams.forEach(exam => {
+			this.exams.push({
+				filename: exam.filename,
+				date: exam.date,
+				unpublishDate: exam.unpublishDate,
+				id: exam.id,
+				unpublished: exam.unpublished,
+				courseId: exam.courseId
+			});
+		}); 
+	} 
+
+	publishExam(element: any) {
+		this.service.publishExam(element);
+		this.exams = this.exams.filter(x => x.id != element.id);
+	}
+
+	deleteExam(element: any) {
+		this.service.deleteExam(element.id);
+		this.exams = this.exams.filter(x => x.id != element.id);
+	}
 }
