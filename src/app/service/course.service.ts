@@ -9,7 +9,7 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getCoursesBySubjectId(subjectId: number){
+  getAllCoursesBySubjectId(subjectId: number){
     return this.http.get<Course[]>("api/courses/subject/" + subjectId);
   }
 

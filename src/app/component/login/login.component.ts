@@ -11,9 +11,6 @@ export class LoginComponent {
 	private checkoutForm;
 	private isLoading = false;
 
-	private checkoutForm;
-	private isLoading = false;
-
 	constructor(
 		private formBuilder: FormBuilder,
 		private loginService: LoginService,

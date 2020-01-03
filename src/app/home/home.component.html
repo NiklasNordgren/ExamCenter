@@ -16,10 +16,6 @@
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <mat-nav-list>
 
-            <div *ngFor="let academy of academies">
-                <a mat-list-item>{{ academy.abbreviation }}</a>
-                <mat-divider></mat-divider>
-            </div>
             <a mat-list-item [routerLink]="['file-upload']">
                 <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
             </a>
@@ -28,7 +24,6 @@
                 <fa-icon [icon]="faCog" style="margin-right: 5pt;"></fa-icon>Administer Users
             </a>
             <mat-divider></mat-divider>
-            <app-logout></app-logout>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
