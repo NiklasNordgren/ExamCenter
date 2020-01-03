@@ -56,6 +56,7 @@ import { CourseComponent } from "./component/course/course.component";
 import { ExamComponent } from "./component/exam/exam.component";
 import { AboutComponent } from "./about/about.component";
 import { LoginComponent } from "./component/login/login.component";
+import { SearchComponent } from './component/search/search.component';
 
 @NgModule({
 	declarations: [
@@ -78,7 +79,8 @@ import { LoginComponent } from "./component/login/login.component";
 		CourseComponent,
 		ExamComponent,
 		AboutComponent,
-		SelectExamPropertiesComponent
+		SelectExamPropertiesComponent,
+		SearchComponent
 	],
 	imports: [
 		BrowserModule,
