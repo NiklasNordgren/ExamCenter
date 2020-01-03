@@ -34,6 +34,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatProgressBarModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 // import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
@@ -54,6 +56,11 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 
 @NgModule({
 		declarations: [
@@ -75,7 +82,12 @@ import { LoginComponent } from './component/login/login.component';
 			SubjectComponent,
 			CourseComponent,
 			ExamComponent,
-			AboutComponent
+			AboutComponent,
+			AcademyHandlerComponent,
+			SubjectHandlerComponent,
+			CourseHandlerComponent,
+			ExamHandlerComponent,
+			AcademyFormComponent
 		],
 		imports: [
 			BrowserModule,
@@ -108,7 +120,8 @@ import { LoginComponent } from './component/login/login.component';
 			FontAwesomeModule,
 			FlexLayoutModule,
 			FormsModule,
-			FontAwesomeModule
+			FontAwesomeModule,
+			MatCheckboxModule
 		],
 		providers: [],
 		bootstrap: [
