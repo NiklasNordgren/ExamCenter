@@ -1,7 +1,27 @@
-.full-width-table{
+.full-width-table {
     width: 100%;
 }
 
 .deleteBtn {
     margin-left:10px;
- }
+}
+
+
+
+ @media screen and (max-width: 715px) {
+    .button-text {
+        display: none;
+    }
+    .deleteBtn {
+        margin-left: 3px;
+    }
+    .dateColumn {
+        display: none;
+    }
+  }
+
+  @media screen and (max-width: 390px) {
+    .deleteBtn {
+        margin-left: 0px;
+    }
+  }

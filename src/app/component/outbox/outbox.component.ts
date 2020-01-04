@@ -72,22 +72,17 @@ export class OutboxComponent implements OnInit {
 		
 		this.clickedId = element.id;
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
-				
 		  	});
 		  	this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
 			this.dialogRef.componentInstance.titleMessage = "Confirm";
 			this.dialogRef.componentInstance.confirmBtnText = "Delete";  
-			this.dialogRef.componentInstance.cancelBtnText = "Cancel";
 
 		  	this.dialogRef.afterClosed().subscribe(result => {
 				if(result) {
 					this.service.deleteExam(this.clickedId);
 					this.exams = this.exams.filter(x => x.id != this.clickedId);
-				}
+				}				
 				this.dialogRef = null;
-			  });
-			  
+			});
 	}
-
-	
 }

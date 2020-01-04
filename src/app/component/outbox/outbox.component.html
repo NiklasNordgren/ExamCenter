@@ -7,8 +7,8 @@
         </ng-container>
 
         <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.date}} </td>
+            <th mat-header-cell *matHeaderCellDef class="dateColumn"> Date </th>
+            <td mat-cell *matCellDef="let exam" class="dateColumn"> {{exam.date}} </td>
         </ng-container>  
       
         <ng-container matColumnDef="unpublishDate">
@@ -20,11 +20,12 @@
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element">
                 <button mat-raised-button color="accent" (click)="publishExam(element)">
-                    <fa-icon [icon]="faFileMedical"></fa-icon> Publish
+                    <fa-icon [icon]="faFileMedical"></fa-icon> 
+                    <span class="button-text"> Publish</span>
                 </button >
                 <button mat-raised-button color="warn" (click)="openDeleteDialog(element)" class="deleteBtn">
-                    <fa-icon [icon]="faTrash"></fa-icon> Delete
-                    
+                    <fa-icon [icon]="faTrash"></fa-icon> 
+                    <span class="button-text"> Delete</span>
                 </button>
             </td>
         </ng-container> 
