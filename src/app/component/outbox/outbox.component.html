@@ -3,7 +3,7 @@
         
         <ng-container matColumnDef="filename">
             <th mat-header-cell *matHeaderCellDef> Filename </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
+            <td mat-cell *matCellDef="let exam"> {{exam.fileName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="date">
@@ -32,6 +32,7 @@
                 </button >
                 <button mat-raised-button color="warn" (click)="deleteExam(element)" class="margin-left-10">
                     <fa-icon [icon]="faTrash"></fa-icon> Delete
+                    <dialog-content (valueUpdate)='deleteE($event)'></dialog-content>
                 </button>
             </td>
         </ng-container> 

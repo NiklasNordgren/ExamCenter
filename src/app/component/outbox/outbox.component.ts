@@ -1,8 +1,9 @@
   
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UnpublishService } from '../service/unpublish.service';
 import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
+import { UnpublishService } from '../../service/unpublish.service';
 
 
 @Component({
@@ -12,14 +13,14 @@ import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
 })
 export class OutboxComponent implements OnInit {
 
-  constructor(private router: Router, private service: UnpublishService) { }
+  constructor(private router: Router, private service: UnpublishService, private matDialog: MatDialog) { }
 
   faFileMedical = faFileMedical;
   faTrash = faTrash;
 
-  private subjects = [];
-  private exams = [];
-  private displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
+  subjects = [];
+  exams = [];
+  displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
   ngOnInit() {
 		this.service.getUnpublishedExams().subscribe(responseExams => {
@@ -62,8 +63,37 @@ export class OutboxComponent implements OnInit {
 		this.exams = this.exams.filter(x => x.id != element.id);
 	}
 
+	deleteE(isTrue) {
+		console.log(isTrue);
+		
+	}
+
 	deleteExam(element: any) {
-		this.service.deleteExam(element.id);
-		this.exams = this.exams.filter(x => x.id != element.id);
+	
+
+		const dialogRef = this.matDialog.open(DialogContentExampleDialog);
+
+		
+	
+		dialogRef.afterClosed().subscribe(result => {
+		  console.log(`Dialog result: ${result}`);
+		});
+	  
+
+
+	//	this.service.deleteExam(element.id);
+	//	this.exams = this.exams.filter(x => x.id != element.id);
 	}
 }
+
+@Component({
+	selector: 'dialog-content',
+	templateUrl: 'dialog-content.html',
+  })
+  export class DialogContentExampleDialog {
+	  @Output() valueUpdated = new EventEmitter();
+
+	  valueUpdate(isYes) {
+		this.valueUpdated.emit(isYes);
+	  }
+  }

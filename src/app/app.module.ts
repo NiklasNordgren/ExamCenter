@@ -54,7 +54,10 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
-import { OutboxComponent } from './outbox/outbox.component';
+import { OutboxComponent, DialogContentExampleDialog } from './component/outbox/outbox.component';
+import { MatDialogModule } from "@angular/material";
+
+
 
 @NgModule({
 		declarations: [
@@ -77,7 +80,8 @@ import { OutboxComponent } from './outbox/outbox.component';
 			CourseComponent,
 			ExamComponent,
 			AboutComponent,
-			OutboxComponent
+			OutboxComponent,
+			DialogContentExampleDialog
 		],
 		imports: [
 			BrowserModule,
@@ -110,7 +114,11 @@ import { OutboxComponent } from './outbox/outbox.component';
 			FontAwesomeModule,
 			FlexLayoutModule,
 			FormsModule,
-			FontAwesomeModule
+			FontAwesomeModule,
+			MatDialogModule
+		],
+		entryComponents: [
+			DialogContentExampleDialog
 		],
 		providers: [],
 		bootstrap: [
