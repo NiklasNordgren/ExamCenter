@@ -14,26 +14,23 @@ import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
 })
 export class OutboxComponent implements OnInit {
 
-  constructor(private router: Router, private service: UnpublishService, private dialog: MatDialog) { }
+	dialogRef: MatDialogRef<ConfirmationDialog>;
 
-  dialogRef: MatDialogRef<ConfirmationDialog>;
+  	faFileMedical = faFileMedical;
+ 	faTrash = faTrash;
 
-  faFileMedical = faFileMedical;
-  faTrash = faTrash;
+	subjects = [];
+	exams = [];
+	clickedId: number;
+	displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
-  subjects = [];
-  exams = [];
-  clickedId: number;
-  displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
+  	constructor(private router: Router, private service: UnpublishService, private dialog: MatDialog) { }
 
-  ngOnInit() {
+  	ngOnInit() {
 		this.service.getUnpublishedExams().subscribe(responseExams => {
-			console.log(responseExams);
-			
 			this.convertAndSetExams(responseExams);
 		});
-		// this.displayedColumns = [ 'Filename', 'code', 'actions'];
-  }
+  	}
 	
 	convertAndSetSubjects(responseSubjects) {
 		this.subjects = [];
@@ -68,8 +65,6 @@ export class OutboxComponent implements OnInit {
 	}
 
 	openDeleteDialog(element: any) {
-		console.log(element.id);	// If removed you cannot click the same item twice in a row.
-		
 		this.clickedId = element.id;
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
 		  	});

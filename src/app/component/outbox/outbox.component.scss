@@ -6,22 +6,40 @@
     margin-left:10px;
 }
 
-
-
- @media screen and (max-width: 715px) {
+@media screen and (max-width: 731px) {
     .button-text {
         display: none;
     }
+    
+    .mat-column-filename {
+        word-wrap: break-word ;
+        word-break: break-word;
+        white-space: unset ;
+        flex: 0 0 54% ;
+        width: 54% ;
+    }
+    
+    .mat-column-date {
+        display: none;
+    }
+    
+    .mat-column-unpublishDate {
+        white-space: nowrap;
+        flex: 0 0 14% ;
+        width: 14% ; 
+    }
+    
+    .mat-column-actions {
+        white-space: nowrap;
+        flex: 0 0 32% ;
+        width: 32% ; 
+    }
+    
     .deleteBtn {
         margin-left: 3px;
     }
-    .dateColumn {
-        display: none;
+    
+    .publishBtn {
+        margin-left: 3px;
     }
-  }
-
-  @media screen and (max-width: 390px) {
-    .deleteBtn {
-        margin-left: 0px;
-    }
-  }
+}

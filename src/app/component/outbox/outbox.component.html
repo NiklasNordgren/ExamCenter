@@ -1,14 +1,14 @@
 <div>
     <table mat-table [dataSource]="exams" class="full-width-table">
-        
-        <ng-container matColumnDef="filename">
+
+        <ng-container matColumnDef="filename";>
             <th mat-header-cell *matHeaderCellDef> Filename </th>
             <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef class="dateColumn"> Date </th>
-            <td mat-cell *matCellDef="let exam" class="dateColumn"> {{exam.date}} </td>
+        <ng-container matColumnDef="date" >
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let exam"> {{exam.date}} </td>
         </ng-container>  
       
         <ng-container matColumnDef="unpublishDate">
@@ -19,7 +19,7 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="accent" (click)="publishExam(element)">
+                <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
                     <fa-icon [icon]="faFileMedical"></fa-icon> 
                     <span class="button-text"> Publish</span>
                 </button >
@@ -30,11 +30,8 @@
             </td>
         </ng-container> 
 
-
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     
-        
     </table>
 </div>
