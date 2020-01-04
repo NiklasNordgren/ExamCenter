@@ -30,11 +30,11 @@ export class ExamComponent implements OnInit, OnDestroy {
     this.service.getAllExamsByCourseId(courseId).subscribe(exams => {
       this.data = [];
       exams.forEach(exam => {
-        console.log(exam.fileName);
+        console.log(exam.filename);
         
         this.data.push({
           id: exam.id,
-          name: exam.fileName,
+          name: exam.filename,
           shortDesc: ""
         });
       });

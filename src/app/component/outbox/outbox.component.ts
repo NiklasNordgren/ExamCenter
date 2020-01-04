@@ -2,8 +2,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UnpublishService } from '../../service/unpublish.service';
+import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
 
 
 @Component({
@@ -13,13 +14,16 @@ import { UnpublishService } from '../../service/unpublish.service';
 })
 export class OutboxComponent implements OnInit {
 
-  constructor(private router: Router, private service: UnpublishService, private matDialog: MatDialog) { }
+  constructor(private router: Router, private service: UnpublishService, private dialog: MatDialog) { }
+
+  dialogRef: MatDialogRef<ConfirmationDialog>;
 
   faFileMedical = faFileMedical;
   faTrash = faTrash;
 
   subjects = [];
   exams = [];
+  clickedId: number;
   displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
   ngOnInit() {
@@ -55,7 +59,7 @@ export class OutboxComponent implements OnInit {
 				unpublished: exam.unpublished,
 				courseId: exam.courseId
 			});
-		}); 
+		}); 		
 	} 
 
 	publishExam(element: any) {
@@ -63,37 +67,27 @@ export class OutboxComponent implements OnInit {
 		this.exams = this.exams.filter(x => x.id != element.id);
 	}
 
-	deleteE(isTrue) {
-		console.log(isTrue);
+	openDeleteDialog(element: any) {
+		console.log(element.id);	// If removed you cannot click the same item twice in a row.
 		
+		this.clickedId = element.id;
+		this.dialogRef = this.dialog.open(ConfirmationDialog, {
+				
+		  	});
+		  	this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
+			this.dialogRef.componentInstance.titleMessage = "Confirm";
+			this.dialogRef.componentInstance.confirmBtnText = "Delete";  
+			this.dialogRef.componentInstance.cancelBtnText = "Cancel";
+
+		  	this.dialogRef.afterClosed().subscribe(result => {
+				if(result) {
+					this.service.deleteExam(this.clickedId);
+					this.exams = this.exams.filter(x => x.id != this.clickedId);
+				}
+				this.dialogRef = null;
+			  });
+			  
 	}
 
-	deleteExam(element: any) {
 	
-
-		const dialogRef = this.matDialog.open(DialogContentExampleDialog);
-
-		
-	
-		dialogRef.afterClosed().subscribe(result => {
-		  console.log(`Dialog result: ${result}`);
-		});
-	  
-
-
-	//	this.service.deleteExam(element.id);
-	//	this.exams = this.exams.filter(x => x.id != element.id);
-	}
 }
-
-@Component({
-	selector: 'dialog-content',
-	templateUrl: 'dialog-content.html',
-  })
-  export class DialogContentExampleDialog {
-	  @Output() valueUpdated = new EventEmitter();
-
-	  valueUpdate(isYes) {
-		this.valueUpdated.emit(isYes);
-	  }
-  }

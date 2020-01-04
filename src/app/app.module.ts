@@ -54,7 +54,8 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
-import { OutboxComponent, DialogContentExampleDialog } from './component/outbox/outbox.component';
+import { OutboxComponent } from './component/outbox/outbox.component';
+import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
 import { MatDialogModule } from "@angular/material";
 
 
@@ -81,7 +82,7 @@ import { MatDialogModule } from "@angular/material";
 			ExamComponent,
 			AboutComponent,
 			OutboxComponent,
-			DialogContentExampleDialog
+			ConfirmationDialog,
 		],
 		imports: [
 			BrowserModule,
@@ -118,7 +119,7 @@ import { MatDialogModule } from "@angular/material";
 			MatDialogModule
 		],
 		entryComponents: [
-			DialogContentExampleDialog
+			ConfirmationDialog
 		],
 		providers: [],
 		bootstrap: [

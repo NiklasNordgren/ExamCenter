@@ -1,6 +1,6 @@
 export class Exam {
   id: number;
-  fileName: string;
+  filename: string;
   date: Date;
   courseId: number;
   unpublishDate: Date;
