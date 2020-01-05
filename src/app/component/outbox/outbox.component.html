@@ -1,7 +1,7 @@
 <div>
     <table mat-table [dataSource]="exams" class="full-width-table">
 
-        <ng-container matColumnDef="filename";>
+        <ng-container matColumnDef="filename">
             <th mat-header-cell *matHeaderCellDef> Filename </th>
             <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
         </ng-container>
