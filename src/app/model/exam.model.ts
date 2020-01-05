@@ -4,6 +4,8 @@ export class Exam {
     courseId: number;
     unpublishDate: Date;
     unpublished: boolean;
+    autoMatchDate: boolean;
+    autoMatchCourse: boolean;
     tempId: number;
     uploaded: boolean;
 }

@@ -27,6 +27,8 @@ export interface FileTableItem {
   name: string;
   size: string;
   status: string;
+  autoMatchCourse: string;
+  autoMatchDate: string;
 }
 
 @Component({
@@ -80,7 +82,7 @@ export class FileUploadComponent implements OnInit {
   faArrowCircleUp = faArrowCircleUp;
 
   dataSource: FileTableItem[] = [];
-  displayedColumns: string[] = ['name', 'size', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -109,8 +111,17 @@ export class FileUploadComponent implements OnInit {
         fileItem.withCredentials = false;
         fileItem.index = this.tempFileId;
 
-        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "" });
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
         this.changeDetectorRef.detectChanges();
+
+        if (this.examsToUpload.find(x => x.tempId === this.tempFileId).autoMatchCourse) {
+          this.dataSource.find(x => x.tempFileId === this.tempFileId).autoMatchCourse = "true";
+        }
+
+        if (this.examsToUpload.find(x => x.tempId === this.tempFileId).autoMatchDate) {
+          this.dataSource.find(x => x.tempFileId === this.tempFileId).autoMatchDate = "true";
+        }
+
         this.tempFileId++;
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
       } else {
@@ -254,6 +265,8 @@ export class FileUploadComponent implements OnInit {
     exam.tempId = this.tempFileId;
     exam.courseId = 0;
     exam.uploaded = false;
+    exam.autoMatchDate = false;
+    exam.autoMatchCourse = false;
     this.activeExam = exam;
     this.examsToUpload.push(exam);
   }

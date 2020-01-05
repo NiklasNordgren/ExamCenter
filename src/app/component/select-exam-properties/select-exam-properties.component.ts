@@ -43,10 +43,7 @@ export class SelectExamPropertiesComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.tempId;
-    //this.academyChanged(this.academies[0].id);
-
     this.tryToAutoMatchCourse();
-
     this.selectedDate = this.tryToAutoMatchDate();
     this.setSelectedExamDate(this.selectedDate);
   }
@@ -88,6 +85,7 @@ export class SelectExamPropertiesComponent implements OnInit {
     let matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.match(this.regexpDate);
 
     if (matchedDateString && (matchedDateString[0].length === 6 || matchedDateString[0].length === 8)) {
+      this.autoMatchDateSuccessful();
       if (matchedDateString[0].length === 6) {
         return new Date("20" + matchedDateString[0].substring(0, 2) + "-" + matchedDateString[0].substring(2, 4) + "-" + matchedDateString[0].substring(4, 6));
       } else {
@@ -110,14 +108,12 @@ export class SelectExamPropertiesComponent implements OnInit {
 
       this.academyChanged(courseAcademy.id);
       this.selectedAcademyId = courseAcademy.id;
-      console.log("AcademyId: " + courseAcademy.id);
-      
+
       this.subjectChanged(courseSubject.id);
       this.selectedSubjectId = courseSubject.id;
-      console.log("SubjectId: " + courseSubject.id);
 
       this.setSelectedCourseId(courseMatch.id);
-      console.log("CourseId: " + courseMatch.id);
+      this.autoMatchCourseSuccessful();
 
     } else {
       this.academyChanged(this.academies[0].id);
@@ -125,6 +121,14 @@ export class SelectExamPropertiesComponent implements OnInit {
       this.selectedSubjectId = this.subjects[0].id;
     }
 
+  }
+
+  autoMatchDateSuccessful(){
+    this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchDate = true;
+  }
+
+  autoMatchCourseSuccessful(){
+    this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchCourse = true;
   }
 
 }
