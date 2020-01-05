@@ -117,8 +117,6 @@ export class SelectExamPropertiesComponent implements OnInit {
 
     } else {
       this.academyChanged(this.academies[0].id);
-      this.selectedAcademyId = this.academies[0].id;
-      this.selectedSubjectId = this.subjects[0].id;
     }
 
   }
