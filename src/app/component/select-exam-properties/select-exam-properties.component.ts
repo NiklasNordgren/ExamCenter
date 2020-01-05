@@ -101,8 +101,6 @@ export class SelectExamPropertiesComponent implements OnInit {
 
   tryToAutoMatchCourse(): void {
 
-    debugger;
-
     let courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.trim().split(" ")[0];
     let courseMatch = this.courses.find(x => x.courseCode === courseCodeString);
 
@@ -126,7 +124,6 @@ export class SelectExamPropertiesComponent implements OnInit {
       this.selectedAcademyId = this.academies[0].id;
       this.selectedSubjectId = this.subjects[0].id;
     }
-
 
   }
 
