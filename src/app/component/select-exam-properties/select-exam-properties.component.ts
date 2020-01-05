@@ -23,6 +23,7 @@ export class SelectExamPropertiesComponent implements OnInit {
   @Input() subjects: Subject[];
   @Input() courses: Course[];
   @Input() uploadedExams: Exam[];
+  @Input() examsToUpload: Exam[];
 
   @Output() courseIdEmitter = new EventEmitter<number>();
   @Output() examDateEmitter = new EventEmitter<Date>();
@@ -31,14 +32,22 @@ export class SelectExamPropertiesComponent implements OnInit {
   coursesFilteredBySubjectId: Course[];
 
   id: number;
+  selectedAcademyId: number = 0;
+  selectedSubjectId: number = 0;
   selectedCourseId: number = 0;
-  selectedDate = new Date();
+  selectedDate: Date;
+
+  regexpDate: RegExp = new RegExp("\\d{6,}");
 
   constructor() { }
 
   ngOnInit() {
     this.id = this.tempId;
-    this.academyChanged(this.academies[0].id);
+    //this.academyChanged(this.academies[0].id);
+
+    this.tryToAutoMatchCourse();
+
+    this.selectedDate = this.tryToAutoMatchDate();
     this.setSelectedExamDate(this.selectedDate);
   }
 
@@ -70,8 +79,57 @@ export class SelectExamPropertiesComponent implements OnInit {
     this.examDateEmitter.emit(this.selectedDate);
   }
 
-  isExamUploaded(): boolean{
+  isExamUploaded(): boolean {
     return this.uploadedExams.find(x => x.tempId === this.id) === undefined ? false : true;
   }
 
+  tryToAutoMatchDate(): Date {
+
+    let matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.match(this.regexpDate);
+
+    if (matchedDateString && (matchedDateString[0].length === 6 || matchedDateString[0].length === 8)) {
+      if (matchedDateString[0].length === 6) {
+        return new Date("20" + matchedDateString[0].substring(0, 2) + "-" + matchedDateString[0].substring(2, 4) + "-" + matchedDateString[0].substring(4, 6));
+      } else {
+        return new Date(matchedDateString[0].substring(0, 4) + "-" + matchedDateString[0].substring(4, 6) + "-" + matchedDateString[0].substring(6, 8));
+      }
+    } else {
+      return new Date();
+    }
+
+  }
+
+  tryToAutoMatchCourse(): void {
+
+    debugger;
+
+    let courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.trim().split(" ")[0];
+    let courseMatch = this.courses.find(x => x.courseCode === courseCodeString);
+
+    if (courseMatch) {
+      let courseSubject = this.subjects.find(x => x.id === courseMatch.subjectId);
+      let courseAcademy = this.academies.find(x => x.id === courseSubject.academyId);
+
+      this.academyChanged(courseAcademy.id);
+      this.selectedAcademyId = courseAcademy.id;
+      console.log("AcademyId: " + courseAcademy.id);
+      
+      this.subjectChanged(courseSubject.id);
+      this.selectedSubjectId = courseSubject.id;
+      console.log("SubjectId: " + courseSubject.id);
+
+      this.setSelectedCourseId(courseMatch.id);
+      console.log("CourseId: " + courseMatch.id);
+
+    } else {
+      this.academyChanged(this.academies[0].id);
+      this.selectedAcademyId = this.academies[0].id;
+      this.selectedSubjectId = this.subjects[0].id;
+    }
+
+
+  }
+
 }
+
+

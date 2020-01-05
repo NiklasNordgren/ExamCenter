@@ -57,7 +57,7 @@
                 <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                     <app-select-exam-properties [tempId]=tempFileId [academies]=academies [subjects]=subjects
-                        [courses]=courses [uploadedExams]=uploadedExams
+                        [courses]=courses [uploadedExams]=uploadedExams [examsToUpload]=examsToUpload
                         (courseIdEmitter)="selectedCourseIdChanged($event)"
                         (examDateEmitter)="selectedExamDateChanged($event)"></app-select-exam-properties>
                 </div>
