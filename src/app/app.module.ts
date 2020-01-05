@@ -57,6 +57,9 @@ import { LoginComponent } from './component/login/login.component';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
 import { MatDialogModule } from "@angular/material";
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { MatTabsModule  } from '@angular/material/tabs';
+import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
 
 
 
@@ -83,6 +86,7 @@ import { MatDialogModule } from "@angular/material";
 			AboutComponent,
 			OutboxComponent,
 			ConfirmationDialog,
+			TestSwipeComponent
 		],
 		imports: [
 			BrowserModule,
@@ -116,12 +120,15 @@ import { MatDialogModule } from "@angular/material";
 			FlexLayoutModule,
 			FormsModule,
 			FontAwesomeModule,
-			MatDialogModule
+			MatDialogModule,
+			MatTabsModule
 		],
 		entryComponents: [
 			ConfirmationDialog
 		],
-		providers: [],
+		providers: [
+			{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+		],
 		bootstrap: [
 			AppComponent
 		]
