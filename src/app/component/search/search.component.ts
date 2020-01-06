@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Navigator } from "src/app/util/navigator";
 
 @Component({
@@ -8,11 +8,15 @@ import { Navigator } from "src/app/util/navigator";
 	providers: [Navigator]
 })
 export class SearchComponent implements OnInit {
+	@ViewChild("searchString", { static: false }) searchString: ElementRef;
+
 	constructor(private navigator: Navigator) {}
 
 	ngOnInit() {}
 
-	search(searchString: string) {
-		this.navigator.goToPage("/search/" + searchString);
+	search() {
+		let str = this.searchString.nativeElement.value;
+		this.searchString.nativeElement.value = "";
+		this.navigator.goToPage("/search/" + str);
 	}
 }
