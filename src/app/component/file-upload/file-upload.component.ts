@@ -13,15 +13,6 @@ import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
 import { MatTable } from '@angular/material';
 
-/**
- * TODO:
- * 
- * Attempt automatching by course name 
- * 
- * Attempt automatching by exam date
- * 
- */
-
 export interface FileTableItem {
   tempFileId: number;
   name: string;
