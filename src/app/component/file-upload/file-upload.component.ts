@@ -115,7 +115,7 @@ export class FileUploadComponent implements OnInit {
         fileItem.withCredentials = false;
         fileItem.index = this.tempFileId;
 
-        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + " kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
         this.changeDetectorRef.detectChanges();
         let row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
         this.setAutoMatchedCourseStatus(row);
