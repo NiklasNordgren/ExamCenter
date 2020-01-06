@@ -17,10 +17,10 @@ export class AcademyHandlerComponent {
   dataSource = new MatTableDataSource<Academy>(this.academies);
   selection = new SelectionModel<Academy>(true, []);
 
-
-  constructor(private service: AcademyService, private navigator:Navigator) { }
+  constructor(private service: AcademyService, private navigator: Navigator) { }
 
   ngOnInit() {
+
     this.service.getAllAcademies().subscribe(responseAcademies => {
       this.convertAndSetAcademies(responseAcademies);
 
@@ -39,27 +39,16 @@ export class AcademyHandlerComponent {
     this.dataSource = new MatTableDataSource<Academy>(this.academies);
   }
 
-    isAllSelected() {
-      const numSelected = this.selection.selected.length;
-      const numRows = this.dataSource.data.length;
-      return numSelected === numRows;
-    }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    masterToggle() {
-      this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
-    }
-
-    goToPage(academy){
-      console.log("är inne i form nu edit " + academy.name);
-
-      if (academy == null)
-        this.addAcademy();
-    }
-    addAcademy(){
-      
-
-    }
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+}

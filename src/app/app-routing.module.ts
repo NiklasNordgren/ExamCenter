@@ -72,7 +72,7 @@ const routes: Routes = [
 				component: AcademyHandlerComponent,
 			},
 			{
-				path: 'academy-form',
+				path: 'academy-form/:id',
 				component: AcademyFormComponent,
 			},
 			{

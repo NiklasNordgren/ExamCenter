@@ -1,1 +1,13 @@
-<p>academy-form works!</p>
+<form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+  <mat-form-field>
+    <mat-label for="abbreviation">Abbreviation</mat-label>
+    <input matInput id="abbreviation" required type="text" formControlName="abbreviation" placeholder="Ex. AHA, ATM">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label for="name">Name</mat-label>
+    <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. Akademin för teknik och miljö">
+  </mat-form-field>
+ 
+  <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">Save</button>
+</form>
