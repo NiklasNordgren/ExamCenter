@@ -65,5 +65,27 @@ body {
 }
 .navigation-button {
 	position: relative;
-	top: 10pt;
+	top: 40pt;
+}
+
+.search-box {
+	margin-top: 40pt;
+	@media only screen and (max-width: 420px) {
+		display: none;
+	}
+}
+
+.xs-search-box {
+	display: none;
+	padding-top: 4pt;
+	padding-bottom: 12pt;
+
+	@media only screen and (max-width: 420px) {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	@media only screen and (min-width: 420px) {
+		display: none;
+	}
 }

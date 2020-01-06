@@ -12,6 +12,11 @@
                     <a class="login" mat-button href="/login">Login (Admin)</a>
 
                 </div>
+                <div fxShow="true" fxHide.gt-sm="true">
+                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
+                        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                    </button>
+                </div>
             </span>
         </mat-toolbar-row>
         <!-- Row for Logo and Academy.-->
@@ -39,15 +44,13 @@
                 </div>
             </span>
             <span>
-                <div fxShow="true" fxHide.gt-sm="true">
-                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
-                        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-                    </button>
+                <div class="search-box">
+                    <app-search></app-search>
                 </div>
             </span>
-            <div style="margin-top: 40pt;">
-                <app-search></app-search>
-            </div>
+        </mat-toolbar-row>
+        <mat-toolbar-row class="xs-search-box row">
+            <app-search></app-search>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-sidenav-container fxFlexFill>
