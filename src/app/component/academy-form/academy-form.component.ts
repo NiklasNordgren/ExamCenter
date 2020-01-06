@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Academy } from 'src/app/model/academy.model';
+import { Academy } from '../../model/academy.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { AcademyService } from 'src/app/service/academy.service';
+import { AcademyService } from '../../service/academy.service';
 
 @Component({
   selector: 'app-academy-form',

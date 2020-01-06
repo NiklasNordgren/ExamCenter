@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Academy } from 'src/app/model/academy.model';
-import { AcademyService } from 'src/app/service/academy.service';
-import { Navigator } from 'src/app/util/navigator';
+import { Academy } from '../../model/academy.model';
+import { AcademyService } from '../../service/academy.service';
+import { Navigator } from '../../util/navigator';
 
 @Component({
   selector: 'academy-handler',
