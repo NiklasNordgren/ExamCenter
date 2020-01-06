@@ -1,6 +1,6 @@
 <mat-form-field>
     <mat-label>Select academy</mat-label>
-    <select matNativeControl required [disabled]="isExamUploaded()" [(ngModel)]="selectedAcademyId" (change)="academyChanged($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" [(ngModel)]="selectedAcademyId" (change)="academyChanged()">
         <div *ngIf="academies && academies.length > 0; then academiesAvailable else academiesUnavailable"></div>
         <ng-template #academiesAvailable>
             <option *ngFor="let academy of academies" [value]="academy.id">{{academy.name}}</option>
@@ -13,7 +13,7 @@
 
 <mat-form-field>
     <mat-label>Select subject</mat-label>
-    <select matNativeControl required [disabled]="isExamUploaded()" [(ngModel)]="selectedSubjectId" (change)="subjectChanged($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" [(ngModel)]="selectedSubjectId" (change)="subjectChanged()">
         <div
             *ngIf="subjectsFilteredByAcademyId && subjectsFilteredByAcademyId.length > 0; then subjectsAvailable else subjectsUnavailable">
         </div>
