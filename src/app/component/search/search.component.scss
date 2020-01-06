@@ -1,9 +1,7 @@
 .search-button {
-	width: 10px !important;
+	margin: 0px !important;
 	padding: 0px !important;
+	border-radius: 1 !important;
 	border: solid white 1px;
-}
-
-.search-box {
-	padding: 10px;
+	min-width: 150%;
 }
