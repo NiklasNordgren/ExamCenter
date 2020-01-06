@@ -22,14 +22,15 @@ export class OutboxComponent implements OnInit {
 
 	subjects = [];
 	exams = [];
-	clickedId: number;
 	displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
   	constructor(private router: Router, private service: UnpublishService, private dialog: MatDialog) { }
 
   	ngOnInit() {
 		this.service.getUnpublishedExams().subscribe(responseExams => {
-			this.convertAndSetExams(responseExams);
+			this.exams = responseExams;
+		//	this.convertAndSetExams(responseExams);
+
 		});
   	}
 	
@@ -66,19 +67,18 @@ export class OutboxComponent implements OnInit {
 	}
 
 	openDeleteDialog(element: any) {
-		this.clickedId = element.id;
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
-		  	});
-		  	this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
-			this.dialogRef.componentInstance.titleMessage = "Confirm";
-			this.dialogRef.componentInstance.confirmBtnText = "Delete";  
+		});
+		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
+		this.dialogRef.componentInstance.titleMessage = "Confirm";
+		this.dialogRef.componentInstance.confirmBtnText = "Delete";  
 
-		  	this.dialogRef.afterClosed().subscribe(result => {
-				if(result) {
-					this.service.deleteExam(this.clickedId);
-					this.exams = this.exams.filter(x => x.id != this.clickedId);
-				}				
-				this.dialogRef = null;
-			});
+		this.dialogRef.afterClosed().subscribe(result => {
+			if(result) {
+				this.service.deleteExam(element.id);
+				this.exams = this.exams.filter(x => x.id != element.id);
+			}				
+			this.dialogRef = null;
+		});
 	}
 }

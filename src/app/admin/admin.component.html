@@ -2,16 +2,48 @@
     <h1>
         <fa-icon [icon]="faUsersCog" style="margin-right: 5pt;"></fa-icon>Administration
     </h1>
-    <button mat-raised-button color="accent">
+    <button mat-raised-button color="accent" (click)="addAdmin()">
         <fa-icon [icon]="faUserPlus" style="margin-right: 5pt;"></fa-icon>Add Administrator
     </button>
 
     <div style="margin-top: 35px;">
         <mat-form-field style="display: block;">
             <input matInput #message maxlength="256" placeholder="Search">
-            <mat-icon matSuffix>search</mat-icon>
+            <fa-icon [icon]=faSearch matSuffix>search</fa-icon>
         </mat-form-field>
     </div>
 
 </div>
-<app-table></app-table>
+
+<div>
+    <table mat-table [dataSource]="users" class="full-width-table">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let user"> {{user.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="superUser" >
+            <th mat-header-cell *matHeaderCellDef> Super User </th>
+            <td mat-cell *matCellDef="let user"> {{user.superUser}} </td>
+        </ng-container>  
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="accent" (click)="editAdmin(element)" class="publishBtn">
+                   
+                    <span class="button-text"> Edit</span>
+                </button >
+                <button mat-raised-button color="warn" (click)="openDeleteDialog(element)" class="deleteBtn">
+                   
+                    <span class="button-text"> Delete</span>
+                </button>
+            </td>
+        </ng-container> 
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+    </table>
+</div>
