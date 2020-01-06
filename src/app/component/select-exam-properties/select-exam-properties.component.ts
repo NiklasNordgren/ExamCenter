@@ -111,12 +111,13 @@ export class SelectExamPropertiesComponent implements OnInit {
       this.setSelectedCourseId(courseMatch.id);
       this.autoMatchCourseSuccessful();
 
+
     } else {
       this.selectedAcademyId = this.academies[0].id
       this.selectedSubjectId = this.subjects.filter(x => x.academyId == this.selectedAcademyId)[0].id;
       this.setSelectedCourseId(this.courses.filter(x => x.subjectId)[0].id);
-      this.academyChanged();
     }
+    this.academyChanged();
 
   }
 
