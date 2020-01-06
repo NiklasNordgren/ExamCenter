@@ -42,11 +42,11 @@ export class ExamComponent implements OnInit, OnDestroy {
 			.subscribe(exams => {
 				this.data = [];
 				exams.forEach(exam => {
-					console.log(exam.fileName);
+					console.log(exam.filename);
 
 					this.data.push({
-						id: exam.fileName,
-						name: exam.fileName,
+						id: exam.filename,
+						name: exam.filename,
 						shortDesc: ""
 					});
 				});
@@ -57,8 +57,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	openPdf(row) {
 		console.log(JSON.stringify(row));
 
-		const fileName = row.id;
-		const sub = this.fileService.downloadFile(fileName).subscribe(pdfBlob => {
+		const filename = row.id;
+		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
 			window.open(fileURL, "_blank");
 		});

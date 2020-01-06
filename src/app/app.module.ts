@@ -56,6 +56,14 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+import { OutboxComponent } from './component/outbox/outbox.component';
+import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
+import { MatDialogModule } from "@angular/material";
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { MatTabsModule  } from '@angular/material/tabs';
+import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+
+
 
 @NgModule({
   declarations: [
@@ -78,7 +86,10 @@ import { LoginComponent } from './component/login/login.component';
     CourseComponent,
     ExamComponent,
     AboutComponent,
-    SelectExamPropertiesComponent
+    SelectExamPropertiesComponent,
+		OutboxComponent,
+		ConfirmationDialog,
+		TestSwipeComponent
   ],
   imports: [
     BrowserModule,
@@ -112,9 +123,16 @@ import { LoginComponent } from './component/login/login.component';
     FlexLayoutModule,
     FormsModule,
     FontAwesomeModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+		MatDialogModule,
+		MatTabsModule
   ],
-  providers: [],
+	entryComponents: [
+		ConfirmationDialog
+	],
+	providers: [
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+	],
   bootstrap: [
     AppComponent
   ]

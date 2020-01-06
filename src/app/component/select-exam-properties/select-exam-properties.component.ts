@@ -82,7 +82,7 @@ export class SelectExamPropertiesComponent implements OnInit {
 
   tryToAutoMatchDate(): Date {
 
-    let matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.match(this.regexpDate);
+    let matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.match(this.regexpDate);
 
     if (matchedDateString && (matchedDateString[0].length === 6 || matchedDateString[0].length === 8)) {
       this.autoMatchDateSuccessful();
@@ -99,7 +99,7 @@ export class SelectExamPropertiesComponent implements OnInit {
 
   tryToAutoMatchCourse(): void {
 
-    let courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).fileName.trim().split(" ")[0];
+    let courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.trim().split(" ")[0];
     let courseMatch = this.courses.find(x => x.courseCode === courseCodeString);
 
     if (courseMatch) {

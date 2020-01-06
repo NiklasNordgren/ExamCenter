@@ -1,5 +1,5 @@
 export class Exam {
-    fileName: string;
+    filename: string;
     date: Date;
     courseId: number;
     unpublishDate: Date;
