@@ -147,8 +147,6 @@ export class FileUploadComponent implements OnInit {
       console.log("Status: " + status);
       console.log("Response: " + response);
 
-      debugger;
-
       if (status == 200) {
         let exam = this.examsToUpload.find(x => x.filename == fileItem.file.name);
         this.examService.saveExam(exam).subscribe(e => {
