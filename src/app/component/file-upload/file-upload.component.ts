@@ -288,7 +288,8 @@ export class FileUploadComponent implements OnInit {
   }
 
   hasValidCourseId(element: any) {
-    return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
+    if (this.examsToUpload.find(x => x.tempId == element.tempFileId))
+      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
   }
 
   isUploadAllDisabled(): boolean {

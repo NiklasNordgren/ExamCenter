@@ -65,6 +65,8 @@ export class SelectExamPropertiesComponent implements OnInit {
   }
 
   setSelectedCourseId(courseId: any) {
+    console.log(courseId);
+    
     if (typeof courseId === "string") {
       courseId = parseInt(courseId);
     }
@@ -121,7 +123,6 @@ export class SelectExamPropertiesComponent implements OnInit {
 
       this.academyChanged(this.selectedAcademyId);
       this.subjectChanged(this.selectedSubjectId);
-      //this.setSelectedCourseId(courseMatch.id);
     }
 
   }
