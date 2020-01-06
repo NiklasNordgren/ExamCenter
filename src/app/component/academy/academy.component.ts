@@ -6,13 +6,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 	styleUrls: ['./academy.component.scss']
 })
 export class AcademyComponent implements OnInit, OnDestroy {
-	
+
 	constructor() { }
 
 	ngOnInit() {
-		
+
 	}
-	
+
 	ngOnDestroy() {
 	}
 

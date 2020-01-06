@@ -6,7 +6,7 @@ import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { TableComponent } from './component/table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { HomeComponent } from './home/home.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';

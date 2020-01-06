@@ -1,4 +1,4 @@
-<div style="height: 100vh;">
+<div>
 
     <mat-toolbar color="primary" class="total-bar">
         <!-- Row for Login and help.-->
@@ -7,7 +7,7 @@
             <span class="example-fill-remaining-space"></span>
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
-                    <button class="login" (click)="goToPage('/about')" mat-button>About</button>
+                    <a class="about" mat-button href="/about">About</a>
 
                     <a class="login" mat-button href="/login">Login (Admin)</a>
 

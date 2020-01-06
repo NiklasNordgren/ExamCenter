@@ -1,5 +1,7 @@
 export class Subject {
-  id: number;
-  name: string;
-  code: string;
+    id: number;
+    code: string;
+    name: string;
+    unpublished: boolean;
+    academyId: number;
 }

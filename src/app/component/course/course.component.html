@@ -1,4 +1,4 @@
 <div class="content-container">
-        <h1 style="text-align: start; margin-left: 18pt;">Courses</h1>
-        <app-list [data]="data" [shortHeader]="shortHeader" [name]="name" [url]="url"></app-list>
-    </div>
+    <h1 style="text-align: start; margin-left: 18pt;">Courses</h1>
+    <app-list (clicked)="this.navigator.goToPage(url + $event.id)" [data]="data" [shortHeader]="shortHeader" [name]="name"></app-list>
+</div>
