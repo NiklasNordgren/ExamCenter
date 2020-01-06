@@ -61,6 +61,8 @@ import { SubjectHandlerComponent } from './component/subject-handler/subject-han
 import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 @NgModule({
 		declarations: [
@@ -121,7 +123,8 @@ import { AcademyFormComponent } from './component/academy-form/academy-form.comp
 			FlexLayoutModule,
 			FormsModule,
 			FontAwesomeModule,
-			MatCheckboxModule
+			MatCheckboxModule,
+			MatTooltipModule
 		],
 		providers: [],
 		bootstrap: [
