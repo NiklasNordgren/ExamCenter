@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Academy } from 'src/app/model/academy.model';
+import { Academy } from '../../model/academy.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { AcademyService } from 'src/app/service/academy.service';
+import { AcademyService } from '../../service/academy.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-academy-form',
@@ -13,50 +14,41 @@ import { AcademyService } from 'src/app/service/academy.service';
 
 export class AcademyFormComponent implements OnInit {
   private form: FormGroup;
-  private academy: Academy;
   private subscriptions = new Subscription();
- 
+  private id: number;
 
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: AcademyService ) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: AcademyService) {
 
   }
   ngOnInit() {
-
-    this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        const id = parseInt(params.get('id'), 10);
-        this.service.getAcademyById(id);
-      })
-    );
-
     this.form = this.formBuilder.group({
       abbreviation: '',
       name: ''
     });
+    this.subscriptions.add(
+      this.route.paramMap.subscribe(params => {
+        this.id = parseInt(params.get('id'), 10);
+        this.handleId();
+      })
+    );
   }
 
-  ngOnDestroy() {
+  handleId() {
 
-  }
-  /*
-    ngOnInit() {
-      if(this.academy == null){
-        console.log("inside edit new");
+    if (this.id != 0) {
+      this.service.getAcademyById(this.id).subscribe(academy => {
         
-      this.form = this.formBuilder.group({
-        abbreviation: '',
-        name: ''
-      });
-    }else {
-      console.log("inside else edit");
-      
-      this.form = this.formBuilder.group({
-        abbreviation: this.academy.abbreviation,
-        name: this.academy.name
+        this.form = this.formBuilder.group({
+          abbreviation: academy.abbreviation,
+          name: academy.name
+        });
       });
     }
-      */
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
   onSubmit() {
     if (this.form.valid) {
@@ -64,5 +56,4 @@ export class AcademyFormComponent implements OnInit {
       this.form.reset();
     }
   }
-
 }
