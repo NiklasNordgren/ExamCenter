@@ -21,6 +21,7 @@ import { LoginComponent } from './component/login/login.component';
 
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+
 import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
 import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
 import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
