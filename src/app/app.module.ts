@@ -35,6 +35,7 @@ import { MatProgressBarModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
@@ -56,6 +57,11 @@ import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
 import { MatDialogModule } from "@angular/material";
@@ -89,7 +95,12 @@ import { TestSwipeComponent } from './component/test-swipe/test-swipe.component'
     SelectExamPropertiesComponent,
 		OutboxComponent,
 		ConfirmationDialog,
-		TestSwipeComponent
+		TestSwipeComponent,
+    AcademyHandlerComponent,
+    SubjectHandlerComponent,
+    CourseHandlerComponent,
+    ExamHandlerComponent,
+    AcademyFormComponent
   ],
   imports: [
     BrowserModule,
@@ -125,7 +136,8 @@ import { TestSwipeComponent } from './component/test-swipe/test-swipe.component'
     FontAwesomeModule,
     MatDatepickerModule,
 		MatDialogModule,
-		MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule
   ],
 	entryComponents: [
 		ConfirmationDialog

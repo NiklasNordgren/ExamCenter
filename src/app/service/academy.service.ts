@@ -12,5 +12,8 @@ export class AcademyService {
 	getAllAcademies() {
 		return this.http.get<Academy[]>('/api/academies/all');
 	}
+	getAcademyById(id: number){
+		return this.http.get<Academy>('/api/academies/' + id);
+	}
 
 }

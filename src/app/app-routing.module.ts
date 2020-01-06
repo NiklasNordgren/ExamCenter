@@ -18,8 +18,14 @@ import { Exam } from './model/exam.model';
 import { ExamComponent } from './component/exam/exam.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
+
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 
 const routes: Routes = [
 	{
@@ -63,6 +69,26 @@ const routes: Routes = [
 				path: '',
 				pathMatch: 'full',
 				redirectTo: 'dashboard'
+			},
+			{
+				path: 'academy-handler',
+				component: AcademyHandlerComponent,
+			},
+			{
+				path: 'academy-form/:id',
+				component: AcademyFormComponent,
+			},
+			{
+				path: 'subject-handler',
+				component: SubjectHandlerComponent,
+			},
+			{
+				path: 'course-handler',
+				component: CourseHandlerComponent,
+			},
+			{
+				path: 'exam-handler',
+				component: ExamHandlerComponent,
 			},
 			{
 				path: 'address-form',
