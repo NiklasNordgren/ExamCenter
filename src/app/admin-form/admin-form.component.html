@@ -1,0 +1,20 @@
+<div class="wrapper">
+    <h2 *ngIf="id == 0">New Admin</h2>
+    <h2 *ngIf="id > 0">Edit Admin</h2>
+    <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+        <mat-form-field>
+            <mat-label for="name">Name</mat-label>
+            <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. tenta@hig.se"
+                size="100pt">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label for="isSuperUser">Is Super User</mat-label>
+            <input matInput id="isSuperUser" required type="text" formControlName="isSuperUser"
+                placeholder="Ex. True or False">
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
+            class="btn btn-primary">Save</button>
+    </form>
+</div>

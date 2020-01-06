@@ -1,27 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { faUserPlus, faUsersCog, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { SelectionModel } from '@angular/cdk/collections';
+import { faUserPlus, faUsersCog, faSearch, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../service/user.service';
+import { User } from '../model/user.model';
 import { ConfirmationDialog } from '../component/confirmation-dialog/confirmation-dialog';
 
 
 @Component({
 	selector: 'app-admin',
 	templateUrl: './admin.component.html',
-	styleUrls: ['./admin.component.scss']
+	styleUrls: ['./admin.component.scss'],
+	providers: [Navigator]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
 
 	faUserPlus = faUserPlus;
 	faUsersCog = faUsersCog;
 	faSearch = faSearch;
 
+	selection = new SelectionModel<User>(true, []);
+	faPen = faPen;
+	faTrash = faTrash;
+
 	users = [];
 	dialogRef: MatDialogRef<ConfirmationDialog>;
-	displayedColumns: string[] = [ 'name', 'superUser', 'actions'];
+	displayedColumns: string[] = [ 'select', 'name', 'isSuperUser', 'edit'];
 
-	constructor(private router: Router, private service: UserService, private dialog: MatDialog) {
+	constructor(private service: UserService, private navigator: Navigator, private dialog: MatDialog) {
 
 	 }
 
@@ -56,4 +64,17 @@ export class AdminComponent implements OnInit {
 			this.dialogRef = null;
 		});
 	}
+
+	isAllSelected() {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.users.length;
+		return numSelected === numRows;
+	  }
+	
+	  /** Selects all rows if they are not all selected; otherwise clear selection. */
+	  masterToggle() {
+		this.isAllSelected() ?
+		  this.selection.clear() :
+		  this.users.forEach(row => this.selection.select(row));
+	  }
 }

@@ -68,6 +68,7 @@ import { MatDialogModule } from "@angular/material";
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { MatTabsModule  } from '@angular/material/tabs';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+import { AdminFormComponent } from './admin-form/admin-form.component';
 
 
 
@@ -100,7 +101,8 @@ import { TestSwipeComponent } from './component/test-swipe/test-swipe.component'
     SubjectHandlerComponent,
     CourseHandlerComponent,
     ExamHandlerComponent,
-    AcademyFormComponent
+    AcademyFormComponent,
+    AdminFormComponent
   ],
   imports: [
     BrowserModule,

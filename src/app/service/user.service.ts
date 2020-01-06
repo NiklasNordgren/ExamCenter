@@ -8,10 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-	  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-	  getAllUsers() {
-		    return this.http.get<User[]>("api/users/all");
+	getAllUsers() {
+		return this.http.get<User[]>("api/users/all");
+    }
+
+    getUserById(id: number) {
+        return this.http.get<User>('api/users/' + id);
     }
   
     saveUser(user: User): Observable<User> {
@@ -19,9 +23,8 @@ export class UserService {
     }
 
     deleteUser(id: number) {
-        return this.http.delete('/api/exams/' + id).subscribe(data => {
+        return this.http.delete('/api/users/' + id).subscribe(data => {
         });;
     }
-
 
 }

@@ -1,49 +1,54 @@
-<div style="margin: 10px; margin-bottom: 5px;">
-    <h1>
-        <fa-icon [icon]="faUsersCog" style="margin-right: 5pt;"></fa-icon>Administration
-    </h1>
-    <button mat-raised-button color="accent" (click)="addAdmin()">
-        <fa-icon [icon]="faUserPlus" style="margin-right: 5pt;"></fa-icon>Add Administrator
+<div class="wrapper">
+    <button class="newButton" color="accent" mat-raised-button
+        (click)="this.navigator.goToPage('/home/admin-form/0')">
+
+        <fa-icon [icon]="faUserPlus"></fa-icon><span class="buttonText"> New</span>
+    </button>
+    <button class="deleteButton" color="warn" mat-raised-button
+        (click)="this.navigator.goToPage('/home/admin-form/0')">
+
+        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
     </button>
 
-    <div style="margin-top: 35px;">
-        <mat-form-field style="display: block;">
-            <input matInput #message maxlength="256" placeholder="Search">
-            <fa-icon [icon]=faSearch matSuffix>search</fa-icon>
-        </mat-form-field>
-    </div>
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
 
-</div>
-
-<div>
-    <table mat-table [dataSource]="users" class="full-width-table">
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox color="warn" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="surprise">
+                </mat-checkbox>
+            </td>
+        </ng-container>
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let user"> {{user.name}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="superUser" >
+        <ng-container matColumnDef="isSuperUser">
             <th mat-header-cell *matHeaderCellDef> Super User </th>
-            <td mat-cell *matCellDef="let user"> {{user.superUser}} </td>
-        </ng-container>  
+            <td mat-cell *matCellDef="let element"> {{element.isSuperUser}} </td>
+        </ng-container>
 
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="accent" (click)="editAdmin(element)" class="publishBtn">
-                   
-                    <span class="button-text"> Edit</span>
-                </button >
-                <button mat-raised-button color="warn" (click)="openDeleteDialog(element)" class="deleteBtn">
-                   
-                    <span class="button-text"> Delete</span>
+                <button class="editButton" mat-raised-button (click)="this.navigator.goToPage('/home/admin-form/' + element.id)">
+                    <fa-icon [icon]="faPen"></fa-icon>
+                    <span class="buttonText"> Edit</span>
                 </button>
             </td>
-        </ng-container> 
+        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+        </tr>
     </table>
 </div>
