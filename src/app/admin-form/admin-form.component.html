@@ -15,9 +15,15 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-
-        <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">
-            {{buttonText}}
-        </button>
+        <div>
+            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">
+                {{buttonText}}
+            </button>
+            
+            <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                (click)="this.navigator.goToPage('/home/admin/')" >
+                Cancel
+            </button>
+        </div>
     </form>
 </div>

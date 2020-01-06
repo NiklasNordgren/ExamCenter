@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Navigator } from 'src/app/util/navigator';
 import { User } from '../model/user.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +14,8 @@ export interface customBooleanArray {
 @Component({
   selector: 'app-address-form',
   templateUrl: './admin-form.component.html',
-  styleUrls: ['./admin-form.component.scss']
+  styleUrls: ['./admin-form.component.scss'],
+  providers: [Navigator]
 })
 export class AdminFormComponent implements OnInit {
 
@@ -33,7 +35,7 @@ export class AdminFormComponent implements OnInit {
   titleText: string;
   buttonText: string;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService, private navigator: Navigator) {
 
   }
   
@@ -95,4 +97,5 @@ export class AdminFormComponent implements OnInit {
     this.titleText = "Edit Admin";
     this.buttonText = "Save";
   }
+
 }
