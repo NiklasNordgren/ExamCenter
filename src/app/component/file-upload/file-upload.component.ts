@@ -153,7 +153,7 @@ export class FileUploadComponent implements OnInit {
       console.log("Response: " + response);
 
       if (status == 200) {
-        let exam = this.examsToUpload.find(x => x.fileName == fileItem.file.name);
+        let exam = this.examsToUpload.find(x => x.filename == fileItem.file.name);
         this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
         });
@@ -258,7 +258,7 @@ export class FileUploadComponent implements OnInit {
 
   addToExamsToUpload(name: string): void {
     let exam = new Exam();
-    exam.fileName = name;
+    exam.filename = name;
     exam.date = new Date();
     exam.unpublished = false;
     exam.unpublishDate = new Date();
@@ -299,12 +299,12 @@ export class FileUploadComponent implements OnInit {
     return this.examsToUpload.find(x => x.courseId <= 0) === undefined ? true : false;
   }
 
-  isExamInDatabase(fileName: string): boolean {
-    return this.exams.find(x => x.fileName === fileName) !== undefined ? true : false;
+  isExamInDatabase(filename: string): boolean {
+    return this.exams.find(x => x.filename === filename) !== undefined ? true : false;
   }
 
-  isExamInUploadQueue(fileName: string): boolean {
-    return this.examsToUpload.find(x => x.fileName === fileName) !== undefined ? true : false;
+  isExamInUploadQueue(filename: string): boolean {
+    return this.examsToUpload.find(x => x.filename === filename) !== undefined ? true : false;
   }
 
   isFileSizeValid(fileSize: number): boolean {
