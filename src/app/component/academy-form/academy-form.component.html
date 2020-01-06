@@ -1,10 +1,10 @@
 <div class="wrapper">
-  <h3 *ngIf="id == 0">New Academy</h3>
-  <h3 *ngIf="id > 0">Edit Academy</h3>
+  <h2 *ngIf="id == 0">New Academy</h2>
+  <h2 *ngIf="id > 0">Edit Academy</h2>
   <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
     <mat-form-field>
       <mat-label for="abbreviation">Abbreviation</mat-label>
-      <input matInput id="abbreviation" required type="text" formControlName="abbreviation" placeholder="Ex. AHA, ATM">
+      <input matInput id="abbreviation" required type="text" formControlName="abbreviation" placeholder="Ex. AHA, ATM" size="100pt">
     </mat-form-field>
   
     <mat-form-field>
