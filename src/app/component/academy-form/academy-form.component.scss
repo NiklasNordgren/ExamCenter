@@ -1,8 +1,15 @@
-form{
+.wrapper{
     margin: 20pt;
 
 }
 button{
     max-width: 100pt;
-    
+}
+
+mat-form-field input {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 25px;
 }
