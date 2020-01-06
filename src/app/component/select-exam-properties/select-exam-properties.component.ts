@@ -106,17 +106,22 @@ export class SelectExamPropertiesComponent implements OnInit {
       let courseSubject = this.subjects.find(x => x.id === courseMatch.subjectId);
       let courseAcademy = this.academies.find(x => x.id === courseSubject.academyId);
 
-      this.academyChanged(courseAcademy.id);
       this.selectedAcademyId = courseAcademy.id;
-
-      this.subjectChanged(courseSubject.id);
       this.selectedSubjectId = courseSubject.id;
 
+      this.academyChanged(this.selectedAcademyId);
+      this.subjectChanged(this.selectedSubjectId);
       this.setSelectedCourseId(courseMatch.id);
       this.autoMatchCourseSuccessful();
 
     } else {
-      this.academyChanged(this.academies[0].id);
+
+      this.selectedAcademyId = this.academies[0].id;
+      this.selectedSubjectId = this.subjects[0].id;
+
+      this.academyChanged(this.selectedAcademyId);
+      this.subjectChanged(this.selectedSubjectId);
+      //this.setSelectedCourseId(courseMatch.id);
     }
 
   }
