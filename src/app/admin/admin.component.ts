@@ -39,26 +39,22 @@ export class AdminComponent {
 		});
   	}
 
-	addAdmin() {
-		console.log("clicked");
-	}
-
-	editAdmin(element) {
-		console.log("edit admin " + element.id);
+	openDeleteDialog() {
 		
-	}
+		let numberOfSelected = this.selection.selected.length;
 
-	openDeleteDialog(element: any) {
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
 		});
-		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
 		this.dialogRef.componentInstance.titleMessage = "Confirm";
+		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete " + numberOfSelected + " user(s)?";
 		this.dialogRef.componentInstance.confirmBtnText = "Delete";  
 
 		this.dialogRef.afterClosed().subscribe(result => {
 			if(result) {
-				this.service.deleteUser(element.id);
-				this.users = this.users.filter(x => x.id != element.id);
+				for (let user of this.selection.selected) {
+					this.service.deleteUser(user.id);
+					this.users = this.users.filter(x => x.id != user.id); 
+				}
 			}				
 			this.dialogRef = null;
 		});
