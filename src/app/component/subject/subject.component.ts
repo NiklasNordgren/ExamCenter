@@ -14,7 +14,7 @@ import { Academy } from 'src/app/model/academy.model';
 export class SubjectComponent implements OnInit, OnDestroy {
 
 	private subscriptions = new Subscription();
-	academyName = 'no';
+	academyName = 'NoName';
 	academyName$: Observable<Academy>;
 	shortHeader = 'Abbreviation';
 	name = 'Subject';
@@ -22,25 +22,23 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	url = '/courses/subject/';
 	academyId = 0;
 
-
 	constructor(private route: ActivatedRoute, private service: SubjectService, private serviceOver: AcademyService) { }
 
 	ngOnInit() {
 		this.subscriptions.add(this.route.paramMap.subscribe(params => {
 			this.academyId = parseInt(params.get('id'), 10);
 			this.setSubjetsByAcademyId(this.academyId);
+			
 		}));
-		this.academyName = 'sadness';
-		this.getAcademyNameById(this.academyId)
-		console.log("nr " + this.academyId);
-		console.log("namn " + this.academyName );
 		
+		//this.getAcademyNameById(this.academyId)		
 	}
 	ngOnDestroy(): void {
 		this.subscriptions.unsubscribe();
 	}
 
 	setSubjetsByAcademyId(academyId) {
+		this.getAcademyNameById(academyId);
 		this.service.getAllSubjectsByAcademyId(academyId).subscribe(subjects => {
 			this.data = [];
 			subjects.forEach(subject => {
@@ -54,9 +52,10 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	}
 
 	getAcademyNameById(academyId) {
-		console.log("hola");
+		console.log("in get academyname metod");
 
 		this.academyName$ = this.serviceOver.getAcademyById(this.academyId);
+
 
 	/*	this.serviceOver.getAcademyById(this.academyId).subscribe(academy => {
 			console.log("Abbr: " + academy.abbreviation)

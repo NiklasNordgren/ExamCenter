@@ -14,7 +14,6 @@ export class ExamComponent implements OnInit, OnDestroy {
   name = 'Filename';
   data = [];
   url = console.log("yaya exam");
-  ; //Här ska urlen för att ladda ner pdf:en vara! 
 
   constructor(private route: ActivatedRoute, private service: ExamService) { }
 

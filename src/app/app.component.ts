@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-// import { authConfig } from './sso.config';
 import { Observable } from 'rxjs';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
@@ -14,11 +12,10 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {
-
-	}
-
+	constructor(private breakpointObserver: BreakpointObserver, private service: AcademyService, private router: Router) {}
+	
 	private academies = [];
+	
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
 		.pipe(
 			map(result => result.matches),
