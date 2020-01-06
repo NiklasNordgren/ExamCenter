@@ -79,7 +79,6 @@ export class AdminFormComponent implements OnInit {
       }
         this.user.name = this.form.controls['name'].value;
         this.user.isSuperUser = this.form.controls['isSuperUser'].value;
-        console.log(this.user);
         
         this.service.saveUser(this.user).subscribe(e => {
         });   
