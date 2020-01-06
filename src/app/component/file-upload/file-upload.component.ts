@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp, faCalendarAlt, faGraduationCap, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
 import { Exam } from '../../model/exam.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -80,6 +80,10 @@ export class FileUploadComponent implements OnInit {
   faTrash = faTrash;
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;
+  faCalendarAlt = faCalendarAlt;
+  faGraduationCap = faGraduationCap;
+  faCheck = faCheck;
+  faTimes = faTimes;
 
   dataSource: FileTableItem[] = [];
   displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
@@ -114,13 +118,9 @@ export class FileUploadComponent implements OnInit {
         this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
         this.changeDetectorRef.detectChanges();
 
-        if (this.examsToUpload.find(x => x.tempId === this.tempFileId).autoMatchCourse) {
-          this.dataSource.find(x => x.tempFileId === this.tempFileId).autoMatchCourse = "true";
-        }
-
-        if (this.examsToUpload.find(x => x.tempId === this.tempFileId).autoMatchDate) {
-          this.dataSource.find(x => x.tempFileId === this.tempFileId).autoMatchDate = "true";
-        }
+        let row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
+        this.setAutoMatchedCourseStatus(row);
+        this.setAutoMatchedDateStatus(row);
 
         this.tempFileId++;
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
@@ -313,6 +313,22 @@ export class FileUploadComponent implements OnInit {
 
   getUploadProgress(): number {
     return (this.dataSource.filter(x => x.status === "Uploaded").length / this.dataSource.length) * 100;
+  }
+
+  setAutoMatchedCourseStatus(row: FileTableItem): void {
+    if (this.activeExam.autoMatchCourse) {
+      row.autoMatchCourse = "true";
+    } else {
+      row.autoMatchCourse = "false";
+    }
+  }
+
+  setAutoMatchedDateStatus(row: FileTableItem): void {
+    if (this.activeExam.autoMatchDate) {
+      row.autoMatchDate = "true";
+    } else {
+      row.autoMatchDate = "false";
+    }
   }
 
   ngOnDestroy() {
