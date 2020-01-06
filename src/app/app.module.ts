@@ -139,7 +139,7 @@ import { AdminFormComponent } from './admin-form/admin-form.component';
     MatDatepickerModule,
 		MatDialogModule,
     MatTabsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
 	entryComponents: [
 		ConfirmationDialog

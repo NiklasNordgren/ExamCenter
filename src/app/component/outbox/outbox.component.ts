@@ -6,8 +6,6 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UnpublishService } from '../../service/unpublish.service';
 import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
 
-// https://stackoverflow.com/questions/43751187/how-to-enable-swipe-gesture-to-move-to-next-tab-for-tabs-module-in-angular-mater
-
 @Component({
   selector: 'app-outbox',
   templateUrl: './outbox.component.html',

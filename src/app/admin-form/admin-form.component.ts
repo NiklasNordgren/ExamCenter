@@ -1,10 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { User } from '../model/user.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../service/user.service';
-import { element } from 'protractor';
+
+export interface customBooleanArray {
+  value: boolean;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-address-form',
@@ -12,10 +16,22 @@ import { element } from 'protractor';
   styleUrls: ['./admin-form.component.scss']
 })
 export class AdminFormComponent implements OnInit {
+
+  boolean: customBooleanArray[] = [
+    {value: false, viewValue: 'False'},
+    {value: true, viewValue: 'True'}
+  ];
+
   private form: FormGroup;
   private subscriptions = new Subscription();
-  private id: number;
 
+  FORM_TYPE = {CREATE: 0}
+  isCreateForm: boolean;
+  user: User = new User();
+  
+  isSuperUserSelector = false;
+  titleText: string;
+  buttonText: string;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService) {
 
@@ -28,18 +44,21 @@ export class AdminFormComponent implements OnInit {
     });
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
-        this.id = parseInt(params.get('id'), 10);
-        this.handleId();
+        this.createForm(parseInt(params.get('id'), 10));
       })
     );
   }
 
-  handleId() {
-
-    if (this.id != 0) {
-      this.service.getUserById(this.id).subscribe(user => {
-        console.log(user);
-        
+  createForm(id: number) {
+    if (id == this.FORM_TYPE.CREATE) {
+      this.isCreateForm = true;
+      this.setCreateFormText();
+    } else {
+      this.isCreateForm = false;
+      this.setEditFormText();
+      this.service.getUserById(id).subscribe(user => {
+        this.user = user;
+        this.isSuperUserSelector = user.isSuperUser;
         this.form = this.formBuilder.group({
           name: user.name,
           isSuperUser: user.isSuperUser
@@ -53,18 +72,27 @@ export class AdminFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log("Form Submitted!");
-      this.createUser();
+      if (this.isCreateForm) {
+        this.user = new User();
+      }
+        this.user.name = this.form.controls['name'].value;
+        this.user.isSuperUser = this.form.controls['isSuperUser'].value;
+        console.log(this.user);
+        
+        this.service.saveUser(this.user).subscribe(e => {
+        });   
+
       this.form.reset();
     }
   }
 
-  createUser() {
-    let user = new User();
-    user.name = this.form.controls['name'].value;
-    user.isSuperUser = this.form.controls['isSuperUser'].value;
-    
-    this.service.saveUser(user).subscribe(e => {
-    });
+  setCreateFormText() {
+    this.titleText = "Create Admin"
+    this.buttonText = "Create";
+  }
+
+  setEditFormText() {
+    this.titleText = "Edit Admin";
+    this.buttonText = "Save";
   }
 }
