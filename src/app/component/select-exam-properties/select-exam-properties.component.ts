@@ -48,16 +48,16 @@ export class SelectExamPropertiesComponent implements OnInit {
     this.setSelectedExamDate(this.selectedDate);
   }
 
-  academyChanged(academyId: number): void {
-    this.subjectsFilteredByAcademyId = this.subjects.filter(x => x.academyId == academyId);
+  academyChanged(): void {
+    this.subjectsFilteredByAcademyId = this.subjects.filter(x => x.academyId == this.selectedAcademyId);
     if (this.subjectsFilteredByAcademyId && this.subjectsFilteredByAcademyId.length > 0)
-      this.subjectChanged(this.subjectsFilteredByAcademyId[0].id);
+      this.subjectChanged();
     else
       this.setSelectedCourseId(0);
   }
 
-  subjectChanged(subjectId: number): void {
-    this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId == subjectId);
+  subjectChanged(): void {
+    this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId == this.selectedSubjectId);
     if (this.coursesFilteredBySubjectId && this.coursesFilteredBySubjectId.length > 0)
       this.setSelectedCourseId(this.coursesFilteredBySubjectId[0].id);
     else
@@ -65,8 +65,6 @@ export class SelectExamPropertiesComponent implements OnInit {
   }
 
   setSelectedCourseId(courseId: any) {
-    console.log(courseId);
-    
     if (typeof courseId === "string") {
       courseId = parseInt(courseId);
     }
@@ -110,28 +108,23 @@ export class SelectExamPropertiesComponent implements OnInit {
 
       this.selectedAcademyId = courseAcademy.id;
       this.selectedSubjectId = courseSubject.id;
-
-      this.academyChanged(this.selectedAcademyId);
-      this.subjectChanged(this.selectedSubjectId);
       this.setSelectedCourseId(courseMatch.id);
       this.autoMatchCourseSuccessful();
 
     } else {
-
-      this.selectedAcademyId = this.academies[0].id;
-      this.selectedSubjectId = this.subjects[0].id;
-
-      this.academyChanged(this.selectedAcademyId);
-      this.subjectChanged(this.selectedSubjectId);
+      this.selectedAcademyId = this.academies[0].id
+      this.selectedSubjectId = this.subjects.filter(x => x.academyId == this.selectedAcademyId)[0].id;
+      this.setSelectedCourseId(this.courses.filter(x => x.subjectId)[0].id);
+      this.academyChanged();
     }
 
   }
 
-  autoMatchDateSuccessful(){
+  autoMatchDateSuccessful() {
     this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchDate = true;
   }
 
-  autoMatchCourseSuccessful(){
+  autoMatchCourseSuccessful() {
     this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchCourse = true;
   }
 

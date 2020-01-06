@@ -117,12 +117,11 @@ export class FileUploadComponent implements OnInit {
 
         this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
         this.changeDetectorRef.detectChanges();
-
         let row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
         this.setAutoMatchedCourseStatus(row);
         this.setAutoMatchedDateStatus(row);
-
         this.tempFileId++;
+
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
       } else {
         if (this.isExamInUploadQueue(fileItem.file.name)) {
@@ -133,10 +132,6 @@ export class FileUploadComponent implements OnInit {
         }
         this.removeFromQueue(fileItem);
       }
-
-    };
-
-    this.uploader.onBeforeUploadItem = (fileItem) => {
 
     };
 
@@ -152,18 +147,20 @@ export class FileUploadComponent implements OnInit {
       console.log("Status: " + status);
       console.log("Response: " + response);
 
+      debugger;
+
       if (status == 200) {
         let exam = this.examsToUpload.find(x => x.filename == fileItem.file.name);
         this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
+          this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
+          this.removeFromExamsToUpload(exam.tempId);
+          exam.uploaded = true;
+          this.exams.push(exam);
+          this.uploadedExams.push(exam);
         });
-        this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
-        this.removeFromExamsToUpload(exam.courseId);
-        exam.uploaded = true;
-        this.exams.push(exam);
-        this.uploadedExams.push(exam);
-      }
 
+      }
     };
   }
 
