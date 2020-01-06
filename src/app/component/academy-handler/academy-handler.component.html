@@ -1,0 +1,55 @@
+<div class="wrapper">
+    <button class="newButton" color="accent" mat-raised-button
+        (click)="this.navigator.goToPage('/home/academy-form/0')">
+
+        <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
+    </button>
+    <button class="deleteButton" color="warn" mat-raised-button
+        (click)="this.navigator.goToPage('/home/academy-form/0')">
+
+        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
+    </button>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="surprise">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+                <!--
+                
+            <button mat-raised-button (click)="this.navigator.goToPage('/home/academy-form')"> Edit </button>
+            -->
+                <button class="editButton" mat-raised-button (click)="this.navigator.goToPage('/home/academy-form/' + element.id)">
+                    <fa-icon [icon]="faPen"></fa-icon>
+                    <span style="margin-left: 3pt;">
+                        Edit
+                    </span>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+        </tr>
+    </table>
+</div>

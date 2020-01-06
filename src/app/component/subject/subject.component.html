@@ -1,6 +1,4 @@
 <div class="content-container">
     <h1 style="text-align: start; margin-left: 18pt;">Subjects</h1>
-    <h3 style="text-align: start; margin-left: 18pt;">in academy {{(academyName$ | async).name}}</h3>
-    <app-list [data]="data" [shortHeader]="shortHeader" [name]="name" [url]="url"></app-list>
+    <app-list (clicked)="this.navigator.goToPage(url + $event.id)" [data]="data" [shortHeader]="shortHeader" [name]="name"></app-list>
 </div>
-<!-- (academyName$ | async).name -->
