@@ -1,0 +1,7 @@
+<mat-form-field class="search-container" [style.fontSize.px]=15>
+  <input #searchString (keyup.enter)="search();" class="search-field" type="text" matInput placeholder="Search" spellcheck="false">
+  <a aria-label="Search for subject or course and navigate to the search result page" (click)="search();" mat-button matSuffix
+    class="search-button">
+    <mat-icon>search</mat-icon>
+  </a>
+</mat-form-field>
