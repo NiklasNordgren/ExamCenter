@@ -6,7 +6,7 @@ import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { TableComponent } from './component/table/table.component';
 import { TreeComponent } from './tree/tree.component';
 import { HomeComponent } from './home/home.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { AdminComponent } from './admin/admin.component';
 import { Academy } from './model/academy.model';
@@ -23,6 +23,8 @@ import { SubjectHandlerComponent } from './component/subject-handler/subject-han
 import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import { OutboxComponent } from './component/outbox/outbox.component';
+import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
 
 const routes: Routes = [
 	{
@@ -114,6 +116,14 @@ const routes: Routes = [
 			{
 				path: 'admin',
 				component: AdminComponent,
+			},
+			{
+				path: 'outbox',
+				component: OutboxComponent,
+			},
+			{
+				path: 'swipe',
+				component: TestSwipeComponent,
 			},
 		]
 	},

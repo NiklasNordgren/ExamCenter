@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SubjectService } from './subject.service';
+import { UnpublishService } from './unpublish.service';
 
-describe('SubjectService', () => {
+describe('UnpublishService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SubjectService = TestBed.get(SubjectService);
+    const service: UnpublishService = TestBed.get(UnpublishService);
     expect(service).toBeTruthy();
   });
 });
