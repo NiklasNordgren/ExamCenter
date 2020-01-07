@@ -19,4 +19,10 @@ export class AcademyService {
 	saveAcademy(academy: any) : Observable<Academy>{
 		return this.http.post<Academy>('/api/academies/', academy);
 	}
+	unpublishAcademy(academy: Academy) : Observable<Academy>{
+		return this.http.post<Academy>('/api/academies/unpublish/' + academy.unpublished, academy );
+	}
+	unpublishAcademies(academies: Academy[], unpublished : boolean) : Observable<Academy>{
+		return this.http.post<Academy>('/api/academies/unpublish/' + unpublished, academies);
+	}
 }
