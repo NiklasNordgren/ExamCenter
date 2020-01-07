@@ -39,7 +39,7 @@ export class AcademyFormComponent implements OnInit {
 
     if (this.id != 0) {
       this.service.getAcademyById(this.id).subscribe(academy => {
-
+        
         this.form = this.formBuilder.group({
           abbreviation: academy.abbreviation,
           name: academy.name
