@@ -8,10 +8,16 @@
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label>Is Super User</mat-label>
-            <mat-select [(value)]="isSuperUserSelector" formControlName="isSuperUser" class="select">
-                <mat-option *ngFor="let bool of boolean" [value]="bool.value">
-                    {{bool.viewValue}}
+            <mat-label for="code">Subject Code</mat-label>
+            <input matInput id="code" required type="text" formControlName="code" placeholder="Ex. tenta@hig.se"
+                size="100pt">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Academy</mat-label>
+            <mat-select [(value)]="academyIdSelector" formControlName="academyId" class="select">
+                <mat-option *ngFor="let academy of academyArray" [value]="academy.value">
+                    {{academy.viewValue}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -21,7 +27,7 @@
             </button>
             
             <button mat-raised-button class="btn btn-primary" class="cancelButton"
-                (click)="this.navigator.goToPage('/home/admin/')" >
+                (click)="this.navigator.goToPage('/home/subject-handler/')" >
                 Cancel
             </button>
         </div>
