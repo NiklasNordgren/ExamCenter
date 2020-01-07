@@ -13,8 +13,10 @@ export class SearchService {
 
 	searchForSubjectsAndCourses(searchText: string) {
 		return forkJoin([
-			this.http.get<Observable<Subject>>("/api/subjects/search/" + searchText),
-			this.http.get<Observable<Course>>("/api/courses/search/" + searchText)
+			this.http.get<Observable<Subject[]>>(
+				"/api/subjects/search/" + searchText
+			),
+			this.http.get<Observable<Course[]>>("/api/courses/search/" + searchText)
 		]);
 	}
 }

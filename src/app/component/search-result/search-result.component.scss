@@ -2,3 +2,53 @@
 	max-width: 70%;
 	margin-left: 15%;
 }
+
+.text {
+	text-align: start;
+	margin-left: 18pt;
+}
+
+.full-width-table {
+	width: 100%;
+}
+
+.full-width-table {
+	width: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	padding: 0px !important;
+	border-radius: 0px !important;
+}
+
+td {
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+	background-color: #f5f5f5;
+}
+
+.nav-button,
+.nav-button:hover {
+	background: transparent !important;
+	border: none !important;
+	transition: none !important;
+	width: 100% !important;
+	height: 100% !important;
+	padding: 0px !important;
+	border-radius: 0px !important;
+	text-align: left !important;
+}
+
+.mat-column-course-code {
+	flex: 0 0 100px !important;
+}
+
+.mat-column-abbreviation {
+	flex: 0 0 100px !important;
+}
