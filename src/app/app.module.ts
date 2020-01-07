@@ -36,7 +36,6 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 
-// import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from "@angular/common/http";
 import { HomeComponent } from "./home/home.component";
 import { LogoutComponent } from "./logout/logout.component";
@@ -45,7 +44,6 @@ import { SelectExamPropertiesComponent } from "./component/select-exam-propertie
 
 import { FileUploadModule } from "ng2-file-upload";
 
-import { NgxFileDropModule } from "ngx-file-drop";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { AdminComponent } from "./admin/admin.component";
 import { NavHorizComponent } from "./nav-horiz/nav-horiz.component";
@@ -56,8 +54,17 @@ import { CourseComponent } from "./component/course/course.component";
 import { ExamComponent } from "./component/exam/exam.component";
 import { AboutComponent } from "./about/about.component";
 import { LoginComponent } from "./component/login/login.component";
+import { OutboxComponent } from "./component/outbox/outbox.component";
+import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
+import { MatDialogModule } from "@angular/material";
+import {
+	HammerGestureConfig,
+	HAMMER_GESTURE_CONFIG
+} from "@angular/platform-browser";
+import { MatTabsModule } from "@angular/material/tabs";
+import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
-import { SearchComponent } from './component/search/search.component';
+import { SearchComponent } from "./component/search/search.component";
 
 @NgModule({
 	declarations: [
@@ -81,6 +88,9 @@ import { SearchComponent } from './component/search/search.component';
 		ExamComponent,
 		AboutComponent,
 		SelectExamPropertiesComponent,
+		OutboxComponent,
+		ConfirmationDialog,
+		TestSwipeComponent,
 		SearchResultComponent,
 		SearchComponent
 	],
@@ -110,14 +120,20 @@ import { SearchComponent } from './component/search/search.component';
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
+		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
 		FormsModule,
 		FontAwesomeModule,
-		MatDatepickerModule
+		MatDatepickerModule,
+		MatDialogModule,
+		MatTabsModule
 	],
-	providers: [],
+	entryComponents: [ConfirmationDialog],
+	providers: [
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

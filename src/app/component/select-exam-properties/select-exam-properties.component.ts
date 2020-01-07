@@ -23,6 +23,7 @@ export class SelectExamPropertiesComponent implements OnInit {
   @Input() subjects: Subject[];
   @Input() courses: Course[];
   @Input() uploadedExams: Exam[];
+  @Input() examsToUpload: Exam[];
 
   @Output() courseIdEmitter = new EventEmitter<number>();
   @Output() examDateEmitter = new EventEmitter<Date>();
@@ -31,27 +32,32 @@ export class SelectExamPropertiesComponent implements OnInit {
   coursesFilteredBySubjectId: Course[];
 
   id: number;
+  selectedAcademyId: number = 0;
+  selectedSubjectId: number = 0;
   selectedCourseId: number = 0;
-  selectedDate = new Date();
+  selectedDate: Date;
+
+  regexpDate: RegExp = new RegExp("\\d{6,}");
 
   constructor() { }
 
   ngOnInit() {
     this.id = this.tempId;
-    this.academyChanged(this.academies[0].id);
+    this.tryToAutoMatchCourse();
+    this.selectedDate = this.tryToAutoMatchDate();
     this.setSelectedExamDate(this.selectedDate);
   }
 
-  academyChanged(academyId: number): void {
-    this.subjectsFilteredByAcademyId = this.subjects.filter(x => x.academyId == academyId);
+  academyChanged(): void {
+    this.subjectsFilteredByAcademyId = this.subjects.filter(x => x.academyId == this.selectedAcademyId);
     if (this.subjectsFilteredByAcademyId && this.subjectsFilteredByAcademyId.length > 0)
-      this.subjectChanged(this.subjectsFilteredByAcademyId[0].id);
+      this.subjectChanged();
     else
       this.setSelectedCourseId(0);
   }
 
-  subjectChanged(subjectId: number): void {
-    this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId == subjectId);
+  subjectChanged(): void {
+    this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId == this.selectedSubjectId);
     if (this.coursesFilteredBySubjectId && this.coursesFilteredBySubjectId.length > 0)
       this.setSelectedCourseId(this.coursesFilteredBySubjectId[0].id);
     else
@@ -70,8 +76,59 @@ export class SelectExamPropertiesComponent implements OnInit {
     this.examDateEmitter.emit(this.selectedDate);
   }
 
-  isExamUploaded(): boolean{
+  isExamUploaded(): boolean {
     return this.uploadedExams.find(x => x.tempId === this.id) === undefined ? false : true;
   }
 
+  tryToAutoMatchDate(): Date {
+
+    let matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.match(this.regexpDate);
+
+    if (matchedDateString && (matchedDateString[0].length === 6 || matchedDateString[0].length === 8)) {
+      this.autoMatchDateSuccessful();
+      if (matchedDateString[0].length === 6) {
+        return new Date("20" + matchedDateString[0].substring(0, 2) + "-" + matchedDateString[0].substring(2, 4) + "-" + matchedDateString[0].substring(4, 6));
+      } else {
+        return new Date(matchedDateString[0].substring(0, 4) + "-" + matchedDateString[0].substring(4, 6) + "-" + matchedDateString[0].substring(6, 8));
+      }
+    } else {
+      return new Date();
+    }
+
+  }
+
+  tryToAutoMatchCourse(): void {
+
+    let courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.trim().split(" ")[0];
+    let courseMatch = this.courses.find(x => x.courseCode === courseCodeString);
+
+    if (courseMatch) {
+      let courseSubject = this.subjects.find(x => x.id === courseMatch.subjectId);
+      let courseAcademy = this.academies.find(x => x.id === courseSubject.academyId);
+
+      this.selectedAcademyId = courseAcademy.id;
+      this.selectedSubjectId = courseSubject.id;
+      this.setSelectedCourseId(courseMatch.id);
+      this.autoMatchCourseSuccessful();
+
+
+    } else {
+      this.selectedAcademyId = this.academies[0].id
+      this.selectedSubjectId = this.subjects.filter(x => x.academyId == this.selectedAcademyId)[0].id;
+      this.setSelectedCourseId(this.courses.filter(x => x.subjectId)[0].id);
+    }
+    this.academyChanged();
+
+  }
+
+  autoMatchDateSuccessful() {
+    this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchDate = true;
+  }
+
+  autoMatchCourseSuccessful() {
+    this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchCourse = true;
+  }
+
 }
+
+

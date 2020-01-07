@@ -19,6 +19,8 @@ import { ExamComponent } from "./component/exam/exam.component";
 import { AboutComponent } from "./about/about.component";
 import { LoginComponent } from "./component/login/login.component";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
+import { OutboxComponent } from "./component/outbox/outbox.component";
+import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
 
 const routes: Routes = [
 	{
@@ -95,6 +97,14 @@ const routes: Routes = [
 			{
 				path: "admin",
 				component: AdminComponent
+			},
+			{
+				path: "outbox",
+				component: OutboxComponent
+			},
+			{
+				path: "swipe",
+				component: TestSwipeComponent
 			}
 		]
 	}

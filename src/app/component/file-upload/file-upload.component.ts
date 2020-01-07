@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp, faCalendarAlt, faGraduationCap, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
 import { Exam } from '../../model/exam.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -13,20 +13,13 @@ import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
 import { MatTable } from '@angular/material';
 
-/**
- * TODO:
- * 
- * Attempt automatching by course name 
- * 
- * Attempt automatching by exam date
- * 
- */
-
 export interface FileTableItem {
   tempFileId: number;
   name: string;
   size: string;
   status: string;
+  autoMatchCourse: string;
+  autoMatchDate: string;
 }
 
 @Component({
@@ -78,9 +71,13 @@ export class FileUploadComponent implements OnInit {
   faTrash = faTrash;
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;
+  faCalendarAlt = faCalendarAlt;
+  faGraduationCap = faGraduationCap;
+  faCheck = faCheck;
+  faTimes = faTimes;
 
   dataSource: FileTableItem[] = [];
-  displayedColumns: string[] = ['name', 'size', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -109,9 +106,13 @@ export class FileUploadComponent implements OnInit {
         fileItem.withCredentials = false;
         fileItem.index = this.tempFileId;
 
-        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + "kB", status: "" });
+        this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + " kB", status: "", autoMatchCourse: "", autoMatchDate: "" });
         this.changeDetectorRef.detectChanges();
+        let row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
+        this.setAutoMatchedCourseStatus(row);
+        this.setAutoMatchedDateStatus(row);
         this.tempFileId++;
+
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
       } else {
         if (this.isExamInUploadQueue(fileItem.file.name)) {
@@ -122,10 +123,6 @@ export class FileUploadComponent implements OnInit {
         }
         this.removeFromQueue(fileItem);
       }
-
-    };
-
-    this.uploader.onBeforeUploadItem = (fileItem) => {
 
     };
 
@@ -142,17 +139,17 @@ export class FileUploadComponent implements OnInit {
       console.log("Response: " + response);
 
       if (status == 200) {
-        let exam = this.examsToUpload.find(x => x.fileName == fileItem.file.name);
+        let exam = this.examsToUpload.find(x => x.filename == fileItem.file.name);
         this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
+          this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
+          this.removeFromExamsToUpload(exam.tempId);
+          exam.uploaded = true;
+          this.exams.push(exam);
+          this.uploadedExams.push(exam);
         });
-        this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
-        this.removeFromExamsToUpload(exam.courseId);
-        exam.uploaded = true;
-        this.exams.push(exam);
-        this.uploadedExams.push(exam);
-      }
 
+      }
     };
   }
 
@@ -247,13 +244,15 @@ export class FileUploadComponent implements OnInit {
 
   addToExamsToUpload(name: string): void {
     let exam = new Exam();
-    exam.fileName = name;
+    exam.filename = name;
     exam.date = new Date();
     exam.unpublished = false;
     exam.unpublishDate = new Date();
     exam.tempId = this.tempFileId;
     exam.courseId = 0;
     exam.uploaded = false;
+    exam.autoMatchDate = false;
+    exam.autoMatchCourse = false;
     this.activeExam = exam;
     this.examsToUpload.push(exam);
   }
@@ -275,7 +274,8 @@ export class FileUploadComponent implements OnInit {
   }
 
   hasValidCourseId(element: any) {
-    return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
+    if (this.examsToUpload.find(x => x.tempId == element.tempFileId))
+      return this.examsToUpload.find(x => x.tempId == element.tempFileId).courseId > 0;
   }
 
   isUploadAllDisabled(): boolean {
@@ -286,12 +286,12 @@ export class FileUploadComponent implements OnInit {
     return this.examsToUpload.find(x => x.courseId <= 0) === undefined ? true : false;
   }
 
-  isExamInDatabase(fileName: string): boolean {
-    return this.exams.find(x => x.fileName === fileName) !== undefined ? true : false;
+  isExamInDatabase(filename: string): boolean {
+    return this.exams.find(x => x.filename === filename) !== undefined ? true : false;
   }
 
-  isExamInUploadQueue(fileName: string): boolean {
-    return this.examsToUpload.find(x => x.fileName === fileName) !== undefined ? true : false;
+  isExamInUploadQueue(filename: string): boolean {
+    return this.examsToUpload.find(x => x.filename === filename) !== undefined ? true : false;
   }
 
   isFileSizeValid(fileSize: number): boolean {
@@ -300,6 +300,22 @@ export class FileUploadComponent implements OnInit {
 
   getUploadProgress(): number {
     return (this.dataSource.filter(x => x.status === "Uploaded").length / this.dataSource.length) * 100;
+  }
+
+  setAutoMatchedCourseStatus(row: FileTableItem): void {
+    if (this.activeExam.autoMatchCourse) {
+      row.autoMatchCourse = "true";
+    } else {
+      row.autoMatchCourse = "false";
+    }
+  }
+
+  setAutoMatchedDateStatus(row: FileTableItem): void {
+    if (this.activeExam.autoMatchDate) {
+      row.autoMatchDate = "true";
+    } else {
+      row.autoMatchDate = "false";
+    }
   }
 
   ngOnDestroy() {
