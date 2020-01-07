@@ -16,6 +16,7 @@ export class AcademyFormComponent implements OnInit {
   private form: FormGroup;
   private subscriptions = new Subscription();
   private id: number;
+  private academy: Academy;
 
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: AcademyService) {
@@ -52,12 +53,22 @@ export class AcademyFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log("Form Submitted!");
-      this.service.saveAcademy({
-        name: "hallojName",
-        abbreviation: "hejsan"
-      });
+     
+        this.academy = new Academy();
+      }
+        this.academy.name = this.form.controls['name'].value;
+        console.log('name from form: ' + this.academy.name);
+        
+        this.academy.abbreviation = this.form.controls['abbreviation'].value;
+        console.log('abbreviatoin from form: ' + this.academy.abbreviation);
+        
+        console.log('saving...');
+        console.log(this.academy);
+        
+        this.service.saveAcademy(this.academy).subscribe(e => {
+        });   
+
       this.form.reset();
-    }
   }
+
 }
