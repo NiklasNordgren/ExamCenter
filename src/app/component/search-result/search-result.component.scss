@@ -1,3 +1,17 @@
+.content-container {
+	max-width: 70%;
+	margin-left: 15%;
+}
+
+.text {
+	text-align: start;
+	margin-left: 18pt;
+}
+
+.full-width-table {
+	width: 100%;
+}
+
 .full-width-table {
 	width: 100%;
 }
@@ -29,4 +43,12 @@ tr:hover {
 	padding: 0px !important;
 	border-radius: 0px !important;
 	text-align: left !important;
+}
+
+.mat-column-course-code {
+	flex: 0 0 100px !important;
+}
+
+.mat-column-abbreviation {
+	flex: 0 0 100px !important;
 }
