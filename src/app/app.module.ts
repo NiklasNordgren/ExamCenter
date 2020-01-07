@@ -120,7 +120,6 @@ import { SearchComponent } from "./component/search/search.component";
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
