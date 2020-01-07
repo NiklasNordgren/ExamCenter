@@ -22,6 +22,14 @@ import { SearchResultComponent } from "./component/search-result/search-result.c
 import { OutboxComponent } from "./component/outbox/outbox.component";
 import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
 
+import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { AdminFormComponent } from './admin-form/admin-form.component';
+
 const routes: Routes = [
 	{
 		path: "",
@@ -83,16 +91,24 @@ const routes: Routes = [
 				component: SubjectHandlerComponent
 			},
 			{
-				path: "course-handler",
-				component: CourseHandlerComponent
+				path: 'subject-form/:id',
+				component: SubjectFormComponent,
+			},
+			{
+				path: 'course-handler',
+				component: CourseHandlerComponent,
 			},
 			{
 				path: "exam-handler",
 				component: ExamHandlerComponent
 			},
 			{
-				path: "address-form",
-				component: AddressFormComponent
+				path: 'admin-form/:id',
+				component: AdminFormComponent
+			},
+			{
+				path: 'address-form',
+				component: AddressFormComponent,
 			},
 			{
 				path: "dashboard",

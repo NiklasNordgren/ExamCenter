@@ -5,6 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
+
 import { MatSliderModule } from "@angular/material/slider";
 import { NavComponent } from "./nav/nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -69,6 +70,10 @@ import { ExamHandlerComponent } from "./component/exam-handler/exam-handler.comp
 import { AcademyFormComponent } from "./component/academy-form/academy-form.component";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
 import { SearchComponent } from "./component/search/search.component";
+import { AdminFormComponent } from './admin-form/admin-form.component';
+import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+
+
 
 @NgModule({
 	declarations: [
@@ -120,7 +125,9 @@ import { SearchComponent } from "./component/search/search.component";
 		ConfirmationDialog,
 		TestSwipeComponent,
 		SearchResultComponent,
-		SearchComponent
+		SearchComponent,
+		AdminFormComponent,
+    	SubjectFormComponent
 	],
 	imports: [
 		BrowserModule,
