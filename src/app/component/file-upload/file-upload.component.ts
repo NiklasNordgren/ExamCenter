@@ -112,7 +112,6 @@ export class FileUploadComponent implements OnInit {
         this.setAutoMatchedCourseStatus(row);
         this.setAutoMatchedDateStatus(row);
         this.tempFileId++;
-
         console.log("Succesfully added file: " + fileItem.file.name + " to the queue.");
       } else {
         if (this.isExamInUploadQueue(fileItem.file.name)) {
@@ -148,9 +147,14 @@ export class FileUploadComponent implements OnInit {
           this.exams.push(exam);
           this.uploadedExams.push(exam);
         });
-
       }
+
     };
+
+    this.uploader.onErrorItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
+      this.dataSource.find(x => x.name == fileItem.file.name).status = "Upload error";
+      alert("Could not upload file.");
+    }
   }
 
   fileOverDropZone(e: any): void {
