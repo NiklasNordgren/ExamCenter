@@ -53,6 +53,10 @@ export class AcademyFormComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       console.log("Form Submitted!");
+      this.service.saveAcademy({
+        name: "hallojName",
+        abbreviation: "hejsan"
+      });
       this.form.reset();
     }
   }
