@@ -45,7 +45,6 @@ import { SelectExamPropertiesComponent } from './component/select-exam-propertie
 
 import { FileUploadModule } from 'ng2-file-upload';
 
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminComponent } from './admin/admin.component';
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
@@ -60,8 +59,9 @@ import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
 import { MatDialogModule } from "@angular/material";
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { MatTabsModule  } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+import { AdminGuard } from './guard/admin.guard';
 
 
 
@@ -87,9 +87,9 @@ import { TestSwipeComponent } from './component/test-swipe/test-swipe.component'
     ExamComponent,
     AboutComponent,
     SelectExamPropertiesComponent,
-		OutboxComponent,
-		ConfirmationDialog,
-		TestSwipeComponent
+    OutboxComponent,
+    ConfirmationDialog,
+    TestSwipeComponent
   ],
   imports: [
     BrowserModule,
@@ -124,15 +124,16 @@ import { TestSwipeComponent } from './component/test-swipe/test-swipe.component'
     FormsModule,
     FontAwesomeModule,
     MatDatepickerModule,
-		MatDialogModule,
-		MatTabsModule
+    MatDialogModule,
+    MatTabsModule
   ],
-	entryComponents: [
-		ConfirmationDialog
-	],
-	providers: [
-		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
-	],
+  entryComponents: [
+    ConfirmationDialog
+  ],
+  providers: [
+    AdminGuard,
+    { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+  ],
   bootstrap: [
     AppComponent
   ]

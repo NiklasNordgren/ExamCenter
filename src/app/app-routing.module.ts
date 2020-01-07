@@ -20,6 +20,7 @@ import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './component/login/login.component';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
+import { AdminGuard } from './guard/admin.guard';
 
 const routes: Routes = [
 	{
@@ -58,6 +59,7 @@ const routes: Routes = [
 	{
 		path: 'home',
 		component: HomeComponent,
+		canActivate: [AdminGuard], 
 		children: [
 			{
 				path: '',
