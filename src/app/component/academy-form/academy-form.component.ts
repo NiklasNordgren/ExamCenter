@@ -43,7 +43,6 @@ export class AcademyFormComponent implements OnInit {
   handleId() {
     if (this.id != 0) {
       this.service.getAcademyById(this.id).subscribe(academy => {
-
         this.form = this.formBuilder.group({
           abbreviation: academy.abbreviation,
           name: academy.name
@@ -64,10 +63,10 @@ export class AcademyFormComponent implements OnInit {
           this.academy.id = this.id;
         this.academy.name = this.form.controls['name'].value;
         this.academy.abbreviation = this.form.controls['abbreviation'].value;
-
+        
         this.service.saveAcademy(this.academy).subscribe(
           data => this.onSuccess(data),
-          error => this.onError(error)
+          error => this.onError(error)         
         );
   }
 

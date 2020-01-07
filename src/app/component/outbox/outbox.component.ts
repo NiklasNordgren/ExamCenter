@@ -6,6 +6,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UnpublishService } from '../../service/unpublish.service';
 import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
 
+// https://stackoverflow.com/questions/43751187/how-to-enable-swipe-gesture-to-move-to-next-tab-for-tabs-module-in-angular-mater
+
 @Component({
   selector: 'app-outbox',
   templateUrl: './outbox.component.html',
@@ -20,15 +22,14 @@ export class OutboxComponent implements OnInit {
 
 	subjects = [];
 	exams = [];
+	clickedId: number;
 	displayedColumns: string[] = [ 'filename', 'date', 'unpublishDate', 'actions'];
 
   	constructor(private router: Router, private service: UnpublishService, private dialog: MatDialog) { }
 
   	ngOnInit() {
 		this.service.getUnpublishedExams().subscribe(responseExams => {
-			this.exams = responseExams;
-		//	this.convertAndSetExams(responseExams);
-
+			this.convertAndSetExams(responseExams);
 		});
   	}
 	
@@ -65,18 +66,19 @@ export class OutboxComponent implements OnInit {
 	}
 
 	openDeleteDialog(element: any) {
+		this.clickedId = element.id;
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
-		});
-		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
-		this.dialogRef.componentInstance.titleMessage = "Confirm";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";  
+		  	});
+		  	this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
+			this.dialogRef.componentInstance.titleMessage = "Confirm";
+			this.dialogRef.componentInstance.confirmBtnText = "Delete";  
 
-		this.dialogRef.afterClosed().subscribe(result => {
-			if(result) {
-				this.service.deleteExam(element.id);
-				this.exams = this.exams.filter(x => x.id != element.id);
-			}				
-			this.dialogRef = null;
-		});
+		  	this.dialogRef.afterClosed().subscribe(result => {
+				if(result) {
+					this.service.deleteExam(this.clickedId);
+					this.exams = this.exams.filter(x => x.id != this.clickedId);
+				}				
+				this.dialogRef = null;
+			});
 	}
 }
