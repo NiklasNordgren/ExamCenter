@@ -150,6 +150,7 @@ $custom-palette-primary: mat-palette($black);
 $custom-palette-accent: mat-palette($hig-blue);
 $custom-palette-warn: mat-palette($hig-red);
 
+
 // include the custom theme components into a theme object
 $custom-theme: mat-light-theme($custom-palette-primary, $custom-palette-accent, $custom-palette-warn);
 
