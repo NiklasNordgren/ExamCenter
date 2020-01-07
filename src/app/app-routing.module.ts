@@ -23,6 +23,7 @@ import { SubjectHandlerComponent } from './component/subject-handler/subject-han
 import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 
 const routes: Routes = [
 	{
@@ -78,6 +79,10 @@ const routes: Routes = [
 			{
 				path: 'subject-handler',
 				component: SubjectHandlerComponent,
+			},
+			{
+				path: 'subject-form/:id',
+				component: SubjectFormComponent,
 			},
 			{
 				path: 'course-handler',

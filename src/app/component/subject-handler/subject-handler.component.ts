@@ -1,15 +1,59 @@
-import { Component, OnInit } from '@angular/core';
 
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Subject } from 'src/app/model/subject.model';
+import { SubjectService } from 'src/app/service/subject.service';
+import { Navigator } from 'src/app/util/navigator';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Academy } from 'src/app/model/academy.model';
+import { AcademyService } from 'src/app/service/academy.service';
 @Component({
-  selector: 'app-subject-handler',
-  templateUrl: './subject-handler.component.html',
-  styleUrls: ['./subject-handler.component.scss']
+  selector: 'subject-handler',
+  templateUrl: 'subject-handler.component.html',
+  styleUrls: ['subject-handler.component.scss'],
+  providers: [Navigator]
 })
 export class SubjectHandlerComponent implements OnInit {
+  displayedColumns: string[] = ['select', 'name', 'edit'];
+  academies = [];
+  subjects = [];
+  dataSource = new MatTableDataSource<Subject>(this.academies);
+  selection = new SelectionModel<Subject>(true, []);
+  faPlus = faPlus;
+  faPen = faPen;
+  faTrash = faTrash;
+  public selected = 11;
 
-  constructor() { }
+  constructor(private service: SubjectService, private navigator: Navigator, private serviceAcademy: AcademyService) { }
 
   ngOnInit() {
+   
+    this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+    this.serviceAcademy.getAllAcademies().subscribe(responseAcademies => {
+      this.academies = responseAcademies;
+    });
+    
   }
 
+  selectedAcademy(academyId: number){
+    
+    this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+      this.subjects = responseSubjects;
+      this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+    });
+  }
+
+  //For the checkboxes 
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
 }

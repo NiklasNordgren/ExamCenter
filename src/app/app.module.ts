@@ -62,6 +62,8 @@ import { CourseHandlerComponent } from './component/course-handler/course-handle
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CourseFormComponent } from './component/course-form/course-form.component';
+import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 
 
 @NgModule({
@@ -89,7 +91,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 			SubjectHandlerComponent,
 			CourseHandlerComponent,
 			ExamHandlerComponent,
-			AcademyFormComponent
+			AcademyFormComponent,
+			CourseFormComponent,
+			SubjectFormComponent
 		],
 		imports: [
 			BrowserModule,
