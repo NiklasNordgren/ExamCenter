@@ -6,7 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AcademyService } from '../../service/academy.service';
 import { element } from 'protractor';
 import { Navigator } from 'src/app/util/navigator';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-academy-form',
