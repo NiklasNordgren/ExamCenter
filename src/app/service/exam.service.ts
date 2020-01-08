@@ -29,6 +29,9 @@ export class ExamService {
 	deleteExam(id: number) {
         return this.http.delete('/api/exams/' + id).subscribe(data => {
         });;
-    }
-
+	}
+	
+	unpublishExams(exams: Exam[]) : Observable<Exam>{
+		return this.http.post<Exam>('/api/exam/unpublish/' + true, exams);
+	}
 }

@@ -58,7 +58,8 @@ export class SubjectFormComponent implements OnInit {
         this.form = this.formBuilder.group({
           academy: subject.academyId,
           code: subject.code,
-          name: subject.name
+          name: subject.name,
+          id: 2
         });
       });
     }
@@ -69,7 +70,7 @@ export class SubjectFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log("Form Submitted!");
+      this.service.saveSubject(this.form.value);
       this.form.reset();
     }
   }
