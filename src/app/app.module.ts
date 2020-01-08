@@ -5,7 +5,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-
 import { MatSliderModule } from "@angular/material/slider";
 import { NavComponent } from "./nav/nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -14,6 +13,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { AddressFormComponent } from "./address-form/address-form.component";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
@@ -69,9 +69,10 @@ import { ExamHandlerComponent } from "./component/exam-handler/exam-handler.comp
 import { AcademyFormComponent } from "./component/academy-form/academy-form.component";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
 import { SearchComponent } from "./component/search/search.component";
-import { AdminFormComponent } from './admin-form/admin-form.component';
-import { SubjectFormComponent } from './component/subject-form/subject-form.component';
-import { AdminGuard } from './guard/admin.guard';
+import { AdminFormComponent } from "./admin-form/admin-form.component";
+import { SubjectFormComponent } from "./component/subject-form/subject-form.component";
+import { AdminGuard } from "./guard/admin.guard";
+import { CourseFormComponent } from "./component/course-form/course-form.component";
 
 @NgModule({
 	declarations: [
@@ -125,7 +126,8 @@ import { AdminGuard } from './guard/admin.guard';
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
-		SubjectFormComponent
+		SubjectFormComponent,
+		CourseFormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -139,6 +141,7 @@ import { AdminGuard } from './guard/admin.guard';
 		MatSidenavModule,
 		MatIconModule,
 		MatListModule,
+		MatTooltipModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
 		MatSelectModule,
