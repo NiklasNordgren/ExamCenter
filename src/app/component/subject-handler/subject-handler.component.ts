@@ -23,22 +23,25 @@ export class SubjectHandlerComponent implements OnInit {
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
-  public selected = 11;
+  public selectedValue: number;
 
-  constructor(private service: SubjectService, private navigator: Navigator, private serviceAcademy: AcademyService) { }
+  constructor(private subjectService: SubjectService, 
+    private navigator: Navigator, 
+    private academyService: AcademyService) { }
 
   ngOnInit() {
    
     this.dataSource = new MatTableDataSource<Subject>(this.subjects);
-    this.serviceAcademy.getAllAcademies().subscribe(responseAcademies => {
+    this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
+      this.selectedValue = this.academies[0].id;
+      this.selectedAcademy(this.selectedValue);
     });
-    
   }
 
   selectedAcademy(academyId: number){
     
-    this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+    this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
       this.dataSource = new MatTableDataSource<Subject>(this.subjects);
     });

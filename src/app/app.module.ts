@@ -61,7 +61,7 @@ import { SubjectHandlerComponent } from './component/subject-handler/subject-han
 import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule} from '@angular/material/tooltip';
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 

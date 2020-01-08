@@ -7,77 +7,71 @@ import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subject } from 'src/app/model/subject.model';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Course } from 'src/app/model/course.model';
+import { CourseService } from 'src/app/service/course.service';
 
 @Component({
-  selector: 'app-course-handler',
-  templateUrl: './course-handler.component.html',
-  styleUrls: ['./course-handler.component.scss']
+  selector: 'course-handler',
+  templateUrl: 'course-handler.component.html',
+  styleUrls: ['course-handler.component.scss'],
+  providers: [Navigator]
 })
 export class CourseHandlerComponent implements OnInit {
 
-  private academies: Academy[];
-  private subjects: Subject[];
-  private form: FormGroup;
-  private subscriptions = new Subscription();
-  private id: number;
-  dataSource = new MatTableDataSource<any>();
+  displayedColumns: string[] = ['select', 'name', 'edit'];
+  academies = [];
+  subjects = [];
+  courses = [];
+  dataSource = [];
+  //dataSource = new MatTableDataSource<any>(this.subjects);
+  selection = new SelectionModel<Course>(true, []);
+  faPlus = faPlus;
+  faPen = faPen;
+  faTrash = faTrash;
+  public selectedAcademyValue: number;  
+  public selectedSubjectValue: number;  
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, 
-    private service: SubjectService, private academyService: AcademyService) { }
+  constructor(private academyService: AcademyService, private subjectService: SubjectService, 
+    private courseService: CourseService){}
 
   ngOnInit() {
-    //If id = 0, it specifies a new subject.
-    this.form = this.formBuilder.group({
-      academy: '',
-      code: '',
-      name: ''
-    });
-    //If id != 0, it specifies editing a subject. Here's how we find the subject in question.
-    this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        this.id = parseInt(params.get('id'), 10);
-        this.handleId();
-      })
-    );
-   
-    //Get all the academies for the dropdownlist of academies. When creating a new subject.
-    //Try this :) // NN
+
+    this.dataSource = [];
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
-    });
-
-
-    this.dataSource = new MatTableDataSource<Subject>(this.subjects);
-    this.academyService.getAllAcademies().subscribe(responseAcademies => {
-      this.academies = responseAcademies;
+      this.selectedAcademyValue = this.academies[0].id;
+      this.selectedAcademy(this.selectedAcademyValue);
     });
   }
-  onDestroy(){
-    this.subscriptions.unsubscribe();
-  }
-  
-  handleId() {
-    if (this.id != 0) {
-      this.service.getSubjectById(this.id).subscribe(subject => {
-        this.form = this.formBuilder.group({
-          academy: subject.academyId,
-          code: subject.code,
-          name: subject.name
-        });
-      });
-    }
-  }
 
-  onSubmit() {
-    if (this.form.valid) {
-      console.log("Form Submitted!");
-      this.form.reset();
-    }
-  }
   selectedAcademy(academyId: number){
-    this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+    
+    this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
-      this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+      this.selectedSubjectValue = this.subjects[0].id;
+      this.selectedSubject(this.selectedSubjectValue);
     });
+  }
+  selectedSubject(subjectId: number){
+
+    this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseCourses => {
+      this.courses = responseCourses;
+      this.dataSource = this.courses;
+    });
+  }
+
+  //For the checkboxes 
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.length;
+    return numSelected === numRows;
+  }
+  // Selects all rows if they are not all selected; otherwise clear selection. 
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.forEach(row => this.selection.select(row));
   }
 }

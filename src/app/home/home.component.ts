@@ -5,7 +5,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AcademyService } from '../service/academy.service';
 import { Academy } from '../model/academy.model';
-import { faCog, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faUsersCog, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-home',
@@ -14,7 +14,7 @@ import { faCog, faUpload } from '@fortawesome/free-solid-svg-icons';
 })
 export class HomeComponent implements OnInit {
 
-	faCog = faCog;
+	faUsersCog = faUsersCog;
 	faUpload = faUpload;
 	academies: Academy[] = [];
 

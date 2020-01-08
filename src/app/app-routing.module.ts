@@ -24,6 +24,7 @@ import { CourseHandlerComponent } from './component/course-handler/course-handle
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { CourseFormComponent } from './component/course-form/course-form.component';
 
 const routes: Routes = [
 	{
@@ -87,6 +88,10 @@ const routes: Routes = [
 			{
 				path: 'course-handler',
 				component: CourseHandlerComponent,
+			},
+			{
+				path: 'course-form/:id',
+				component: CourseFormComponent,
 			},
 			{
 				path: 'exam-handler',

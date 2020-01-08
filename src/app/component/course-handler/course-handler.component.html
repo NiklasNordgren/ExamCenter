@@ -1,32 +1,38 @@
 <div class="wrapper">
 
-    <button class="newButton" color="accent" mat-raised-button
-        (click)="this.navigator.goToPage('/home/course-form/0')">
+    <button class="newButton" color="accent" mat-raised-button (click)="this.navigator.goToPage('/home/course-form/0')">
         <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
     </button>
     <button class="deleteButton" color="warn" mat-raised-button
         (click)="this.navigator.goToPage('/home/course-form/0')">
         <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
     </button>
-
-    <h4>Choose Academy</h4>
-    <mat-form-field>
-        <mat-select [(ngModel)]="selectedValue" placeholder="Academy List" name="academies">
-            <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies" [value]="academy.id">
-                {{academy.name}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <h4>Choose Subject</h4>
-    <mat-form-field>
-        <mat-select [(ngModel)]="selectedValue" placeholder="Subject List" name="subjects">
-            <mat-option (click)="selectedSubject(subject.id)" *ngFor="let subject of subjects" [value]="subject.id">
-                {{subject.name}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
+    <h2>Courses</h2>
+    <mat-divider></mat-divider>
+    <div fxLayout="row">
+        <div fxLayout="column" style="margin-right: 30pt;">
+        <h4>Choose Academy</h4>
+            <mat-form-field>
+                <mat-select [(ngModel)]="selectedAcademyValue" placeholder="Academy List" name="academies">
+                    <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies"
+                        [value]="academy.id">
+                        {{academy.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column">
+            <h4>Choose Subject</h4>
+            <mat-form-field>
+                <mat-select [(ngModel)]="selectedSubjectValue" placeholder="Subject List" name="subjects">
+                    <mat-option (click)="selectedSubject(subject.id)" *ngFor="let subject of subjects"
+                        [value]="subject.id">
+                        {{subject.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
         <!-- Checkbox Column -->

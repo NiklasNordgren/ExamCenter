@@ -7,6 +7,7 @@ import { AcademyService } from 'src/app/service/academy.service';
 import { Academy } from 'src/app/model/academy.model';
 import { MatTableDataSource } from '@angular/material';
 import { Subject } from 'src/app/model/subject.model';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-subject-form',
@@ -21,6 +22,9 @@ export class SubjectFormComponent implements OnInit {
   private subscriptions = new Subscription();
   private id: number;
   dataSource = new MatTableDataSource<any>();
+  faPlus = faPlus;
+  faPen = faPen;
+  faTrash = faTrash;
  
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: SubjectService, private academyService: AcademyService) { }
 
@@ -40,16 +44,12 @@ export class SubjectFormComponent implements OnInit {
     );
    
     //Get all the academies for the dropdownlist of academies. When creating a new subject.
-    //Try this :) // NN
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
     });
-
 
     this.dataSource = new MatTableDataSource<Subject>(this.subjects);
-    this.academyService.getAllAcademies().subscribe(responseAcademies => {
-      this.academies = responseAcademies;
-    });
+
   }
 
   handleId() {
