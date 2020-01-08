@@ -1,16 +1,17 @@
-import { Injectable } from "@angular/core";
-import { Exam } from "../model/exam.model";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Exam } from '../model/exam.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-	providedIn: "root"
+	providedIn: 'root'
 })
 export class ExamService {
-	constructor(private http: HttpClient) {}
+
+	constructor(private http: HttpClient) { }
 
 	getAllExams() {
-		return this.http.get<Exam[]>("/api/exams/all");
+		return this.http.get<Exam[]>("api/exams/all");
 	}
 
 	getExamById(id: number) {
@@ -18,7 +19,7 @@ export class ExamService {
     }
 
 	getAllExamsByCourseId(id: any) {
-		return this.http.get<Exam[]>("/api/exams/course/" + id);
+		return this.http.get<Exam[]>('/api/exams/course/' + id);
 	}
 
 	saveExam(exam: Exam): Observable<Exam> {

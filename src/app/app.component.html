@@ -10,7 +10,6 @@
                     <a class="about" mat-button href="/about">About</a>
 
                     <a class="login" mat-button href="/login">Login (Admin)</a>
-
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
                     <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
@@ -24,7 +23,7 @@
             <span>
                 <div fxShow="true" fxHide.lt-md="true">
                     <a href="/">
-                        <img src="../../assets/HiG_vit_text.svg" id="logo" class="logo" style="background-color: black;"
+                        <img src="../../assets/HiG_vit_text.svg" id="logo" matTooltip="Go to homepage" class="logo" style="background-color: black;"
                             alt="University of Gävle logo">
                     </a>
                 </div>
@@ -38,7 +37,7 @@
             <span class="example-fill-remaining-space academies">
                 <div fxShow="true" fxHide.lt-md="true">
                     <div class="flex-container">
-                        <button (click)="goToPage('/subjects/academy/'+ academy.id)" mat-button class="button"
+                        <button matTooltip={{academy.name}} (click)="goToPage('/subjects/academy/'+ academy.id)" mat-button class="button"
                             *ngFor="let academy of academies">{{academy.shortDesc}}</button>
                     </div>
                 </div>

@@ -3,13 +3,21 @@
 	margin-left: 15%;
 }
 
-.text {
+h1 {
 	text-align: start;
 	margin-left: 18pt;
 }
 
-.full-width-table {
-	width: 100%;
+h3 {
+	text-align: start;
+	margin: 0px;
+	margin-left: 18pt;
+	padding: 0px;
+}
+
+p {
+	text-align: start;
+	margin-left: 18pt;
 }
 
 .full-width-table {
@@ -46,9 +54,20 @@ tr:hover {
 }
 
 .mat-column-course-code {
-	flex: 0 0 100px !important;
+	width: 200px !important;
 }
 
 .mat-column-abbreviation {
-	flex: 0 0 100px !important;
+	width: 200px !important;
+}
+
+.toggle-button {
+	position: relative;
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+.button-icon {
+	position: relative;
+	top: 7px;
 }

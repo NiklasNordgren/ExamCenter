@@ -5,7 +5,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-
 import { MatSliderModule } from "@angular/material/slider";
 import { NavComponent } from "./nav/nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -22,6 +21,7 @@ import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TableComponent } from "./component/table/table.component";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -42,7 +42,6 @@ import { HomeComponent } from "./home/home.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { FileUploadComponent } from "./component/file-upload/file-upload.component";
 import { SelectExamPropertiesComponent } from "./component/select-exam-properties/select-exam-properties.component";
-
 import { FileUploadModule } from "ng2-file-upload";
 import { OutboxComponent } from "./component/outbox/outbox.component";
 import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
@@ -73,8 +72,8 @@ import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
-
-
+import { AdminGuard } from "./guard/admin.guard";
+import { CourseFormComponent } from "./component/course-form/course-form.component";
 
 @NgModule({
 	declarations: [
@@ -129,7 +128,8 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 		SearchComponent,
 		AdminFormComponent,
     	SubjectFormComponent,
-    	ExamFormComponent
+    	ExamFormComponent,
+		CourseFormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -143,6 +143,7 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 		MatSidenavModule,
 		MatIconModule,
 		MatListModule,
+		MatTooltipModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
 		MatSelectModule,
@@ -157,7 +158,6 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
@@ -171,6 +171,7 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 		MatSliderModule,
 		LayoutModule,
 		MatToolbarModule,
+		MatTooltipModule,
 		MatButtonModule,
 		MatSidenavModule,
 		MatIconModule,
@@ -189,7 +190,6 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
@@ -201,6 +201,7 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 	],
 	entryComponents: [ConfirmationDialog],
 	providers: [
+		AdminGuard,
 		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
 	],
 	bootstrap: [AppComponent]

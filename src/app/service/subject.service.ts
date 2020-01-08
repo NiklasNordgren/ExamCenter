@@ -12,23 +12,22 @@ export class SubjectService {
 
   getSubjectById(id: number) {
     return this.http.get<Subject>('api/subjects/' + id);
-}
+  }
 
-  getAllSubjectsByAcademyId(academyId: number){
+  getAllSubjectsByAcademyId(academyId: number) {
     return this.http.get<Subject[]>("api/subjects/academy/" + academyId);
   }
 
-  getAllSubjects(){
+  getAllSubjects() {
     return this.http.get<Subject[]>("api/subjects/all");
   }
 
   saveSubject(subject: Subject): Observable<Subject> {
     return this.http.post<Subject>("/api/subjects", subject);
-}
+  }
 
   deleteSubject(id: number) {
     return this.http.delete('/api/subjects/' + id).subscribe(data => {
     });;
-}
-
+  }
 }

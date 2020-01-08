@@ -1,7 +1,16 @@
 .search-button {
 	margin: 0px !important;
 	padding: 0px !important;
-	border-radius: 1 !important;
-	border: solid white 1px;
 	min-width: 150%;
+}
+
+.search-button:focus {
+	border: solid white 1px;
+}
+
+.info-icon {
+	position: relative;
+	top: 0px;
+	margin-right: 5px;
+	margin-top: 20px;
 }

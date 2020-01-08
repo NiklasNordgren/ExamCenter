@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
 	selector: "app-list",
@@ -10,6 +11,8 @@ export class ListComponent implements OnInit {
 	@Input() data: any[];
 	@Input() shortHeader: string;
 	@Input() name: string;
+	@Input() icon: IconDefinition;
+	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
 
 	private columnsToDisplay: string[] = [];

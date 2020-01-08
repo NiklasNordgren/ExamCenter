@@ -18,15 +18,16 @@ import { Exam } from "./model/exam.model";
 import { ExamComponent } from "./component/exam/exam.component";
 import { AboutComponent } from "./about/about.component";
 import { LoginComponent } from "./component/login/login.component";
-import { SearchResultComponent } from "./component/search-result/search-result.component";
+import { AcademyHandlerComponent } from "./component/academy-handler/academy-handler.component";
+import { SubjectHandlerComponent } from "./component/subject-handler/subject-handler.component";
+import { CourseHandlerComponent } from "./component/course-handler/course-handler.component";
+import { ExamHandlerComponent } from "./component/exam-handler/exam-handler.component";
+import { AcademyFormComponent } from "./component/academy-form/academy-form.component";
 import { OutboxComponent } from "./component/outbox/outbox.component";
 import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
-
-import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
-import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
-import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
-import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
-import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import { AdminGuard } from "./guard/admin.guard";
+import { SearchResultComponent } from "./component/search-result/search-result.component";
+import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminFormComponent } from './admin-form/admin-form.component';
@@ -52,6 +53,11 @@ const routes: Routes = [
 		data: Academy
 	},
 	{
+		path: "search/:searchString",
+		component: SearchResultComponent,
+		data: String
+	},
+	{
 		path: "subjects/academy/:id",
 		component: SubjectComponent,
 		data: Subject
@@ -67,13 +73,9 @@ const routes: Routes = [
 		data: Exam
 	},
 	{
-		path: "search/:searchString",
-		component: SearchResultComponent,
-		data: String
-	},
-	{
 		path: "home",
 		component: HomeComponent,
+		canActivate: [AdminGuard],
 		children: [
 			{
 				path: "",
@@ -93,6 +95,10 @@ const routes: Routes = [
 				component: SubjectHandlerComponent
 			},
 			{
+				path: "course-handler",
+				component: CourseHandlerComponent
+			},
+			{
 				path: 'subject-form/:id',
 				component: SubjectFormComponent,
 			},
@@ -101,8 +107,12 @@ const routes: Routes = [
 				component: CourseHandlerComponent,
 			},
 			{
-				path: "exam-handler",
-				component: ExamHandlerComponent
+				path: 'course-form/:id',
+				component: CourseFormComponent,
+			},
+			{
+				path: 'exam-handler',
+				component: ExamHandlerComponent,
 			},
 			{
 				path: "exam-form/:id",
@@ -113,8 +123,8 @@ const routes: Routes = [
 				component: AdminFormComponent
 			},
 			{
-				path: 'address-form',
-				component: AddressFormComponent,
+				path: "address-form",
+				component: AddressFormComponent
 			},
 			{
 				path: "dashboard",

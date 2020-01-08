@@ -24,23 +24,13 @@ export class AcademyHandlerComponent {
   constructor(private service: AcademyService, private navigator: Navigator) { }
 
   ngOnInit() {
-
     this.service.getAllAcademies().subscribe(responseAcademies => {
       this.convertAndSetAcademies(responseAcademies);
-
     });
   }
 
   convertAndSetAcademies(responseAcademies) {
-    this.academies = [];
-    responseAcademies.forEach(academy => {
-      this.academies.push({
-        name: academy.name,
-        shortDesc: academy.abbreviation,
-        id: academy.id
-      });
-    });
-    this.dataSource = new MatTableDataSource<Academy>(this.academies);
+    this.dataSource = new MatTableDataSource<Academy>(responseAcademies);
   }
 
   isAllSelected() {
@@ -54,5 +44,18 @@ export class AcademyHandlerComponent {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  unpublishSelection() {
+    this.service.unpublishAcademies(this.selection.selected).subscribe(
+      data => this.onSuccess(data),
+      error => this.onError(error)
+    );
+  }
+  onSuccess(data) {
+    alert('Successfully unpublished selected academies');
+  }
+  onError(error) {
+    alert('Something went wrong wile trying to unpublish academies.');
   }
 }
