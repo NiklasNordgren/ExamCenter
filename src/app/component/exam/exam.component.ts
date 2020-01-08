@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { ExamService } from "src/app/service/exam.service";
@@ -8,6 +8,8 @@ import {
 	faExternalLinkAlt,
 	IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
+import { CourseService } from "src/app/service/course.service";
+import { Course } from "src/app/model/course.model";
 
 @Component({
 	selector: "app-exam",
@@ -21,12 +23,16 @@ export class ExamComponent implements OnInit, OnDestroy {
 	data: any[] = [];
 	icon: IconDefinition = faExternalLinkAlt;
 	actionDescription: string = "Open PDF file in new tab";
+	course: Course;
+	courseLoaded: boolean = false;
 
 	constructor(
 		private route: ActivatedRoute,
 		private service: ExamService,
 		private fileService: FileService,
-		private navigator: Navigator
+		private courseService: CourseService,
+		private navigator: Navigator,
+		private changeDetector: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -42,7 +48,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 		this.subscriptions.unsubscribe();
 	}
 
-	setExamsByCourseId(courseId) {
+	setExamsByCourseId(courseId: number) {
 		const sub = this.service
 			.getAllExamsByCourseId(courseId)
 			.subscribe(exams => {
@@ -53,6 +59,11 @@ export class ExamComponent implements OnInit, OnDestroy {
 						name: exam.filename,
 						shortDesc: ""
 					});
+					this.courseService.getCourseById(courseId).subscribe(course => {
+						this.course = course;
+						this.courseLoaded = true;
+						this.changeDetector.detectChanges();
+					});
 				});
 			});
 		this.subscriptions.add(sub);
@@ -62,11 +73,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 		const filename = row.id;
 		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
-			let popup = window.open(fileURL, "_blank");
-			console.log(popup.location);
-			if (!popup || popup.closed || typeof popup.closed == "undefined") {
-				// show dialog
-			}
+			window.open(fileURL, "_blank");
 		});
 		this.subscriptions.add(sub);
 	}

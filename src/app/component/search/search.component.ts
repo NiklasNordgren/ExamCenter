@@ -20,8 +20,12 @@ export class SearchComponent implements OnInit {
 	ngOnInit() {}
 
 	search() {
-		let str = this.searchString.nativeElement.value;
-		this.searchString.nativeElement.value = "";
-		this.navigator.goToPage("/search/" + str);
+		if (this.searchString.nativeElement.value === "") {
+			alert("Please enter a non-empty search string");
+		} else {
+			let str = this.searchString.nativeElement.value;
+			this.searchString.nativeElement.value = "";
+			this.navigator.goToPage("/search/" + str);
+		}
 	}
 }
