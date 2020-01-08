@@ -25,7 +25,6 @@ export class CourseHandlerComponent implements OnInit {
   subjects = [];
   courses = [];
   dataSource = [];
-  //dataSource = new MatTableDataSource<any>(this.subjects);
   selection = new SelectionModel<Course>(true, []);
   faPlus = faPlus;
   faPen = faPen;

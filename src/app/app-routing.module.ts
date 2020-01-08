@@ -27,8 +27,8 @@ import { OutboxComponent } from "./component/outbox/outbox.component";
 import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
 import { AdminGuard } from "./guard/admin.guard";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
-import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { CourseFormComponent } from './component/course-form/course-form.component';
 
 const routes: Routes = [
 	{
@@ -98,10 +98,6 @@ const routes: Routes = [
 			{
 				path: 'subject-form/:id',
 				component: SubjectFormComponent,
-			},
-			{
-				path: 'course-handler',
-				component: CourseHandlerComponent,
 			},
 			{
 				path: 'course-form/:id',

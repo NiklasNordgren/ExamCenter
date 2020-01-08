@@ -5,7 +5,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-
 import { MatSliderModule } from "@angular/material/slider";
 import { NavComponent } from "./nav/nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -36,6 +35,7 @@ import { MatProgressBarModule, MatCheckboxModule } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTooltipModule} from '@angular/material/tooltip';
 
 import { HttpClientModule } from "@angular/common/http";
 import { HomeComponent } from "./home/home.component";
@@ -72,6 +72,7 @@ import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { AdminGuard } from './guard/admin.guard';
+import { CourseFormComponent } from './component/course-form/course-form.component';
 
 @NgModule({
 	declarations: [
@@ -125,7 +126,8 @@ import { AdminGuard } from './guard/admin.guard';
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
-		SubjectFormComponent
+		SubjectFormComponent,
+		CourseFormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -192,7 +194,8 @@ import { AdminGuard } from './guard/admin.guard';
 		FontAwesomeModule,
 		MatDatepickerModule,
 		MatDialogModule,
-		MatTabsModule
+		MatTabsModule, 
+		MatTooltipModule
 	],
 	entryComponents: [ConfirmationDialog],
 	providers: [
