@@ -1,45 +1,66 @@
 <div class="content-container">
-  <h1 class="text">Search results</h1>
-  <p class="text">
-    Showing results for {{searchString}}
+  <h1>Search results</h1>
+  <p>
+    Showing results for "{{searchString}}"
   </p>
-  <table mat-table [dataSource]="subjects" class="full-width-table">
-    <ng-container matColumnDef='abbreviation'>
-      <th mat-header-cell *matHeaderCellDef>Abbreviation</th>
-      <td mat-cell *matCellDef="let row">
-        <a mat-flat-button class="nav-button" aria-label="Navigate to selected subject" (click)="rowClicked(row)">{{row.code}}</a>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef='subject'>
-      <th mat-header-cell *matHeaderCellDef>Subject</th>
-      <td mat-cell *matCellDef="let row">
-        <a mat-flat-button class="nav-button" aria-label="Navigate to selected subject" (click)="rowClicked(row)">{{row.name}}</a>
-      </td>
-    </ng-container>
-    <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
 
-    <tr mat-header-row *matHeaderRowDef="['abbreviation', 'subject']"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: ['abbreviation', 'subject']"></tr>
 
-  </table>
+  <div style="display:flex; flex-direction: column;">
+    <button class="toggle-button" mat-button *ngIf="subjectsLoaded" (click)="toggleSubjectTable()">
+      <h3>
+        Subjects ({{subjects.length}})
+        <mat-icon *ngIf="!showSubjects" mat-suffix class="button-icon">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="showSubjects" mat-suffix class="button-icon">keyboard_arrow_up</mat-icon>
+      </h3>
+    </button>
+    <div *ngIf="showSubjects">
+      <table #subjectTable [@toggle]="showSubjects ? 'open' : 'closed'" mat-table [dataSource]="subjects" class="full-width-table">
+        <ng-container matColumnDef='code'>
+          <th mat-header-cell *matHeaderCellDef>Subject code</th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-flat-button class="nav-button" aria-label="Navigate to selected subject"
+              (click)="subjectSelected(row.id)">{{row.code}}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef='subject'>
+          <th mat-header-cell *matHeaderCellDef>Subject</th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-flat-button class="nav-button" aria-label="Navigate to selected subject"
+              (click)="subjectSelected(row.id)">{{row.name}}</a>
+          </td>
+        </ng-container>
 
-  <table mat-table [dataSource]="courses" class="full-width-table">
-    <ng-container matColumnDef='course-code'>
-      <th mat-header-cell *matHeaderCellDef>Course code</th>
-      <td mat-cell *matCellDef="let row">
-        <a mat-flat-button class="nav-button" aria-label="Navigate to selected course" (click)="rowClicked(row)">{{row.courseCode}}</a>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef='course'>
-      <th mat-header-cell *matHeaderCellDef>Course</th>
-      <td mat-cell *matCellDef="let row">
-        <a mat-flat-button class="nav-button" aria-label="Navigate to selected course" (click)="rowClicked(row)">{{row.name}}</a>
-      </td>
-    </ng-container>
-    <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
+        <tr mat-header-row *matHeaderRowDef="['code', 'subject']"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: ['code', 'subject']"></tr>
+      </table>
+    </div>
 
-    <tr mat-header-row *matHeaderRowDef="['course-code', 'course']"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: ['course-code', 'course']"></tr>
+    <button class="toggle-button" mat-button *ngIf="coursesLoaded" (click)="toggleCourseTable()">
+      <h3>
+        Courses ({{courses.length}})
+        <mat-icon *ngIf="!showCourses" mat-suffix class="button-icon">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="showCourses" mat-suffix class="button-icon">keyboard_arrow_up</mat-icon>
+      </h3>
+    </button>
+    <div *ngIf="showCourses">
+      <table #subjectTable [@toggle]="showCourses ? 'open' : 'closed'" mat-table [dataSource]="courses" class="full-width-table">
+        <ng-container matColumnDef='course-code'>
+          <th mat-header-cell *matHeaderCellDef>Course code</th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-flat-button class="nav-button" aria-label="Navigate to selected course"
+              (click)="courseSelected(row.id)">{{row.courseCode}}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef='course'>
+          <th mat-header-cell *matHeaderCellDef>Course</th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-flat-button class="nav-button" aria-label="Navigate to selected course" (click)="courseSelected(row.id)">{{row.name}}</a>
+          </td>
+        </ng-container>
 
-  </table>
+        <tr mat-header-row *matHeaderRowDef="['course-code', 'course']"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: ['course-code', 'course']"></tr>
+      </table>
+    </div>
+  </div>
 </div>

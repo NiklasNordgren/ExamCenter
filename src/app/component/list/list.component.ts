@@ -25,8 +25,6 @@ export class ListComponent implements OnInit {
 	}
 
 	rowClicked(clickedRow) {
-		console.log("Row clicked");
-		console.log(clickedRow);
 		this.clicked.emit(clickedRow);
 	}
 }

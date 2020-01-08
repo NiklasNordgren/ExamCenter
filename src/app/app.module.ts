@@ -42,7 +42,6 @@ import { HomeComponent } from "./home/home.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { FileUploadComponent } from "./component/file-upload/file-upload.component";
 import { SelectExamPropertiesComponent } from "./component/select-exam-properties/select-exam-properties.component";
-
 import { FileUploadModule } from "ng2-file-upload";
 import { OutboxComponent } from "./component/outbox/outbox.component";
 import { ConfirmationDialog } from "./component/confirmation-dialog/confirmation-dialog";
@@ -72,6 +71,7 @@ import { SearchResultComponent } from "./component/search-result/search-result.c
 import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { AdminGuard } from './guard/admin.guard';
 
 
 
@@ -127,7 +127,7 @@ import { SubjectFormComponent } from './component/subject-form/subject-form.comp
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
-    	SubjectFormComponent
+		SubjectFormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -187,7 +187,6 @@ import { SubjectFormComponent } from './component/subject-form/subject-form.comp
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
@@ -199,6 +198,7 @@ import { SubjectFormComponent } from './component/subject-form/subject-form.comp
 	],
 	entryComponents: [ConfirmationDialog],
 	providers: [
+		AdminGuard,
 		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
 	],
 	bootstrap: [AppComponent]
