@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { Observable, of } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,6 @@ export class AdminGuard implements CanActivate {
       .pipe(tof => {
         if (!tof)
           this.router.navigateByUrl('/academy');
-        console.log(tof);
         return tof;
       });
   }
