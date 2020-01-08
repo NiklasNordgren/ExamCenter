@@ -25,14 +25,6 @@
                 placeholder="Ex. Datorsystem, Linjär algebra">
         </mat-form-field>
 
-        <!--Hidden columns for backend call-->
-        <mat-form-field>
-            <mat-label for="id">Id</mat-label>
-            <input matInput id="id" type="text" formControlName="id"
-                size="100pt">
-        </mat-form-field>
-
-
         <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
             class="btn btn-primary">Save</button>
             

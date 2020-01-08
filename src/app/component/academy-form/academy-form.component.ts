@@ -75,8 +75,12 @@ export class AcademyFormComponent implements OnInit {
   }
 
   onError(error){
-    if(error['status'] == 405)
+    if(error['status'] == 401){
+      alert('Not athorized. Please log in and try again');
+      this.navigator.goToPage('/login');
+    }else if(error['status'] == 405){
       alert('Error. Check if the name or abbreviation already exists.');
+    }
     else{
       alert('Error. Something went wrong while trying to save or edit the academy.');
     }

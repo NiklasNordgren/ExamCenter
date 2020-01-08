@@ -30,7 +30,7 @@ export class SubjectService {
     console.log('saving...');
     console.log(subject);
     
-    return this.http.post<Subject>("/api/subjects", subject);
+    return this.http.post<Subject>("/api/subjects/", subject);
   }
 
   deleteSubject(id: number) {
