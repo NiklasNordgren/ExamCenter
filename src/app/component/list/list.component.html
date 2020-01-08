@@ -16,10 +16,8 @@
         <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToDisplay" (click)="rowClicked(row)">
-            <a mat-button attr.aria-label='{{actionDescription}}'></a>
+        <tr class="link" mat-row *matRowDef="let row; columns: columnsToDisplay" (click)="rowClicked(row)">
+            <a attr.aria-label='{{actionDescription}}'></a>
         </tr>
-
-
     </table>
 </div>

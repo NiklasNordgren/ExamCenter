@@ -62,7 +62,11 @@ export class ExamComponent implements OnInit, OnDestroy {
 		const filename = row.id;
 		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
-			window.open(fileURL, "_blank");
+			let popup = window.open(fileURL, "_blank");
+			console.log(popup.location);
+			if (!popup || popup.closed || typeof popup.closed == "undefined") {
+				// show dialog
+			}
 		});
 		this.subscriptions.add(sub);
 	}
