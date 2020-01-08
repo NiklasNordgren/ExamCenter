@@ -3,12 +3,14 @@
     <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="login(form.value)">
       <mat-form-field appearance="outline">
         <mat-label for="username">Username</mat-label>
-        <input matInput id="username" required type="text" formControlName="username" placeholder="Ex. 17hig01" size="100pt">
+        <input autofocus matInput id="username" required type="text" formControlName="username" placeholder="Ex. 17hig01" size="100pt">
+        <fa-icon class="icon" matSuffix [icon]="faUser">sentiment_very_satisfied</fa-icon>
       </mat-form-field>
     
       <mat-form-field appearance="outline">
         <mat-label for="password">Password</mat-label>
         <input matInput id="password" required type="password" formControlName="password">
+        <fa-icon class="icon" matSuffix [icon]="faUnlock">sentiment_very_satisfied</fa-icon>
       </mat-form-field>
      
       <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary loginbtn">Login</button>

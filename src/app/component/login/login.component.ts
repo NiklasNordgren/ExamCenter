@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { LoginService } from "src/app/service/login.service";
 import { Router } from "@angular/router";
 import { Subscription } from 'rxjs';
+import { faUser, faUnlock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	templateUrl: "./login.component.html",
@@ -12,6 +13,8 @@ export class LoginComponent implements OnInit, OnDestroy{
 	private isLoading = false;
 	private form: FormGroup;
 	private subscriptions = new Subscription();
+	faUser = faUser;
+	faUnlock = faUnlock;
 	
 	constructor(
 		private formBuilder: FormBuilder,
@@ -38,8 +41,14 @@ export class LoginComponent implements OnInit, OnDestroy{
 	}
 
 	handleResponse(isLoggedIn) {
-		if (isLoggedIn) this.router.navigate(["/home/admin"]);
-		else window.alert("Userename or password is incorrect.");
+		if (isLoggedIn)
+			this.router.navigate(["/home/admin"]);
+		else{
+			this.form.patchValue({
+				password: '' 
+			  });
+			window.alert("Userename or password is incorrect.");
+		}
 	}
 
 	handleError(error: any) {
