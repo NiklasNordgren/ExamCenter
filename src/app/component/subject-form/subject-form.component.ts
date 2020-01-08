@@ -1,82 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Navigator } from 'src/app/util/navigator';
-import { Subject } from '../../model/subject.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { SubjectService } from '../../service/subject.service';
+import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
-
-export interface customAcademyArray {
-  value: number;
-  viewValue: string;
-}
+import { Academy } from 'src/app/model/academy.model';
+import { MatTableDataSource } from '@angular/material';
+import { Subject } from 'src/app/model/subject.model';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-subject-form',
   templateUrl: './subject-form.component.html',
-  styleUrls: ['./subject-form.component.scss'],
-  providers: [Navigator]
+  styleUrls: ['./subject-form.component.scss']
 })
 export class SubjectFormComponent implements OnInit {
 
-  academyArray: Array<customAcademyArray> = [];
-
+  private academies: Academy[];
+  private subjects: Subject[];
   private form: FormGroup;
   private subscriptions = new Subscription();
+  private id: number;
+  dataSource = new MatTableDataSource<any>();
+  faPlus = faPlus;
+  faPen = faPen;
+  faTrash = faTrash;
+ 
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: SubjectService, private academyService: AcademyService) { }
 
-  FORM_TYPE = {CREATE: 0}
-  isCreateForm: boolean;
-  subject: Subject = new Subject();
-  
-  academyIdSelector = 0;
-  titleText: string;
-  buttonText: string;
-
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: SubjectService, private academyService: AcademyService,private navigator: Navigator) {
-
-  }
-  
   ngOnInit() {
+    //If id = 0, it specifies a new subject.
     this.form = this.formBuilder.group({
-      name: '',
+      academy: '',
       code: '',
-      academyId: ''
+      name: ''
     });
-    this.getAcademies();
-    console.log(this.academyArray);
-    
+    //If id != 0, it specifies editing a subject. Here's how we find the subject in question.
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
-        this.createForm(parseInt(params.get('id'), 10));
+        this.id = parseInt(params.get('id'), 10);
+        this.handleId();
       })
     );
-  }
-
-  getAcademies() {
-    this.academyService.getAllAcademies().subscribe(academies => {
-      for (let academy of academies) {
-        this.academyArray.push({value: academy.id, viewValue: academy.name});
-      }
+   
+    //Get all the academies for the dropdownlist of academies. When creating a new subject.
+    this.academyService.getAllAcademies().subscribe(responseAcademies => {
+      this.academies = responseAcademies;
     });
+
+    this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+
   }
 
-  createForm(id: number) {
-    
-
-    if (id == this.FORM_TYPE.CREATE) {
-      this.isCreateForm = true;
-      this.setCreateFormText();
-    } else {
-      this.isCreateForm = false;
-      this.setEditFormText();
-      this.service.getSubjectById(id).subscribe(subject => {
-        this.subject = subject;
-        this.academyIdSelector = subject.academyId;
+  handleId() {
+    if (this.id != 0) {
+      this.service.getSubjectById(this.id).subscribe(subject => {
         this.form = this.formBuilder.group({
-          name: subject.name,
+          academy: subject.academyId,
           code: subject.code,
-          academyId: subject.academyId
+          name: subject.name
         });
       });
     }
@@ -87,28 +69,14 @@ export class SubjectFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      if (this.isCreateForm) {
-        this.subject = new Subject();
-      }
-        this.subject.name = this.form.controls['name'].value;
-        this.subject.code = this.form.controls['code'].value;
-        this.subject.academyId = this.form.controls['academyId'].value;
-
-        this.service.saveSubject(this.subject).subscribe(e => {
-        });   
-
+      console.log("Form Submitted!");
       this.form.reset();
     }
   }
-
-  setCreateFormText() {
-    this.titleText = "Create Subject"
-    this.buttonText = "Create";
+  selectedAcademy(academyId: number){
+    this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+      this.subjects = responseSubjects;
+      this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+    });
   }
-
-  setEditFormText() {
-    this.titleText = "Edit Subject";
-    this.buttonText = "Save";
-  }
-
 }

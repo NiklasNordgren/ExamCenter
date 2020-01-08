@@ -73,8 +73,6 @@ import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { AdminGuard } from './guard/admin.guard';
 
-
-
 @NgModule({
 	declarations: [
 		AppComponent,
