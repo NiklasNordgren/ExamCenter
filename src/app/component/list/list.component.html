@@ -3,20 +3,23 @@
         <ng-container class="short-header" matColumnDef={{shortHeader}}>
             <th mat-header-cell *matHeaderCellDef> {{shortHeader}} </th>
             <td mat-cell *matCellDef="let row">
-                <a mat-flat-button class="nav-button" aria-label="Navigate to selected item" (click)="rowClicked(row)">{{row.shortDesc}}</a>
+                {{row.shortDesc}}
             </td>
         </ng-container>
         <ng-container matColumnDef={{name}}>
             <th mat-header-cell *matHeaderCellDef> {{name}} </th>
             <td mat-cell *matCellDef="let row">
-                <a mat-flat-button class="nav-button" attr.aria-label='{{actionDescription}}' (click)="rowClicked(row)">{{row.name}}
-                    <fa-icon style="margin-left: 3px;" [icon]='icon'></fa-icon>
-                </a>
+                {{row.name}}
+                <fa-icon style="margin-left: 3px;" [icon]='icon'></fa-icon>
+            </td>
         </ng-container>
         <!--Används för att veta vilka komponenter som ska visas (de ovan)-->
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay" (click)="rowClicked(row)">
+            <a mat-button attr.aria-label='{{actionDescription}}'></a>
+        </tr>
+
 
     </table>
 </div>
