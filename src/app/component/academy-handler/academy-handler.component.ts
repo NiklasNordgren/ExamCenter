@@ -24,15 +24,12 @@ export class AcademyHandlerComponent {
   constructor(private service: AcademyService, private navigator: Navigator) { }
 
   ngOnInit() {
-
     this.service.getAllAcademies().subscribe(responseAcademies => {
       this.convertAndSetAcademies(responseAcademies);
     });
   }
 
   convertAndSetAcademies(responseAcademies) {
-    console.log(responseAcademies);
-
     this.dataSource = new MatTableDataSource<Academy>(responseAcademies);
   }
 
