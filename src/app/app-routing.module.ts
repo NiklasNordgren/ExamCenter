@@ -80,7 +80,7 @@ const routes: Routes = [
 			{
 				path: "",
 				pathMatch: "full",
-				redirectTo: "dashboard"
+				redirectTo: "file-upload"
 			},
 			{
 				path: "academy-handler",
@@ -123,26 +123,6 @@ const routes: Routes = [
 				component: AdminFormComponent
 			},
 			{
-				path: "address-form",
-				component: AddressFormComponent
-			},
-			{
-				path: "dashboard",
-				component: DashboardComponent
-			},
-			{
-				path: "drag-drop",
-				component: DragDropComponent
-			},
-			{
-				path: "table",
-				component: TableComponent
-			},
-			{
-				path: "tree",
-				component: TreeComponent
-			},
-			{
 				path: "file-upload",
 				component: FileUploadComponent
 			},
@@ -153,10 +133,6 @@ const routes: Routes = [
 			{
 				path: "outbox",
 				component: OutboxComponent
-			},
-			{
-				path: "swipe",
-				component: TestSwipeComponent
 			}
 		]
 	}
