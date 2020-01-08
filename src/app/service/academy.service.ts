@@ -22,7 +22,7 @@ export class AcademyService {
 	unpublishAcademy(academy: Academy) : Observable<Academy>{
 		return this.http.post<Academy>('/api/academies/unpublish/' + academy.unpublished, academy );
 	}
-	unpublishAcademies(academies: Academy[], unpublished : boolean) : Observable<Academy>{
-		return this.http.post<Academy>('/api/academies/unpublish/' + unpublished, academies);
+	unpublishAcademies(academies: Academy[]) : Observable<Academy>{
+		return this.http.post<Academy>('/api/academies/unpublish/' + true, academies);
 	}
 }
