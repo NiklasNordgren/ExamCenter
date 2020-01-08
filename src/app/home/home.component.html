@@ -11,10 +11,11 @@
         </mat-toolbar-row>
     </mat-toolbar>
 </ng-template>
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container"  (swipeleft)="drawer.close()" (swiperight)="drawer.open()">
     <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <mat-nav-list>
+
             <a  mat-list-item [routerLink]="['academy-handler']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Academy</a>
             <mat-divider></mat-divider>
             <a mat-list-item [routerLink]="['subject-handler']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Subject</a>
@@ -22,10 +23,16 @@
             <a  mat-list-item [routerLink]="['course-handler']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Course</a>
             <mat-divider></mat-divider>
             <a mat-list-item [routerLink]="['exam-handler']"><fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Exam</a>
+
+            <a mat-list-item [routerLink]="['file-upload']">
+                <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
+            </a>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['admin']"><fa-icon [icon]="faUsersCog" style="margin-right: 5pt;"></fa-icon>Administer Users</a>
+            <a mat-list-item [routerLink]="['admin']">
+                <fa-icon [icon]="faUsersCog" style="margin-right: 5pt;"></fa-icon>Administer Users
+            </a>
+
             <mat-divider></mat-divider>
-            <app-logout></app-logout>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

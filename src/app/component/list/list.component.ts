@@ -1,28 +1,33 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Router } from "@angular/router";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-	selector: 'app-list',
-	templateUrl: './list.component.html',
-	styleUrls: ['./list.component.scss']
+	selector: "app-list",
+	templateUrl: "./list.component.html",
+	styleUrls: ["./list.component.scss"]
 })
 export class ListComponent implements OnInit {
 	@Input() data: any[];
 	@Input() shortHeader: string;
 	@Input() name: string;
+	@Input() icon: IconDefinition;
+	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
 
-	private columnsToDisplay;
+	private columnsToDisplay: string[] = [];
 
 	constructor(private router: Router) {}
 
 	ngOnInit() {
-		this.columnsToDisplay = [this.shortHeader, this.name];
+		if (this.shortHeader && this.shortHeader.length > 0) {
+			this.columnsToDisplay.push(this.shortHeader);
+			console.log("ShortHeader added");
+		}
+		this.columnsToDisplay.push(this.name);
 	}
 
 	rowClicked(clickedRow) {
-		console.log('Row clicked');
-		console.log(clickedRow);
 		this.clicked.emit(clickedRow);
 	}
 }

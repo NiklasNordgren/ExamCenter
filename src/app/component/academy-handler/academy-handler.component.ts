@@ -27,20 +27,13 @@ export class AcademyHandlerComponent {
 
     this.service.getAllAcademies().subscribe(responseAcademies => {
       this.convertAndSetAcademies(responseAcademies);
-
     });
   }
 
   convertAndSetAcademies(responseAcademies) {
-    this.academies = [];
-    responseAcademies.forEach(academy => {
-      this.academies.push({
-        name: academy.name,
-        shortDesc: academy.abbreviation,
-        id: academy.id
-      });
-    });
-    this.dataSource = new MatTableDataSource<Academy>(this.academies);
+    console.log(responseAcademies);
+    
+    this.dataSource = new MatTableDataSource<Academy>(responseAcademies);
   }
 
   isAllSelected() {
@@ -54,5 +47,14 @@ export class AcademyHandlerComponent {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  unpublishSelection(){
+    console.log('selected objects: ');
+    console.log(this.selection.selected);
+
+    this.service.unpublishAcademies(this.selection.selected, true).subscribe(response => {
+      alert('Successfully unpublished: ' + this.selection.selected);
+    });
   }
 }

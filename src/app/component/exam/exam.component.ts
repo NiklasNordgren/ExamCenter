@@ -4,6 +4,10 @@ import { ActivatedRoute } from "@angular/router";
 import { ExamService } from "src/app/service/exam.service";
 import { FileService } from "src/app/file.service";
 import { Navigator } from "src/app/util/navigator";
+import {
+	faExternalLinkAlt,
+	IconDefinition
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
 	selector: "app-exam",
@@ -12,9 +16,11 @@ import { Navigator } from "src/app/util/navigator";
 	providers: [Navigator]
 })
 export class ExamComponent implements OnInit, OnDestroy {
-	private subscriptions = new Subscription();
-	name = "Filename";
-	data = [];
+	private subscriptions: Subscription = new Subscription();
+	name: string = "Filename";
+	data: any[] = [];
+	icon: IconDefinition = faExternalLinkAlt;
+	actionDescription: string = "Open PDF file in new tab";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -42,11 +48,9 @@ export class ExamComponent implements OnInit, OnDestroy {
 			.subscribe(exams => {
 				this.data = [];
 				exams.forEach(exam => {
-					console.log(exam.fileName);
-
 					this.data.push({
-						id: exam.fileName,
-						name: exam.fileName,
+						id: exam.filename,
+						name: exam.filename,
 						shortDesc: ""
 					});
 				});
@@ -55,10 +59,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	}
 
 	openPdf(row) {
-		console.log(JSON.stringify(row));
-
-		const fileName = row.id;
-		const sub = this.fileService.downloadFile(fileName).subscribe(pdfBlob => {
+		const filename = row.id;
+		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
 			window.open(fileURL, "_blank");
 		});
