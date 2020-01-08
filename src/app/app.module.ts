@@ -71,9 +71,10 @@ import { SearchResultComponent } from "./component/search-result/search-result.c
 import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from "./admin-form/admin-form.component";
 import { SubjectFormComponent } from "./component/subject-form/subject-form.component";
+import { ExamFormComponent } from "./component/exam-form/exam-form.component";
 import { AdminGuard } from "./guard/admin.guard";
 import { CourseFormComponent } from "./component/course-form/course-form.component";
-import { SettingsComponent } from './component/settings/settings.component';
+import { SettingsComponent } from "./component/settings/settings.component";
 
 @NgModule({
 	declarations: [
@@ -128,6 +129,7 @@ import { SettingsComponent } from './component/settings/settings.component';
 		SearchComponent,
 		AdminFormComponent,
 		SubjectFormComponent,
+		ExamFormComponent,
 		CourseFormComponent,
 		SettingsComponent
 	],

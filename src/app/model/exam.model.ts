@@ -1,4 +1,5 @@
 export class Exam {
+    id: number;
     filename: string;
     date: Date;
     courseId: number;
