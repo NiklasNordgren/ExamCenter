@@ -1,7 +1,6 @@
-<div>
-  <button mat-icon-button style="padding: 0;">
-    <fa-icon [icon]='faInfoCircle' style="margin-top: 50px;"></fa-icon>
-  </button>
+<span>
+  <fa-icon [icon]='faInfoCircle' size='sm' matTooltip='Search for subjects and courses by name or code' tabindex="0" class="info-icon">
+  </fa-icon>
   <mat-form-field class="search-container" [style.fontSize.px]=15>
     <input #searchString (keyup.enter)="search();" class="search-field" type="text" matInput placeholder="Search" spellcheck="false">
     <a aria-label="Search for subject or course and navigate to the search result page" (click)="search();" mat-button matSuffix
@@ -9,4 +8,4 @@
       <mat-icon>search</mat-icon>
     </a>
   </mat-form-field>
-</div>
+</span>
