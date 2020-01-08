@@ -13,6 +13,10 @@ export class ExamService {
 		return this.http.get<Exam[]>("/api/exams/all");
 	}
 
+	getExamById(id: number) {
+        return this.http.get<Exam>('api/exams/' + id);
+    }
+
 	getAllExamsByCourseId(id: any) {
 		return this.http.get<Exam[]>("/api/exams/course/" + id);
 	}
@@ -20,4 +24,10 @@ export class ExamService {
 	saveExam(exam: Exam): Observable<Exam> {
 		return this.http.post<Exam>("/api/exams", exam);
 	}
+
+	deleteExam(id: number) {
+        return this.http.delete('/api/exams/' + id).subscribe(data => {
+        });;
+    }
+
 }

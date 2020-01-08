@@ -72,6 +72,7 @@ import { SearchResultComponent } from "./component/search-result/search-result.c
 import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { ExamFormComponent } from './component/exam-form/exam-form.component';
 
 
 
@@ -127,7 +128,8 @@ import { SubjectFormComponent } from './component/subject-form/subject-form.comp
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
-    	SubjectFormComponent
+    	SubjectFormComponent,
+    	ExamFormComponent
 	],
 	imports: [
 		BrowserModule,

@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+}
+  
+.wrapper {
+    max-width: 90%;
+    margin-left: 5%;
+}
+  
+.newButton {
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+}
+  
+.editButton {
+    float: right;
+    background-color: #ffe92f;
+}
+  
+.deleteButton {
+    margin-left: 10pt;
+}
+  
+.buttonText {
+    margin-left: 3pt;
+}
+    
+.selectors-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.selectors {
+    flex-direction: column;
+    margin-right: 10pt;
+}
