@@ -30,14 +30,13 @@ export class CourseHandlerComponent implements OnInit {
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
-  public selectedAcademyValue: number;  
-  public selectedSubjectValue: number;  
+  public selectedAcademyValue: number;
+  public selectedSubjectValue: number;
 
-  constructor(private academyService: AcademyService,private navigator: Navigator,  private subjectService: SubjectService, 
-    private courseService: CourseService){}
+  constructor(private academyService: AcademyService, private navigator: Navigator,
+    private subjectService: SubjectService, private courseService: CourseService) { }
 
   ngOnInit() {
-
     this.dataSource = [];
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
@@ -46,15 +45,15 @@ export class CourseHandlerComponent implements OnInit {
     });
   }
 
-  selectedAcademy(academyId: number){
-    
+  selectedAcademy(academyId: number) {
+
     this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
       this.selectedSubjectValue = this.subjects[0].id;
       this.selectedSubject(this.selectedSubjectValue);
     });
   }
-  selectedSubject(subjectId: number){
+  selectedSubject(subjectId: number) {
 
     this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseCourses => {
       this.courses = responseCourses;

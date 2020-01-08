@@ -7,7 +7,8 @@
         <mat-form-field>
             <mat-label>Academy list</mat-label>
             <mat-select formControlName="academy" name="academies">
-                <mat-option required (click)="selectedAcademy(academy.id)" placeholder="Academy list" *ngFor="let academy of academies" [value]="academy.id">
+                <mat-option required (click)="selectedAcademy(academy.id)" placeholder="Academy list" 
+                *ngFor="let academy of academies" [value]="academy.id">
                     {{academy.name}}
                 </mat-option>
             </mat-select>

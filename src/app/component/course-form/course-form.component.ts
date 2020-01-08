@@ -19,6 +19,7 @@ import { ExamService } from 'src/app/service/exam.service';
 })
 export class CourseFormComponent implements OnInit {
 
+  selectedAcademyValue: number;
   private academies: Academy[];
   private subjects: Subject[];
   private courses: Course[];
@@ -39,7 +40,6 @@ export class CourseFormComponent implements OnInit {
 
 
   ngOnInit() {
-    
     //If id = 0, it specifies a new object.
     this.form = this.formBuilder.group({
       academy: '',
@@ -54,12 +54,12 @@ export class CourseFormComponent implements OnInit {
         this.handleId();
       })
     );
-
+/*
     //Get all the academies for the dropdownlist of academies.
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
     });
-
+*/
     this.dataSource = this.subjects;
 
   }
@@ -71,21 +71,16 @@ export class CourseFormComponent implements OnInit {
     if (this.id != 0) {
       this.courseService.getCourseById(this.id).subscribe(course => {
         this.form = this.formBuilder.group({
+          academy: this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
+           subject.academyId} ),
           subject: course.subjectId,
           code: course.courseCode,
           name: course.name
         });
-        this.getAcademyIdBySubjectId(course.subjectId);
+        this.selectedSubjectValue = course.subjectId;
       });
-    }
-  }
-  getAcademyIdBySubjectId(subjectId: number){
-    this.subjectService.getSubjectById(subjectId).subscribe(subject => {
-      this.form = this.formBuilder.group({
-        academy: subject.academyId
-      });
-    });
 
+    }
   }
   onSubmit() {
     if (this.form.valid) {
@@ -115,5 +110,7 @@ export class CourseFormComponent implements OnInit {
       this.dataSource = this.exams;
     });
   }
+
+
 }
 
