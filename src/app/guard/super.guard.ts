@@ -17,7 +17,6 @@ export class SuperGuard implements CanActivate {
   isUserLoggedInAsSuperUser(): Observable<boolean> {
     return this.userService.isUserLoggedInAsAdmin()
       .pipe(tof => {
-        console.log(tof);
         return tof;
       });
   }

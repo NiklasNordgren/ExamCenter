@@ -18,7 +18,6 @@ export class AdminGuard implements CanActivate {
   isUserLoggedInAsAdmin(): Observable<boolean> {
     return this.userService.isUserLoggedInAsAdmin()
       .pipe(tof => {
-        console.log(tof);
         return tof;
       });
   }
