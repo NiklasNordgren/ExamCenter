@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { faUserPlus, faUsersCog, faSearch, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUsersCog, faSearch, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
 import { Exam } from '../../model/exam.model';
 import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
@@ -28,7 +28,7 @@ export interface customExamArray {
 })
 export class ExamHandlerComponent implements OnInit{
 
-	faUserPlus = faUserPlus;
+	faPlus = faPlus;
 	faUsersCog = faUsersCog;
 	faSearch = faSearch;
 
