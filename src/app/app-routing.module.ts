@@ -92,12 +92,12 @@ const routes: Routes = [
 				component: SubjectHandlerComponent
 			},
 			{
-				path: "course-handler",
-				component: CourseHandlerComponent
-			},
-			{
 				path: 'subject-form/:id',
 				component: SubjectFormComponent,
+			},
+			{
+				path: "course-handler",
+				component: CourseHandlerComponent
 			},
 			{
 				path: 'course-form/:id',

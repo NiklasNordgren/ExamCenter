@@ -16,4 +16,7 @@ export class CourseService {
   getAllCourses(){
     return this.http.get<Course[]>("api/courses/all");
   }
+  getCourseById(courseId: number){
+    return this.http.get<Course>("api/courses/" + courseId);
+  }
 }

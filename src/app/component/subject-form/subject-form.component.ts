@@ -21,12 +21,13 @@ export class SubjectFormComponent implements OnInit {
   private form: FormGroup;
   private subscriptions = new Subscription();
   private id: number;
-  dataSource = new MatTableDataSource<any>();
+  dataSource = [];
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
  
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: SubjectService, private academyService: AcademyService) { }
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, 
+    private service: SubjectService, private academyService: AcademyService) { }
 
   ngOnInit() {
     //If id = 0, it specifies a new subject.
@@ -47,9 +48,7 @@ export class SubjectFormComponent implements OnInit {
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
     });
-
-    this.dataSource = new MatTableDataSource<Subject>(this.subjects);
-
+    this.dataSource = this.subjects;
   }
 
   handleId() {
@@ -75,8 +74,8 @@ export class SubjectFormComponent implements OnInit {
   }
   selectedAcademy(academyId: number){
     this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
-      this.subjects = responseSubjects;
-      this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+      this.dataSource = this.subjects = responseSubjects;
+       
     });
   }
 }

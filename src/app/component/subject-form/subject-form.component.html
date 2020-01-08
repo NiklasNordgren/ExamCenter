@@ -15,14 +15,14 @@
 
         <mat-form-field>
             <mat-label for="code">Code</mat-label>
-            <input matInput id="code" required type="text" formControlName="code" placeholder="Ex. DVG324, MAG051"
+            <input matInput id="code" required type="text" formControlName="code" placeholder="Ex. MA, DI"
                 size="100pt">
         </mat-form-field>
 
         <mat-form-field>
             <mat-label for="name">Name</mat-label>
             <input matInput id="name" required type="text" formControlName="name"
-                placeholder="Ex. Datorsystem, Linjär algebra">
+                placeholder="Ex. Matematik, Didaktik">
         </mat-form-field>
 
         <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
