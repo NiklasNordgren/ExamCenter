@@ -9,8 +9,8 @@
     <button class="toggle-button" mat-button *ngIf="subjectsLoaded" (click)="toggleSubjectTable()">
       <h3>
         Subjects ({{subjects.length}})
-        <mat-icon *ngIf="!showSubjects" mat-suffix class="button-icon">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="showSubjects" mat-suffix class="button-icon">keyboard_arrow_up</mat-icon>
+        <mat-icon *ngIf="!showSubjects" mat-suffix class="button-icon">expand_more</mat-icon>
+        <mat-icon *ngIf="showSubjects" mat-suffix class="button-icon">expand_less</mat-icon>
       </h3>
     </button>
     <div *ngIf="showSubjects">

@@ -1,21 +1,27 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { CourseService } from 'src/app/service/course.service';
-import { Navigator } from 'src/app/util/navigator';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
+import { CourseService } from "src/app/service/course.service";
+import { Navigator } from "src/app/util/navigator";
+import {
+	IconDefinition,
+	faChevronRight
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-	selector: 'app-course',
-	templateUrl: './course.component.html',
-	styleUrls: ['./course.component.scss'],
+	selector: "app-course",
+	templateUrl: "./course.component.html",
+	styleUrls: ["./course.component.scss"],
 	providers: [Navigator]
 })
 export class CourseComponent implements OnInit, OnDestroy {
-	private subscriptions = new Subscription();
-	shortHeader = 'Code';
-	name = 'Course';
+	private subscriptions: Subscription = new Subscription();
+	shortHeader: string = "Code";
+	name: string = "Course";
 	data = [];
-	url = '/exams/course/';
+	url: string = "/exams/course/";
+	icon: IconDefinition = faChevronRight;
+	actionDescription: string = "Navigate to selected course";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -26,7 +32,7 @@ export class CourseComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const subjectId = parseInt(params.get('id'), 10);
+				const subjectId = parseInt(params.get("id"), 10);
 				this.setCoursesBySubjectId(subjectId);
 			})
 		);
