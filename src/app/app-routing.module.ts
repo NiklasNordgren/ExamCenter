@@ -29,6 +29,9 @@ import { AdminGuard } from "./guard/admin.guard";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
+import { ExamFormComponent } from './component/exam-form/exam-form.component';
+import { AdminFormComponent } from './admin-form/admin-form.component';
+
 
 const routes: Routes = [
 	{
@@ -110,6 +113,14 @@ const routes: Routes = [
 			{
 				path: 'exam-handler',
 				component: ExamHandlerComponent,
+			},
+			{
+				path: "exam-form/:id",
+				component: ExamFormComponent
+			},
+			{
+				path: 'admin-form/:id',
+				component: AdminFormComponent
 			},
 			{
 				path: "address-form",

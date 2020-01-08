@@ -1,5 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Navigator } from "src/app/util/navigator";
+import {
+	faInfoCircle,
+	IconDefinition
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
 	selector: "app-search",
@@ -9,6 +13,7 @@ import { Navigator } from "src/app/util/navigator";
 })
 export class SearchComponent implements OnInit {
 	@ViewChild("searchString", { static: false }) searchString: ElementRef;
+	faInfoCircle: IconDefinition = faInfoCircle;
 
 	constructor(private navigator: Navigator) {}
 

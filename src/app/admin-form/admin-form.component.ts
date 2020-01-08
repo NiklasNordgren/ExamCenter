@@ -30,6 +30,7 @@ export class AdminFormComponent implements OnInit {
   FORM_TYPE = {CREATE: 0}
   isCreateForm: boolean;
   user: User = new User();
+  id: number;
   
   isSuperUserSelector = false;
   titleText: string;
@@ -46,7 +47,8 @@ export class AdminFormComponent implements OnInit {
     });
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
-        this.createForm(parseInt(params.get('id'), 10));
+        this.id = parseInt(params.get('id'), 10);
+        this.createForm(this.id);
       })
     );
   }

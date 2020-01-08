@@ -5,7 +5,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-
 import { MatSliderModule } from "@angular/material/slider";
 import { NavComponent } from "./nav/nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -22,7 +21,7 @@ import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TableComponent } from "./component/table/table.component";
 import { MatTableModule } from "@angular/material/table";
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -72,8 +71,9 @@ import { SearchResultComponent } from "./component/search-result/search-result.c
 import { SearchComponent } from "./component/search/search.component";
 import { AdminFormComponent } from './admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
-import { AdminGuard } from './guard/admin.guard';
-import { CourseFormComponent } from './component/course-form/course-form.component';
+import { ExamFormComponent } from './component/exam-form/exam-form.component';
+import { AdminGuard } from "./guard/admin.guard";
+import { CourseFormComponent } from "./component/course-form/course-form.component";
 
 @NgModule({
 	declarations: [
@@ -127,7 +127,8 @@ import { CourseFormComponent } from './component/course-form/course-form.compone
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
-		SubjectFormComponent,
+    	SubjectFormComponent,
+    	ExamFormComponent,
 		CourseFormComponent
 	],
 	imports: [
@@ -142,6 +143,7 @@ import { CourseFormComponent } from './component/course-form/course-form.compone
 		MatSidenavModule,
 		MatIconModule,
 		MatListModule,
+		MatTooltipModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
 		MatSelectModule,
@@ -156,7 +158,6 @@ import { CourseFormComponent } from './component/course-form/course-form.compone
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
