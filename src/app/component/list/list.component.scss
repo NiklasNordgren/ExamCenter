@@ -23,3 +23,9 @@ tr:hover {
 	position: absolute;
 	width: 300px;
 }
+
+.link {
+	&:hover {
+		cursor: pointer;
+	}
+}
