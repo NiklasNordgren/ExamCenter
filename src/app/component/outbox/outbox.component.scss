@@ -40,15 +40,15 @@ h3 {
 .toggle-button {
     position: relative;
 }
-
-.publishBtn {
+ 
+.singleButtons {
     float: right;
-    display: block;
+}
+.publishBtn {
+    margin-right: 10pt;
 }
 
 .deleteBtn {
-    float: right;
-    margin-left: 10pt;
 }
   
 .buttonText {

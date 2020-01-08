@@ -64,15 +64,17 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
+                        <div class="singleButtons"> 
                         <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
                             <fa-icon [icon]="faFileMedical"></fa-icon>
                             <span class="button-text"> Publish</span>
                         </button>
-                        
-                        <button mat-raised-button color="accent" (click)="deleteExam(element)" class="deleteBtn">
+
+                        <button mat-raised-button color="warn" (click)="deleteExam(element)" class="deleteBtn">
                             <fa-icon [icon]="faTrash"></fa-icon>
                             <span class="button-text"> Delete</span>
                         </button>
+                    </div>
                     </td>
                 </ng-container>
 
