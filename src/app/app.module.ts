@@ -22,6 +22,7 @@ import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TableComponent } from "./component/table/table.component";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -156,7 +157,6 @@ import { CourseFormComponent } from "./component/course-form/course-form.compone
 		MatTreeModule,
 		MatProgressBarModule,
 		DragDropModule,
-		// OAuthModule.forRoot()\r\nNgxFileDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
 		FlexLayoutModule,
@@ -170,6 +170,7 @@ import { CourseFormComponent } from "./component/course-form/course-form.compone
 		MatSliderModule,
 		LayoutModule,
 		MatToolbarModule,
+		MatTooltipModule,
 		MatButtonModule,
 		MatSidenavModule,
 		MatIconModule,

@@ -7,7 +7,7 @@
     <button class="deleteButton" color="warn" mat-raised-button
         (click)="unpublishSelection()">
 
-        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
+        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Unpublish Checked</span>
     </button>
     <h2>Academies</h2>
     <mat-divider></mat-divider>
@@ -16,13 +16,13 @@
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null"
+                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                <mat-checkbox color="warn" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
                     [checked]="selection.isSelected(row)" [aria-label]="surprise">
                 </mat-checkbox>
             </td>
