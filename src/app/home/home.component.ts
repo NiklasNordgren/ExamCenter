@@ -5,7 +5,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AcademyService } from '../service/academy.service';
 import { Academy } from '../model/academy.model';
-import { faUsersCog, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faUsersCog, faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-home',
@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
 
 	faUsersCog = faUsersCog;
 	faUpload = faUpload;
+	faTrash = faTrash;
 	academies: Academy[] = [];
 
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

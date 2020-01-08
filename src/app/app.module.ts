@@ -53,7 +53,7 @@ import {
 import { MatTabsModule } from "@angular/material/tabs";
 import { TestSwipeComponent } from "./component/test-swipe/test-swipe.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { AdminComponent } from "./admin/admin.component";
+import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
 import { NavHorizComponent } from "./nav-horiz/nav-horiz.component";
 import { ListComponent } from "./component/list/list.component";
 import { AcademyComponent } from "./component/academy/academy.component";
@@ -69,7 +69,7 @@ import { ExamHandlerComponent } from "./component/exam-handler/exam-handler.comp
 import { AcademyFormComponent } from "./component/academy-form/academy-form.component";
 import { SearchResultComponent } from "./component/search-result/search-result.component";
 import { SearchComponent } from "./component/search/search.component";
-import { AdminFormComponent } from './admin-form/admin-form.component';
+import { AdminFormComponent } from './component/admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminGuard } from "./guard/admin.guard";
@@ -91,7 +91,6 @@ import { CourseFormComponent } from "./component/course-form/course-form.compone
 		NavHorizComponent,
 		ListComponent,
 		AcademyComponent,
-		AdminComponent,
 		SubjectComponent,
 		CourseComponent,
 		ExamComponent,
@@ -115,7 +114,7 @@ import { CourseFormComponent } from "./component/course-form/course-form.compone
 		NavHorizComponent,
 		ListComponent,
 		AcademyComponent,
-		AdminComponent,
+		AdminHandlerComponent,
 		SubjectComponent,
 		CourseComponent,
 		ExamComponent,

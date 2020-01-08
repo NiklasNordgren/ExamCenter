@@ -3,18 +3,18 @@ import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { faUserPlus, faUsersCog, faSearch, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { UserService } from '../service/user.service';
-import { User } from '../model/user.model';
-import { ConfirmationDialog } from '../component/confirmation-dialog/confirmation-dialog';
+import { UserService } from '../../service/user.service';
+import { User } from '../../model/user.model';
+import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
 
 
 @Component({
-	selector: 'app-admin',
-	templateUrl: './admin.component.html',
-	styleUrls: ['./admin.component.scss'],
+	selector: 'app-admin-handler',
+	templateUrl: './admin-handler.component.html',
+	styleUrls: ['./admin-handler.component.scss'],
 	providers: [Navigator]
 })
-export class AdminComponent {
+export class AdminHandlerComponent {
 
 	faUserPlus = faUserPlus;
 	faUsersCog = faUsersCog;

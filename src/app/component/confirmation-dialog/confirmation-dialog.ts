@@ -7,9 +7,9 @@ import { MatDialog, MatDialogRef } from '@angular/material';
   styleUrls: ['./confirmation-dialog.scss']
 })
 export class ConfirmationDialog {
-    
-    public confirmMessage: string;
+
     public titleMessage: string = "Confirm";
+    public confirmMessage: string;
     public confirmBtnText: string = "Confirm";
     public cancelBtnText: string = "Cancel";
 

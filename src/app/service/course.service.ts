@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Course } from '../model/course.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,11 @@ export class CourseService {
 
   getUnpublishedCourses() {
 		return this.http.get<Course[]>('/api/courses/unpublished');
+  }
+  
+  saveCourse(course: Course){
+		return this.http.post<Course>('/api/courses', course).subscribe(data => {
+    });
 	}
 
 	publishCourse(course: Course) {

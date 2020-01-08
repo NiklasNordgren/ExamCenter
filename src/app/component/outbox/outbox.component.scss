@@ -7,36 +7,48 @@ table {
     margin-left: 5%;
 }
 
-.tables {
-    display: flex;
-    flex-direction: column;
+.select-buttons {
+    position: sticky;
+    top: 0;
+    text-align: center;
 }
-  
-.publishBtn {
-    float: right;
-    display: block;
- //   background-color: #ffe92f;
+
+.publishSelectedButton {
+    margin-top: 10pt;
+    margin-bottom: 10pt;
 }
-  
+
+.deleteSelectedButton {
+    margin-left: 10pt;
+}
+
 .button-icon {
 	position: relative;
 	top: 7px;
 }
 
-.toggle-button {
-	position: relative;
+.tables {
+    display: flex;
+    flex-direction: column;
 }
-
+  
 h3 {
-	text-align: start;
+	text-align: left;
 	margin-left: 18pt;
 }
 
+.toggle-button {
+    position: relative;
+}
 
-.deleteButton {
-    margin-top: 10pt;
-    margin-bottom: 10pt;
-    display: block !important;
+.publishBtn {
+    float: right;
+    display: block;
+}
+
+.deleteBtn {
+    float: right;
+    margin-left: 10pt;
 }
   
 .buttonText {

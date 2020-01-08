@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Navigator } from 'src/app/util/navigator';
-import { User } from '../model/user.model';
+import { User } from '../../model/user.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../service/user.service';
 
 export interface customBooleanArray {
   value: boolean;
