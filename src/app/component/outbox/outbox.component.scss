@@ -1,10 +1,48 @@
-.full-width-table {
+table {
     width: 100%;
 }
-
-.deleteBtn {
-    margin-left:10px;
+  
+.wrapper {
+    max-width: 90%;
+    margin-left: 5%;
 }
+
+.tables {
+    display: flex;
+    flex-direction: column;
+}
+  
+.publishBtn {
+    float: right;
+    display: block;
+ //   background-color: #ffe92f;
+}
+  
+.button-icon {
+	position: relative;
+	top: 7px;
+}
+
+.toggle-button {
+	position: relative;
+}
+
+h3 {
+	text-align: start;
+	margin-left: 18pt;
+}
+
+
+.deleteButton {
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+    display: block !important;
+}
+  
+.buttonText {
+    margin-left: 3pt;
+}
+    
 
 @media screen and (max-width: 731px) {
     .button-text {

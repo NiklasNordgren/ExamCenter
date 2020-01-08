@@ -14,6 +14,10 @@ export class SubjectService {
     return this.http.get<Subject>('api/subjects/' + id);
   }
 
+  getUnpublishedSubjects() {
+    return this.http.get<Subject[]>('api/subjects/unpublished');
+  }
+
   getAllSubjectsByAcademyId(academyId: number) {
     return this.http.get<Subject[]>("api/subjects/academy/" + academyId);
   }

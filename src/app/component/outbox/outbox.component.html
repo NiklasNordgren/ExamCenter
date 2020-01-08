@@ -1,37 +1,242 @@
-<div>
-    <table mat-table [dataSource]="exams" class="full-width-table">
+<div class="wrapper">
+    <button class="deleteButton" color="warn" mat-raised-button (click)="openDeleteDialog()">
 
-        <ng-container matColumnDef="filename">
-            <th mat-header-cell *matHeaderCellDef> Filename </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
-        </ng-container>
+        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
+    </button>
 
-        <ng-container matColumnDef="date" >
-            <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.date}} </td>
-        </ng-container>  
-      
-        <ng-container matColumnDef="unpublishDate">
-            <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.unpublishDate}} </td>
-        </ng-container>  
+    <!-- Exam Table -->
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
-                    <fa-icon [icon]="faFileMedical"></fa-icon> 
-                    <span class="button-text"> Publish</span>
-                </button >
-                <button mat-raised-button color="warn" (click)="openDeleteDialog(element)" class="deleteBtn">
-                    <fa-icon [icon]="faTrash"></fa-icon> 
-                    <span class="button-text"> Delete</span>
-                </button>
-            </td>
-        </ng-container> 
+    <div class="tables">
+        <button class="toggle-button" mat-button (click)="toggleExamTable()">
+            <h3>
+                Exams ({{exams.length}})
+                <mat-icon *ngIf="!showExams" mat-suffix class="button-icon">expand_more</mat-icon>
+                <mat-icon *ngIf="showExams" mat-suffix class="button-icon">expand_less</mat-icon>
+            </h3>
+        </button>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
-    </table>
-</div>
+        <div *ngIf="showExams">
+            <table mat-table [dataSource]="examArray" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="surprise">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="filename">
+                    <th mat-header-cell *matHeaderCellDef> Filename </th>
+                    <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let exam"> {{exam.date}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="unpublishDate">
+                    <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
+                    <td mat-cell *matCellDef="let exam"> {{exam.unpublishDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="courseName">
+                    <th mat-header-cell *matHeaderCellDef> Course Name </th>
+                    <td mat-cell *matCellDef="let exam"> {{exam.courseName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedExamColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedExamColumns;"></tr>
+            </table>
+        </div>
+
+        <!-- Course Table -->
+
+        <button class="toggle-button" mat-button (click)="toggleCourseTable()">
+            <h3>
+                Courses ({{courses.length}})
+                <mat-icon *ngIf="!showCourses" mat-suffix class="button-icon">expand_more</mat-icon>
+                <mat-icon *ngIf="showCourses" mat-suffix class="button-icon">expand_less</mat-icon>
+            </h3>
+        </button>
+
+        <div *ngIf="showCourses">
+            <table mat-table [dataSource]="courseArray" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="surprise">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> name </th>
+                    <td mat-cell *matCellDef="let course"> {{course.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="courseCode">
+                    <th mat-header-cell *matHeaderCellDef> Course Code </th>
+                    <td mat-cell *matCellDef="let course"> {{course.courseCode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="subjectName">
+                    <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                    <td mat-cell *matCellDef="let course"> {{course.subjectName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedCourseColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedCourseColumns;"></tr>
+            </table>
+        </div>
+
+        <!-- Subject Table -->
+
+        <button class="toggle-button" mat-button (click)="toggleSubjectTable()">
+            <h3>
+                Subjects ({{subjects.length}})
+                <mat-icon *ngIf="!showSubjects" mat-suffix class="button-icon">expand_more</mat-icon>
+                <mat-icon *ngIf="showSubjects" mat-suffix class="button-icon">expand_less</mat-icon>
+            </h3>
+        </button>
+
+        <div *ngIf="showSubjects">
+            <table mat-table [dataSource]="subjectArray" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="surprise">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> name </th>
+                    <td mat-cell *matCellDef="let subject"> {{subject.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="subjectCode">
+                    <th mat-header-cell *matHeaderCellDef> Subject Code </th>
+                    <td mat-cell *matCellDef="let subject"> {{subject.code}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="academyName">
+                    <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                    <td mat-cell *matCellDef="let subject"> {{subject.academyName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedSubjectColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedSubjectColumns;"></tr>
+            </table>
+        </div>
+
+        <!-- Academy Table -->
+
+        <button class="toggle-button" mat-button (click)="toggleAcademyTable()">
+            <h3>
+                Academies ({{academies.length}})
+                <mat-icon *ngIf="!showAcademys" mat-suffix class="button-icon">expand_more</mat-icon>
+                <mat-icon *ngIf="showAcademys" mat-suffix class="button-icon">expand_less</mat-icon>
+            </h3>
+        </button>
+
+        <div *ngIf="showAcademies">
+            <table mat-table [dataSource]="academyArray" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="surprise">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> name </th>
+                    <td mat-cell *matCellDef="let academy"> {{academy.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="abbreviation">
+                    <th mat-header-cell *matHeaderCellDef> Abbreviation </th>
+                    <td mat-cell *matCellDef="let academy"> {{academy.abbreviation}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedAcademyColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedAcademyColumns;"></tr>
+            </table>
+        </div>

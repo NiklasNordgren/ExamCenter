@@ -61,6 +61,7 @@ export class AdminFormComponent implements OnInit {
       this.isCreateForm = false;
       this.setEditFormText();
       this.service.getUserById(id).subscribe(user => {
+        
         this.user = user;
         this.isSuperUserSelector = user.isSuperUser;
         this.form = this.formBuilder.group({

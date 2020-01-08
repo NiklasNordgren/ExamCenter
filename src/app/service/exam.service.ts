@@ -29,6 +29,16 @@ export class ExamService {
 	deleteExam(id: number) {
         return this.http.delete('/api/exams/' + id).subscribe(data => {
         });;
-    }
+	}
+	
+	getUnpublishedExams() {
+		return this.http.get<Exam[]>('/api/exams/unpublished');
+	}
+
+	publishExam(exam: Exam) {
+		return this.http.post('/api/exams/unpublish', exam).subscribe(data => {
+		});
+	}
+
 
 }

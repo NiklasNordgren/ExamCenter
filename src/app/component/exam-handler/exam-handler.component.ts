@@ -11,15 +11,6 @@ import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { MatTableDataSource } from '@angular/material';
 
-export interface customExamArray {
-	id: number;
-	filename: string;
-  date: Date;
-  unpublishDate: Date;
-  unpublished: boolean;
-	academyName: string;
-}
-
 @Component({
 	selector: 'app-exam-handler',
 	templateUrl: './exam-handler.component.html',
@@ -36,11 +27,10 @@ export class ExamHandlerComponent implements OnInit{
 	faPen = faPen;
 	faTrash = faTrash;
 
-	examArray: Array<customExamArray> = [];
   	academies = [];
   	subjects = [];
   	courses = [];
-  	exams: Exam[] = [];
+  	exams = [];
 
   	selectedAcademyValue: number;
   	selectedSubjectValue: number;
@@ -49,7 +39,7 @@ export class ExamHandlerComponent implements OnInit{
 	dialogRef: MatDialogRef<ConfirmationDialog>;
 	displayedColumns: string[] = ['select', 'filename', 'date', 'unpublishDate', 'unpublished', 'edit'];
   
- 	constructor(private service: ExamService, private courseService: CourseService, private subjectService: SubjectService,
+ 	constructor(private examService: ExamService, private courseService: CourseService, private subjectService: SubjectService,
     	private academyService: AcademyService, private navigator: Navigator, 
     	private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef) {
 
@@ -79,7 +69,7 @@ export class ExamHandlerComponent implements OnInit{
   }
   
   selectedCourse(id: number) {
-    this.service.getAllExamsByCourseId(id).subscribe(responseResult => {
+    this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
       this.exams = responseResult;
     });
   }
@@ -99,7 +89,7 @@ export class ExamHandlerComponent implements OnInit{
 		this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				for (let exam of this.selection.selected) {
-					this.service.deleteExam(exam.id);
+					this.examService.deleteExam(exam.id);
 					this.exams = this.exams.filter(x => x.id != exam.id);
 				}
 			}
