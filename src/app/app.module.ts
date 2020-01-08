@@ -73,6 +73,7 @@ import { AdminFormComponent } from "./admin-form/admin-form.component";
 import { SubjectFormComponent } from "./component/subject-form/subject-form.component";
 import { AdminGuard } from "./guard/admin.guard";
 import { CourseFormComponent } from "./component/course-form/course-form.component";
+import { SettingsComponent } from './component/settings/settings.component';
 
 @NgModule({
 	declarations: [
@@ -127,7 +128,8 @@ import { CourseFormComponent } from "./component/course-form/course-form.compone
 		SearchComponent,
 		AdminFormComponent,
 		SubjectFormComponent,
-		CourseFormComponent
+		CourseFormComponent,
+		SettingsComponent
 	],
 	imports: [
 		BrowserModule,
