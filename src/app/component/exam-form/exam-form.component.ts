@@ -5,22 +5,26 @@ import { Exam } from '../../model/exam.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ExamService } from '../../service/exam.service';
-import { AcademyService } from 'src/app/service/academy.service';
+import { CourseService } from 'src/app/service/course.service';
+import { Course } from 'src/app/model/course.model';
 
-export interface customAcademyArray {
-  value: number;
+export interface customBooleanArray {
+  value: boolean;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-exam-form',
+  selector: 'app-address-form',
   templateUrl: './exam-form.component.html',
   styleUrls: ['./exam-form.component.scss'],
   providers: [Navigator]
 })
 export class ExamFormComponent implements OnInit {
 
-  academyArray: Array<customAcademyArray> = [];
+  boolean: customBooleanArray[] = [
+    {value: false, viewValue: 'False'},
+    {value: true, viewValue: 'True'}
+  ];
 
   private form: FormGroup;
   private subscriptions = new Subscription();
@@ -28,43 +32,40 @@ export class ExamFormComponent implements OnInit {
   FORM_TYPE = {CREATE: 0}
   isCreateForm: boolean;
   exam: Exam = new Exam();
+  id: number;
   
-  academyIdSelector = 0;
+  isUnpublishedSelector = false;
+  courses: Course[];
   titleText: string;
   buttonText: string;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private academyService: AcademyService,private navigator: Navigator) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService,
+    private courseService: CourseService, private navigator: Navigator) {
 
   }
   
   ngOnInit() {
     this.form = this.formBuilder.group({
-      filename: '',
-      date: '',
-      unpublishDate: '',
-      isUnpublished: ''
+          filename: '',
+          date: '',
+          unpublishDate: '',
+          unpublished: '',
+          course: ''
     });
-    this.getAcademies();
-    console.log(this.academyArray);
-    
+
+    this.courseService.getAllCourses().subscribe(responseResult => {
+      this.courses = responseResult;
+    });
+
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
-        this.createForm(parseInt(params.get('id'), 10));
+        this.id = parseInt(params.get('id'), 10);
+        this.createForm(this.id);
       })
     );
   }
 
-  getAcademies() {
-    this.academyService.getAllAcademies().subscribe(academies => {
-      for (let academy of academies) {
-        this.academyArray.push({value: academy.id, viewValue: academy.name});
-      }
-    });
-  }
-
   createForm(id: number) {
-    
-
     if (id == this.FORM_TYPE.CREATE) {
       this.isCreateForm = true;
       this.setCreateFormText();
@@ -73,12 +74,13 @@ export class ExamFormComponent implements OnInit {
       this.setEditFormText();
       this.service.getExamById(id).subscribe(exam => {
         this.exam = exam;
-     //   this.academyIdSelector = exam.academyId;
+        this.isUnpublishedSelector = exam.unpublished;
         this.form = this.formBuilder.group({
           filename: exam.filename,
           date: exam.date,
           unpublishDate: exam.unpublishDate,
-          isUnpublished: exam.unpublished
+          unpublished: exam.unpublished,
+          course: exam.courseId
         });
       });
     }
@@ -94,9 +96,12 @@ export class ExamFormComponent implements OnInit {
       }
         this.exam.filename = this.form.controls['filename'].value;
         this.exam.date = this.form.controls['date'].value;
-        this.exam.unpublishDate = this.form.controls['date'].value;
-        this.exam.unpublished = this.form.controls['isUnpublished'].value;
+        this.exam.unpublishDate = this.form.controls['unpublishDate'].value;
+        this.exam.unpublished = this.form.controls['unpublished'].value;
+        this.exam.courseId = this.form.controls['course'].value;
+        
 
+        
         this.service.saveExam(this.exam).subscribe(e => {
         });   
 

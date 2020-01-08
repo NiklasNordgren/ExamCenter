@@ -1,35 +1,48 @@
 <div class="wrapper">
-    <h2>{{titleText}}</h2>
+    <h2 *ngIf="id == 0">New Subject</h2>
+    <h2 *ngIf="id > 0">Edit Subject</h2>
+
     <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+
         <mat-form-field>
-            <mat-label for="name">Name</mat-label>
-            <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. tenta@hig.se"
+            <mat-label for="filename">Filename</mat-label>
+            <input matInput id="filename" required type="text" formControlName="filename"
+                placeholder="Ex. Datorsystem, Linjär algebra">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label for="date">Date</mat-label>
+            <input matInput id="date" required type="text" formControlName="date" placeholder="Ex. DVG324, MAG051"
                 size="100pt">
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label for="code">Subject Code</mat-label>
-            <input matInput id="code" required type="text" formControlName="code" placeholder="Ex. tenta@hig.se"
+            <mat-label for="unpublishDate">Unpublish Date</mat-label>
+            <input matInput id="unpublishDate" required type="text" formControlName="unpublishDate" placeholder="Ex. DVG324, MAG051"
                 size="100pt">
         </mat-form-field>
-
+       
         <mat-form-field>
-            <mat-label>Academy</mat-label>
-            <mat-select [(value)]="academyIdSelector" formControlName="academyId" class="select">
-                <mat-option *ngFor="let academy of academyArray" [value]="academy.value">
-                    {{academy.viewValue}}
+            <mat-label>Unpublished</mat-label>
+            <mat-select [(value)]="isUnpublshedSelector" formControlName="unpublished" class="select">
+                <mat-option *ngFor="let bool of boolean" [value]="bool.value">
+                    {{bool.viewValue}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <div>
-            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">
-                {{buttonText}}
-            </button>
+
+        <mat-form-field>
+            <mat-label>Course list</mat-label>
+            <mat-select formControlName="course" name="courses" class="select">
+                <mat-option required (click)="selectedCourse(course.id)" placeholder="Course list" *ngFor="let course of courses" [value]="course.id">
+                    {{course.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
+            class="btn btn-primary">Save</button>
             
-            <button mat-raised-button class="btn btn-primary" class="cancelButton"
-                (click)="this.navigator.goToPage('/home/subject-handler/')" >
-                Cancel
-            </button>
-        </div>
+
     </form>
 </div>
