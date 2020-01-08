@@ -152,6 +152,10 @@ export class OutboxComponent implements OnInit {
 		}
 	}
 
+	deleteCourses() {
+		// console.log(element);
+		
+	}
 
 	openExamDeleteDialog() {
 
@@ -189,6 +193,11 @@ export class OutboxComponent implements OnInit {
 						case "course":
 							this.publishCourses();
 	
+					}
+				} else {
+					switch (type) {
+						case "course":
+							this.deleteCourses();
 					}
 				}
 				
