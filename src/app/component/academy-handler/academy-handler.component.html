@@ -9,7 +9,8 @@
 
         <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
     </button>
-
+    <h2>Academies</h2>
+    <mat-divider></mat-divider>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
         <!-- Checkbox Column -->
@@ -45,7 +46,8 @@
                 
             <button mat-raised-button (click)="this.navigator.goToPage('/home/academy-form')"> Edit </button>
             -->
-                <button class="editButton" mat-raised-button (click)="this.navigator.goToPage('/home/academy-form/' + element.id)">
+                <button class="editButton" mat-raised-button
+                    (click)="this.navigator.goToPage('/home/academy-form/' + element.id)">
                     <fa-icon [icon]="faPen"></fa-icon>
                     <span style="margin-left: 3pt;">
                         Edit

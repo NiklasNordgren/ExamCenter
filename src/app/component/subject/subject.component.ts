@@ -15,11 +15,13 @@ import {
 	providers: [Navigator]
 })
 export class SubjectComponent implements OnInit, OnDestroy {
-	private subscriptions: Subscription = new Subscription();
-	shortHeader: string = "Abbreviation";
-	name: string = "Subject";
-	data: any[] = [];
-	url: string = "/courses/subject/";
+	private subscriptions = new Subscription();
+	academyName = 'NoName';
+	shortHeader = 'Abbreviation';
+	name = 'Subject';
+	data = [];
+	url = '/courses/subject/';
+	academyId = 0;
 	icon: IconDefinition = faChevronRight;
 	actionDescription: string = "Navigate to selected subject";
 
