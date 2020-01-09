@@ -2,10 +2,27 @@
     <h1 *ngIf="courseLoaded">Exams in course {{course.name}}</h1>
     <app-list (clicked)="openPdf($event)" [actionDescription]='actionDescription' [icon]='icon' [data]="data" [shortHeader]="shortHeader"
         [name]="name"></app-list>
-    <div class="info-float">
-        <button mat-button class="close-button">
-            <fa-icon [icon]='faWindowClose'></fa-icon>
+</div>
+
+<div id="info-float">
+    <div>
+        <button mat-button *ngIf="!showingInfoMessage; else adblockInfo" (click)="toggleInfoMessage();">
+            <span>
+                <fa-icon [icon]='faInfoCircle'></fa-icon>
+                Can't open PDFs?
+            </span>
         </button>
-        <span>This site will not be able to open the clicked PDF files unless Adblocker is turned off!</span>
+
+        <ng-template #adblockInfo>
+            <div id="adblock-info">
+                <button mat-button id="close-button" (click)="toggleInfoMessage();">
+                    <span>
+                        <fa-icon [icon]='faWindowClose'></fa-icon>
+                        Close
+                    </span>
+                </button>
+                If you can't open PDFs on this site, you're probably using some adblocking software. Please disable it.
+            </div>
+        </ng-template>
     </div>
 </div>

@@ -5,8 +5,9 @@ import { ExamService } from "src/app/service/exam.service";
 import { FileService } from "src/app/file.service";
 import {
 	faExternalLinkAlt,
-	IconDefinition,
-	faWindowClose
+	faInfoCircle,
+	faWindowClose,
+	IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
 import { CourseService } from "src/app/service/course.service";
 import { Course } from "src/app/model/course.model";
@@ -21,10 +22,12 @@ export class ExamComponent implements OnInit, OnDestroy {
 	name: string = "Filename";
 	data: any[] = [];
 	icon: IconDefinition = faExternalLinkAlt;
+	faInfoCircle: IconDefinition = faInfoCircle;
 	faWindowClose: IconDefinition = faWindowClose;
 	actionDescription: string = "Open PDF file in new tab";
 	course: Course;
 	courseLoaded: boolean = false;
+	showingInfoMessage: boolean = false;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -75,5 +78,15 @@ export class ExamComponent implements OnInit, OnDestroy {
 			window.open(fileURL, "_blank");
 		});
 		this.subscriptions.add(sub);
+	}
+
+	toggleInfoMessage() {
+		if (this.showingInfoMessage) {
+			this.showingInfoMessage = false;
+			this.changeDetector.detectChanges();
+		} else {
+			this.showingInfoMessage = true;
+			this.changeDetector.detectChanges();
+		}
 	}
 }

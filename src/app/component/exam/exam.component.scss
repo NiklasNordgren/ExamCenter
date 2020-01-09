@@ -8,31 +8,22 @@ h1 {
 	margin-left: 18pt;
 }
 
-.info-float {
+#info-float {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	position: fixed;
-	right: 5%;
+	right: 2%;
 	bottom: 5%;
 	border-style: solid;
 	border-width: 1px;
 	border-color: black;
-	padding: 3px;
 }
 
-.close-button {
-	position: relative;
-	top: 1%;
-	right: 1%;
-	padding: 0px;
-	border-style: none;
-	width: 15px;
-	height: 15px;
+#adblock-info {
+	width: 200px;
+	word-wrap: break-word;
 }
 
-// .mat-button-focus-overlay,
-// .mat-button-ripple,
-// .mat-ripple {
-// 	width: 0px;
-// 	height: 0px;
-// }
+#close-button {
+	float: right;
+}
