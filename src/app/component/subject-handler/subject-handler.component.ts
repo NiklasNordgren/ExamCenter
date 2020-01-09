@@ -60,7 +60,7 @@ export class SubjectHandlerComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
   unpublishSelection() {
-    this.subjectService.unpublishSubects(this.selection.selected).subscribe(
+    this.subjectService.unpublishSubjects(this.selection.selected).subscribe(
       data => this.onSuccess(data),
       error => this.onError(error)
     );
