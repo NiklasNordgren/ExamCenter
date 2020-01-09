@@ -7,3 +7,32 @@ h1 {
 	text-align: start;
 	margin-left: 18pt;
 }
+
+.info-float {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	right: 5%;
+	bottom: 5%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	padding: 3px;
+}
+
+.close-button {
+	position: relative;
+	top: 1%;
+	right: 1%;
+	padding: 0px;
+	border-style: none;
+	width: 15px;
+	height: 15px;
+}
+
+// .mat-button-focus-overlay,
+// .mat-button-ripple,
+// .mat-ripple {
+// 	width: 0px;
+// 	height: 0px;
+// }

@@ -3,10 +3,10 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { ExamService } from "src/app/service/exam.service";
 import { FileService } from "src/app/file.service";
-import { Navigator } from "src/app/util/navigator";
 import {
 	faExternalLinkAlt,
-	IconDefinition
+	IconDefinition,
+	faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
 import { CourseService } from "src/app/service/course.service";
 import { Course } from "src/app/model/course.model";
@@ -14,14 +14,14 @@ import { Course } from "src/app/model/course.model";
 @Component({
 	selector: "app-exam",
 	templateUrl: "./exam.component.html",
-	styleUrls: ["./exam.component.scss"],
-	providers: [Navigator]
+	styleUrls: ["./exam.component.scss"]
 })
 export class ExamComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription = new Subscription();
 	name: string = "Filename";
 	data: any[] = [];
 	icon: IconDefinition = faExternalLinkAlt;
+	faWindowClose: IconDefinition = faWindowClose;
 	actionDescription: string = "Open PDF file in new tab";
 	course: Course;
 	courseLoaded: boolean = false;
@@ -31,7 +31,6 @@ export class ExamComponent implements OnInit, OnDestroy {
 		private service: ExamService,
 		private fileService: FileService,
 		private courseService: CourseService,
-		private navigator: Navigator,
 		private changeDetector: ChangeDetectorRef
 	) {}
 

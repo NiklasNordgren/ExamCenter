@@ -2,4 +2,10 @@
     <h1 *ngIf="courseLoaded">Exams in course {{course.name}}</h1>
     <app-list (clicked)="openPdf($event)" [actionDescription]='actionDescription' [icon]='icon' [data]="data" [shortHeader]="shortHeader"
         [name]="name"></app-list>
+    <div class="info-float">
+        <button mat-button class="close-button">
+            <fa-icon [icon]='faWindowClose'></fa-icon>
+        </button>
+        <span>This site will not be able to open the clicked PDF files unless Adblocker is turned off!</span>
+    </div>
 </div>
