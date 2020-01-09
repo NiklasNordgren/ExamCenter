@@ -54,7 +54,7 @@ export class OutboxComponent implements OnInit {
 	exams: Array<CustomExam> = [];
 	courses: Array<CustomCourse> = [];
 	subjects: Array<CustomSubject> = [];
-	academies = [];
+	academies: Academy[] = [];
 
 	showExams = false;
 	showCourses = false;
@@ -217,6 +217,8 @@ export class OutboxComponent implements OnInit {
 
 	openSingleElementDialog(element: any, duty: string) {
 		console.log(element);
+		debugger;
+
 		let content: string = "Are you sure you want to " + duty + " this ";
 		if (element instanceof CustomExam) {
 			content = content.concat("exam?\n\n" + element.filename);
@@ -227,7 +229,6 @@ export class OutboxComponent implements OnInit {
 		}else if (element instanceof Academy) {
 			content = content.concat("academy?\n\n" + element.name);
 		}
-		
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
 		});
 		this.dialogRef.componentInstance.titleMessage = "confirm";
@@ -338,6 +339,7 @@ export class OutboxComponent implements OnInit {
 	}
 
 	deleteAcademy(element: Academy) {
+		console.log("yup aca");
 		
 		this.academyService.deleteAcademy(element.id);
 		this.academies = this.academies.filter(x => x.id != element.id);
