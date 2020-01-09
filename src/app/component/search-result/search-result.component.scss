@@ -71,3 +71,9 @@ tr:hover {
 	position: relative;
 	top: 7px;
 }
+
+.link {
+	&:hover {
+		cursor: pointer;
+	}
+}
