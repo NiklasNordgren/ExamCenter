@@ -1,21 +1,21 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
-import { Academy } from "src/app/model/academy.model";
-import { AcademyService } from "src/app/service/academy.service";
-import { Navigator } from "src/app/util/navigator";
-import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Subscription } from "rxjs";
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Academy } from 'src/app/model/academy.model';
+import { AcademyService } from 'src/app/service/academy.service';
+import { Navigator } from 'src/app/util/navigator';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
-	selector: "academy-handler",
-	styleUrls: ["academy-handler.component.scss"],
-	templateUrl: "academy-handler.component.html",
+	selector: 'app-academy-handler',
+	styleUrls: ['academy-handler.component.scss'],
+	templateUrl: 'academy-handler.component.html',
 	providers: [Navigator]
 })
 export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ["select", "name", "edit"];
+	displayedColumns: string[] = ['select', 'name', 'edit'];
 	academies = [];
 	dataSource = new MatTableDataSource<Academy>(this.academies);
 	selection = new SelectionModel<Academy>(true, []);
@@ -63,9 +63,9 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert("Successfully unpublished selected academies");
+		alert('Successfully unpublished selected academies');
 	}
 	onError(error) {
-		alert("Something went wrong wile trying to unpublish academies.");
+		alert('Something went wrong wile trying to unpublish academies.');
 	}
 }

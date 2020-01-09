@@ -7,13 +7,13 @@ import {
 	OnInit,
 	ChangeDetectorRef,
 	AfterViewInit
-} from "@angular/core";
-import { SearchService } from "src/app/service/search.service";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription, Observable } from "rxjs";
-import { Subject } from "src/app/model/subject.model";
-import { Course } from "src/app/model/course.model";
-import { Navigator } from "src/app/util/navigator";
+} from '@angular/core';
+import { SearchService } from 'src/app/service/search.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { Subject } from 'src/app/model/subject.model';
+import { Course } from 'src/app/model/course.model';
+import { Navigator } from 'src/app/util/navigator';
 import {
 	trigger,
 	state,
@@ -22,21 +22,21 @@ import {
 	animate,
 	stagger,
 	query
-} from "@angular/animations";
-import { MatPaginator } from "@angular/material";
+} from '@angular/animations';
+import { MatPaginator } from '@angular/material';
 
 @Component({
-	selector: "app-search-result",
-	templateUrl: "./search-result.component.html",
-	styleUrls: ["./search-result.component.scss"],
+	selector: 'app-search-result',
+	templateUrl: './search-result.component.html',
+	styleUrls: ['./search-result.component.scss'],
 	providers: [Navigator],
 	animations: [
-		trigger("toggle", [
-			state("closed", style({ height: "0px", minHeight: "0" })),
-			state("open", style({ height: "*" })),
+		trigger('toggle', [
+			state('closed', style({ height: '0px', minHeight: '0' })),
+			state('open', style({ height: '*' })),
 			transition(
-				"closed <=> open",
-				animate("225ms cubic-bezier(0.0, 0.0, 0.2, 1)")
+				'closed <=> open',
+				animate('225ms cubic-bezier(0.0, 0.0, 0.2, 1)')
 			)
 		])
 	]
@@ -46,10 +46,10 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	searchString: string;
 	subjects: Observable<Subject[]>;
 	courses: Observable<Course[]>;
-	showSubjects: boolean = false;
-	showCourses: boolean = false;
-	subjectsLoaded: boolean = false;
-	coursesLoaded: boolean = false;
+	showSubjects = false;
+	showCourses = false;
+	subjectsLoaded = false;
+	coursesLoaded = false;
 
 	constructor(
 		private searchService: SearchService,
@@ -60,7 +60,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		const sub = this.activatedRoute.params.subscribe(params => {
-			this.searchString = params["searchString"];
+			this.searchString = params.searchString;
 			this.search(this.searchString);
 		});
 		this.subscriptions.add(sub);
@@ -85,11 +85,11 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	}
 
 	subjectSelected(subjectId: number) {
-		this.navigator.goToPage("/courses/subject/" + subjectId);
+		this.navigator.goToPage('/courses/subject/' + subjectId);
 	}
 
 	courseSelected(courseId: number) {
-		this.navigator.goToPage("/exams/course/" + courseId);
+		this.navigator.goToPage('/exams/course/' + courseId);
 	}
 
 	toggleSubjectTable() {

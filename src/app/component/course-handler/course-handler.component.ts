@@ -1,31 +1,31 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Academy } from "src/app/model/academy.model";
-import { Subscription } from "rxjs";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { MatTableDataSource } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
-import { SubjectService } from "src/app/service/subject.service";
-import { AcademyService } from "src/app/service/academy.service";
-import { Subject } from "src/app/model/subject.model";
-import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { SelectionModel } from "@angular/cdk/collections";
-import { Course } from "src/app/model/course.model";
-import { CourseService } from "src/app/service/course.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Academy } from 'src/app/model/academy.model';
+import { Subscription } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { SubjectService } from 'src/app/service/subject.service';
+import { AcademyService } from 'src/app/service/academy.service';
+import { Subject } from 'src/app/model/subject.model';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Course } from 'src/app/model/course.model';
+import { CourseService } from 'src/app/service/course.service';
 
 @Component({
-	selector: "course-handler",
-	templateUrl: "course-handler.component.html",
-	styleUrls: ["course-handler.component.scss"],
+	selector: 'app-course-handler',
+	templateUrl: 'course-handler.component.html',
+	styleUrls: ['course-handler.component.scss'],
 	providers: [Navigator]
 })
 export class CourseHandlerComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ["select", "name", "edit"];
+	displayedColumns: string[] = ['select', 'name', 'edit'];
 	academies = [];
 	subjects = [];
 	courses = [];
 	dataSource = [];
-	//dataSource = new MatTableDataSource<any>(this.subjects);
+	// dataSource = new MatTableDataSource<any>(this.subjects);
 	selection = new SelectionModel<Course>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
@@ -76,7 +76,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	//For the checkboxes
+	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
 		const numRows = this.dataSource.length;
@@ -98,9 +98,9 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert("Successfully unpublished selected academies");
+		alert('Successfully unpublished selected academies');
 	}
 	onError(error) {
-		alert("Something went wrong wile trying to unpublish academies.");
+		alert('Something went wrong wile trying to unpublish academies.');
 	}
 }

@@ -1,21 +1,21 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import { faFileMedical, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { UnpublishService } from "../../service/unpublish.service";
-import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
-import { Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UnpublishService } from '../../service/unpublish.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Subscription } from 'rxjs';
 
 // https://stackoverflow.com/questions/43751187/how-to-enable-swipe-gesture-to-move-to-next-tab-for-tabs-module-in-angular-mater
 
 @Component({
-	selector: "app-outbox",
-	templateUrl: "./outbox.component.html",
-	styleUrls: ["./outbox.component.scss"]
+	selector: 'app-outbox',
+	templateUrl: './outbox.component.html',
+	styleUrls: ['./outbox.component.scss']
 })
 export class OutboxComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	dialogRef: MatDialogRef<ConfirmationDialog>;
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	faFileMedical = faFileMedical;
 	faTrash = faTrash;
@@ -23,7 +23,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	subjects = [];
 	exams = [];
 	clickedId: number;
-	displayedColumns: string[] = ["filename", "date", "unpublishDate", "actions"];
+	displayedColumns: string[] = ['filename', 'date', 'unpublishDate', 'actions'];
 
 	constructor(
 		private router: Router,
@@ -71,21 +71,21 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	publishExam(element: any) {
 		this.service.publishExam(element);
-		this.exams = this.exams.filter(x => x.id != element.id);
+		this.exams = this.exams.filter(x => x.id !== element.id);
 	}
 
 	openDeleteDialog(element: any) {
 		this.clickedId = element.id;
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {});
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.confirmMessage =
-			"Are you sure you want to delete?";
-		this.dialogRef.componentInstance.titleMessage = "Confirm";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";
+			'Are you sure you want to delete?';
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
+		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.service.deleteExam(this.clickedId);
-				this.exams = this.exams.filter(x => x.id != this.clickedId);
+				this.exams = this.exams.filter(x => x.id !== this.clickedId);
 			}
 			this.dialogRef = null;
 		});

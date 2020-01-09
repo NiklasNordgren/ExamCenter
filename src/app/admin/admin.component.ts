@@ -1,23 +1,23 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Navigator } from "src/app/util/navigator";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { SelectionModel } from "@angular/cdk/collections";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Navigator } from 'src/app/util/navigator';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SelectionModel } from '@angular/cdk/collections';
 import {
 	faUserPlus,
 	faUsersCog,
 	faSearch,
 	faPen,
 	faTrash
-} from "@fortawesome/free-solid-svg-icons";
-import { UserService } from "../service/user.service";
-import { User } from "../model/user.model";
-import { ConfirmationDialog } from "../component/confirmation-dialog/confirmation-dialog";
-import { Subscription } from "rxjs";
+} from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../service/user.service';
+import { User } from '../model/user.model';
+import { ConfirmationDialogComponent } from '../component/confirmation-dialog/confirmation-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
-	selector: "app-admin",
-	templateUrl: "./admin.component.html",
-	styleUrls: ["./admin.component.scss"],
+	selector: 'app-admin',
+	templateUrl: './admin.component.html',
+	styleUrls: ['./admin.component.scss'],
 	providers: [Navigator]
 })
 export class AdminComponent implements OnInit, OnDestroy {
@@ -31,8 +31,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 	faTrash = faTrash;
 
 	users = [];
-	dialogRef: MatDialogRef<ConfirmationDialog>;
-	displayedColumns: string[] = ["select", "name", "isSuperUser", "edit"];
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	displayedColumns: string[] = ['select', 'name', 'isSuperUser', 'edit'];
 
 	constructor(
 		private service: UserService,
@@ -52,19 +52,19 @@ export class AdminComponent implements OnInit, OnDestroy {
 	}
 
 	openDeleteDialog() {
-		let numberOfSelected = this.selection.selected.length;
+		const numberOfSelected = this.selection.selected.length;
 
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {});
-		this.dialogRef.componentInstance.titleMessage = "Confirm";
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
 		this.dialogRef.componentInstance.confirmMessage =
-			"Are you sure you want to delete " + numberOfSelected + " user(s)?";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";
+			'Are you sure you want to delete ' + numberOfSelected + ' user(s)?';
+		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				for (let user of this.selection.selected) {
+				for (const user of this.selection.selected) {
 					this.service.deleteUser(user.id);
-					this.users = this.users.filter(x => x.id != user.id);
+					this.users = this.users.filter(x => x.id !== user.id);
 				}
 			}
 			this.dialogRef = null;

@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { LoginService } from "src/app/service/login.service";
-import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
-import { faUser, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoginService } from 'src/app/service/login.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { faUser, faUnlock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-	templateUrl: "./login.component.html",
-	styleUrls: ["./login.component.scss"]
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
 	private isLoading = false;
@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
-			username: "",
-			password: ""
+			username: '',
+			password: ''
 		});
 	}
 
@@ -42,12 +42,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	handleResponse(isLoggedIn) {
-		if (isLoggedIn) this.router.navigate(["/home/admin"]);
-		else {
+		if (isLoggedIn) { this.router.navigate(['/home/admin']); } else {
 			this.form.patchValue({
-				password: ""
+				password: ''
 			});
-			window.alert("Userename or password is incorrect.");
+			window.alert('Userename or password is incorrect.');
 		}
 	}
 

@@ -1,10 +1,10 @@
-import { Injectable, OnDestroy } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { map } from "rxjs/operators";
-import { Observable, Subscription } from "rxjs";
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
-	providedIn: "root"
+	providedIn: 'root'
 })
 export class FileService implements OnDestroy {
 	subscriptions: Subscription = new Subscription();
@@ -17,8 +17,8 @@ export class FileService implements OnDestroy {
 
 	downloadFile(fileName: string): Observable<Blob> {
 		return this.http
-			.get("/api/files/download/" + fileName, { responseType: "blob" })
-			.pipe(map(blob => new Blob([blob], { type: "application/pdf" })));
+			.get('/api/files/download/' + fileName, { responseType: 'blob' })
+			.pipe(map(blob => new Blob([blob], { type: 'application/pdf' })));
 	}
 
 	uploadFile(file: File) {
@@ -32,23 +32,23 @@ export class FileService implements OnDestroy {
 		});
 		*/
 
-		const url = "/upload";
+		const url = '/upload';
 
-		const body = new HttpParams().set("name", file.name).set("type", file.type);
+		const body = new HttpParams().set('name', file.name).set('type', file.type);
 
 		const options = {
 			headers: new HttpHeaders().set(
-				"Content-Type",
-				"application/x-www-form-urlencoded"
+				'Content-Type',
+				'application/x-www-form-urlencoded'
 			)
 		};
 
 		const sub = this.http.post(url, body.toString(), options).subscribe(
 			res => {
-				console.log("POST Request was successful: " + res);
+				console.log('POST Request was successful: ' + res);
 			},
 			err => {
-				console.log("Error occurred: " + err.toString);
+				console.log('Error occurred: ' + err.toString);
 			}
 		);
 		this.subscriptions.add(sub);

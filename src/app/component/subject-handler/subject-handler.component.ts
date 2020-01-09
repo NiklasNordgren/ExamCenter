@@ -1,22 +1,22 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
-import { Subject } from "src/app/model/subject.model";
-import { SubjectService } from "src/app/service/subject.service";
-import { Navigator } from "src/app/util/navigator";
-import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Academy } from "src/app/model/academy.model";
-import { AcademyService } from "src/app/service/academy.service";
-import { Subscription } from "rxjs";
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Subject } from 'src/app/model/subject.model';
+import { SubjectService } from 'src/app/service/subject.service';
+import { Navigator } from 'src/app/util/navigator';
+import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Academy } from 'src/app/model/academy.model';
+import { AcademyService } from 'src/app/service/academy.service';
+import { Subscription } from 'rxjs';
 @Component({
-	selector: "subject-handler",
-	templateUrl: "subject-handler.component.html",
-	styleUrls: ["subject-handler.component.scss"],
+	selector: 'app-subject-handler',
+	templateUrl: 'subject-handler.component.html',
+	styleUrls: ['subject-handler.component.scss'],
 	providers: [Navigator]
 })
 export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ["select", "name", "edit"];
+	displayedColumns: string[] = ['select', 'name', 'edit'];
 	academies = [];
 	subjects = [];
 	dataSource = new MatTableDataSource<Subject>(this.academies);
@@ -58,7 +58,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	//For the checkboxes
+	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
 		const numRows = this.dataSource.data.length;
@@ -80,10 +80,10 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert("Successfully unpublished selected subjects");
+		alert('Successfully unpublished selected subjects');
 	}
 	onError(error) {
 		this.selection.clear();
-		alert("Something went wrong wile trying to unpublish subjects.");
+		alert('Something went wrong wile trying to unpublish subjects.');
 	}
 }

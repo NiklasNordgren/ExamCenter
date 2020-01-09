@@ -1,23 +1,23 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from "@angular/core";
-import { Navigator } from "src/app/util/navigator";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { SelectionModel } from "@angular/cdk/collections";
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Navigator } from 'src/app/util/navigator';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SelectionModel } from '@angular/cdk/collections';
 import {
 	faPlus,
 	faUsersCog,
 	faSearch,
 	faPen,
 	faTrash
-} from "@fortawesome/free-solid-svg-icons";
-import { ExamService } from "../../service/exam.service";
-import { Exam } from "../../model/exam.model";
-import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
-import { CourseService } from "src/app/service/course.service";
-import { AcademyService } from "src/app/service/academy.service";
-import { SubjectService } from "src/app/service/subject.service";
-import { Subscription } from "rxjs";
+} from '@fortawesome/free-solid-svg-icons';
+import { ExamService } from '../../service/exam.service';
+import { Exam } from '../../model/exam.model';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { CourseService } from 'src/app/service/course.service';
+import { AcademyService } from 'src/app/service/academy.service';
+import { SubjectService } from 'src/app/service/subject.service';
+import { Subscription } from 'rxjs';
 
-export interface customExamArray {
+export interface CustomExamArray {
 	id: number;
 	filename: string;
 	date: Date;
@@ -27,9 +27,9 @@ export interface customExamArray {
 }
 
 @Component({
-	selector: "app-exam-handler",
-	templateUrl: "./exam-handler.component.html",
-	styleUrls: ["./exam-handler.component.scss"],
+	selector: 'app-exam-handler',
+	templateUrl: './exam-handler.component.html',
+	styleUrls: ['./exam-handler.component.scss'],
 	providers: [Navigator]
 })
 export class ExamHandlerComponent implements OnInit, OnDestroy {
@@ -42,7 +42,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	faPen = faPen;
 	faTrash = faTrash;
 
-	examArray: Array<customExamArray> = [];
+	examArray: Array<CustomExamArray> = [];
 	academies = [];
 	subjects = [];
 	courses = [];
@@ -52,14 +52,14 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	selectedSubjectValue: number;
 	selectedCourseValue: number;
 
-	dialogRef: MatDialogRef<ConfirmationDialog>;
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = [
-		"select",
-		"filename",
-		"date",
-		"unpublishDate",
-		"unpublished",
-		"edit"
+		'select',
+		'filename',
+		'date',
+		'unpublishDate',
+		'unpublished',
+		'edit'
 	];
 
 	constructor(
@@ -117,19 +117,19 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	openDeleteDialog() {
-		let numberOfSelected = this.selection.selected.length;
+		const numberOfSelected = this.selection.selected.length;
 
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {});
-		this.dialogRef.componentInstance.titleMessage = "Confirm";
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
 		this.dialogRef.componentInstance.confirmMessage =
-			"Are you sure you want to delete " + numberOfSelected + " exam(s)?";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";
+			'Are you sure you want to delete ' + numberOfSelected + ' exam(s)?';
+		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				for (let exam of this.selection.selected) {
+				for (const exam of this.selection.selected) {
 					this.service.deleteExam(exam.id);
-					this.exams = this.exams.filter(x => x.id != exam.id);
+					this.exams = this.exams.filter(x => x.id !== exam.id);
 				}
 			}
 			this.dialogRef = null;

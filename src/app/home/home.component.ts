@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable } from "rxjs/internal/Observable";
-import { Breakpoints, BreakpointObserver } from "@angular/cdk/layout";
-import { shareReplay, map } from "rxjs/operators";
-import { Router } from "@angular/router";
-import { AcademyService } from "../service/academy.service";
-import { Academy } from "../model/academy.model";
-import { faUsersCog, faUpload } from "@fortawesome/free-solid-svg-icons";
-import { UserService } from "../service/user.service";
-import { Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { shareReplay, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AcademyService } from '../service/academy.service';
+import { Academy } from '../model/academy.model';
+import { faUsersCog, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../service/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-	selector: "app-home",
-	templateUrl: "./home.component.html",
-	styleUrls: ["./home.component.scss"]
+	selector: 'app-home',
+	templateUrl: './home.component.html',
+	styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
@@ -56,6 +56,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 	logout() {
 		// this.oauthService.logout();
-		this.router.navigateByUrl("login");
+		this.router.navigateByUrl('login');
 	}
 }

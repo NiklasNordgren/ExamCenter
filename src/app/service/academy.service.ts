@@ -13,16 +13,16 @@ export class AcademyService {
 	getAllAcademies() {
 		return this.http.get<Academy[]>('/api/academies/all');
 	}
-	getAcademyById(id: number){
+	getAcademyById(id: number) {
 		return this.http.get<Academy>('/api/academies/' + id);
 	}
-	saveAcademy(academy: any) : Observable<Academy>{
+	saveAcademy(academy: any): Observable<Academy> {
 		return this.http.post<Academy>('/api/academies/', academy);
 	}
-	unpublishAcademy(academy: Academy) : Observable<Academy>{
+	unpublishAcademy(academy: Academy): Observable<Academy> {
 		return this.http.post<Academy>('/api/academies/unpublish/' + academy.unpublished, academy );
 	}
-	unpublishAcademies(academies: Academy[]) : Observable<Academy>{
+	unpublishAcademies(academies: Academy[]): Observable<Academy> {
 		return this.http.post<Academy>('/api/academies/unpublish/' + true, academies);
 	}
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Router } from "@angular/router";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-	selector: "app-list",
-	templateUrl: "./list.component.html",
-	styleUrls: ["./list.component.scss"]
+	selector: 'app-list',
+	templateUrl: './list.component.html',
+	styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
 	@Input() data: any[];
@@ -22,7 +22,7 @@ export class ListComponent implements OnInit {
 	ngOnInit() {
 		if (this.shortHeader && this.shortHeader.length > 0) {
 			this.columnsToDisplay.push(this.shortHeader);
-			console.log("ShortHeader added");
+			console.log('ShortHeader added');
 		}
 		this.columnsToDisplay.push(this.name);
 	}

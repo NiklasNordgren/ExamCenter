@@ -1,26 +1,26 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { Navigator } from "src/app/util/navigator";
-import { User } from "../model/user.model";
-import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
-import { UserService } from "../service/user.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Navigator } from 'src/app/util/navigator';
+import { User } from '../model/user.model';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../service/user.service';
 
-export interface customBooleanArray {
+export interface CustomBooleanArray {
 	value: boolean;
 	viewValue: string;
 }
 
 @Component({
-	selector: "app-address-form",
-	templateUrl: "./admin-form.component.html",
-	styleUrls: ["./admin-form.component.scss"],
+	selector: 'app-address-form',
+	templateUrl: './admin-form.component.html',
+	styleUrls: ['./admin-form.component.scss'],
 	providers: [Navigator]
 })
 export class AdminFormComponent implements OnInit, OnDestroy {
-	boolean: customBooleanArray[] = [
-		{ value: false, viewValue: "False" },
-		{ value: true, viewValue: "True" }
+	boolean: CustomBooleanArray[] = [
+		{ value: false, viewValue: 'False' },
+		{ value: true, viewValue: 'True' }
 	];
 
 	private form: FormGroup;
@@ -44,19 +44,19 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
-			name: "",
-			isSuperUser: ""
+			name: '',
+			isSuperUser: ''
 		});
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				this.id = parseInt(params.get("id"), 10);
+				this.id = parseInt(params.get('id'), 10);
 				this.createForm(this.id);
 			})
 		);
 	}
 
 	createForm(id: number) {
-		if (id == this.FORM_TYPE.CREATE) {
+		if (id === this.FORM_TYPE.CREATE) {
 			this.isCreateForm = true;
 			this.setCreateFormText();
 		} else {
@@ -83,8 +83,8 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 			if (this.isCreateForm) {
 				this.user = new User();
 			}
-			this.user.name = this.form.controls["name"].value;
-			this.user.isSuperUser = this.form.controls["isSuperUser"].value;
+			this.user.name = this.form.controls.name.value;
+			this.user.isSuperUser = this.form.controls.isSuperUser.value;
 
 			const sub = this.service.saveUser(this.user).subscribe(e => {});
 			this.subscriptions.add(sub);
@@ -93,12 +93,12 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	}
 
 	setCreateFormText() {
-		this.titleText = "Create Admin";
-		this.buttonText = "Create";
+		this.titleText = 'Create Admin';
+		this.buttonText = 'Create';
 	}
 
 	setEditFormText() {
-		this.titleText = "Edit Admin";
-		this.buttonText = "Save";
+		this.titleText = 'Edit Admin';
+		this.buttonText = 'Save';
 	}
 }
