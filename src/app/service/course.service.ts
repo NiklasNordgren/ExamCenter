@@ -10,13 +10,13 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCoursesBySubjectId(subjectId: number){
-    return this.http.get<Course[]>("api/courses/subject/" + subjectId);
+  getAllCoursesBySubjectId(subjectId: number) {
+    return this.http.get<Course[]>("api/courses/published/subject/" + subjectId);
   }
 
   getCourseById(id: number) {
     return this.http.get<Course>("api/courses/" + id);
-  } 
+  }
 
   getAllCourses(){
     return this.http.get<Course[]>("api/courses/all");
@@ -25,7 +25,7 @@ export class CourseService {
   getUnpublishedCourses() {
 		return this.http.get<Course[]>('/api/courses/unpublished');
   }
-  
+
   saveCourse(course: Course){
 		return this.http.post<Course>('/api/courses', course).subscribe(data => {
     });
@@ -35,9 +35,13 @@ export class CourseService {
 		return this.http.post('/api/courses/unpublish', course).subscribe(data => {
 		});
   }
-  
+
   deleteCourse(id: number) {
     return this.http.delete('/api/courses/' + id).subscribe(data => {
     });;
+  }
+
+  unpublishCourses(courses: Course[]): Observable<Course> {
+    return this.http.post<Course>('/api/courses/unpublish/' + true, courses);
   }
 }

@@ -22,12 +22,19 @@ export class SubjectService {
     return this.http.get<Subject[]>("api/subjects/academy/" + academyId);
   }
 
+  getAllPublishedSubjectsByAcademyId(academyId: number){
+    return this.http.get<Subject[]>('api/subjects/published/academy/' + academyId);
+  }
+
   getAllSubjects() {
     return this.http.get<Subject[]>("api/subjects/all");
   }
 
   saveSubject(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>("/api/subjects", subject);
+    console.log('saving...');
+    console.log(subject);
+
+    return this.http.post<Subject>("/api/subjects/", subject);
   }
 
   deleteSubject(id: number) {
@@ -36,7 +43,11 @@ export class SubjectService {
   }
 
   publishSubject(subject: Subject) {
-		return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
-		});
-	}
+    return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
+    });
+  }
+
+  unpublishSubjects(subjects: Subject[]) : Observable<Subject>{
+		return this.http.post<Subject>('/api/subjects/unpublish/' + true, subjects);
+	};
 }

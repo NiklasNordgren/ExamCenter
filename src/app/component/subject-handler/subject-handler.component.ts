@@ -41,7 +41,7 @@ export class SubjectHandlerComponent implements OnInit {
 
   selectedAcademy(academyId: number){
     
-    this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+    this.subjectService.getAllPublishedSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
       this.dataSource = new MatTableDataSource<Subject>(this.subjects);
     });
@@ -58,5 +58,18 @@ export class SubjectHandlerComponent implements OnInit {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  unpublishSelection() {
+    this.subjectService.unpublishSubects(this.selection.selected).subscribe(
+      data => this.onSuccess(data),
+      error => this.onError(error)
+    );
+  }
+  onSuccess(data) {
+    alert('Successfully unpublished selected subjects');
+  }
+  onError(error) {
+    this.selection.clear();
+    alert('Something went wrong wile trying to unpublish subjects.');
   }
 }

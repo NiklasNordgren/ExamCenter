@@ -30,7 +30,7 @@ export class ExamService {
         return this.http.delete('/api/exams/' + id).subscribe(data => {
         });;
 	}
-	
+
 	getUnpublishedExams() {
 		return this.http.get<Exam[]>('/api/exams/unpublished');
 	}
@@ -40,5 +40,8 @@ export class ExamService {
 		});
 	}
 
+	unpublishExams(exams: Exam[]) : Observable<Exam>{
+		return this.http.post<Exam>('/api/exam/unpublish/' + true, exams);
+	}
 
 }

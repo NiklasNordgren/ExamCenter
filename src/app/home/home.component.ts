@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AcademyService } from '../service/academy.service';
 import { Academy } from '../model/academy.model';
 import { faUsersCog, faUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../service/user.service';
 
 @Component({
 	selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
 	faUpload = faUpload;
 	faTrash = faTrash;
 	academies: Academy[] = [];
+	isSuperUser: boolean;
 
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
 		.pipe(
@@ -25,12 +27,22 @@ export class HomeComponent implements OnInit {
 			shareReplay()
 		);
 
-	constructor(private breakpointObserver: BreakpointObserver, private router: Router, private academyService: AcademyService) { }
+	constructor(
+		private breakpointObserver: BreakpointObserver,
+		private router: Router,
+		private academyService: AcademyService,
+		private userService: UserService
+	) { }
 
 	ngOnInit() {
 
 		this.academyService.getAllAcademies().subscribe(academies => {
 			this.academies = academies;
+		});
+
+		this.userService.isUserLoggedInAsSuperUser().subscribe(isSuperUser => {
+			console.log(isSuperUser);
+			this.isSuperUser = Boolean(isSuperUser);
 		});
 
 	}

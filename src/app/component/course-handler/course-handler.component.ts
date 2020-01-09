@@ -31,7 +31,7 @@ export class CourseHandlerComponent implements OnInit {
   faPen = faPen;
   faTrash = faTrash;
   public selectedAcademyValue: number;  
-  public selectedSubjectValue: number;  
+  public selectedSubjectValue: number;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService, 
     private courseService: CourseService){}
@@ -73,5 +73,17 @@ export class CourseHandlerComponent implements OnInit {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.forEach(row => this.selection.select(row));
+  }
+  unpublishSelection() {
+    this.courseService.unpublishCourses(this.selection.selected).subscribe(
+      data => this.onSuccess(data),
+      error => this.onError(error)
+    );
+  }
+  onSuccess(data) {
+    alert('Successfully unpublished selected academies');
+  }
+  onError(error) {
+    alert('Something went wrong wile trying to unpublish academies.');
   }
 }

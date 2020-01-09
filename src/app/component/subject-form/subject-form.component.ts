@@ -8,16 +8,19 @@ import { Academy } from 'src/app/model/academy.model';
 import { MatTableDataSource } from '@angular/material';
 import { Subject } from 'src/app/model/subject.model';
 import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Navigator } from 'src/app/util/navigator';
 
 @Component({
   selector: 'app-subject-form',
   templateUrl: './subject-form.component.html',
-  styleUrls: ['./subject-form.component.scss']
+  styleUrls: ['./subject-form.component.scss'],
+	providers: [Navigator]
 })
 export class SubjectFormComponent implements OnInit {
 
   private academies: Academy[];
   private subjects: Subject[];
+  private subject: Subject = new Subject();
   private form: FormGroup;
   private subscriptions = new Subscription();
   private id: number;
@@ -25,8 +28,12 @@ export class SubjectFormComponent implements OnInit {
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
- 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: SubjectService, private academyService: AcademyService) { }
+
+  constructor(private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private service: SubjectService,
+    private academyService: AcademyService,
+    private navigator: Navigator) { }
 
   ngOnInit() {
     //If id = 0, it specifies a new subject.
@@ -42,7 +49,7 @@ export class SubjectFormComponent implements OnInit {
         this.handleId();
       })
     );
-   
+
     //Get all the academies for the dropdownlist of academies. When creating a new subject.
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
@@ -55,12 +62,15 @@ export class SubjectFormComponent implements OnInit {
   handleId() {
     if (this.id != 0) {
       this.service.getSubjectById(this.id).subscribe(subject => {
+        this.subject.id = subject.id;
+        this.subject.unpublished = subject.unpublished;
         this.form = this.formBuilder.group({
           academy: subject.academyId,
           code: subject.code,
           name: subject.name
         });
       });
+      
     }
   }
   ngOnDestroy() {
@@ -69,14 +79,37 @@ export class SubjectFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log("Form Submitted!");
+      if (this.id != 0)
+        this.subject.id = this.id;
+      this.subject.name = this.form.controls['name'].value;
+      this.subject.code = this.form.controls['code'].value;
+      this.subject.academyId = this.form.controls['academy'].value;
+      this.service.saveSubject(this.subject).subscribe(
+        data => this.onSuccess(data),
+        error => this.onError(error)          
+      );
       this.form.reset();
     }
   }
-  selectedAcademy(academyId: number){
+  selectedAcademy(academyId: number) {
     this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
       this.dataSource = new MatTableDataSource<Subject>(this.subjects);
     });
+  }
+  onSuccess(data){
+    alert('You have sucefully saved the subject.');
+    this.navigator.goToPage('/home/subject-handler');
+  }
+  onError(error){
+    if(error['status'] == 401){
+      alert('Not athorized. Please log in and try again');
+      this.navigator.goToPage('/login');
+    }else if(error['status'] == 405){
+      alert('Error. Check if the name or abbreviation already exists.');
+    }
+    else{
+      alert('Error. Something went wrong while trying to save or edit the academy.');
+    }
   }
 }

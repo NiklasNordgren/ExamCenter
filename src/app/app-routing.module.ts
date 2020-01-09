@@ -31,7 +31,7 @@ import { CourseFormComponent } from './component/course-form/course-form.compone
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminFormComponent } from './component/admin-form/admin-form.component';
-
+import { SettingsComponent } from "./component/settings/settings.component";
 
 const routes: Routes = [
 	{
@@ -80,7 +80,11 @@ const routes: Routes = [
 			{
 				path: "",
 				pathMatch: "full",
-				redirectTo: "dashboard"
+				redirectTo: "file-upload"
+			},
+			{
+				path: "settings",
+				component: SettingsComponent
 			},
 			{
 				path: "academy-handler",
@@ -99,48 +103,28 @@ const routes: Routes = [
 				component: CourseHandlerComponent
 			},
 			{
-				path: 'subject-form/:id',
-				component: SubjectFormComponent,
+				path: "subject-form/:id",
+				component: SubjectFormComponent
 			},
 			{
-				path: 'course-handler',
-				component: CourseHandlerComponent,
+				path: "course-handler",
+				component: CourseHandlerComponent
 			},
 			{
-				path: 'course-form/:id',
-				component: CourseFormComponent,
+				path: "course-form/:id",
+				component: CourseFormComponent
 			},
 			{
-				path: 'exam-handler',
-				component: ExamHandlerComponent,
+				path: "exam-handler",
+				component: ExamHandlerComponent
 			},
 			{
 				path: "exam-form/:id",
 				component: ExamFormComponent
 			},
 			{
-				path: 'admin-form/:id',
+				path: "admin-form/:id",
 				component: AdminFormComponent
-			},
-			{
-				path: "address-form",
-				component: AddressFormComponent
-			},
-			{
-				path: "dashboard",
-				component: DashboardComponent
-			},
-			{
-				path: "drag-drop",
-				component: DragDropComponent
-			},
-			{
-				path: "table",
-				component: TableComponent
-			},
-			{
-				path: "tree",
-				component: TreeComponent
 			},
 			{
 				path: "file-upload",
@@ -153,10 +137,6 @@ const routes: Routes = [
 			{
 				path: "outbox",
 				component: OutboxComponent
-			},
-			{
-				path: "swipe",
-				component: TestSwipeComponent
 			}
 		]
 	}
