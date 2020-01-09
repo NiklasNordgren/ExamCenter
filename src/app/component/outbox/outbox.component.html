@@ -1,11 +1,11 @@
 <div class="wrapper">
     <div class=select-buttons>
         <button class="publishSelectedButton" color="accent" mat-raised-button
-            (click)="openDialog('publish', 'course')">
+            (click)="openDialog('publish')">
             <fa-icon [icon]="faFileMedical"></fa-icon><span class="buttonText"> Publish Selected</span>
         </button>
 
-        <button class="deleteSelectedButton" color="warn" mat-raised-button (click)="openDeleteDialog()">
+        <button class="deleteSelectedButton" color="warn" mat-raised-button (click)="openDialog('delete', '')">
             <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Selected</span>
         </button>
 
@@ -16,14 +16,14 @@
     <div class="tables">
         <button class="toggle-button" mat-button (click)="toggleExamTable()">
             <h3>
-                Exams ({{examArray.length}})
+                Exams ({{exams.length}})
                 <mat-icon *ngIf="!showExams" mat-suffix class="button-icon">expand_more</mat-icon>
                 <mat-icon *ngIf="showExams" mat-suffix class="button-icon">expand_less</mat-icon>
             </h3>
         </button>
 
         <div *ngIf="showExams">
-            <table mat-table [dataSource]="examArray" class="mat-elevation-z8">
+            <table mat-table [dataSource]="exams" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -94,7 +94,7 @@
         </button>
 
         <div *ngIf="showCourses">
-            <table mat-table [dataSource]="courseArray" class="mat-elevation-z8">
+            <table mat-table [dataSource]="courses" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -131,7 +131,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="accent" (click)="openDialog('publish', 'course')"
+                        <button mat-raised-button color="accent" (click)="publishCourse(element)"
                             class="publishBtn">
                             <fa-icon [icon]="faFileMedical"></fa-icon>
                             <span class="button-text"> Publish</span>
@@ -155,7 +155,7 @@
         </button>
 
         <div *ngIf="showSubjects">
-            <table mat-table [dataSource]="subjectArray" class="mat-elevation-z8">
+            <table mat-table [dataSource]="subjects" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -192,7 +192,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                        <button mat-raised-button color="accent" (click)="publishSubject(element)" class="publishBtn">
                             <fa-icon [icon]="faFileMedical"></fa-icon>
                             <span class="button-text"> Publish</span>
                         </button>
@@ -208,14 +208,14 @@
 
         <button class="toggle-button" mat-button (click)="toggleAcademyTable()">
             <h3>
-                Academies ({{academyArray.length}})
+                Academies ({{academies.length}})
                 <mat-icon *ngIf="!showAcademys" mat-suffix class="button-icon">expand_more</mat-icon>
                 <mat-icon *ngIf="showAcademys" mat-suffix class="button-icon">expand_less</mat-icon>
             </h3>
         </button>
 
         <div *ngIf="showAcademies">
-            <table mat-table [dataSource]="academyArray" class="mat-elevation-z8">
+            <table mat-table [dataSource]="academies" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -247,7 +247,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                        <button mat-raised-button color="accent" (click)="publishAcademy(element)" class="publishBtn">
                             <fa-icon [icon]="faFileMedical"></fa-icon>
                             <span class="button-text"> Publish</span>
                         </button>

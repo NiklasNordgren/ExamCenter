@@ -83,7 +83,7 @@ export class ExamHandlerComponent implements OnInit{
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
 		});
 		this.dialogRef.componentInstance.titleMessage = "Confirm";
-		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete " + numberOfSelected + " exam(s)?";
+		this.dialogRef.componentInstance.contentMessage = "Are you sure you want to delete " + numberOfSelected + " exam(s)?";
 		this.dialogRef.componentInstance.confirmBtnText = "Delete";
 
 		this.dialogRef.afterClosed().subscribe(result => {

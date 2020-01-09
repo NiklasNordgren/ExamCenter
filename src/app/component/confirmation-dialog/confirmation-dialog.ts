@@ -9,7 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 export class ConfirmationDialog {
 
     public titleMessage: string = "Confirm";
-    public confirmMessage: string;
+    public contentMessage: string;
     public confirmBtnText: string = "Confirm";
     public cancelBtnText: string = "Cancel";
 

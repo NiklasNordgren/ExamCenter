@@ -34,4 +34,9 @@ export class SubjectService {
     return this.http.delete('/api/subjects/' + id).subscribe(data => {
     });;
   }
+
+  publishSubject(subject: Subject) {
+		return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
+		});
+	}
 }

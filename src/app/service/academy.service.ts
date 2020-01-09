@@ -22,8 +22,9 @@ export class AcademyService {
 		return this.http.post<Academy>('/api/academies/', academy);
 	}
 
-	unpublishAcademy(academy: Academy) : Observable<Academy>{
-		return this.http.post<Academy>('/api/academies/unpublish/' + academy.unpublished, academy );
+	unpublishAcademy(academy: Academy){
+		return this.http.post<Academy>('/api/academies/unpublish', academy ).subscribe(data => {
+		});
 	}
 
 	unpublishAcademies(academies: Academy[]) : Observable<Academy>{
@@ -33,5 +34,11 @@ export class AcademyService {
 	getUnpublishedAcademies() {
 		return this.http.get<Academy[]>('api/academies/unpublished');
 	}
+
+	deleteAcademy(id: number) {
+		return this.http.delete('/api/academies/' + id).subscribe(data => {
+		});;
+	  }
+
 	
 }

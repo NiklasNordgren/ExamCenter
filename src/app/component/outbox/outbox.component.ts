@@ -19,6 +19,7 @@ export class CustomExam {
 	filename: string;
 	date: Date;
 	unpublishDate: Date;
+	courseId: number;
 	courseName: string;
 }
 
@@ -34,6 +35,7 @@ export class CustomSubject {
 	id: number;
 	name: string;
 	code: string;
+	academyId: number;
 	academyName: string;
 }
 
@@ -49,14 +51,9 @@ export class OutboxComponent implements OnInit {
 	faFileMedical = faFileMedical;
 	faTrash = faTrash;
 
-	examArray: Array<CustomExam> = [];
-	courseArray: Array<CustomCourse> = [];
-	subjectArray: Array<CustomSubject> = [];
-	academyArray = [];
-
-	//exams = [];
-	courses = [];
-	subjects = [];
+	exams: Array<CustomExam> = [];
+	courses: Array<CustomCourse> = [];
+	subjects: Array<CustomSubject> = [];
 	academies = [];
 
 	showExams = false;
@@ -80,173 +77,269 @@ export class OutboxComponent implements OnInit {
 
 	ngOnInit() {
 		this.examService.getUnpublishedExams().subscribe(responseExams => {
-			//	this.exams = responseExams;
 			for (let exam of responseExams) {
-				let temp = new CustomExam();
-				temp.id = exam.id;
-				temp.filename = exam.filename;
-				temp.date = exam.date;
-				temp.unpublishDate = exam.unpublishDate;
-
-				this.courseService.getCourseById(exam.courseId).subscribe(responseCourse => {
-					temp.courseName = responseCourse.name;
-				});
-				this.examArray.push(temp);
+				let customExam = this.examConverter(exam);
+				this.exams.push(customExam);
 			}
 		});
 
 		this.courseService.getUnpublishedCourses().subscribe(responseCourses => {
-			this.courses = responseCourses;
-			for (let course of this.courses) {
-				let temp = new CustomCourse();
-				temp.id = course.id;
-				temp.name = course.name;
-				temp.courseCode = course.courseCode;
-				temp.subjectId = course.subjectId;
-
-				this.subjectService.getSubjectById(course.subjectId).subscribe(responseSubject => {
-					temp.subjectName = responseSubject.name;
-				});
-				this.courseArray.push(temp);
+			for (let course of responseCourses) {
+				let customCourse = this.courseConverter(course);
+				this.courses.push(customCourse);
 			}
 		});
 
 		this.subjectService.getUnpublishedSubjects().subscribe(responseSubjects => {
-			this.subjects = responseSubjects;
-			for (let subject of this.subjects) {
-				let temp = new CustomSubject();
-				temp.id = subject.id;
-				temp.name = subject.name;
-				temp.code = subject.code;
-
-				this.academyService.getAcademyById(subject.academyId).subscribe(responseAcademy => {
-					temp.academyName = responseAcademy.name;
-				});
-				this.subjectArray.push(temp);
+			for (let subject of responseSubjects) {
+				let customSubject = this.subjectConverter(subject);
+				this.subjects.push(customSubject);
 			}
 		});
 
 		this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
 			this.academies = responseAcademies;
-			this.academyArray = this.academies;
 		});
 	}
 
+	examConverter(input: any) {
+		let output;
 
-	publishExam(element: any) {
-		this.examService.publishExam(element);
-		this.examArray = this.examArray.filter(x => x.id != element.id);
+		if (input instanceof CustomExam) {
+			output = new Exam();
+		} else {
+			output = new CustomExam();
+			this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
+				output.courseName = responseCourse.name;
+			});
+		}
+		output.id = input.id;
+		output.filename = input.filename;
+		output.date = input.date;
+		output.unpublishDate = input.unpublishDate;
+		output.courseId = input.courseId;
+		return output;
+	}
+
+	courseConverter(input: any) {
+		let output;
+
+		if (input instanceof CustomCourse) {
+			output = new Course();
+		} else {
+			output = new CustomCourse();
+			this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
+				output.subjectName = responseSubject.name;
+			});
+		}
+		output.id = input.id;
+		output.name = input.name;
+		output.courseCode = input.courseCode;
+		output.subjectId = input.subjectId;
+		return output;
+	}
+
+	subjectConverter(input: any) {
+		let output;
+
+		if (input instanceof CustomSubject) {
+			output = new Subject();
+		} else {
+			output = new CustomSubject();
+			this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
+				output.academyName = responseAcademy.name;
+			});
+		}
+		output.id = input.id;
+		output.name = input.name;
+		output.code = input.code;
+		output.academyId = input.academyId;
+		return output;
+	}
+
+	dialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
+
+		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
+		contentText = contentText.concat((courseAmount !== 0) ? "\n" + courseAmount + (courseAmount == 1 ? " course" : " courses") : "");
+		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
+		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academey" : " academies") : "");
+
+		let dutyText = (contentText.length !== 0) ? "Are you sure you want to " + duty: "";
+		return dutyText = dutyText.concat(contentText);
+	}
+
+	openDialog(duty: string) {
+		let amountExamsSelected = this.examSelection.selected.length;
+		let amountCoursesSelected = this.courseSelection.selected.length;
+		let amountSubjectsSelected = this.subjectSelection.selected.length;
+		let amountAcademiesSelected = this.academySelection.selected.length;
+			
+		let dutyText = this.dialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
+
+		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
+			this.dialogRef = this.dialog.open(ConfirmationDialog, {
+			});
+			this.dialogRef.componentInstance.titleMessage = "confirm";
+			this.dialogRef.componentInstance.contentMessage = dutyText;
+			this.dialogRef.componentInstance.confirmBtnText = duty;
+	
+			this.dialogRef.afterClosed().subscribe(result => {
+				if (result) {
+					if (duty == "publish") {
+						(amountExamsSelected !== 0) ? this.publishExams() : "";
+						(amountCoursesSelected !== 0) ? this.publishCourses() : "";
+						(amountSubjectsSelected !== 0) ? this.publishSubjects() : "";
+						(amountAcademiesSelected !== 0) ? this.publishAcademies() : "";
+						
+					} else if (duty == "delete"){
+						(amountExamsSelected !== 0) ? this.deleteExams() : "";
+						(amountCoursesSelected !== 0) ? this.deleteCourses() : "";
+						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : "";
+						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : "";
+					} 
+				}
+				this.dialogRef = null;
+			});
+		} else {
+			console.log("No selected");
+			
+		}
+		
+	}
+
+	publishExam(element: CustomExam) {
+		let exam = this.examConverter(element);
+		this.examService.publishExam(exam);
+		this.exams = this.exams.filter(x => x.id != exam.id);
+	}
+
+	publishExams() {
+		for (let customExam of this.examSelection.selected) {
+			this.publishExam(customExam);
+		}
+	}
+
+	publishCourse(element: CustomCourse) {
+		let course = this.courseConverter(element);
+		course.unpublished = false;
+		this.courseService.publishCourse(course);
+		this.courses = this.courses.filter(x => x.id != course.id); 
 	}
 
 	publishCourses() {
 		for (let customCourse of this.courseSelection.selected) {
-			let course = new Course();
-			course.id = customCourse.id;
-			course.name = customCourse.name;
-			course.courseCode = customCourse.courseCode;
-			course.subjectId = customCourse.subjectId;
-			course.unpublished = false;
-
-			this.courseService.saveCourse(course);
-			this.courseArray = this.courseArray.filter(x => x.id != course.id);
+			this.publishCourse(customCourse);
 		}
 	}
 
-	deleteCourses() {
-		// console.log(element);
-		
+	publishSubject(element: CustomSubject) {
+		let subject = this.subjectConverter(element);
+		subject.unpublished = false;
+		this.subjectService.publishSubject(subject);
+		this.subjects = this.subjects.filter(x => x.id != subject.id); 
 	}
-
-	openExamDeleteDialog() {
-
-		let amountSelected = this.examSelection.selected.length;
-
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {
-		});
-		this.dialogRef.componentInstance.titleMessage = "Removing checked!";
-		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete " + amountSelected + " user(s)?";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";
-
-		this.dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				for (let exam of this.examSelection.selected) {
-					this.examService.deleteExam(exam.id);
-					this.examArray = this.examArray.filter(x => x.id != exam.id);
-				}
-			}
-			this.dialogRef = null;
-		});
-	}
-
-	openDialog(duty: string, type: string) {
-		let amountSelected = this.courseSelection.selected.length;
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {
-		});
-		this.dialogRef.componentInstance.titleMessage = "confirm";
-		this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to " + duty + " " + amountSelected + " " + type +"(s)?";
-		this.dialogRef.componentInstance.confirmBtnText = duty;
-
-		this.dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				if (duty == "publish") {
-					switch (type) {
-						case "course":
-							this.publishCourses();
 	
-					}
-				} else {
-					switch (type) {
-						case "course":
-							this.deleteCourses();
-					}
-				}
-				
-			}
-			this.dialogRef = null;
-		});
+	publishSubjects() {
+		for (let customSubject of this.subjectSelection.selected) {
+			this.publishSubject(customSubject);
+		}
 	}
 
+	publishAcademy(element: Academy) {
+		element.unpublished = false;
+		this.academyService.unpublishAcademy(element);
+		this.academies = this.academies.filter(x => x.id != element.id); 
+	}
+	
+	publishAcademies() {
+		for (let customAcademy of this.academySelection.selected) {
+			this.publishAcademy(customAcademy);
+		}
+	}
 
+	deleteExam(element: CustomExam) {
+		this.examService.deleteExam(element.id);
+		this.exams = this.exams.filter(x => x.id != element.id);
+	}
+
+	deleteExams() {
+		for (let customExam of this.examSelection.selected) {
+			this.deleteExam(customExam);
+		}
+	}
+
+	deleteCourse(element: CustomCourse) {
+		this.courseService.deleteCourse(element.id);
+		this.courses = this.courses.filter(x => x.id != element.id);
+	}
+	
+	deleteCourses() {
+		for (let customCourse of this.courseSelection.selected) {
+			this.deleteCourse(customCourse);
+		}
+	}
+
+	deleteSubject(element: CustomSubject) {
+		this.subjectService.deleteSubject(element.id);
+		this.subjects = this.subjects.filter(x => x.id != element.id);
+	}
+	
+	deleteSubjects() {
+		for (let customSubject of this.subjectSelection.selected) {
+			this.deleteSubject(customSubject);
+		}
+	}
+
+	deleteAcademie(element: Academy) {
+		this.academyService.deleteAcademy(element.id);
+		this.academies = this.academies.filter(x => x.id != element.id);
+	}
+	
+	deleteAcademies() {
+		for (let customAcademie of this.academySelection.selected) {
+			this.deleteAcademie(customAcademie);
+		}
+	}
 
 	isAllExamsSelected() {
 		const numSelected = this.examSelection.selected.length;
-		const numRows = this.examArray.length;
+		const numRows = this.exams.length;
 		return numSelected === numRows;
 	}
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterExamToggle() {
-		this.isAllExamsSelected() ? this.examSelection.clear() : this.examArray.forEach(row => this.examSelection.select(row));
+		this.isAllExamsSelected() ? this.examSelection.clear() : this.exams.forEach(row => this.examSelection.select(row));
 	}
 
 	isAllCoursesSelected() {
 		const numSelected = this.courseSelection.selected.length;
-		const numRows = this.courseArray.length;
+		const numRows = this.courses.length;
 		return numSelected === numRows;
 	}
 
 	masterCourseToggle() {
-		this.isAllCoursesSelected() ? this.courseSelection.clear() : this.courseArray.forEach(row => this.courseSelection.select(row));
+		this.isAllCoursesSelected() ? this.courseSelection.clear() : this.courses.forEach(row => this.courseSelection.select(row));
 	}
 
 	isAllSubjectsSelected() {
 		const numSelected = this.subjectSelection.selected.length;
-		const numRows = this.subjectArray.length;
+		const numRows = this.subjects.length;
 		return numSelected === numRows;
 	}
 
 	masterSubjectToggle() {
-		this.isAllSubjectsSelected() ? this.subjectSelection.clear() : this.subjectArray.forEach(row => this.subjectSelection.select(row));
+		this.isAllSubjectsSelected() ? this.subjectSelection.clear() : this.subjects.forEach(row => this.subjectSelection.select(row));
 	}
 
 	isAllAcademiesSelected() {
 		const numSelected = this.academySelection.selected.length;
-		const numRows = this.academyArray.length;
+		const numRows = this.academies.length;
 		return numSelected === numRows;
 	}
 
 	masterAcademyToggle() {
-		this.isAllAcademiesSelected() ? this.academySelection.clear() : this.academyArray.forEach(row => this.academySelection.select(row));
+		this.isAllAcademiesSelected() ? this.academySelection.clear() : this.academies.forEach(row => this.academySelection.select(row));
 	}
 
 	toggleExamTable() {

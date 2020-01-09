@@ -34,5 +34,10 @@ export class CourseService {
 	publishCourse(course: Course) {
 		return this.http.post('/api/courses/unpublish', course).subscribe(data => {
 		});
-	}
+  }
+  
+  deleteCourse(id: number) {
+    return this.http.delete('/api/courses/' + id).subscribe(data => {
+    });;
+  }
 }
