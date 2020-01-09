@@ -66,6 +66,8 @@ export class OutboxComponent implements OnInit {
 	subjectSelection = new SelectionModel<CustomSubject>(true, []);
 	academySelection = new SelectionModel<Academy>(true, []);
 
+	isSelectionButtonsDisabled = true;
+
 	clickedId: number;
 	displayedExamColumns: string[] = ['select', 'filename', 'date', 'unpublishDate', 'courseName', 'actions'];
 	displayedCourseColumns: string[] = ['select', 'name', 'courseCode', 'subjectName', 'actions'];
@@ -157,24 +159,34 @@ export class OutboxComponent implements OnInit {
 		return output;
 	}
 
-	dialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
+	isAnyCheckboxSelected() {
+		if (this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 ||
+				this.subjectSelection.selected.length !== 0 || this.academySelection.selected.length !== 0) {
+			this.isSelectionButtonsDisabled = false;
+		} else {
+			this.isSelectionButtonsDisabled = true;
+		}
+		
+	}
+
+	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
 
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
 		contentText = contentText.concat((courseAmount !== 0) ? "\n" + courseAmount + (courseAmount == 1 ? " course" : " courses") : "");
 		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
-		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academey" : " academies") : "");
+		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academy" : " academies") : "");
 
-		let dutyText = (contentText.length !== 0) ? "Are you sure you want to " + duty: "";
+		let dutyText = (contentText.length !== 0) ? "Are you sure you want to " + duty + "\n": "";
 		return dutyText = dutyText.concat(contentText);
 	}
 
-	openDialog(duty: string) {
+	openSelectionDialog(duty: string) {
 		let amountExamsSelected = this.examSelection.selected.length;
 		let amountCoursesSelected = this.courseSelection.selected.length;
 		let amountSubjectsSelected = this.subjectSelection.selected.length;
 		let amountAcademiesSelected = this.academySelection.selected.length;
 			
-		let dutyText = this.dialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
+		let dutyText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
 
 		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
 			this.dialogRef = this.dialog.open(ConfirmationDialog, {
@@ -200,11 +212,44 @@ export class OutboxComponent implements OnInit {
 				}
 				this.dialogRef = null;
 			});
-		} else {
-			console.log("No selected");
-			
+		}
+	}
+
+	openSingleElementDialog(element: any, duty: string) {
+		console.log(element);
+		let content: string = "Are you sure you want to " + duty + " this ";
+		if (element instanceof CustomExam) {
+			content = content.concat("exam?\n\n" + element.filename);
+		} else if (element instanceof CustomCourse) {
+			content = content.concat("course?\n\n" + element.name);
+		} else if (element instanceof CustomSubject) {
+			content = content.concat("subject?\n\n" + element.name);
+		}else if (element instanceof Academy) {
+			content = content.concat("academy?\n\n" + element.name);
 		}
 		
+		this.dialogRef = this.dialog.open(ConfirmationDialog, {
+		});
+		this.dialogRef.componentInstance.titleMessage = "confirm";
+		this.dialogRef.componentInstance.contentMessage = content;
+		this.dialogRef.componentInstance.confirmBtnText = duty;
+
+		this.dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				if (duty == "publish") {
+					(element instanceof CustomExam) ? this.publishExam(element) : "";
+					(element instanceof CustomCourse) ? this.publishCourse(element) : "";
+					(element instanceof CustomSubject) ? this.publishSubject(element) : "";
+					(element instanceof Academy) ? this.publishAcademy(element) : "";
+				} else if (duty == "delete") {
+					(element instanceof CustomExam) ? this.deleteExam(element) : "";
+					(element instanceof CustomCourse) ? this.deleteCourse(element) : "";
+					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";
+					(element instanceof Academy) ? this.deleteAcademy(element) : "";
+				}
+			}
+			this.dialogRef = null;
+		}); 
 	}
 
 	publishExam(element: CustomExam) {
@@ -252,8 +297,10 @@ export class OutboxComponent implements OnInit {
 	}
 	
 	publishAcademies() {
-		for (let customAcademy of this.academySelection.selected) {
-			this.publishAcademy(customAcademy);
+		for (let academy of this.academySelection.selected) {
+			console.log("hereee");
+
+			this.publishAcademy(academy);
 		}
 	}
 
@@ -290,14 +337,15 @@ export class OutboxComponent implements OnInit {
 		}
 	}
 
-	deleteAcademie(element: Academy) {
+	deleteAcademy(element: Academy) {
+		
 		this.academyService.deleteAcademy(element.id);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}
 	
 	deleteAcademies() {
-		for (let customAcademie of this.academySelection.selected) {
-			this.deleteAcademie(customAcademie);
+		for (let academy of this.academySelection.selected) {
+			this.deleteAcademy(academy);
 		}
 	}
 
@@ -310,6 +358,7 @@ export class OutboxComponent implements OnInit {
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterExamToggle() {
 		this.isAllExamsSelected() ? this.examSelection.clear() : this.exams.forEach(row => this.examSelection.select(row));
+		this.isAnyCheckboxSelected();
 	}
 
 	isAllCoursesSelected() {
@@ -320,6 +369,7 @@ export class OutboxComponent implements OnInit {
 
 	masterCourseToggle() {
 		this.isAllCoursesSelected() ? this.courseSelection.clear() : this.courses.forEach(row => this.courseSelection.select(row));
+		this.isAnyCheckboxSelected();
 	}
 
 	isAllSubjectsSelected() {
@@ -330,6 +380,7 @@ export class OutboxComponent implements OnInit {
 
 	masterSubjectToggle() {
 		this.isAllSubjectsSelected() ? this.subjectSelection.clear() : this.subjects.forEach(row => this.subjectSelection.select(row));
+		this.isAnyCheckboxSelected();
 	}
 
 	isAllAcademiesSelected() {
@@ -340,6 +391,7 @@ export class OutboxComponent implements OnInit {
 
 	masterAcademyToggle() {
 		this.isAllAcademiesSelected() ? this.academySelection.clear() : this.academies.forEach(row => this.academySelection.select(row));
+		this.isAnyCheckboxSelected();
 	}
 
 	toggleExamTable() {
