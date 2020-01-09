@@ -39,6 +39,12 @@ export class CustomSubject {
 	academyName: string;
 }
 
+export class CustomAcademy {
+	id: number;
+	name: string;
+	abbreviation: string;
+}
+
 @Component({
 	selector: 'app-outbox',
 	templateUrl: './outbox.component.html',
@@ -54,7 +60,7 @@ export class OutboxComponent implements OnInit {
 	exams: Array<CustomExam> = [];
 	courses: Array<CustomCourse> = [];
 	subjects: Array<CustomSubject> = [];
-	academies: Academy[] = [];
+	academies: Array<CustomAcademy> = [];
 
 	showExams = false;
 	showCourses = false;
@@ -64,7 +70,7 @@ export class OutboxComponent implements OnInit {
 	examSelection = new SelectionModel<CustomExam>(true, []);
 	courseSelection = new SelectionModel<CustomCourse>(true, []);
 	subjectSelection = new SelectionModel<CustomSubject>(true, []);
-	academySelection = new SelectionModel<Academy>(true, []);
+	academySelection = new SelectionModel<CustomAcademy>(true, []);
 
 	isSelectionButtonsDisabled = true;
 
@@ -100,9 +106,27 @@ export class OutboxComponent implements OnInit {
 		});
 
 		this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
-			this.academies = responseAcademies;
+			for (let academy of responseAcademies) {
+				let customAcademy = this.academyConverter(academy);
+				this.academies.push(customAcademy);
+			}
 		});
 	}
+
+	academyConverter(input: any) {
+		let output;
+
+		if (input instanceof CustomAcademy) {
+			output = new Academy();
+		} else {
+			output = new CustomAcademy();
+		}
+		output.id = input.id;
+		output.name = input.name;
+		output.abbreviation = input.abbreviation;
+		return output;
+	}
+
 
 	examConverter(input: any) {
 		let output;
@@ -216,9 +240,6 @@ export class OutboxComponent implements OnInit {
 	}
 
 	openSingleElementDialog(element: any, duty: string) {
-		console.log(element);
-		debugger;
-
 		let content: string = "Are you sure you want to " + duty + " this ";
 		if (element instanceof CustomExam) {
 			content = content.concat("exam?\n\n" + element.filename);
@@ -226,7 +247,7 @@ export class OutboxComponent implements OnInit {
 			content = content.concat("course?\n\n" + element.name);
 		} else if (element instanceof CustomSubject) {
 			content = content.concat("subject?\n\n" + element.name);
-		}else if (element instanceof Academy) {
+		}else if (element instanceof CustomAcademy) {
 			content = content.concat("academy?\n\n" + element.name);
 		}
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
@@ -241,12 +262,12 @@ export class OutboxComponent implements OnInit {
 					(element instanceof CustomExam) ? this.publishExam(element) : "";
 					(element instanceof CustomCourse) ? this.publishCourse(element) : "";
 					(element instanceof CustomSubject) ? this.publishSubject(element) : "";
-					(element instanceof Academy) ? this.publishAcademy(element) : "";
+					(element instanceof CustomAcademy) ? this.publishAcademy(element) : "";
 				} else if (duty == "delete") {
 					(element instanceof CustomExam) ? this.deleteExam(element) : "";
 					(element instanceof CustomCourse) ? this.deleteCourse(element) : "";
 					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";
-					(element instanceof Academy) ? this.deleteAcademy(element) : "";
+					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : "";
 				}
 			}
 			this.dialogRef = null;
@@ -291,17 +312,19 @@ export class OutboxComponent implements OnInit {
 		}
 	}
 
-	publishAcademy(element: Academy) {
-		element.unpublished = false;
-		this.academyService.unpublishAcademy(element);
-		this.academies = this.academies.filter(x => x.id != element.id); 
+	publishAcademy(element: CustomAcademy) {
+		debugger;
+		let academy = this.academyConverter(element);
+		academy.unpublished = false;
+		this.academyService.unpublishAcademy(academy);
+		this.academies = this.academies.filter(x => x.id != academy.id); 
 	}
 	
 	publishAcademies() {
-		for (let academy of this.academySelection.selected) {
+		for (let customAcademy of this.academySelection.selected) {
 			console.log("hereee");
 
-			this.publishAcademy(academy);
+			this.publishAcademy(customAcademy);
 		}
 	}
 
@@ -338,7 +361,7 @@ export class OutboxComponent implements OnInit {
 		}
 	}
 
-	deleteAcademy(element: Academy) {
+	deleteAcademy(element: CustomAcademy) {
 		console.log("yup aca");
 		
 		this.academyService.deleteAcademy(element.id);
