@@ -61,11 +61,13 @@ export class ExamComponent implements OnInit, OnDestroy {
 						name: exam.filename,
 						shortDesc: ""
 					});
-					this.courseService.getCourseById(courseId).subscribe(course => {
-						this.course = course;
-						this.courseLoaded = true;
-						this.changeDetector.detectChanges();
-					});
+					this.subscriptions.add(
+						this.courseService.getCourseById(courseId).subscribe(course => {
+							this.course = course;
+							this.courseLoaded = true;
+							this.changeDetector.detectChanges();
+						})
+					);
 				});
 			});
 		this.subscriptions.add(sub);

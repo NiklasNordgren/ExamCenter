@@ -59,10 +59,11 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit() {
-		this.activatedRoute.params.subscribe(params => {
+		const sub = this.activatedRoute.params.subscribe(params => {
 			this.searchString = params["searchString"];
 			this.search(this.searchString);
 		});
+		this.subscriptions.add(sub);
 	}
 
 	ngOnDestroy() {

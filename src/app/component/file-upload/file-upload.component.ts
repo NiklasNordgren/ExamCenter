@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { faUpload, faTrash, faArrowCircleDown, faArrowCircleUp, faCalendarAlt, faGraduationCap, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
@@ -34,7 +34,7 @@ export interface FileTableItem {
     ]),
   ],
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
 
   subscriptions = new Subscription();
 
@@ -139,7 +139,7 @@ export class FileUploadComponent implements OnInit {
 
       if (status == 200) {
         let exam = this.examsToUpload.find(x => x.filename == fileItem.file.name);
-        this.examService.saveExam(exam).subscribe(e => {
+        const sub = this.examService.saveExam(exam).subscribe(e => {
           console.log(e);
           this.dataSource.find(x => x.tempFileId === exam.tempId).status = "Uploaded";
           this.removeFromExamsToUpload(exam.tempId);
@@ -147,8 +147,8 @@ export class FileUploadComponent implements OnInit {
           this.exams.push(exam);
           this.uploadedExams.push(exam);
         });
+        this.subscriptions.add(sub);
       }
-
     };
 
     this.uploader.onErrorItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
