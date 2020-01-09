@@ -1,12 +1,11 @@
 <div class="wrapper">
     <div class=select-buttons>
-        <button class="publishSelectedButton" color="accent" mat-raised-button (click)="openSelectionDialog('publish')"
-            [disabled]="isSelectionButtonsDisabled">
+        <button class="publishSelectedButton" color="accent" mat-raised-button
+            (click)="openDialog('publish')">
             <fa-icon [icon]="faFileMedical"></fa-icon><span class="buttonText"> Publish Selected</span>
         </button>
 
-        <button class="deleteSelectedButton" color="warn" mat-raised-button (click)="openSelectionDialog('delete')"
-            [disabled]="isSelectionButtonsDisabled">
+        <button class="deleteSelectedButton" color="warn" mat-raised-button (click)="openDialog('delete', '')">
             <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Selected</span>
         </button>
 
@@ -36,7 +35,7 @@
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
-                            (change)="$event ? examSelection.toggle(row) : null; isAnyCheckboxSelected()"
+                            (change)="$event ? examSelection.toggle(row) : null"
                             [checked]="examSelection.isSelected(row)" [aria-label]="surprise">
                         </mat-checkbox>
                     </td>
@@ -65,17 +64,17 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <div class="singleButtons">
-                            <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
-                                <fa-icon [icon]="faFileMedical"></fa-icon>
-                                <span class="button-text"> Publish</span>
-                            </button>
+                        <div class="singleButtons"> 
+                        <button mat-raised-button color="accent" (click)="publishExam(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
 
-                            <button mat-raised-button color="warn" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
-                                <fa-icon [icon]="faTrash"></fa-icon>
-                                <span class="button-text"> Delete</span>
-                            </button>
-                        </div>
+                        <button mat-raised-button color="warn" (click)="deleteExam(element)" class="deleteBtn">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                            <span class="button-text"> Delete</span>
+                        </button>
+                    </div>
                     </td>
                 </ng-container>
 
@@ -108,7 +107,7 @@
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
-                            (change)="$event ? courseSelection.toggle(row) : null; isAnyCheckboxSelected()"
+                            (change)="$event ? courseSelection.toggle(row) : null"
                             [checked]="courseSelection.isSelected(row)" [aria-label]="surprise">
                         </mat-checkbox>
                     </td>
@@ -132,17 +131,11 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <div class="singleButtons">
-                            <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
-                                <fa-icon [icon]="faFileMedical"></fa-icon>
-                                <span class="button-text"> Publish</span>
-                            </button>
-
-                            <button mat-raised-button color="warn" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
-                                <fa-icon [icon]="faTrash"></fa-icon>
-                                <span class="button-text"> Delete</span>
-                            </button>
-                        </div>
+                        <button mat-raised-button color="accent" (click)="publishCourse(element)"
+                            class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
                     </td>
                 </ng-container>
 
@@ -175,7 +168,7 @@
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
-                            (change)="$event ? subjectSelection.toggle(row) : null; isAnyCheckboxSelected()"
+                            (change)="$event ? subjectSelection.toggle(row) : null"
                             [checked]="subjectSelection.isSelected(row)" [aria-label]="surprise">
                         </mat-checkbox>
                     </td>
@@ -199,17 +192,10 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <div class="singleButtons">
-                            <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
-                                <fa-icon [icon]="faFileMedical"></fa-icon>
-                                <span class="button-text"> Publish</span>
-                            </button>
-
-                            <button mat-raised-button color="warn" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
-                                <fa-icon [icon]="faTrash"></fa-icon>
-                                <span class="button-text"> Delete</span>
-                            </button>
-                        </div>
+                        <button mat-raised-button color="accent" (click)="publishSubject(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
                     </td>
                 </ng-container>
 
@@ -242,7 +228,7 @@
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
-                            (change)="$event ? academySelection.toggle(row) : null; isAnyCheckboxSelected()"
+                            (change)="$event ? academySelection.toggle(row) : null"
                             [checked]="academySelection.isSelected(row)" [aria-label]="surprise">
                         </mat-checkbox>
                     </td>
@@ -261,17 +247,10 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <div class="singleButtons">
-                            <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
-                                <fa-icon [icon]="faFileMedical"></fa-icon>
-                                <span class="button-text"> Publish</span>
-                            </button>
-
-                            <button mat-raised-button color="warn" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
-                                <fa-icon [icon]="faTrash"></fa-icon>
-                                <span class="button-text"> Delete</span>
-                            </button>
-                        </div>
+                        <button mat-raised-button color="accent" (click)="publishAcademy(element)" class="publishBtn">
+                            <fa-icon [icon]="faFileMedical"></fa-icon>
+                            <span class="button-text"> Publish</span>
+                        </button>
                     </td>
                 </ng-container>
 
