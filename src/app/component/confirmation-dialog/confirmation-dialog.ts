@@ -12,6 +12,7 @@ export class ConfirmationDialog {
     public contentMessage: string;
     public confirmBtnText: string = "Confirm";
     public cancelBtnText: string = "Cancel";
+  
 
     constructor(public dialogRef: MatDialogRef<ConfirmationDialog>) {}
 

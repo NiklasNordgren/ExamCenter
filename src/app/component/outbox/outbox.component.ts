@@ -113,21 +113,6 @@ export class OutboxComponent implements OnInit {
 		});
 	}
 
-	academyConverter(input: any) {
-		let output;
-
-		if (input instanceof CustomAcademy) {
-			output = new Academy();
-		} else {
-			output = new CustomAcademy();
-		}
-		output.id = input.id;
-		output.name = input.name;
-		output.abbreviation = input.abbreviation;
-		return output;
-	}
-
-
 	examConverter(input: any) {
 		let output;
 
@@ -183,6 +168,20 @@ export class OutboxComponent implements OnInit {
 		return output;
 	}
 
+	academyConverter(input: any) {
+		let output;
+
+		if (input instanceof CustomAcademy) {
+			output = new Academy();
+		} else {
+			output = new CustomAcademy();
+		}
+		output.id = input.id;
+		output.name = input.name;
+		output.abbreviation = input.abbreviation;
+		return output;
+	}
+
 	isAnyCheckboxSelected() {
 		if (this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 ||
 				this.subjectSelection.selected.length !== 0 || this.academySelection.selected.length !== 0) {
@@ -218,7 +217,7 @@ export class OutboxComponent implements OnInit {
 			this.dialogRef.componentInstance.titleMessage = "confirm";
 			this.dialogRef.componentInstance.contentMessage = dutyText;
 			this.dialogRef.componentInstance.confirmBtnText = duty;
-	
+			
 			this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					if (duty == "publish") {
@@ -250,6 +249,7 @@ export class OutboxComponent implements OnInit {
 		}else if (element instanceof CustomAcademy) {
 			content = content.concat("academy?\n\n" + element.name);
 		}
+
 		this.dialogRef = this.dialog.open(ConfirmationDialog, {
 		});
 		this.dialogRef.componentInstance.titleMessage = "confirm";
@@ -313,7 +313,6 @@ export class OutboxComponent implements OnInit {
 	}
 
 	publishAcademy(element: CustomAcademy) {
-		debugger;
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
 		this.academyService.unpublishAcademy(academy);
