@@ -137,6 +137,10 @@ const routes: Routes = [
 			{
 				path: 'outbox',
 				component: OutboxComponent
+			},
+			{
+				path: 'app-settings',
+				component: SettingsComponent
 			}
 		]
 	}

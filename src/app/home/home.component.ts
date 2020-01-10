@@ -5,7 +5,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AcademyService } from '../service/academy.service';
 import { Academy } from '../model/academy.model';
-import { faUsersCog, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faUsersCog, faUpload, IconDefinition, faCog } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../service/user.service';
 import { Subscription } from 'rxjs';
 
@@ -16,8 +16,9 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	faUsersCog = faUsersCog;
-	faUpload = faUpload;
+	faUsersCog: IconDefinition = faUsersCog;
+	faUpload: IconDefinition = faUpload;
+	faCog: IconDefinition = faCog;
 	academies: Academy[] = [];
 	isSuperUser: boolean;
 

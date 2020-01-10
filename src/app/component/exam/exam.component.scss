@@ -20,10 +20,15 @@ h1 {
 }
 
 #adblock-info {
+	background-color: rgba($color: #FFFFFF, $alpha: 1);
 	width: 200px;
 	word-wrap: break-word;
+	padding: 5pt;
 }
 
 #close-button {
 	float: right;
+	padding: 0px 5px;
+	border-style: outset;
+	border-width: 1px;
 }

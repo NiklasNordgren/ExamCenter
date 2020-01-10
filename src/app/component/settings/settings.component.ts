@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SettingsService } from 'src/app/service/settings.service';
 import { Settings } from 'src/app/model/settings.model';
 import { Observable, Subscription } from 'rxjs';
+import { faCog, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-settings',
@@ -11,7 +12,8 @@ import { Observable, Subscription } from 'rxjs';
 export class SettingsComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
 	settings: Observable<Settings>;
-	settingsLoaded = false;
+	settingsLoaded: boolean = false;
+	faCog: IconDefinition = faCog;
 
 	constructor(private settingsService: SettingsService) {}
 

@@ -14,14 +14,14 @@
         </button>
 
         <ng-template #adblockInfo>
-            <div id="adblock-info">
+            <div id="adblock-info" class="mat-body">
                 <button mat-button id="close-button" (click)="toggleInfoMessage();">
                     <span>
                         <fa-icon [icon]='faWindowClose'></fa-icon>
                         Close
                     </span>
                 </button>
-                If you can't open PDFs on this site, you're probably using some adblocking software. Please disable it.
+                If you can't open PDFs on this site, you're probably using adblocking software. Disable adblocker, refresh the page and try again.
             </div>
         </ng-template>
     </div>
