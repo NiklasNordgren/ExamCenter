@@ -1,4 +1,4 @@
-<div class="content-container">
+<div style="padding-bottom: 60px;" class="content-container">
     <h1 *ngIf="courseLoaded">Exams in course {{course.name}}</h1>
     <app-list (clicked)="openPdf($event)" [actionDescription]='actionDescription' [icon]='icon' [data]="data" [shortHeader]="shortHeader"
         [name]="name"></app-list>
@@ -6,16 +6,16 @@
 
 <div id="info-float">
     <div>
-        <button mat-button *ngIf="!showingInfoMessage; else adblockInfo" (click)="toggleInfoMessage();">
+        <button id="info-button" mat-button *ngIf="!showingInfoMessage; else adblockInfo" (click)="toggleInfoMessage();">
             <span>
-                <fa-icon [icon]='faInfoCircle'></fa-icon>
-                Can't open PDFs?
+                <fa-icon id="info-icon" [icon]='faInfoCircle'></fa-icon>
+                <span id="info-text">Can't open PDFs?</span>
             </span>
         </button>
 
         <ng-template #adblockInfo>
             <div id="adblock-info" class="mat-body">
-                <button mat-button id="close-button" (click)="toggleInfoMessage();">
+                <button mat-raised-button color="primary" class="btn btn-primary" id="close-button" (click)="toggleInfoMessage();">
                     <span>
                         <fa-icon [icon]='faWindowClose'></fa-icon>
                         Close

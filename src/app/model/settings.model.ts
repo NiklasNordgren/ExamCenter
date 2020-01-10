@@ -3,4 +3,5 @@ export class Settings {
 	cookieSessionMinutes: number;
 	homePageHtml: string;
 	aboutPageHtml: string;
+	unpublishTimeYears: number;
 }

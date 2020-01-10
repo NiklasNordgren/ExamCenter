@@ -9,6 +9,7 @@ h1 {
 }
 
 #info-float {
+	background-color: rgba($color: #ffffff, $alpha: 1);
 	display: flex;
 	flex-direction: row;
 	position: fixed;
@@ -17,11 +18,11 @@ h1 {
 	border-style: solid;
 	border-width: 1px;
 	border-color: black;
+	font-size: 14px;
 }
 
 #adblock-info {
-	background-color: rgba($color: #FFFFFF, $alpha: 1);
-	width: 200px;
+	max-width: 200px;
 	word-wrap: break-word;
 	padding: 5pt;
 }
@@ -29,6 +30,29 @@ h1 {
 #close-button {
 	float: right;
 	padding: 0px 5px;
-	border-style: outset;
-	border-width: 1px;
+}
+
+#info-text {
+	@media only screen and (max-width: 652px) {
+		font-size: 0px;
+	}
+}
+
+#info-button {
+	@media only screen and (max-width: 652px) {
+		padding: 0px;
+		max-height: 40px;
+		max-width: 40px;
+		min-height: 40px;
+		min-width: 40px;
+	}
+}
+
+#info-icon {
+	margin-right: 10px;
+	font-size: 20px;
+	@media only screen and (max-width: 652px) {
+		margin-right: 0px;
+		width: 100%;
+	}
 }
