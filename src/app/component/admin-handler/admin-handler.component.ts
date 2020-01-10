@@ -33,12 +33,10 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	users = [];
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = ['select', 'name', 'isSuperUser', 'edit'];
+	isDeleteButtonDisabled = true;
 
-	constructor(
-		private service: UserService,
-		private navigator: Navigator,
-		private dialog: MatDialog
-	) {}
+	constructor(private service: UserService, private navigator: Navigator,	private dialog: MatDialog) {
+	}
 
 	ngOnInit() {
 		const sub = this.service.getAllUsers().subscribe(responseUsers => {
@@ -52,16 +50,16 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	openDeleteDialog() {
-		const numberOfSelected = this.selection.selected.length;
+		
 
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.contentMessage = 'Are you sure you want to delete ' + numberOfSelected + ' user(s)?';
+		this.dialogRef.componentInstance.contentMessage = this.makeText();
 		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				for (const user of this.selection.selected) {
+				for (let user of this.selection.selected) {
 					this.service.deleteUser(user.id);
 					this.users = this.users.filter(x => x.id !== user.id);
 				}
@@ -69,6 +67,14 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
+	}
+
+	makeText() {
+		const numberOfSelected = this.selection.selected.length;
+		let dutyText = "Are you sure you want to delete\n\n";
+		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " admins";
+		
+		return dutyText = dutyText.concat(contentText);
 	}
 
 	isAllSelected() {
@@ -79,8 +85,13 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected()
-			? this.selection.clear()
-			: this.users.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.users.forEach(row => this.selection.select(row));
+			this.isAnyCheckboxSelected();
+	}
+
+	isAnyCheckboxSelected() {
+		console.log("press");
+		
+		(this.selection.selected.length !== 0) ? this.isDeleteButtonDisabled = false : this.isDeleteButtonDisabled = true;
 	}
 }

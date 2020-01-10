@@ -75,6 +75,7 @@ import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminGuard } from './guard/admin.guard';
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
+import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -112,7 +113,8 @@ import { SettingsComponent } from './component/settings/settings.component';
 		SubjectFormComponent,
 		ExamFormComponent,
 		CourseFormComponent,
-		SettingsComponent
+		SettingsComponent,
+		ConfirmationAckDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -150,7 +152,7 @@ import { SettingsComponent } from './component/settings/settings.component';
 		MatDialogModule,
 		MatTabsModule
 	],
-	entryComponents: [ConfirmationDialogComponent],
+	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
 		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }

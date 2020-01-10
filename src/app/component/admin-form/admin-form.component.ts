@@ -5,6 +5,9 @@ import { User } from '../../model/user.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 export interface CustomBooleanArray {
 	value: boolean;
@@ -25,6 +28,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	private form: FormGroup;
 	private subscriptions = new Subscription();
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	FORM_TYPE = { CREATE: 0 };
 	isCreateForm: boolean;
@@ -36,10 +40,8 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	buttonText: string;
 
 	constructor(
-		private formBuilder: FormBuilder,
-		private route: ActivatedRoute,
-		private service: UserService,
-		private navigator: Navigator
+		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService, 
+		private navigator: Navigator, private dialog: MatDialog
 	) {}
 
 	ngOnInit() {
@@ -86,9 +88,31 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 			this.user.name = this.form.controls.name.value;
 			this.user.isSuperUser = this.form.controls.isSuperUser.value;
 
-			const sub = this.service.saveUser(this.user).subscribe(e => {});
+			const sub = this.service.saveUser(this.user).subscribe(
+				data => this.onSuccess(data),
+				error => this.onError(error)
+			);
 			this.subscriptions.add(sub);
-			this.form.reset();
+		}
+	}
+
+	
+	onSuccess(data: any) {
+		console.log(data);
+		
+		this.form.reset();
+		this.navigator.goToPage('/home/admin-handler');
+		this.openAcknowledgeDialog('success', 'success');
+	}
+
+	onError(error) {
+		if (error.status === 401) {
+			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
+			this.navigator.goToPage('/login');
+		} else if (error.status === 409) {
+			this.openAcknowledgeDialog('The name already exists as an admin.', 'error');
+		} else {
+			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'error');
 		}
 	}
 
@@ -100,5 +124,17 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	setEditFormText() {
 		this.titleText = 'Edit Admin';
 		this.buttonText = 'Save';
+	}
+
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
 	}
 }

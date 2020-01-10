@@ -72,7 +72,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	}
 	unpublishSelection() {
 		const sub = this.subjectService
-			.unpublishSubects(this.selection.selected)
+			.unpublishSubjects(this.selection.selected)
 			.subscribe(
 				data => this.onSuccess(data),
 				error => this.onError(error)

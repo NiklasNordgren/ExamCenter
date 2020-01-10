@@ -98,7 +98,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	selectedCourse(id: number) {
-		const sub = this.service
+		const sub = this.examService
 			.getAllExamsByCourseId(id)
 			.subscribe(responseResult => {
 				this.exams = responseResult;

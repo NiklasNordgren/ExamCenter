@@ -196,15 +196,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		return output;
 	}
 
-	isAnyCheckboxSelected() {
-		if (this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 ||
-				this.subjectSelection.selected.length !== 0 || this.academySelection.selected.length !== 0) {
-			this.isSelectionButtonsDisabled = false;
-		} else {
-			this.isSelectionButtonsDisabled = true;
-		}
-		
-	}
+	
 
 	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
 
@@ -434,6 +426,11 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		this.isAnyCheckboxSelected();
 	}
 
+	isAnyCheckboxSelected() {
+		(this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 || this.subjectSelection.selected.length !== 0 
+			|| this.academySelection.selected.length !== 0) ? this.isSelectionButtonsDisabled = false : this.isSelectionButtonsDisabled = true;
+	}
+
 	toggleExamTable() {
 		this.showExams = !this.showExams;
 	}
@@ -448,74 +445,5 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	toggleAcademyTable() {
 		this.showAcademies = !this.showAcademies;
-/*
-	displayedColumns: string[] = ['filename', 'date', 'unpublishDate', 'actions'];
-
-	constructor(
-		private router: Router,
-		private service: UnpublishService,
-		private dialog: MatDialog
-	) {}
-
-	ngOnInit() {
-		const sub = this.service.getUnpublishedExams().subscribe(responseExams => {
-			this.convertAndSetExams(responseExams);
-		});
-		this.subscriptions.add(sub);
-	}
-
-	ngOnDestroy() {
-		this.subscriptions.unsubscribe();
-	}
-
-	convertAndSetSubjects(responseSubjects) {
-		this.subjects = [];
-		responseSubjects.forEach(subject => {
-			this.subjects.push({
-				name: subject.name,
-				code: subject.code,
-				id: subject.id,
-				unpublished: subject.unpublished,
-				academyId: subject.academyId
-			});
-		});
-	}
-
-	convertAndSetExams(responseExams) {
-		this.exams = [];
-		responseExams.forEach(exam => {
-			this.exams.push({
-				filename: exam.filename,
-				date: exam.date,
-				unpublishDate: exam.unpublishDate,
-				id: exam.id,
-				unpublished: exam.unpublished,
-				courseId: exam.courseId
-			});
-		});
-	}
-
-	publishExam(element: any) {
-		this.service.publishExam(element);
-		this.exams = this.exams.filter(x => x.id !== element.id);
-	}
-
-	openDeleteDialog(element: any) {
-		this.clickedId = element.id;
-		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
-		this.dialogRef.componentInstance.confirmMessage =
-			'Are you sure you want to delete?';
-		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				this.service.deleteExam(this.clickedId);
-				this.exams = this.exams.filter(x => x.id !== this.clickedId);
-			}
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-*/
 	}
 }

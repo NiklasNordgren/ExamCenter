@@ -23,7 +23,8 @@ export class UserService {
 	}
 
 	deleteUser(id: number) {
-		return this.http.delete('/api/users/' + id);
+		return this.http.delete('/api/users/' + id).subscribe(data => {
+		});;
 	}
 
 	isUserLoggedInAsAdmin(): Observable<boolean> {

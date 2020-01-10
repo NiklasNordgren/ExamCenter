@@ -131,7 +131,7 @@ const routes: Routes = [
 				component: FileUploadComponent
 			},
 			{
-				path: "admin",
+				path: "admin-handler",
 				component: AdminHandlerComponent
 			},
 			{

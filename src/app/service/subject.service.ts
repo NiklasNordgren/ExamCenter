@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 	providedIn: 'root'
 })
 export class SubjectService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	getSubjectById(id: number) {
 		return this.http.get<Subject>('api/subjects/' + id);
@@ -18,13 +18,9 @@ export class SubjectService {
 	}
 
 
-  getUnpublishedSubjects() {
-    return this.http.get<Subject[]>('api/subjects/unpublished');
-  }
-
-  getAllSubjectsByAcademyId(academyId: number) {
-    return this.http.get<Subject[]>("api/subjects/academy/" + academyId);
-  }
+	getUnpublishedSubjects() {
+		return this.http.get<Subject[]>('api/subjects/unpublished');
+	}
 
 	getAllPublishedSubjectsByAcademyId(academyId: number) {
 		return this.http.get<Subject[]>(
@@ -45,15 +41,16 @@ export class SubjectService {
 	}
 
 	deleteSubject(id: number) {
-		return this.http.delete('/api/subjects/' + id);
+		return this.http.delete('/api/subjects/' + id).subscribe(data => {
+		});;
 	}
 
-  publishSubject(subject: Subject) {
-    return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
-    });
-  }
+	publishSubject(subject: Subject) {
+		return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
+		});
+	}
 
-  unpublishSubjects(subjects: Subject[]) : Observable<Subject>{
+	unpublishSubjects(subjects: Subject[]): Observable<Subject> {
 		return this.http.post<Subject>('/api/subjects/unpublish/' + true, subjects);
 	};
 }
