@@ -29,12 +29,11 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	];
 
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
-	
+
 	form: FormGroup;
 	subscriptions: Subscription = new Subscription();
 
 	FORM_TYPE = { CREATE: 0 };
-	isCreateForm: boolean;
 	exam: Exam = new Exam();
 	id: number;
 
@@ -44,7 +43,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	buttonText: string;
 
 	constructor(
-		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService, 
+		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService,
 		private navigator: Navigator, private dialog: MatDialog
 	) { }
 
@@ -60,8 +59,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		const sub = this.courseService.getAllCourses().subscribe(responseResult => {
 			this.courses = responseResult;
 		});
-		this.subscriptions.add(sub);
-
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
@@ -71,25 +68,20 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	}
 
 	createForm(id: number) {
-		if (id === this.FORM_TYPE.CREATE) {
-			this.isCreateForm = true;
-			this.setCreateFormText();
-		} else {
-			this.isCreateForm = false;
-			this.setEditFormText();
-			const sub = this.service.getExamById(id).subscribe(exam => {
-				this.exam = exam;
-				this.isUnpublishedSelector = exam.unpublished;
-				this.form = this.formBuilder.group({
-					filename: exam.filename,
-					date: exam.date,
-					unpublishDate: exam.unpublishDate,
-					unpublished: exam.unpublished,
-					course: exam.courseId
-				});
+		this.setEditFormText();
+		const sub = this.service.getExamById(id).subscribe(exam => {
+			this.exam = exam;
+			this.isUnpublishedSelector = exam.unpublished;
+			this.form = this.formBuilder.group({
+				filename: exam.filename,
+				date: exam.date,
+				unpublishDate: exam.unpublishDate,
+				unpublished: exam.unpublished,
+				course: exam.courseId
 			});
-			this.subscriptions.add(sub);
-		}
+		});
+		this.subscriptions.add(sub);
+
 	}
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
@@ -97,9 +89,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	onSubmit() {
 		if (this.form.valid) {
-			if (this.isCreateForm) {
-				this.exam = new Exam();
-			}
 			this.exam.filename = this.form.controls.filename.value;
 			this.exam.date = this.form.controls.date.value;
 			this.exam.unpublishDate = this.form.controls.unpublishDate.value;
@@ -114,11 +103,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	setCreateFormText() {
-		this.titleText = 'Create Exam';
-		this.buttonText = 'Create';
-	}
-
 	setEditFormText() {
 		this.titleText = 'Edit Exam';
 		this.buttonText = 'Save';
@@ -126,12 +110,10 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	onSuccess(data: any) {
 		console.log(data);
-		
+
 		this.form.reset();
 		this.navigator.goToPage('/home/exam-handler');
-		let suffixText: string;
-		(this.isCreateForm) ? suffixText = " was added" : suffixText = " was updated";
-		this.openAcknowledgeDialog(data.filename + suffixText, 'success');
+		this.openAcknowledgeDialog(data.filename + " was updated", 'success');
 	}
 
 	onError(error) {

@@ -22,7 +22,7 @@ export class ExamService {
 	}
 
 	saveExam(exam: Exam) {
-		return this.http.post<Exam>('/api/exams', exam);
+		return this.http.post<Exam>('/api/exams/', exam);
 	}
 
 	deleteExam(id: number) {
