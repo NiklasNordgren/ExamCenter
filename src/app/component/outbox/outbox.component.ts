@@ -1,10 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ExamService } from '../../service/exam.service';
-import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CourseService } from 'src/app/service/course.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
@@ -13,6 +14,8 @@ import { Exam } from 'src/app/model/exam.model';
 import { Course } from 'src/app/model/course.model';
 import { Academy } from 'src/app/model/academy.model';
 import { Subject } from 'src/app/model/subject.model';
+
+import { UnpublishService } from '../../service/unpublish.service';
 
 export class CustomExam {
 	id: number;
@@ -50,9 +53,9 @@ export class CustomAcademy {
 	templateUrl: './outbox.component.html',
 	styleUrls: ['./outbox.component.scss']
 })
-export class OutboxComponent implements OnInit {
-
-	dialogRef: MatDialogRef<ConfirmationDialog>;
+export class OutboxComponent implements OnInit, OnDestroy {
+	subscriptions: Subscription = new Subscription();
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	faFileMedical = faFileMedical;
 	faTrash = faTrash;
@@ -75,6 +78,7 @@ export class OutboxComponent implements OnInit {
 	isSelectionButtonsDisabled = true;
 
 	clickedId: number;
+// head
 	displayedExamColumns: string[] = ['select', 'filename', 'date', 'unpublishDate', 'courseName', 'actions'];
 	displayedCourseColumns: string[] = ['select', 'name', 'courseCode', 'subjectName', 'actions'];
 	displayedSubjectColumns: string[] = ['select', 'name', 'code', 'academyName', 'actions'];
@@ -84,33 +88,43 @@ export class OutboxComponent implements OnInit {
 		private subjectService: SubjectService, private academyService: AcademyService, private dialog: MatDialog) { }
 
 	ngOnInit() {
-		this.examService.getUnpublishedExams().subscribe(responseExams => {
+		let sub: any;
+
+		sub = this.examService.getUnpublishedExams().subscribe(responseExams => {
 			for (let exam of responseExams) {
 				let customExam = this.examConverter(exam);
 				this.exams.push(customExam);
 			}
 		});
+		this.subscriptions.add(sub);
 
-		this.courseService.getUnpublishedCourses().subscribe(responseCourses => {
+		sub = this.courseService.getUnpublishedCourses().subscribe(responseCourses => {
 			for (let course of responseCourses) {
 				let customCourse = this.courseConverter(course);
 				this.courses.push(customCourse);
 			}
 		});
+		this.subscriptions.add(sub);
 
-		this.subjectService.getUnpublishedSubjects().subscribe(responseSubjects => {
+		sub = this.subjectService.getUnpublishedSubjects().subscribe(responseSubjects => {
 			for (let subject of responseSubjects) {
 				let customSubject = this.subjectConverter(subject);
 				this.subjects.push(customSubject);
 			}
 		});
+		this.subscriptions.add(sub);
 
-		this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
+		sub = this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
 			for (let academy of responseAcademies) {
 				let customAcademy = this.academyConverter(academy);
 				this.academies.push(customAcademy);
 			}
 		});
+		this.subscriptions.add(sub);
+	}
+
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
 	}
 
 	examConverter(input: any) {
@@ -212,13 +226,13 @@ export class OutboxComponent implements OnInit {
 		let dutyText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
 
 		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
-			this.dialogRef = this.dialog.open(ConfirmationDialog, {
+			this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 			});
 			this.dialogRef.componentInstance.titleMessage = "confirm";
 			this.dialogRef.componentInstance.contentMessage = dutyText;
 			this.dialogRef.componentInstance.confirmBtnText = duty;
 			
-			this.dialogRef.afterClosed().subscribe(result => {
+			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					if (duty == "publish") {
 						(amountExamsSelected !== 0) ? this.publishExams() : "";
@@ -235,6 +249,7 @@ export class OutboxComponent implements OnInit {
 				}
 				this.dialogRef = null;
 			});
+			this.subscriptions.add(sub);
 		}
 	}
 
@@ -250,13 +265,13 @@ export class OutboxComponent implements OnInit {
 			content = content.concat("academy?\n\n" + element.name);
 		}
 
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 		});
 		this.dialogRef.componentInstance.titleMessage = "confirm";
 		this.dialogRef.componentInstance.contentMessage = content;
 		this.dialogRef.componentInstance.confirmBtnText = duty;
 
-		this.dialogRef.afterClosed().subscribe(result => {
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				if (duty == "publish") {
 					(element instanceof CustomExam) ? this.publishExam(element) : "";
@@ -272,6 +287,7 @@ export class OutboxComponent implements OnInit {
 			}
 			this.dialogRef = null;
 		}); 
+		this.subscriptions.add(sub);
 	}
 
 	publishExam(element: CustomExam) {
@@ -432,5 +448,74 @@ export class OutboxComponent implements OnInit {
 
 	toggleAcademyTable() {
 		this.showAcademies = !this.showAcademies;
+/*
+	displayedColumns: string[] = ['filename', 'date', 'unpublishDate', 'actions'];
+
+	constructor(
+		private router: Router,
+		private service: UnpublishService,
+		private dialog: MatDialog
+	) {}
+
+	ngOnInit() {
+		const sub = this.service.getUnpublishedExams().subscribe(responseExams => {
+			this.convertAndSetExams(responseExams);
+		});
+		this.subscriptions.add(sub);
+	}
+
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
+
+	convertAndSetSubjects(responseSubjects) {
+		this.subjects = [];
+		responseSubjects.forEach(subject => {
+			this.subjects.push({
+				name: subject.name,
+				code: subject.code,
+				id: subject.id,
+				unpublished: subject.unpublished,
+				academyId: subject.academyId
+			});
+		});
+	}
+
+	convertAndSetExams(responseExams) {
+		this.exams = [];
+		responseExams.forEach(exam => {
+			this.exams.push({
+				filename: exam.filename,
+				date: exam.date,
+				unpublishDate: exam.unpublishDate,
+				id: exam.id,
+				unpublished: exam.unpublished,
+				courseId: exam.courseId
+			});
+		});
+	}
+
+	publishExam(element: any) {
+		this.service.publishExam(element);
+		this.exams = this.exams.filter(x => x.id !== element.id);
+	}
+
+	openDeleteDialog(element: any) {
+		this.clickedId = element.id;
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
+		this.dialogRef.componentInstance.confirmMessage =
+			'Are you sure you want to delete?';
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
+		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.service.deleteExam(this.clickedId);
+				this.exams = this.exams.filter(x => x.id !== this.clickedId);
+			}
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+*/
 	}
 }

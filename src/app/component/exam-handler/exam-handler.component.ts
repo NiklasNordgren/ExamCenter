@@ -1,15 +1,21 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { faPlus, faUsersCog, faSearch, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+	faPlus,
+	faUsersCog,
+	faSearch,
+	faPen,
+	faTrash
+} from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../service/exam.service';
 import { Exam } from '../../model/exam.model';
-import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CourseService } from 'src/app/service/course.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
-import { MatTableDataSource } from '@angular/material';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -17,8 +23,8 @@ import { MatTableDataSource } from '@angular/material';
 	styleUrls: ['./exam-handler.component.scss'],
 	providers: [Navigator]
 })
-export class ExamHandlerComponent implements OnInit{
-
+export class ExamHandlerComponent implements OnInit, OnDestroy {
+	subscriptions: Subscription = new Subscription();
 	faPlus = faPlus;
 	faUsersCog = faUsersCog;
 	faSearch = faSearch;
@@ -27,66 +33,89 @@ export class ExamHandlerComponent implements OnInit{
 	faPen = faPen;
 	faTrash = faTrash;
 
-  	academies = [];
-  	subjects = [];
-  	courses = [];
-  	exams = [];
+	academies = [];
+	subjects = [];
+	courses = [];
+	exams: Exam[] = [];
 
-  	selectedAcademyValue: number;
-  	selectedSubjectValue: number;
-  	selectedCourseValue: number;
+	selectedAcademyValue: number;
+	selectedSubjectValue: number;
+	selectedCourseValue: number;
 
-	dialogRef: MatDialogRef<ConfirmationDialog>;
-	displayedColumns: string[] = ['select', 'filename', 'date', 'unpublishDate', 'unpublished', 'edit'];
-  
- 	constructor(private examService: ExamService, private courseService: CourseService, private subjectService: SubjectService,
-    	private academyService: AcademyService, private navigator: Navigator, 
-    	private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef) {
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	displayedColumns: string[] = [
+		'select',
+		'filename',
+		'date',
+		'unpublishDate',
+		'unpublished',
+		'edit'
+	];
 
-	}
+	constructor(
+		private examService: ExamService,
+		private courseService: CourseService,
+		private subjectService: SubjectService,
+		private academyService: AcademyService,
+		private navigator: Navigator,
+		private dialog: MatDialog,
+		private changeDetectorRef: ChangeDetectorRef
+	) {}
 
 	ngOnInit() {
-		this.academyService.getAllAcademies().subscribe(responseResult => {
-			this.academies = responseResult;
-			this.selectedAcademyValue = this.academies[0].id;
-      		this.selectedAcademy(this.selectedAcademyValue);
-		});
+		const sub = this.academyService
+			.getAllAcademies()
+			.subscribe(responseResult => {
+				this.academies = responseResult;
+				this.selectedAcademyValue = this.academies[0].id;
+				this.selectedAcademy(this.selectedAcademyValue);
+			});
+		this.subscriptions.add(sub);
 	}
 
-  selectedAcademy(id: number) {
-    this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
-		this.subjects = responseResult;
-		this.selectedSubjectValue = this.subjects[0].id;
-		this.selectedSubject(this.selectedSubjectValue);
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
 
-    });
-  }
+	selectedAcademy(id: number) {
+		const sub = this.subjectService
+			.getAllSubjectsByAcademyId(id)
+			.subscribe(responseResult => {
+				this.subjects = responseResult;
+				this.selectedSubjectValue = this.subjects[0].id;
+				this.selectedSubject(this.selectedSubjectValue);
+			});
+		this.subscriptions.add(sub);
+	}
 
-  selectedSubject(id: number) {
-    this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
-      this.courses = responseResult;
-    });
-  }
-  
-  selectedCourse(id: number) {
-    this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
-      this.exams = responseResult;
-    });
-  }
+	selectedSubject(id: number) {
+		const sub = this.courseService
+			.getAllCoursesBySubjectId(id)
+			.subscribe(responseResult => {
+				this.courses = responseResult;
+			});
+		this.subscriptions.add(sub);
+	}
 
-  
-  
+	selectedCourse(id: number) {
+		const sub = this.service
+			.getAllExamsByCourseId(id)
+			.subscribe(responseResult => {
+				this.exams = responseResult;
+			});
+		this.subscriptions.add(sub);
+	}
+
 	openDeleteDialog() {
+		const numberOfSelected = this.selection.selected.length;
 
-		let numberOfSelected = this.selection.selected.length;
-
-		this.dialogRef = this.dialog.open(ConfirmationDialog, {
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 		});
 		this.dialogRef.componentInstance.titleMessage = "Confirm";
 		this.dialogRef.componentInstance.contentMessage = "Are you sure you want to delete " + numberOfSelected + " exam(s)?";
 		this.dialogRef.componentInstance.confirmBtnText = "Delete";
 
-		this.dialogRef.afterClosed().subscribe(result => {
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				for (let exam of this.selection.selected) {
 					this.examService.deleteExam(exam.id);
@@ -95,6 +124,7 @@ export class ExamHandlerComponent implements OnInit{
 			}
 			this.dialogRef = null;
 		});
+		this.subscriptions.add(sub);
 	}
 
 	isAllSelected() {
@@ -105,8 +135,8 @@ export class ExamHandlerComponent implements OnInit{
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected() ?
-			this.selection.clear() :
-			this.exams.forEach(row => this.selection.select(row));
+		this.isAllSelected()
+			? this.selection.clear()
+			: this.exams.forEach(row => this.selection.select(row));
 	}
 }

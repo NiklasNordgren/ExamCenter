@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { Subject } from '../model/subject.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class SubjectService {
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+	getSubjectById(id: number) {
+		return this.http.get<Subject>('api/subjects/' + id);
+	}
 
-  getSubjectById(id: number) {
-    return this.http.get<Subject>('api/subjects/' + id);
-  }
+	getAllSubjectsByAcademyId(academyId: number) {
+		return this.http.get<Subject[]>('api/subjects/academy/' + academyId);
+	}
+
 
   getUnpublishedSubjects() {
     return this.http.get<Subject[]>('api/subjects/unpublished');
@@ -22,25 +26,27 @@ export class SubjectService {
     return this.http.get<Subject[]>("api/subjects/academy/" + academyId);
   }
 
-  getAllPublishedSubjectsByAcademyId(academyId: number){
-    return this.http.get<Subject[]>('api/subjects/published/academy/' + academyId);
-  }
+	getAllPublishedSubjectsByAcademyId(academyId: number) {
+		return this.http.get<Subject[]>(
+			'api/subjects/published/academy/' + academyId
+		);
+	}
 
-  getAllSubjects() {
-    return this.http.get<Subject[]>("api/subjects/all");
-  }
 
-  saveSubject(subject: Subject): Observable<Subject> {
-    console.log('saving...');
-    console.log(subject);
+	getAllSubjects() {
+		return this.http.get<Subject[]>('api/subjects/all');
+	}
 
-    return this.http.post<Subject>("/api/subjects/", subject);
-  }
+	saveSubject(subject: Subject): Observable<Subject> {
+		console.log('saving...');
+		console.log(subject);
 
-  deleteSubject(id: number) {
-    return this.http.delete('/api/subjects/' + id).subscribe(data => {
-    });;
-  }
+		return this.http.post<Subject>('/api/subjects/', subject);
+	}
+
+	deleteSubject(id: number) {
+		return this.http.delete('/api/subjects/' + id);
+	}
 
   publishSubject(subject: Subject) {
     return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {

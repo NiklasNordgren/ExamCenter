@@ -12,7 +12,7 @@
                     <a class="login" mat-button href="/login">Login (Admin)</a>
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
-                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle()">
+                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle();">
                         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
                     </button>
                 </div>
@@ -56,7 +56,7 @@
         <router-outlet></router-outlet>
         <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
             <div fxLayout="column">
-                <a class="sidenav-links" (click)="goToPage('/subjects/academy/'+ academy.id)" *ngFor="let academy of academies"
+                <a class="sidenav-links" (click)="sidenav.close(); goToPage('/subjects/academy/'+ academy.id);" *ngFor="let academy of academies"
                     mat-button>{{academy.shortDesc}}</a>
                 <a mat-button href="/login">Login (Admin)</a>
             </div>
