@@ -86,12 +86,10 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
 		this.isAllSelected() ? this.selection.clear() : this.users.forEach(row => this.selection.select(row));
-			this.isAnyCheckboxSelected();
+		this.isAnyCheckboxSelected();
 	}
 
 	isAnyCheckboxSelected() {
-		console.log("press");
-		
 		(this.selection.selected.length !== 0) ? this.isDeleteButtonDisabled = false : this.isDeleteButtonDisabled = true;
 	}
 }

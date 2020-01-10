@@ -95,14 +95,23 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 			this.subscriptions.add(sub);
 		}
 	}
-
 	
+	setCreateFormText() {
+		this.titleText = 'Create Admin';
+		this.buttonText = 'Create';
+	}
+
+	setEditFormText() {
+		this.titleText = 'Edit Admin';
+		this.buttonText = 'Save';
+	}
+
 	onSuccess(data: any) {
-		console.log(data);
-		
 		this.form.reset();
 		this.navigator.goToPage('/home/admin-handler');
-		this.openAcknowledgeDialog('success', 'success');
+		let suffixText: string;
+		(this.isCreateForm) ? suffixText = " was added": suffixText = " was updated";
+		this.openAcknowledgeDialog(data.name + suffixText, 'success');
 	}
 
 	onError(error) {
@@ -115,17 +124,6 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'error');
 		}
 	}
-
-	setCreateFormText() {
-		this.titleText = 'Create Admin';
-		this.buttonText = 'Create';
-	}
-
-	setEditFormText() {
-		this.titleText = 'Edit Admin';
-		this.buttonText = 'Save';
-	}
-
 
 	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
 		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
