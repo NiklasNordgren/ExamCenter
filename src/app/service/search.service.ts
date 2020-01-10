@@ -19,4 +19,12 @@ export class SearchService {
 			this.http.get<Observable<Course[]>>('/api/courses/search/' + searchText)
 		]);
 	}
+
+	searchSubjects(searchText: string) {
+		return this.http.get<Subject[]>('/api/subjects/search/' + searchText);
+	}
+
+	searchCourses(searchText: string) {
+		return this.http.get<Course[]>('/api/courses/search/' + searchText)
+	}
 }

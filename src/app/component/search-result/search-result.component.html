@@ -8,60 +8,26 @@
   <div style="display:flex; flex-direction: column;">
     <button class="toggle-button" mat-button *ngIf="subjectsLoaded" (click)="toggleSubjectTable()">
       <h3>
-        Subjects ({{subjects.length}})
+        Subjects ({{subjectData.length}})
         <mat-icon *ngIf="!showSubjects" mat-suffix class="button-icon">expand_more</mat-icon>
         <mat-icon *ngIf="showSubjects" mat-suffix class="button-icon">expand_less</mat-icon>
       </h3>
     </button>
-    <div *ngIf="showSubjects">
-      <table #subjectTable style="margin-bottom: 20px;" [@toggle]="showSubjects ? 'open' : 'closed'" mat-table [dataSource]="subjects" class="full-width-table mat-elevation-z4">
-        <ng-container matColumnDef='code'>
-          <th class="short-column" mat-header-cell *matHeaderCellDef>Subject code</th>
-          <td class="short-column" mat-cell *matCellDef="let row">
-            {{row.code}}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef='subject'>
-          <th class="long-column" mat-header-cell *matHeaderCellDef>Subject</th>
-          <td class="long-column" mat-cell *matCellDef="let row">
-            {{row.name}}
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="['code', 'subject']"></tr>
-        <tr class="link" mat-row *matRowDef="let row; columns: ['code', 'subject']" (click)="subjectSelected(row.id)">
-          <a class="nav-button" aria-label="Navigate to selected subject"></a>
-        </tr>
-      </table>
+    <div *ngIf="showSubjects" style="margin-bottom: 15px;">
+      <app-list [@toggle]="showSubjects ? 'open' : 'closed'" (clicked)="subjectSelected($event.id)" [data]="subjectData" shortHeader="Subject Code"
+      name="Subjects" [icon]="faChevronRight" actionDescription="Navigate to selected subject"></app-list>
     </div>
 
     <button class="toggle-button" mat-button *ngIf="coursesLoaded" (click)="toggleCourseTable()">
       <h3>
-        Courses ({{courses.length}})
+        Courses ({{courseData.length}})
         <mat-icon *ngIf="!showCourses" mat-suffix class="button-icon">keyboard_arrow_down</mat-icon>
         <mat-icon *ngIf="showCourses" mat-suffix class="button-icon">keyboard_arrow_up</mat-icon>
       </h3>
     </button>
     <div *ngIf="showCourses">
-      <table #subjectTable [@toggle]="showCourses ? 'open' : 'closed'" mat-table [dataSource]="courses" class="full-width-table mat-elevation-z4">
-        <ng-container matColumnDef='course-code'>
-          <th class="short-column" mat-header-cell *matHeaderCellDef>Course code</th>
-          <td class="short-column" mat-cell *matCellDef="let row">
-            {{row.courseCode}}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef='course'>
-          <th class="long-column" mat-header-cell *matHeaderCellDef>Course</th>
-          <td class="long-column" mat-cell *matCellDef="let row">
-            {{row.name}}
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="['course-code', 'course']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['course-code', 'course']" class="link" (click)="courseSelected(row.id)">
-          <a class="nav-button" aria-label="Navigate to selected course"></a>
-        </tr>
-      </table>
+      <app-list [@toggle]="showCourses ? 'open' : 'closed'" (clicked)="courseSelected($event.id)" [data]="courseData" shortHeader="Course Code"
+      name="Courses" [icon]="faChevronRight" actionDescription="Navigate to selected course"></app-list>
     </div>
   </div>
 </div>
