@@ -46,8 +46,7 @@ export class SubjectService {
 	}
 
 	publishSubject(subject: Subject) {
-		return this.http.post('/api/subjects/unpublish', subject).subscribe(data => {
-		});
+		return this.http.post('/api/subjects/unpublish', subject);
 	}
 
 	unpublishSubjects(subjects: Subject[]): Observable<Subject> {

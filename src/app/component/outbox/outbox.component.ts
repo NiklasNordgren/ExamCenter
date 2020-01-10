@@ -284,7 +284,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	publishExam(element: CustomExam) {
 		let exam = this.examConverter(element);
-		this.examService.publishExam(exam);
+		this.examService.publishExam(exam).subscribe(data => {
+		});
 		this.exams = this.exams.filter(x => x.id != exam.id);
 	}
 
@@ -297,7 +298,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishCourse(element: CustomCourse) {
 		let course = this.courseConverter(element);
 		course.unpublished = false;
-		this.courseService.publishCourse(course);
+		this.courseService.publishCourse(course).subscribe(data => {
+		});
 		this.courses = this.courses.filter(x => x.id != course.id); 
 	}
 
@@ -310,7 +312,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishSubject(element: CustomSubject) {
 		let subject = this.subjectConverter(element);
 		subject.unpublished = false;
-		this.subjectService.publishSubject(subject);
+		this.subjectService.publishSubject(subject).subscribe(data => {
+		});
 		this.subjects = this.subjects.filter(x => x.id != subject.id); 
 	}
 	
@@ -323,7 +326,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishAcademy(element: CustomAcademy) {
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
-		this.academyService.unpublishAcademy(academy);
+		this.academyService.unpublishAcademy(academy).subscribe(data => {
+		});
 		this.academies = this.academies.filter(x => x.id != academy.id); 
 	}
 	

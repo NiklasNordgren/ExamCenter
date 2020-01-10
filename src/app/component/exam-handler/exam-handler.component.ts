@@ -38,10 +38,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	courses = [];
 	exams: Exam[] = [];
 
-	selectedAcademyValue: number;
-	selectedSubjectValue: number;
-	selectedCourseValue: number;
-
+	isDeleteButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = [
 		'select',
@@ -60,16 +57,12 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		private navigator: Navigator,
 		private dialog: MatDialog,
 		private changeDetectorRef: ChangeDetectorRef
-	) {}
+	) { }
 
 	ngOnInit() {
-		const sub = this.academyService
-			.getAllAcademies()
-			.subscribe(responseResult => {
-				this.academies = responseResult;
-				this.selectedAcademyValue = this.academies[0].id;
-				this.selectedAcademy(this.selectedAcademyValue);
-			});
+		const sub = this.academyService.getAllAcademies().subscribe(responseResult => {
+			this.academies = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
@@ -78,53 +71,52 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	selectedAcademy(id: number) {
-		const sub = this.subjectService
-			.getAllSubjectsByAcademyId(id)
-			.subscribe(responseResult => {
-				this.subjects = responseResult;
-				this.selectedSubjectValue = this.subjects[0].id;
-				this.selectedSubject(this.selectedSubjectValue);
-			});
+		const sub = this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
+			this.subjects = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
 	selectedSubject(id: number) {
-		const sub = this.courseService
-			.getAllCoursesBySubjectId(id)
-			.subscribe(responseResult => {
-				this.courses = responseResult;
-			});
+		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
+			this.courses = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
 	selectedCourse(id: number) {
-		const sub = this.examService
-			.getAllExamsByCourseId(id)
-			.subscribe(responseResult => {
-				this.exams = responseResult;
-			});
+		const sub = this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
+			this.exams = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
 	openDeleteDialog() {
-		const numberOfSelected = this.selection.selected.length;
-
-		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-		});
-		this.dialogRef.componentInstance.titleMessage = "Confirm";
-		this.dialogRef.componentInstance.contentMessage = "Are you sure you want to delete " + numberOfSelected + " exam(s)?";
-		this.dialogRef.componentInstance.confirmBtnText = "Delete";
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
+		this.dialogRef.componentInstance.contentMessage = this.makeDeleteContentText();
+		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				for (let exam of this.selection.selected) {
-					this.examService.deleteExam(exam.id);
+					const dSub = this.examService.deleteExam(exam.id).subscribe(result => {
+					});
+					this.subscriptions.add(dSub);
 					this.exams = this.exams.filter(x => x.id != exam.id);
 				}
 			}
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
+	}
+
+	makeDeleteContentText() {
+		const numberOfSelected = this.selection.selected.length;
+		let dutyText = "Are you sure you want to delete\n\n";
+		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
+
+		return dutyText = dutyText.concat(contentText);
 	}
 
 	isAllSelected() {
@@ -135,8 +127,10 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected()
-			? this.selection.clear()
-			: this.exams.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.exams.forEach(row => this.selection.select(row));
+	}
+
+	isAnyCheckboxSelected() {
+		(this.selection.selected.length !== 0) ? this.isDeleteButtonDisabled = false : this.isDeleteButtonDisabled = true;
 	}
 }

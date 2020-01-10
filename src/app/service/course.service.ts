@@ -31,8 +31,7 @@ export class CourseService {
 	}
 
 	publishCourse(course: Course) {
-		return this.http.post('/api/courses/unpublish', course).subscribe(data => {
-		});
+		return this.http.post('/api/courses/unpublish', course);
   }
 
   deleteCourse(id: number) {

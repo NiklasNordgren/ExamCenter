@@ -21,13 +21,12 @@ export class ExamService {
 		return this.http.get<Exam[]>('/api/exams/course/' + id);
 	}
 
-	saveExam(exam: Exam): Observable<Exam> {
+	saveExam(exam: Exam) {
 		return this.http.post<Exam>('/api/exams', exam);
 	}
 
 	deleteExam(id: number) {
-		return this.http.delete('/api/exams/' + id).subscribe(data => {
-		});;
+		return this.http.delete<Exam>('/api/exams/' + id);
 	}
 
 	getUnpublishedExams() {
@@ -35,8 +34,7 @@ export class ExamService {
 	}
 
 	publishExam(exam: Exam) {
-		return this.http.post('/api/exams/unpublish', exam).subscribe(data => {
-		});
+		return this.http.post('/api/exams/unpublish', exam);
 	}
 
 	unpublishExams(exams: Exam[]) : Observable<Exam>{

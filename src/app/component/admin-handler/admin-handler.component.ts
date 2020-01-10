@@ -50,17 +50,17 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	openDeleteDialog() {
-		
-
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.contentMessage = this.makeText();
+		this.dialogRef.componentInstance.contentMessage = this.makeDeleteContentText();
 		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				for (let user of this.selection.selected) {
-					this.service.deleteUser(user.id);
+					const dSub = this.service.deleteUser(user.id).subscribe(result => {
+					});
+					this.subscriptions.add(dSub);
 					this.users = this.users.filter(x => x.id !== user.id);
 				}
 			}
@@ -69,7 +69,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	makeText() {
+	makeDeleteContentText() {
 		const numberOfSelected = this.selection.selected.length;
 		let dutyText = "Are you sure you want to delete\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " admins";

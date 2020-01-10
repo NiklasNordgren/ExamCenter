@@ -18,13 +18,12 @@ export class UserService {
 		return this.http.get<User>('api/users/' + id);
 	}
 
-	saveUser(user: User): Observable<User> {
+	saveUser(user: User) {
 		return this.http.post<User>('/api/users', user);
 	}
 
 	deleteUser(id: number) {
-		return this.http.delete('/api/users/' + id).subscribe(data => {
-		});;
+		return this.http.delete('/api/users/' + id);
 	}
 
 	isUserLoggedInAsAdmin(): Observable<boolean> {

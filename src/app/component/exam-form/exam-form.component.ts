@@ -7,6 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ExamService } from '../../service/exam.service';
 import { CourseService } from 'src/app/service/course.service';
 import { Course } from 'src/app/model/course.model';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 export interface CustomBooleanArray {
 	value: boolean;
@@ -25,6 +28,8 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		{ value: true, viewValue: 'True' }
 	];
 
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	
 	form: FormGroup;
 	subscriptions: Subscription = new Subscription();
 
@@ -39,12 +44,9 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	buttonText: string;
 
 	constructor(
-		private formBuilder: FormBuilder,
-		private route: ActivatedRoute,
-		private service: ExamService,
-		private courseService: CourseService,
-		private navigator: Navigator
-	) {}
+		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService, 
+		private navigator: Navigator, private dialog: MatDialog
+	) { }
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
@@ -104,9 +106,11 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			this.exam.unpublished = this.form.controls.unpublished.value;
 			this.exam.courseId = this.form.controls.course.value;
 
-			const sub = this.service.saveExam(this.exam).subscribe(e => {});
+			const sub = this.service.saveExam(this.exam).subscribe(
+				data => this.onSuccess(data),
+				error => this.onError(error)
+			);
 			this.subscriptions.add(sub);
-			this.form.reset();
 		}
 	}
 
@@ -118,5 +122,37 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	setEditFormText() {
 		this.titleText = 'Edit Exam';
 		this.buttonText = 'Save';
+	}
+
+	onSuccess(data: any) {
+		console.log(data);
+		
+		this.form.reset();
+		this.navigator.goToPage('/home/exam-handler');
+		let suffixText: string;
+		(this.isCreateForm) ? suffixText = " was added" : suffixText = " was updated";
+		this.openAcknowledgeDialog(data.filename + suffixText, 'success');
+	}
+
+	onError(error) {
+		if (error.status === 401) {
+			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
+			this.navigator.goToPage('/login');
+		} else if (error.status === 409) {
+			this.openAcknowledgeDialog('The filename already exists as an exam.', 'error');
+		} else {
+			this.openAcknowledgeDialog('Something went wrong while trying to save the exam.', 'error');
+		}
+	}
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
 	}
 }

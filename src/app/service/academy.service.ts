@@ -23,8 +23,7 @@ export class AcademyService {
 	}
 
 	unpublishAcademy(academy: Academy){
-		return this.http.post<Academy>('/api/academies/unpublish', academy ).subscribe(data => {
-		});
+		return this.http.post<Academy>('/api/academies/unpublish', academy);
 	}
 
 	unpublishAcademies(academies: Academy[]) : Observable<Academy>{
