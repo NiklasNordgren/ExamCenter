@@ -45,7 +45,6 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		'filename',
 		'date',
 		'unpublishDate',
-		'unpublished',
 		'edit'
 	];
 
@@ -91,17 +90,25 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	openDeleteDialog() {
+	openDialog(duty: string) {
+
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.contentMessage = this.makeDeleteContentText();
-		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
+		this.dialogRef.componentInstance.contentMessage = this.makeContentText(duty);
+		this.dialogRef.componentInstance.confirmBtnText = duty;
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				for (let exam of this.selection.selected) {
-					const dSub = this.examService.deleteExam(exam.id).subscribe(result => {
-					});
+					let dSub;
+					if (duty == "delete") {
+						dSub = this.examService.deleteExam(exam.id).subscribe(data => {
+						});
+					} else if (duty == "unpublish"){
+						exam.unpublished = true;
+						dSub = this.examService.publishExam(exam).subscribe(data => {
+						});
+					}
 					this.subscriptions.add(dSub);
 					this.exams = this.exams.filter(x => x.id != exam.id);
 				}
@@ -111,9 +118,9 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	makeDeleteContentText() {
+	makeContentText(duty: string) {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to delete\n\n";
+		let dutyText = "Are you sure you want to " + duty +"\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
 
 		return dutyText = dutyText.concat(contentText);

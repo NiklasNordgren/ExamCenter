@@ -44,27 +44,27 @@
 
                 <ng-container matColumnDef="filename">
                     <th mat-header-cell *matHeaderCellDef> Filename </th>
-                    <td mat-cell *matCellDef="let exam"> {{exam.filename}} </td>
+                    <td mat-cell *matCellDef="let exam" class="variant-exam-column"> {{exam.filename}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef> Date </th>
-                    <td mat-cell *matCellDef="let exam"> {{exam.date}} </td>
+                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{exam.date}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="unpublishDate">
                     <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
-                    <td mat-cell *matCellDef="let exam"> {{exam.unpublishDate}} </td>
+                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{exam.unpublishDate}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseName">
                     <th mat-header-cell *matHeaderCellDef> Course Name </th>
-                    <td mat-cell *matCellDef="let exam"> {{exam.courseName}} </td>
+                    <td mat-cell *matCellDef="let exam" class="variant-exam-column"> {{exam.courseName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
                             <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
@@ -115,23 +115,23 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let course"> {{course.name}} </td>
+                    <th mat-header-cell *matHeaderCellDef > Name </th>
+                    <td mat-cell *matCellDef="let course"  class="variant-course-column"> {{course.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseCode">
                     <th mat-header-cell *matHeaderCellDef> Course Code </th>
-                    <td mat-cell *matCellDef="let course"> {{course.courseCode}} </td>
+                    <td mat-cell *matCellDef="let course" class="firm-course-column"> {{course.courseCode}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="subjectName">
                     <th mat-header-cell *matHeaderCellDef> Subject Name </th>
-                    <td mat-cell *matCellDef="let course"> {{course.subjectName}} </td>
+                    <td mat-cell *matCellDef="let course" class="variant-course-column"> {{course.subjectName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
                             <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
@@ -183,22 +183,22 @@
 
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let subject"> {{subject.name}} </td>
+                    <td mat-cell *matCellDef="let subject" class="variant-subject-column"> {{subject.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="code">
                     <th mat-header-cell *matHeaderCellDef> Code </th>
-                    <td mat-cell *matCellDef="let subject"> {{subject.code}} </td>
+                    <td mat-cell *matCellDef="let subject" class="variant-firm-column"> {{subject.code}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="academyName">
                     <th mat-header-cell *matHeaderCellDef> Academy Name </th>
-                    <td mat-cell *matCellDef="let subject"> {{subject.academyName}} </td>
+                    <td mat-cell *matCellDef="let subject" class="variant-subject-column"> {{subject.academyName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
                             <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
@@ -249,18 +249,18 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> name </th>
-                    <td mat-cell *matCellDef="let academy"> {{academy.name}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let academy" class="variant-academy-column"> {{academy.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="abbreviation">
                     <th mat-header-cell *matHeaderCellDef> Abbreviation </th>
-                    <td mat-cell *matCellDef="let academy"> {{academy.abbreviation}} </td>
+                    <td mat-cell *matCellDef="let academy" class="firm-academy-column"> {{academy.abbreviation}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
                             <button mat-raised-button color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>

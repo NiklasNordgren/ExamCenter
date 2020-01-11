@@ -37,8 +37,4 @@ export class ExamService {
 		return this.http.post('/api/exams/unpublish', exam);
 	}
 
-	unpublishExams(exams: Exam[]) : Observable<Exam>{
-		return this.http.post<Exam>('/api/exam/unpublish/' + true, exams);
-	}
-
 }

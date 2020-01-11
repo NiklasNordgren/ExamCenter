@@ -1,7 +1,8 @@
 <h1 md-dialog-title align="center">{{titleMessage | titlecase}}</h1>
 <div md-dialog-content class="content-message">{{contentMessage}} <p></div>
 <div md-dialog-actions align="center">
-  <button mat-raised-button *ngIf="confirmBtnText === 'delete'; else notDelete" color="warn" class="confirmBtn" (click)="dialogRef.close(true)">{{confirmBtnText | titlecase}}</button>
+  <button mat-raised-button *ngIf="confirmBtnText === 'delete' || confirmBtnText === 'unpublish'; else notDelete" 
+    color="warn" class="confirmBtn" (click)="dialogRef.close(true)">{{confirmBtnText | titlecase}}</button>
   <ng-template #notDelete>
     <button mat-raised-button color="accent" class="confirmBtn" (click)="dialogRef.close(true)">{{confirmBtnText | titlecase}}</button>
   </ng-template>
