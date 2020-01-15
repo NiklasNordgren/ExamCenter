@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Exam } from '../model/exam.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
@@ -29,12 +29,26 @@ export class ExamService {
 		return this.http.delete<Exam>('/api/exams/' + id);
 	}
 
+	deleteExams(exams: Exam[]) {
+		const options = {
+			headers: new HttpHeaders({
+			  'Content-Type': 'application/json',
+			}),
+			body: exams
+		  };
+		return this.http.delete<Exam[]>('/api/exams/', options);
+	}
+
 	getUnpublishedExams() {
 		return this.http.get<Exam[]>('/api/exams/unpublished');
 	}
 
 	publishExam(exam: Exam) {
 		return this.http.post('/api/exams/unpublish', exam);
+	}
+
+	publishExams(exams: Exam[]) {
+		return this.http.post('/api/exams/unpublishList', exams);
 	}
 
 }

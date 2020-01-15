@@ -16,6 +16,8 @@ import { CourseService } from 'src/app/service/course.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -37,6 +39,9 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	subjects = [];
 	courses = [];
 	exams: Exam[] = [];
+
+	successfulHttpRequest: Array<String>;
+	errorHttpRequest: Array<any> = [];
 
 	isDeleteButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
@@ -99,20 +104,65 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				for (let exam of this.selection.selected) {
-					let dSub;
-					if (duty == "delete") {
-						dSub = this.examService.deleteExam(exam.id).subscribe(data => {
-						});
-					} else if (duty == "unpublish"){
+				const selectedExams = this.selection.selected;
+				let dSub;
+				if (duty == "delete") {
+					dSub = this.examService.deleteExams(selectedExams).subscribe(data => {
+					});
+				} else if (duty == "unpublish") {
+					for (let exam of selectedExams) {
 						exam.unpublished = true;
-						dSub = this.examService.publishExam(exam).subscribe(data => {
-						});
 					}
-					this.subscriptions.add(dSub);
+					dSub = this.examService.publishExams(selectedExams).subscribe(
+						data => this.onSuccess(data),
+						error => this.onError(error),
+						() => this.manageRequestResults(duty)
+					);
+				}
+				this.subscriptions.add(dSub);
+				for (let exam of selectedExams) {
 					this.exams = this.exams.filter(x => x.id != exam.id);
 				}
 			}
+			this.dialogRef = null;
+
+		});
+		this.subscriptions.add(sub);
+	}
+
+	onSuccess(data: any) {
+		this.successfulHttpRequest = data;
+	}
+
+	onError(error: any) {
+		this.errorHttpRequest = error;
+	}
+
+	manageRequestResults(duty: string) {
+		const successfulAmount = this.successfulHttpRequest.length;
+		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
+		let successfulDutyText = (successfulContentText.length !== 0) ? " got " + duty + ((duty === "delete") ? "d" : "ed") : "";
+		successfulDutyText = successfulContentText.concat(successfulDutyText);
+
+		const errorAmount = this.errorHttpRequest.length;
+		let errorContentText= "";
+		if (errorAmount !== 0) {
+			errorContentText = "Something went wrong";
+			for (let error of this.errorHttpRequest) {
+				errorContentText = errorContentText.concat("\nError: " + error.status);
+			}
+		}
+		(successfulDutyText.length !== 0 && errorContentText.length !== 0) ? successfulDutyText.concat(successfulDutyText + "\n\n") : "";
+		const message = successfulDutyText.concat(errorContentText);
+		this.openAcknowledgeDialog(message, "publish");
+	}
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
@@ -120,7 +170,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText(duty: string) {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to " + duty +"\n\n";
+		let dutyText = "Are you sure you want to " + duty + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
 
 		return dutyText = dutyText.concat(contentText);
