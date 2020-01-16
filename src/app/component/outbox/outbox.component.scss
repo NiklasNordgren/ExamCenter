@@ -1,12 +1,94 @@
-.full-width-table {
+table {
     width: 100%;
 }
-
-.deleteBtn {
-    margin-left:10px;
+  
+.wrapper {
+    max-width: 90%;
+    margin-left: 5%;
 }
 
-@media screen and (max-width: 731px) {
+.select-buttons {
+    position: sticky;
+    top: 0;
+    text-align: center;
+}
+
+.publishSelectedButton {
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+}
+
+.deleteSelectedButton {
+    margin-left: 10pt;
+}
+
+.button-icon {
+	position: relative;
+	top: 7px;
+}
+
+.tables {
+    display: flex;
+    flex-direction: column;
+}
+  
+h3 {
+	text-align: left;
+	margin-left: 18pt;
+}
+
+.toggle-button {
+    position: relative;
+}
+ 
+.singleButtons {
+    float: right;
+}
+.publishBtn {
+    margin-right: 10pt;
+}
+
+.buttonText {
+    margin-left: 3pt;
+}
+
+.column23 {
+    width: 15%;
+}
+
+td.mat-cell {
+    padding-right: 20pt;
+}
+
+.actions {
+   width: 25%
+}
+
+.variant-exam-column {
+    width: 25%;
+}
+
+.firm-exam-column {
+    width: 10%;
+}
+
+.variant-course-column, .variant-subject-column {
+    width: 30%;
+}
+
+.firm-course-column, .firm-subject-column{
+  width: 10%;
+}
+
+.variant-academy-column {
+    width: 50%;
+}
+
+.firm-academy-column {
+  width: 20%;
+}
+
+@media screen and (max-width: 1300px) {
     .button-text {
         display: none;
     }
@@ -31,6 +113,7 @@
     
     .mat-column-actions {
         white-space: nowrap;
+        overflow: hidden;
         flex: 0 0 32% ;
         width: 32% ; 
     }

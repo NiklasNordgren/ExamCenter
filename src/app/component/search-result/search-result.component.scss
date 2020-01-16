@@ -20,10 +20,6 @@ p {
 	margin-left: 18pt;
 }
 
-.full-width-table {
-	width: 100%;
-}
-
 table {
 	border-collapse: collapse;
 	width: 100%;
@@ -70,4 +66,18 @@ tr:hover {
 .button-icon {
 	position: relative;
 	top: 7px;
+}
+
+.link {
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.short-column {
+	width: 25%;
+}
+
+.long-column {
+	width: 75%;
 }

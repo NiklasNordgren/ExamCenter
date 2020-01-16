@@ -1,42 +1,39 @@
 import {
 	Component,
 	OnDestroy,
-	ViewChild,
-	ElementRef,
-	Renderer2,
 	OnInit,
 	ChangeDetectorRef,
-	AfterViewInit
-} from "@angular/core";
-import { SearchService } from "src/app/service/search.service";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription, Observable } from "rxjs";
-import { Subject } from "src/app/model/subject.model";
-import { Course } from "src/app/model/course.model";
-import { Navigator } from "src/app/util/navigator";
+} from '@angular/core';
+import { SearchService } from 'src/app/service/search.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { Subject } from 'src/app/model/subject.model';
+import { Course } from 'src/app/model/course.model';
+import { Navigator } from 'src/app/util/navigator';
 import {
 	trigger,
 	state,
 	style,
 	transition,
-	animate,
-	stagger,
-	query
-} from "@angular/animations";
-import { MatPaginator } from "@angular/material";
+	animate
+} from '@angular/animations';
+import {
+	IconDefinition,
+	faChevronRight
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-	selector: "app-search-result",
-	templateUrl: "./search-result.component.html",
-	styleUrls: ["./search-result.component.scss"],
+	selector: 'app-search-result',
+	templateUrl: './search-result.component.html',
+	styleUrls: ['./search-result.component.scss'],
 	providers: [Navigator],
 	animations: [
-		trigger("toggle", [
-			state("closed", style({ height: "0px", minHeight: "0" })),
-			state("open", style({ height: "*" })),
+		trigger('toggle', [
+			state('closed', style({ height: '0px', minHeight: '0' })),
+			state('open', style({ height: '*' })),
 			transition(
-				"closed <=> open",
-				animate("225ms cubic-bezier(0.0, 0.0, 0.2, 1)")
+				'closed <=> open',
+				animate('225ms cubic-bezier(0.0, 0.0, 0.2, 1)')
 			)
 		])
 	]
@@ -44,12 +41,13 @@ import { MatPaginator } from "@angular/material";
 export class SearchResultComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
 	searchString: string;
-	subjects: Observable<Subject[]>;
-	courses: Observable<Course[]>;
-	showSubjects: boolean = false;
-	showCourses: boolean = false;
-	subjectsLoaded: boolean = false;
-	coursesLoaded: boolean = false;
+	subjectData = [];
+	courseData = [];
+	showSubjects = false;
+	showCourses = false;
+	subjectsLoaded = false;
+	coursesLoaded = false;
+	faChevronRight: IconDefinition = faChevronRight;
 
 	constructor(
 		private searchService: SearchService,
@@ -59,10 +57,11 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit() {
-		this.activatedRoute.params.subscribe(params => {
-			this.searchString = params["searchString"];
+		const sub = this.activatedRoute.params.subscribe(params => {
+			this.searchString = params.searchString;
 			this.search(this.searchString);
 		});
+		this.subscriptions.add(sub);
 	}
 
 	ngOnDestroy() {
@@ -71,24 +70,37 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
 	search(searchText: string) {
 		this.subscriptions.add(
-			this.searchService
-				.searchForSubjectsAndCourses(searchText)
-				.subscribe(result => {
-					this.subjects = result[0];
-					this.subjectsLoaded = true;
-					this.courses = result[1];
-					this.coursesLoaded = true;
-					this.changeDetector.detectChanges();
-				})
+			this.searchService.searchSubjects(this.searchString).subscribe(subjects => {
+				subjects.forEach(subject => {
+					this.subjectData.push({
+						name: subject.name,
+						shortDesc: subject.code,
+						id: subject.id
+					});
+				});
+				this.subjectsLoaded = true;
+			})
+		);
+		this.subscriptions.add(
+			this.searchService.searchCourses(this.searchString).subscribe(courses => {
+				courses.forEach(course => {
+					this.courseData.push({
+						name: course.name,
+						shortDesc: course.courseCode,
+						id: course.id
+					});
+				});
+				this.coursesLoaded = true;
+			})
 		);
 	}
 
 	subjectSelected(subjectId: number) {
-		this.navigator.goToPage("/courses/subject/" + subjectId);
+		this.navigator.goToPage('/courses/subject/' + subjectId);
 	}
 
 	courseSelected(courseId: number) {
-		this.navigator.goToPage("/exams/course/" + courseId);
+		this.navigator.goToPage('/exams/course/' + courseId);
 	}
 
 	toggleSubjectTable() {

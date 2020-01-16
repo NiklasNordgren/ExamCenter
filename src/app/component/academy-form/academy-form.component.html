@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <h2 *ngIf="id == 0">New Academy</h2>
+  <h2 *ngIf="id === 0">New Academy</h2>
   <h2 *ngIf="id > 0">Edit Academy</h2>
   <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
     <mat-form-field>

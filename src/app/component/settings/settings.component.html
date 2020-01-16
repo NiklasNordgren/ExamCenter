@@ -1,0 +1,27 @@
+<div class="wrapper">
+  <h2>
+    <fa-icon [icon]="faCog"></fa-icon>
+    App Settings
+  </h2>
+  <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+    <mat-form-field>
+      <mat-label for="cookieSessionMinutes">Cookie Session Length (minutes)</mat-label>
+      <input matInput id="cookieSessionMinutes" required type="number" formControlName="cookieSessionMinutes"
+        placeholder="Cookie Session Length" size="100pt">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="homePageHtml">Home Page Html</mat-label>
+      <textarea cdkTextareaAutosize matInput id="homePageHtml" required type="text" formControlName="homePageHtml"
+        placeholder="Insert HTML code here..."></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="aboutPageHtml">About Page Html</mat-label>
+      <textarea cdkTextareaAutosize matInput id="aboutPageHtml" required type="text" formControlName="aboutPageHtml"
+        placeholder="Insert HTML code here..."></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
