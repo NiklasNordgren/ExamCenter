@@ -109,8 +109,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	}
 
 	onSuccess(data: any) {
-		console.log(data);
-
 		this.form.reset();
 		this.navigator.goToPage('/home/exam-handler');
 		this.openAcknowledgeDialog(data.filename + " was updated", 'success');
@@ -118,7 +116,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	onError(error) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
+			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
 			this.navigator.goToPage('/login');
 		} else if (error.status === 409) {
 			this.openAcknowledgeDialog('The filename already exists as an exam.', 'error');

@@ -25,6 +25,10 @@ export class ListComponent implements OnInit {
 			console.log('ShortHeader added');
 		}
 		this.columnsToDisplay.push(this.name);
+		console.log("data: ");
+		console.log(this.data);
+		
+		
 	}
 
 	rowClicked(clickedRow) {

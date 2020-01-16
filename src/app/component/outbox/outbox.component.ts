@@ -238,6 +238,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : "";
 						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : "";
 					} 
+					this.clearSelections();
 				}
 				this.dialogRef = null;
 			});
@@ -276,6 +277,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";
 					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : "";
 				}
+				this.clearSelections();
 			}
 			this.dialogRef = null;
 		}); 
@@ -449,5 +451,12 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	toggleAcademyTable() {
 		this.showAcademies = !this.showAcademies;
+	}
+
+	clearSelections() {
+		this.examSelection.clear();
+		this.courseSelection.clear();
+		this.subjectSelection.clear();
+		this.academySelection.clear();
 	}
 }

@@ -95,9 +95,9 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert('Successfully unpublished selected academies');
+		alert('Successfully unpublished selected courses');
 	}
 	onError(error) {
-		alert('Something went wrong wile trying to unpublish academies.');
+		alert('Something went wrong wile trying to unpublish courses.');
 	}
 }

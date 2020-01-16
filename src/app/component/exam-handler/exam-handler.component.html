@@ -6,12 +6,8 @@
                 <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
             </button>
             <button class="publishButton selectionButtons" color="warn" mat-raised-button
-                (click)="openDialog('unpublish')" [disabled]="isDeleteButtonDisabled">
+                (click)="openDialog()" [disabled]="isUnpublishButtonDisabled">
                 <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Unpublish Checked</span>
-            </button>
-            <button class="selectionButtons" color="warn" mat-raised-button (click)="openDialog('delete')"
-                [disabled]="isDeleteButtonDisabled">
-                <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
             </button>
         </div>
         <div class="selectors-container">
@@ -56,7 +52,7 @@
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null; isAnyCheckboxSelected()"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
                 </mat-checkbox>
@@ -89,7 +85,7 @@
                 <button class="editButton" mat-raised-button
                     (click)="this.navigator.goToPage('/home/exam-form/' + element.id)">
                     <fa-icon [icon]="faPen"></fa-icon>
-                    <span style="margin-left: 3pt;">
+                    <span class="buttonText">
                         Edit
                     </span>
                 </button>
