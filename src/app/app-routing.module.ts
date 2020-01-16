@@ -32,6 +32,7 @@ import { SubjectFormComponent } from './component/subject-form/subject-form.comp
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminFormComponent } from './component/admin-form/admin-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
+import { NavigatorComponent } from './component/navigator/navigator.component';
 
 const routes: Routes = [
 	{
@@ -42,6 +43,10 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: LoginComponent
+	},
+	{
+		path: 'navigator',
+		component: NavigatorComponent
 	},
 	{
 		path: 'about',

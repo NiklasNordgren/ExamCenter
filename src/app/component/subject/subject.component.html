@@ -1,4 +1,5 @@
 <div class="content-container">
+    <app-navigator [academyId]='academyId'></app-navigator>
     <h1 style="text-align: start; margin-left: 18pt;">Subjects</h1>
     <app-list (clicked)="this.navigator.goToPage(url + $event.id)" [actionDescription]='actionDescription' [icon]="icon" [data]="data"
         [shortHeader]="shortHeader" [name]="name">

@@ -32,6 +32,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	courseLoaded = false;
 	showingInfoMessage = false;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	courseId;
+
 
 	constructor(
 		private route: ActivatedRoute,
@@ -45,8 +47,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const courseId = parseInt(params.get('id'), 10);
-				this.setExamsByCourseId(courseId);
+				this.courseId = parseInt(params.get('id'), 10);
+				this.setExamsByCourseId(this.courseId);
 			})
 		);
 	}

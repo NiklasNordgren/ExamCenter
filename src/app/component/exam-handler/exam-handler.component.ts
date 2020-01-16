@@ -17,7 +17,6 @@ import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
-import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

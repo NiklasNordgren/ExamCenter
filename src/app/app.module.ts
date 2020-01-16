@@ -76,6 +76,7 @@ import { AdminGuard } from './guard/admin.guard';
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
 import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { NavigatorComponent } from './component/navigator/navigator.component';
 
 @NgModule({
 	declarations: [
@@ -114,7 +115,8 @@ import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dia
 		ExamFormComponent,
 		CourseFormComponent,
 		SettingsComponent,
-		ConfirmationAckDialogComponent
+		ConfirmationAckDialogComponent,
+		NavigatorComponent
 	],
 	imports: [
 		BrowserModule,
