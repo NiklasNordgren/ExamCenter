@@ -1,6 +1,6 @@
 <div class="wrapper">
-    <h2 *ngIf="id == 0">New Subject</h2>
-    <h2 *ngIf="id > 0">Edit Subject</h2>
+    <h2 *ngIf="id == 0">New Exam</h2>
+    <h2 *ngIf="id > 0">Edit Exam</h2>
 
     <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
 
