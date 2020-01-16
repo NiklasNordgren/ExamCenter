@@ -1,121 +1,123 @@
-<h2 style="margin: 10px;">
-    <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
-</h2>
-
-<input #fileInput type="file" accept=".pdf" ng2FileSelect [uploader]="uploader" multiple />
-
-<div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isFileOverDropZone}" [uploader]="uploader"
-    (fileOver)="fileOverDropZone($event)" (click)="fileClicked()">
-    <span class="drag-in-title" style="pointer-events: none;">
-        <h3>Import or drag PDF file here</h3>
-    </span>
-    <span class="drag-over-title" style="pointer-events: none;">
-        <h3>Drop the PDF file</h3>
-    </span>
-</div>
-
-<div class="margin-10">
-
-    <h3>Upload queue</h3>
-    <p>Queue length: {{ uploader?.queue?.length }}</p>
-
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" multiTemplateDataRows>
-
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="size">
-            <th mat-header-cell *matHeaderCellDef> Size </th>
-            <td mat-cell *matCellDef="let element"> {{element.size}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="autoMatchCourse">
-            <th mat-header-cell *matHeaderCellDef>
-                <fa-icon [icon]="faGraduationCap" title="Automatically matched exam course."></fa-icon>
-            </th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="element.autoMatchCourse === 'true'; else elseBlock">
-                    <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
-                </div>
-                <ng-template #elseBlock>
-                    <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
-                </ng-template>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="autoMatchDate">
-            <th mat-header-cell *matHeaderCellDef>
-                <fa-icon [icon]="faCalendarAlt" title="Automatically matched exam date."></fa-icon>
-            </th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="element.autoMatchDate === 'true'; else elseBlock">
-                    <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
-                </div>
-                <ng-template #elseBlock>
-                    <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
-                </ng-template>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-                <div>
-                    <button mat-raised-button color="accent" (click)="uploadFromQueue(element)" class="margin-left-10"
-                        [disabled]="!isValidUpload(element)">
-                        <fa-icon [icon]="faUpload"></fa-icon> Upload
-                    </button>
-                    <button mat-raised-button color="warn" (click)="removeFromQueue(element)" class="margin-left-10">
-                        <fa-icon [icon]="faTrash"></fa-icon> Remove
-                    </button>
-                </div>
-            </td>
-        </ng-container>
-
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                <div class="example-element-detail"
-                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    <app-select-exam-properties [tempId]=tempFileId [academies]=academies [subjects]=subjects
-                        [courses]=courses [uploadedExams]=uploadedExams [examsToUpload]=examsToUpload
-                        (courseIdEmitter)="selectedCourseIdChanged($event)"
-                        (examDateEmitter)="selectedExamDateChanged($event)"></app-select-exam-properties>
-                </div>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-            [class.example-expanded-row]="expandedElement === element"
-            (click)="expandedElement = expandedElement === element ? null : element">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
-
-    <div>
-        <p>Queue progress:</p>
-        <mat-progress-bar [color]="accentColor" [value]="getUploadProgress()" [mode]="mode"
-            style=" padding-bottom: 10px;">
-        </mat-progress-bar>
-        <p></p>
+<div class="wrapper">
+    <h2 style="margin: 10px;">
+        <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
+    </h2>
+    
+    <input #fileInput type="file" accept=".pdf" ng2FileSelect [uploader]="uploader" multiple />
+    
+    <div class="drop-box" ng2FileDrop [ngClass]="{'dragover': isFileOverDropZone}" [uploader]="uploader"
+        (fileOver)="fileOverDropZone($event)" (click)="fileClicked()">
+        <span class="drag-in-title" style="pointer-events: none;">
+            <h3>Import or drag PDF file here</h3>
+        </span>
+        <span class="drag-over-title" style="pointer-events: none;">
+            <h3>Drop the PDF file</h3>
+        </span>
     </div>
-
+    
+    <div class="margin-10">
+    
+        <h3>Upload queue</h3>
+        <p>Queue length: {{ uploader?.queue?.length }}</p>
+    
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" multiTemplateDataRows>
+    
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="size">
+                <th mat-header-cell *matHeaderCellDef> Size </th>
+                <td mat-cell *matCellDef="let element"> {{element.size}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="autoMatchCourse">
+                <th mat-header-cell *matHeaderCellDef>
+                    <fa-icon [icon]="faGraduationCap" title="Automatically matched exam course."></fa-icon>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.autoMatchCourse === 'true'; else elseBlock">
+                        <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
+                    </div>
+                    <ng-template #elseBlock>
+                        <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
+                    </ng-template>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="autoMatchDate">
+                <th mat-header-cell *matHeaderCellDef>
+                    <fa-icon [icon]="faCalendarAlt" title="Automatically matched exam date."></fa-icon>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.autoMatchDate === 'true'; else elseBlock">
+                        <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
+                    </div>
+                    <ng-template #elseBlock>
+                        <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
+                    </ng-template>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <button mat-raised-button color="accent" (click)="uploadFromQueue(element)" class="margin-left-10"
+                            [disabled]="!isValidUpload(element)">
+                            <fa-icon [icon]="faUpload"></fa-icon> Upload
+                        </button>
+                        <button mat-raised-button color="warn" (click)="removeFromQueue(element)" class="margin-left-10">
+                            <fa-icon [icon]="faTrash"></fa-icon> Remove
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+    
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                    <div class="example-element-detail"
+                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <app-select-exam-properties [tempId]=tempFileId [academies]=academies [subjects]=subjects
+                            [courses]=courses [uploadedExams]=uploadedExams [examsToUpload]=examsToUpload
+                            (courseIdEmitter)="selectedCourseIdChanged($event)"
+                            (examDateEmitter)="selectedExamDateChanged($event)"></app-select-exam-properties>
+                    </div>
+                </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+    
+        <div>
+            <p>Queue progress:</p>
+            <mat-progress-bar [color]="accentColor" [value]="getUploadProgress()" [mode]="mode"
+                style=" padding-bottom: 10px;">
+            </mat-progress-bar>
+            <p></p>
+        </div>
+    
+    </div>
+    
+    <mat-radio-group class="margin-10">
+        <button mat-raised-button color="accent" (click)="uploader.uploadAll()" [disabled]="isUploadAllDisabled()">
+            <fa-icon [icon]="faUpload"></fa-icon> Upload all
+        </button>
+        <button mat-raised-button class="margin-left-10 margin-bottom-10" color="warn" (click)="clearQueue()"
+            [disabled]="!uploader.queue.length">
+            <fa-icon [icon]="faTrash"></fa-icon> Reset queue
+        </button>
+    </mat-radio-group>
 </div>
-
-<mat-radio-group class="margin-10">
-    <button mat-raised-button color="accent" (click)="uploader.uploadAll()" [disabled]="isUploadAllDisabled()">
-        <fa-icon [icon]="faUpload"></fa-icon> Upload all
-    </button>
-    <button mat-raised-button class="margin-left-10 margin-bottom-10" color="warn" (click)="clearQueue()"
-        [disabled]="!uploader.queue.length">
-        <fa-icon [icon]="faTrash"></fa-icon> Reset queue
-    </button>
-</mat-radio-group>

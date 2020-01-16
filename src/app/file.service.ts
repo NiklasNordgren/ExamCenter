@@ -1,25 +1,24 @@
-import { Injectable } from '@angular/core';
-import {
-	HttpEvent,
-	HttpRequest,
-	HttpClient,
-	HttpParams,
-	HttpHeaders
-} from '@angular/common/http';
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class FileService {
+export class FileService implements OnDestroy {
+	subscriptions: Subscription = new Subscription();
+
 	constructor(private http: HttpClient) {}
 
-	downloadFile(fileName: string): any {
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
+
+	downloadFile(fileName: string): Observable<Blob> {
 		return this.http
 			.get('/api/files/download/' + fileName, { responseType: 'blob' })
-			.pipe(
-				map(blob => new Blob([blob], { type: 'application/pdf'} ))
-			);
+			.pipe(map(blob => new Blob([blob], { type: 'application/pdf' })));
 	}
 
 	uploadFile(file: File) {
@@ -44,7 +43,7 @@ export class FileService {
 			)
 		};
 
-		this.http.post(url, body.toString(), options).subscribe(
+		const sub = this.http.post(url, body.toString(), options).subscribe(
 			res => {
 				console.log('POST Request was successful: ' + res);
 			},
@@ -52,5 +51,6 @@ export class FileService {
 				console.log('Error occurred: ' + err.toString);
 			}
 		);
+		this.subscriptions.add(sub);
 	}
 }

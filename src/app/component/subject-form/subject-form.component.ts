@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -11,105 +11,113 @@ import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Navigator } from 'src/app/util/navigator';
 
 @Component({
-  selector: 'app-subject-form',
-  templateUrl: './subject-form.component.html',
-  styleUrls: ['./subject-form.component.scss'],
+	selector: 'app-subject-form',
+	templateUrl: './subject-form.component.html',
+	styleUrls: ['./subject-form.component.scss'],
 	providers: [Navigator]
 })
-export class SubjectFormComponent implements OnInit {
+export class SubjectFormComponent implements OnInit, OnDestroy {
+	academies: Academy[];
+	subjects: Subject[];
+	subject: Subject = new Subject();
+	form: FormGroup;
+	subscriptions = new Subscription();
+	id: number;
+	dataSource = new MatTableDataSource<any>();
+	faPlus = faPlus;
+	faPen = faPen;
+	faTrash = faTrash;
 
-  private academies: Academy[];
-  private subjects: Subject[];
-  private subject: Subject = new Subject();
-  private form: FormGroup;
-  private subscriptions = new Subscription();
-  private id: number;
-  dataSource = new MatTableDataSource<any>();
-  faPlus = faPlus;
-  faPen = faPen;
-  faTrash = faTrash;
+	constructor(
+		private formBuilder: FormBuilder,
+		private route: ActivatedRoute,
+		private service: SubjectService,
+		private academyService: AcademyService,
+		private navigator: Navigator
+	) {}
 
-  constructor(private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private service: SubjectService,
-    private academyService: AcademyService,
-    private navigator: Navigator) { }
+	ngOnInit() {
+		// If id = 0, it specifies a new subject.
+		this.form = this.formBuilder.group({
+			academy: '',
+			code: '',
+			name: ''
+		});
+		// If id != 0, it specifies editing a subject. Here's how we find the subject in question.
+		this.subscriptions.add(
+			this.route.paramMap.subscribe(params => {
+				this.id = parseInt(params.get('id'), 10);
+				this.handleId();
+			})
+		);
 
-  ngOnInit() {
-    //If id = 0, it specifies a new subject.
-    this.form = this.formBuilder.group({
-      academy: '',
-      code: '',
-      name: ''
-    });
-    //If id != 0, it specifies editing a subject. Here's how we find the subject in question.
-    this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        this.id = parseInt(params.get('id'), 10);
-        this.handleId();
-      })
-    );
+		// Get all the academies for the dropdownlist of academies. When creating a new subject.
+		const sub = this.academyService
+			.getAllAcademies()
+			.subscribe(responseAcademies => {
+				this.academies = responseAcademies;
+			});
 
-    //Get all the academies for the dropdownlist of academies. When creating a new subject.
-    this.academyService.getAllAcademies().subscribe(responseAcademies => {
-      this.academies = responseAcademies;
-    });
+		this.subscriptions.add(sub);
+		this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+	}
 
-    this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+	handleId() {
+		if (this.id !== 0) {
+			const sub = this.service.getSubjectById(this.id).subscribe(subject => {
+				this.subject.id = subject.id;
+				this.subject.unpublished = subject.unpublished;
+				this.form = this.formBuilder.group({
+					academy: subject.academyId,
+					code: subject.code,
+					name: subject.name
+				});
+			});
+			this.subscriptions.add(sub);
+		}
+	}
 
-  }
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
 
-  handleId() {
-    if (this.id != 0) {
-      this.service.getSubjectById(this.id).subscribe(subject => {
-        this.subject.id = subject.id;
-        this.subject.unpublished = subject.unpublished;
-        this.form = this.formBuilder.group({
-          academy: subject.academyId,
-          code: subject.code,
-          name: subject.name
-        });
-      });
-      
-    }
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      if (this.id != 0)
-        this.subject.id = this.id;
-      this.subject.name = this.form.controls['name'].value;
-      this.subject.code = this.form.controls['code'].value;
-      this.subject.academyId = this.form.controls['academy'].value;
-      this.service.saveSubject(this.subject).subscribe(
-        data => this.onSuccess(data),
-        error => this.onError(error)          
-      );
-      this.form.reset();
-    }
-  }
-  selectedAcademy(academyId: number) {
-    this.service.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
-      this.subjects = responseSubjects;
-      this.dataSource = new MatTableDataSource<Subject>(this.subjects);
-    });
-  }
-  onSuccess(data){
-    alert('You have sucefully saved the subject.');
-    this.navigator.goToPage('/home/subject-handler');
-  }
-  onError(error){
-    if(error['status'] == 401){
-      alert('Not athorized. Please log in and try again');
-      this.navigator.goToPage('/login');
-    }else if(error['status'] == 405){
-      alert('Error. Check if the name or abbreviation already exists.');
-    }
-    else{
-      alert('Error. Something went wrong while trying to save or edit the academy.');
-    }
-  }
+	onSubmit() {
+		if (this.form.valid) {
+			if (this.id !== 0) { this.subject.id = this.id; }
+			this.subject.name = this.form.controls.name.value;
+			this.subject.code = this.form.controls.code.value;
+			this.subject.academyId = this.form.controls.academy.value;
+			const sub = this.service.saveSubject(this.subject).subscribe(
+				data => this.onSuccess(data),
+				error => this.onError(error)
+			);
+			this.subscriptions.add(sub);
+			this.form.reset();
+		}
+	}
+	selectedAcademy(academyId: number) {
+		const sub = this.service
+			.getAllSubjectsByAcademyId(academyId)
+			.subscribe(responseSubjects => {
+				this.subjects = responseSubjects;
+				this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+			});
+		this.subscriptions.add(sub);
+	}
+	onSuccess(data) {
+		alert('You have sucefully saved the subject.');
+		this.navigator.goToPage('/home/subject-handler');
+	}
+	onError(error) {
+		if (error.status === 401) {
+			alert('Not athorized. Please log in and try again');
+			this.navigator.goToPage('/login');
+		} else if (error.status === 405) {
+			alert('Error. Check if the name or abbreviation already exists.');
+		} else {
+			alert(
+				'Error. Something went wrong while trying to save or edit the academy.'
+			);
+		}
+	}
 }

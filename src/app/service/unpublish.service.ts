@@ -6,12 +6,11 @@ import { Exam } from '../model/exam.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class UnpublishService {
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-  
 	getUnpublishedSubjects() {
 		return this.http.get<Subject[]>('/api/subjects/unpublished');
 	}
@@ -21,12 +20,10 @@ export class UnpublishService {
 	}
 
 	publishExam(exam: Exam) {
-		return this.http.post('/api/exams/unpublish', exam).subscribe(data => {
-		});
+		return this.http.post('/api/exams/unpublish', exam);
 	}
 
 	deleteExam(id: number) {
-		return this.http.delete('/api/exams/' + id).subscribe(data => {
-		});;
+		return this.http.delete('/api/exams/' + id);
 	}
 }

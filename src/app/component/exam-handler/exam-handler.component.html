@@ -1,83 +1,86 @@
 <div class="wrapper">
-
-    <button class="newButton" color="accent" mat-raised-button
-        (click)="this.navigator.goToPage('/home/exam-form/0')">
-        <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
-    </button>
-    <button class="deleteButton" color="warn" mat-raised-button
-        (click)="this.navigator.goToPage('/home/exam-form/0')">
-        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
-    </button>
-    <div class="selectors-container">
-        <div class="selectors">
-            <h4>Choose Academy</h4>
-            <mat-form-field >
-                <mat-select [(ngModel)]="selectedAcademyValue" placeholder="Academy List" name="academies">
-                    <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies"
-                        [value]="academy.id">
-                        {{academy.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+    <div class="buttons-and-selectors">
+        <div class="selection-buttons-container">
+            <button class="selectionButtons" color="accent" mat-raised-button
+                (click)="this.navigator.goToPage('/home/file-upload')">
+                <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
+            </button>
+            <button class="publishButton selectionButtons" color="warn" mat-raised-button
+                (click)="openDialog('unpublish')" [disabled]="isDeleteButtonDisabled">
+                <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Unpublish Checked</span>
+            </button>
+            <button class="selectionButtons" color="warn" mat-raised-button (click)="openDialog('delete')"
+                [disabled]="isDeleteButtonDisabled">
+                <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
+            </button>
         </div>
-        <div class="selectors">
-            <h4>Choose Subject</h4>
-            <mat-form-field class="selectors">
-                <mat-select [(ngModel)]="selectedSubjectValue" placeholder="Subject List" name="subjects">
-                    <mat-option (click)="selectedSubject(subject.id)" *ngFor="let subject of subjects"
-                        [value]="subject.id">
-                        {{subject.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="selectors">
+        <div class="selectors-container">
+            <div class="selectors">
+                <h4>Choose Academy</h4>
+                <mat-form-field>
+                    <mat-select placeholder="Academy List" name="academies">
+                        <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies"
+                            [value]="academy.id">
+                            {{academy.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="selectors">
+                <h4>Choose Subject</h4>
+                <mat-form-field class="selectors">
+                    <mat-select placeholder="Subject List" name="subjects">
+                        <mat-option (click)="selectedSubject(subject.id)" *ngFor="let subject of subjects"
+                            [value]="subject.id">
+                            {{subject.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="selectors">
 
-            <h4>Choose Course</h4>
-            <mat-form-field class="selectors">
-                <mat-select [(ngModel)]="selectedValue" placeholder="Course List" name="courses">
-                    <mat-option (click)="selectedCourse(course.id)" *ngFor="let course of courses" [value]="course.id">
-                        {{course.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+                <h4>Choose Course</h4>
+                <mat-form-field class="selectors">
+                    <mat-select placeholder="Course List" name="courses">
+                        <mat-option (click)="selectedCourse(course.id)" *ngFor="let course of courses"
+                            [value]="course.id">
+                            {{course.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
     </div>
-    <table mat-table [dataSource]="exams" class="mat-elevation-z8">
+    <table mat-table [dataSource]="exams" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null"
+                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)" [aria-label]="surprise">
+                <mat-checkbox color="warn" (click)="$event.stopPropagation()" [checked]="selection.isSelected(row)"
+                    (change)="$event ? selection.toggle(row) : null; isAnyCheckboxSelected()" [aria-label]="surprise">
                 </mat-checkbox>
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="filename">
+        <ng-container matColumnDef="filename" class="column">
             <th mat-header-cell *matHeaderCellDef> File </th>
             <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="date">
+        <ng-container matColumnDef="date" class="column">
             <th mat-header-cell *matHeaderCellDef> Date </th>
             <td mat-cell *matCellDef="let element"> {{element.date}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="unpublishDate">
+        <ng-container matColumnDef="unpublishDate" class="column">
             <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
             <td mat-cell *matCellDef="let element"> {{element.unpublishDate}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="unpublished">
-            <th mat-header-cell *matHeaderCellDef> Unpublished </th>
-            <td mat-cell *matCellDef="let element"> {{element.unpublished}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit">
