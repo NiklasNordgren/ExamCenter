@@ -9,11 +9,12 @@ import { Observable } from 'rxjs';
 export class SettingsService {
 	constructor(private http: HttpClient) {}
 
-	getSettings() {
-		return this.http.get<Observable<Settings>>('/api/settings/');
+	getCurrentSettings() {
+		return this.http.get<Settings>('/api/settings/current');
 	}
 
-	updateSettings(settings: Settings) {
-		return this.http.patch<Observable<Settings>>('/api/settings/', settings);
+	postSettings(settings: Settings) {
+		return this.http.post<Settings>('/api/settings/', settings);
 	}
+
 }

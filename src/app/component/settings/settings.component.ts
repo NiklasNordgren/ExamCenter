@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SettingsService } from 'src/app/service/settings.service';
-import { Settings } from 'src/app/model/settings.model';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { faCog, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -12,7 +11,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	settings: Observable<Settings>;
 	settingsLoaded: boolean = false;
 	faCog: IconDefinition = faCog;
 	private form: FormGroup;
@@ -23,11 +21,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.form = this.formBuilder.group({
 			cookieSessionMinutes: '',
+			unpublishTimeYears: '',
 			homePageHtml: '',
 			aboutPageHtml: ''
 		});
-		const sub = this.settingsService.getSettings().subscribe(settings => {
-			this.settings = settings;
+		const sub = this.settingsService.getCurrentSettings().subscribe(settings => {
+			this.form.get('cookieSessionMinutes').setValue(settings.cookieSessionMinutes);
+			this.form.get('unpublishTimeYears').setValue(settings.unpublishTimeYears);
+			this.form.get('homePageHtml').setValue(settings.homePageHtml);
+			this.form.get('aboutPageHtml').setValue(settings.aboutPageHtml);
 			this.settingsLoaded = true;
 		});
 		this.subscriptions.add(sub);
