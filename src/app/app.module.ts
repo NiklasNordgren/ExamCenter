@@ -152,7 +152,8 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 		MatListModule,
 		MatDatepickerModule,
 		MatDialogModule,
-		MatTabsModule
+		MatTabsModule, 
+		MatTooltipModule
 	],
 	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [

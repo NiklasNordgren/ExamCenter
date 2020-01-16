@@ -19,13 +19,14 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 	providers: [Navigator]
 })
 export class SubjectFormComponent implements OnInit, OnDestroy {
+
 	academies: Academy[];
 	subjects: Subject[];
 	subject: Subject = new Subject();
 	form: FormGroup;
 	subscriptions = new Subscription();
 	id: number;
-	dataSource = new MatTableDataSource<any>();
+	dataSource = [];
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
@@ -35,7 +36,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 	constructor(
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute,
-		private service: SubjectService,
+		private subjectService: SubjectService,
 		private academyService: AcademyService,
 		private navigator: Navigator,
 		private dialog: MatDialog
@@ -55,20 +56,15 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			})
 		);
 
-		// Get all the academies for the dropdownlist of academies. When creating a new subject.
-		const sub = this.academyService
-			.getAllAcademies()
-			.subscribe(responseAcademies => {
-				this.academies = responseAcademies;
-			});
-
-		this.subscriptions.add(sub);
-		this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+		//Get all the academies for the dropdownlist of academies. When creating a new subject.
+		this.academyService.getAllAcademies().subscribe(responseAcademies => {
+			this.academies = responseAcademies;
+		});
+		this.dataSource = this.subjects;
 	}
-
 	handleId() {
 		if (this.id !== 0) {
-			const sub = this.service.getSubjectById(this.id).subscribe(subject => {
+			const sub = this.subjectService.getSubjectById(this.id).subscribe(subject => {
 				this.subject.id = subject.id;
 				this.subject.unpublished = subject.unpublished;
 				this.form = this.formBuilder.group({
@@ -91,7 +87,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			this.subject.name = this.form.controls.name.value;
 			this.subject.code = this.form.controls.code.value;
 			this.subject.academyId = this.form.controls.academy.value;
-			const sub = this.service.saveSubject(this.subject).subscribe(
+			const sub = this.subjectService.saveSubject(this.subject).subscribe(
 				data => this.onSuccess(data),
 				error => this.onError(error)
 			);
@@ -99,11 +95,11 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		}
 	}
 	selectedAcademy(academyId: number) {
-		const sub = this.service
+		const sub = this.subjectService
 			.getAllSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+				this.dataSource = this.subjects;
 			});
 		this.subscriptions.add(sub);
 	}

@@ -23,7 +23,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	displayedColumns: string[] = ['select', 'name', 'code', 'edit'];
 	academies = [];
 	subjects = [];
-	dataSource = new MatTableDataSource<Subject>(this.academies);
+	dataSource = this.academies;
 	selection = new SelectionModel<Subject>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
@@ -43,7 +43,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit() {
-		this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+		this.dataSource = this.subjects;
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
@@ -63,7 +63,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 			.getAllPublishedSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.dataSource = new MatTableDataSource<Subject>(this.subjects);
+				this.dataSource = this.subjects;
 			});
 		this.subscriptions.add(sub);
 	}
@@ -120,14 +120,14 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.dataSource.data.length;
+		const numRows = this.dataSource.length;
 		return numSelected === numRows;
 	}
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
 		this.isAllSelected()
 			? this.selection.clear()
-			: this.dataSource.data.forEach(row => this.selection.select(row));
+			: this.dataSource.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
