@@ -11,6 +11,7 @@ import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
+import { Navigator } from 'src/app/util/navigator';
 
 @Component({
   selector: 'course-handler',
@@ -34,7 +35,7 @@ export class CourseHandlerComponent implements OnInit {
   public selectedSubjectValue: number;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService, 
-    private courseService: CourseService){}
+    private courseService: CourseService, private navigator: Navigator){}
 
   ngOnInit() {
 
