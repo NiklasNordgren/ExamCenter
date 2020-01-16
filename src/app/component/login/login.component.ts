@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	handleResponse(isLoggedIn) {
-		if (isLoggedIn) { this.router.navigate(['/home/admin']); } else {
+		if (isLoggedIn) { this.router.navigate(['/home/']); } else {
 			this.form.patchValue({
 				password: ''
 			});
