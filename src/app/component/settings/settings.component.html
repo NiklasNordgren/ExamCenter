@@ -3,11 +3,21 @@
     <fa-icon [icon]="faCog"></fa-icon>
     App Settings
   </h2>
-  <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+
+  <mat-form-field class="full-width">
+    <mat-select placeholder="Settings" [(ngModel)]="selectedValue" name="settingsList">
+      <mat-option *ngFor="let setting of settingsList" [value]="setting" (click)="setFormControls(setting)">
+        {{ setting.created | date:'yyyy-MM-dd HH:mm:ss' }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+
     <mat-form-field>
       <mat-label for="cookieSessionMinutes">Cookie Session Length (minutes)</mat-label>
       <input matInput id="cookieSessionMinutes" required type="number" formControlName="cookieSessionMinutes"
-        placeholder="Cookie Session Length" size="100pt">
+        placeholder="Cookie Session Length">
     </mat-form-field>
 
     <mat-form-field>

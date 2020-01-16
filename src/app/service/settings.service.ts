@@ -9,7 +9,11 @@ export class SettingsService {
 	constructor(private http: HttpClient) {}
 
 	getCurrentSettings() {
-		return this.http.get<Settings>('/api/settings/current');
+		return this.http.get<Settings>('/api/settings/');
+	}
+
+	getTenLatestSettings() {
+		return this.http.get<Settings[]>('/api/settings/tenLatest');
 	}
 
 	postSettings(settings: Settings) {
