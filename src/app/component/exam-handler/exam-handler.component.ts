@@ -40,6 +40,11 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	subjects = [];
 	courses = [];
 	exams: Exam[] = [];
+	dataSource = [];
+
+	public selectedAcademyValue: number;
+	public selectedSubjectValue: number;
+	public selectedCourseValue: number;
 
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
@@ -62,8 +67,11 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
+		this.dataSource = [];
 		const sub = this.academyService.getAllAcademies().subscribe(responseResult => {
 			this.academies = responseResult;
+			this.selectedAcademyValue = this.academies[0].id;
+			this.selectedAcademy(this.selectedAcademyValue);
 		});
 		this.subscriptions.add(sub);
 	}
@@ -72,16 +80,31 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.unsubscribe();
 	}
 
+
+	selectedAcademy(academyId: number) {
+		const sub = this.subjectService
+			.getAllSubjectsByAcademyId(academyId)
+			.subscribe(responseSubjects => {
+				this.subjects = responseSubjects;
+				this.selectedSubjectValue = this.subjects[0].id;
+				this.selectedSubject(this.selectedSubjectValue);
+			});
+		this.subscriptions.add(sub);
+	}
+/*
 	selectedAcademy(id: number) {
 		const sub = this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
 			this.subjects = responseResult;
+			this.selectedSubjectValue = this.subjects[0].id;
+			this.selectedSubject(this.selectedSubjectValue);
 		});
 		this.subscriptions.add(sub);
 	}
-
+*/
 	selectedSubject(id: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
 			this.courses = responseResult;
+			this.selectedCourseValue = this.courses[0].id;
 		});
 		this.subscriptions.add(sub);
 	}

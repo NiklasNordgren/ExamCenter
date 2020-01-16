@@ -33,11 +33,11 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	faTrash = faTrash;
 	public selectedAcademyValue: number;
 	public selectedSubjectValue: number;
+	isUnpublishButtonDisabled = true;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService,
     private courseService: CourseService, private navigator: Navigator){}
 	ngOnInit() {
-		this.dataSource = [];
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {

@@ -28,9 +28,9 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
-	public selectedValue: number;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	selectedAcademyValue: number;
 
 	successfulHttpRequest: Array<String>;
 	errorHttpRequest: Array<any> = [];
@@ -48,8 +48,8 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
 				this.academies = responseAcademies;
-				this.selectedValue = this.academies[0].id;
-				this.selectedAcademy(this.selectedValue);
+				this.selectedAcademyValue = this.academies[0].id;
+				this.selectedAcademy(this.selectedAcademyValue);
 			});
 		this.subscriptions.add(sub);
 	}
