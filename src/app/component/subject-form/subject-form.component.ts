@@ -17,7 +17,7 @@ import { Navigator } from 'src/app/util/navigator';
 	providers: [Navigator]
 })
 export class SubjectFormComponent implements OnInit, OnDestroy {
- 
+
 	academies: Academy[];
 	subjects: Subject[];
 	subject: Subject = new Subject();
@@ -28,35 +28,35 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
- 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, 
-    private service: SubjectService, private academyService: AcademyService, 
-    private navigator: Navigator) { }
 
-  ngOnInit() {
-    //If id = 0, it specifies a new subject.
-    this.form = this.formBuilder.group({
-      academy: '',
-      code: '',
-      name: ''
-    });
-    //If id != 0, it specifies editing a subject. Here's how we find the subject in question.
-    this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        this.id = parseInt(params.get('id'), 10);
-        this.handleId();
-      })
-    );
-   
-    //Get all the academies for the dropdownlist of academies. When creating a new subject.
-    this.academyService.getAllAcademies().subscribe(responseAcademies => {
-      this.academies = responseAcademies;
-    });
-    this.dataSource = this.subjects;
-  }
+	constructor(private formBuilder: FormBuilder, private route: ActivatedRoute,
+		private subjectService: SubjectService, private academyService: AcademyService,
+		private navigator: Navigator) { }
+
+	ngOnInit() {
+		//If id = 0, it specifies a new subject.
+		this.form = this.formBuilder.group({
+			academy: '',
+			code: '',
+			name: ''
+		});
+		//If id != 0, it specifies editing a subject. Here's how we find the subject in question.
+		this.subscriptions.add(
+			this.route.paramMap.subscribe(params => {
+				this.id = parseInt(params.get('id'), 10);
+				this.handleId();
+			})
+		);
+
+		//Get all the academies for the dropdownlist of academies. When creating a new subject.
+		this.academyService.getAllAcademies().subscribe(responseAcademies => {
+			this.academies = responseAcademies;
+		});
+		this.dataSource = this.subjects;
+	}
 	handleId() {
 		if (this.id !== 0) {
-			const sub = this.service.getSubjectById(this.id).subscribe(subject => {
+			const sub = this.subjectService.getSubjectById(this.id).subscribe(subject => {
 				this.subject.id = subject.id;
 				this.subject.unpublished = subject.unpublished;
 				this.form = this.formBuilder.group({
@@ -79,7 +79,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			this.subject.name = this.form.controls.name.value;
 			this.subject.code = this.form.controls.code.value;
 			this.subject.academyId = this.form.controls.academy.value;
-			const sub = this.service.saveSubject(this.subject).subscribe(
+			const sub = this.subjectService.saveSubject(this.subject).subscribe(
 				data => this.onSuccess(data),
 				error => this.onError(error)
 			);
@@ -88,7 +88,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		}
 	}
 	selectedAcademy(academyId: number) {
-		const sub = this.service
+		const sub = this.subjectService
 			.getAllSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
@@ -97,7 +97,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert('You have sucefully saved the subject.');
+		alert('You have successfully saved the subject.');
 		this.navigator.goToPage('/home/subject-handler');
 	}
 	onError(error) {
@@ -105,7 +105,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			alert('Not athorized. Please log in and try again');
 			this.navigator.goToPage('/login');
 		} else if (error.status === 405) {
-			alert('Error. Check if the name or abbreviation already exists.');
+			alert('Error. Check if the name or abbreviation already exist.');
 		} else {
 			alert(
 				'Error. Something went wrong while trying to save or edit the academy.'
