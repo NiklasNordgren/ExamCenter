@@ -34,22 +34,25 @@ export class SubjectService {
 	}
 
 	saveSubject(subject: Subject): Observable<Subject> {
-		console.log('saving...');
-		console.log(subject);
-
 		return this.http.post<Subject>('/api/subjects/', subject);
 	}
 
 	deleteSubject(id: number) {
-		return this.http.delete('/api/subjects/' + id).subscribe(data => {
-		});;
+		return this.http.delete('/api/subjects/' + id);
 	}
 
 	publishSubject(subject: Subject) {
 		return this.http.post('/api/subjects/unpublish', subject);
 	}
 
-	unpublishSubjects(subjects: Subject[]): Observable<Subject> {
-		return this.http.post<Subject>('/api/subjects/unpublish/' + true, subjects);
-	};
+	unpublishSubjects(subjects: Subject[]) {
+		this.setSubjectsIsUnpublished(subjects, true);
+		return this.http.post<Subject[]>('/api/subjects/unpublishList/', subjects);
+	}
+
+	private setSubjectsIsUnpublished(subjects: Subject[], isUnPublished: boolean) {
+		subjects.forEach(subject => {
+			subject.unpublished = isUnPublished;
+		});
+	}
 }

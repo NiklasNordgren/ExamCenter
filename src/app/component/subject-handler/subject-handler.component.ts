@@ -8,6 +8,10 @@ import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subscription } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
 	selector: 'app-subject-handler',
 	templateUrl: 'subject-handler.component.html',
@@ -16,7 +20,7 @@ import { Subscription } from 'rxjs';
 })
 export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ['select', 'name', 'edit'];
+	displayedColumns: string[] = ['select', 'name', 'code', 'edit'];
 	academies = [];
 	subjects = [];
 	dataSource = new MatTableDataSource<Subject>(this.academies);
@@ -25,11 +29,17 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	faPen = faPen;
 	faTrash = faTrash;
 	public selectedValue: number;
+	isUnpublishButtonDisabled = true;
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+
+	successfulHttpRequest: Array<String>;
+	errorHttpRequest: Array<any> = [];
 
 	constructor(
 		private subjectService: SubjectService,
 		private navigator: Navigator,
-		private academyService: AcademyService
+		private academyService: AcademyService,
+		private dialog: MatDialog,
 	) {}
 
 	ngOnInit() {
@@ -58,6 +68,55 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
+	openDialog() {
+		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = 'Confirm';
+		this.dialogRef.componentInstance.contentMessage = this.makeContentText();
+		this.dialogRef.componentInstance.confirmBtnText = "unpublish";
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				const selectedSubjects = this.selection.selected;
+				let dSub;
+					for (let subject of selectedSubjects) {
+						subject.unpublished = true;
+					}
+					dSub = this.subjectService.unpublishSubjects(selectedSubjects).subscribe(
+						data => this.onSuccess(data),
+						error => this.onError(error)
+					);
+				
+				this.subscriptions.add(dSub);
+				for (let subject of selectedSubjects) {
+					this.subjects = this.subjects.filter(x => x.id != subject.id);
+				}
+			}
+			this.dialogRef = null;
+
+		});
+		this.subscriptions.add(sub);
+	}
+
+	makeContentText() {
+		const numberOfSelected = this.selection.selected.length;
+		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " subjects";
+
+		return dutyText = dutyText.concat(contentText);
+	}
+
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
+
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
@@ -70,20 +129,23 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 			? this.selection.clear()
 			: this.dataSource.data.forEach(row => this.selection.select(row));
 	}
-	unpublishSelection() {
-		const sub = this.subjectService
-			.unpublishSubjects(this.selection.selected)
-			.subscribe(
-				data => this.onSuccess(data),
-				error => this.onError(error)
-			);
-		this.subscriptions.add(sub);
+
+	isAnyCheckboxSelected() {
+		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
-	onSuccess(data) {
-		alert('Successfully unpublished selected subjects');
+	onSuccess(data: any) {
+		const selectedSubjects = this.selection.selected;
+		for (let subject of selectedSubjects) {
+			this.subjects = this.subjects.filter(x => x.id != subject.id);
+		}
+		const successfulAmount = data.length;
+		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " subject" : " subjects") : "";
+		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulDutyText = successfulContentText.concat(successfulDutyText);
+		this.openAcknowledgeDialog(successfulDutyText, "publish");
 	}
-	onError(error) {
-		this.selection.clear();
-		alert('Something went wrong wile trying to unpublish subjects.');
+
+	onError(error: HttpErrorResponse) {
+		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
 	}
 }

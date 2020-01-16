@@ -18,6 +18,7 @@ import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -40,10 +41,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	courses = [];
 	exams: Exam[] = [];
 
-	successfulHttpRequest: Array<String>;
-	errorHttpRequest: Array<any> = [];
-
-	isDeleteButtonDisabled = true;
+	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = [
 		'select',
@@ -95,66 +93,46 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	openDialog(duty: string) {
+	openDialog() {
 
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.contentMessage = this.makeContentText(duty);
-		this.dialogRef.componentInstance.confirmBtnText = duty;
+		this.dialogRef.componentInstance.contentMessage = this.makeContentText();
+		this.dialogRef.componentInstance.confirmBtnText = "unpublish";
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedExams = this.selection.selected;
 				let dSub;
-				if (duty == "delete") {
-					dSub = this.examService.deleteExams(selectedExams).subscribe(data => {
-					});
-				} else if (duty == "unpublish") {
 					for (let exam of selectedExams) {
 						exam.unpublished = true;
+						if(exam.id == 283)
+							exam.filename = "Unpub15";
 					}
 					dSub = this.examService.publishExams(selectedExams).subscribe(
 						data => this.onSuccess(data),
-						error => this.onError(error),
-						() => this.manageRequestResults(duty)
+						error => this.onError(error)
 					);
-				}
-				this.subscriptions.add(dSub);
-				for (let exam of selectedExams) {
-					this.exams = this.exams.filter(x => x.id != exam.id);
-				}
 			}
 			this.dialogRef = null;
-
 		});
 		this.subscriptions.add(sub);
 	}
 
 	onSuccess(data: any) {
-		this.successfulHttpRequest = data;
-	}
-
-	onError(error: any) {
-		this.errorHttpRequest = error;
-	}
-
-	manageRequestResults(duty: string) {
-		const successfulAmount = this.successfulHttpRequest.length;
-		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got " + duty + ((duty === "delete") ? "d" : "ed") : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-
-		const errorAmount = this.errorHttpRequest.length;
-		let errorContentText= "";
-		if (errorAmount !== 0) {
-			errorContentText = "Something went wrong";
-			for (let error of this.errorHttpRequest) {
-				errorContentText = errorContentText.concat("\nError: " + error.status);
-			}
+		const selectedExams = this.selection.selected;
+		for (let exam of selectedExams) {
+			this.exams = this.exams.filter(x => x.id != exam.id);
 		}
-		(successfulDutyText.length !== 0 && errorContentText.length !== 0) ? successfulDutyText.concat(successfulDutyText + "\n\n") : "";
-		const message = successfulDutyText.concat(errorContentText);
-		this.openAcknowledgeDialog(message, "publish");
+		const successfulAmount = data.length;
+		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
+		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulDutyText = successfulContentText.concat(successfulDutyText);
+		this.openAcknowledgeDialog(successfulDutyText, "publish");
+	}
+
+	onError(error: HttpErrorResponse) {
+		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
 	}
 
 	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
@@ -168,9 +146,9 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 
-	makeContentText(duty: string) {
+	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to " + duty + "\n\n";
+		let dutyText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
 
 		return dutyText = dutyText.concat(contentText);
@@ -188,6 +166,6 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	isAnyCheckboxSelected() {
-		(this.selection.selected.length !== 0) ? this.isDeleteButtonDisabled = false : this.isDeleteButtonDisabled = true;
+		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
 }
