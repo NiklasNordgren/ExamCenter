@@ -6,6 +6,8 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { Settings } from "src/app/model/settings.model";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 import { DomSanitizer } from "@angular/platform-browser";
+import { ConfirmationAckDialogComponent } from "../confirmation-ack-dialog/confirmation-ack-dialog.component";
+import { MatDialogRef, MatDialog } from "@angular/material";
 
 @Component({
 	selector: "app-settings",
@@ -19,12 +21,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	faCog: IconDefinition = faCog;
 	private form: FormGroup;
 	selectedValue: Settings;
+	dialogRef: MatDialogRef<ConfirmationAckDialogComponent>;
 
 	constructor(
 		private settingsService: SettingsService,
 		private formBuilder: FormBuilder,
 		private snackBar: MatSnackBar,
-		private sanitizer: DomSanitizer
+		private sanitizer: DomSanitizer,
+		private dialog: MatDialog
 	) {}
 
 	ngOnInit() {
@@ -63,21 +67,29 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		let homePageHtml = this.form.controls.homePageHtml.value;
 		let aboutPageHtml = this.form.controls.aboutPageHtml.value;
-		
+
 		let htmlOk = true;
-		let message = '';
-		console.log(homePageHtml);
-		
+		let message = "";
+
 		if (!this.safeHtml(homePageHtml)) {
-			message += 'Home page HTML code was deemed unsafe.\n';
+			console.log();
+			let difference = this.getHtmlDifference(
+				this.sanitizeUnescape(homePageHtml),
+				homePageHtml
+			);
+			message += `Home page HTML code was deemed unsafe. The potential security hazards found were:\n${difference}\n`;
 			htmlOk = false;
 		}
 		if (!this.safeHtml(aboutPageHtml)) {
-			message += 'About page HTML was deemed unsafe.';
+			let difference = this.getHtmlDifference(
+				this.sanitizeUnescape(aboutPageHtml),
+				aboutPageHtml
+			);
+			message += `About page HTML code was deemed unsafe. The potential security hazards found were:\n${difference}\n`;
 			htmlOk = false;
 		}
 		if (!htmlOk) {
-			this.snackBar.open(message.trim(), "OK");
+			this.openAcknowledgeDialog(message, "Error saving Settings");
 		} else if (this.form.valid && htmlOk) {
 			let settings: Settings = new Settings();
 			settings.aboutPageHtml = this.form.controls.aboutPageHtml.value;
@@ -110,12 +122,38 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		return this.sanitizer.sanitize(SecurityContext.HTML, html);
 	}
 
-	private unescape(escapedString: string) {
-		return new DOMParser().parseFromString(escapedString,'text/html').querySelector('body').innerHTML;
+	private sanitizeUnescape(html: string) {
+		return new DOMParser()
+			.parseFromString(this.sanitizeHtml(html), "text/html")
+			.querySelector("body").innerHTML;
 	}
 
 	private safeHtml(html: string) {
-		return html === this.unescape(this.sanitizeHtml(html));
+		return html === this.sanitizeUnescape(html);
 	}
 
+	private getHtmlDifference(rawHtml: string, sanitizedHtml: string) {
+		var i = 0;
+		var j = 0;
+		var result = "";
+
+		while (j < sanitizedHtml.length) {
+			if (rawHtml[i] != sanitizedHtml[j] || i == rawHtml.length)
+				result += sanitizedHtml[j];
+			else i++;
+			j++;
+		}
+		return result;
+	}
+
+	private openAcknowledgeDialog(errorMessage: string, title: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = title;
+		this.dialogRef.componentInstance.contentMessage = errorMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
 }
