@@ -40,6 +40,10 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	courses = [];
 	exams: Exam[] = [];
 
+	selectedAcademyValue: number;
+	selectedSubjectValue: number;
+	selectedCourseValue: number;
+
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = [
@@ -63,6 +67,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		const sub = this.academyService.getAllAcademies().subscribe(responseResult => {
 			this.academies = responseResult;
+			this.selectedAcademyValue = this.academies[0].id;
+			this.selectedAcademy(this.selectedAcademyValue);
 		});
 		this.subscriptions.add(sub);
 	}
@@ -74,6 +80,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	selectedAcademy(id: number) {
 		const sub = this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
 			this.subjects = responseResult;
+			this.selectedSubjectValue = this.subjects[0].id;
+			this.selectedSubject(this.selectedSubjectValue);
 		});
 		this.subscriptions.add(sub);
 	}
@@ -81,6 +89,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	selectedSubject(id: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
 			this.courses = responseResult;
+			this.selectedCourseValue = this.courses[0].id;
+			this.selectedCourse(this.selectedCourseValue);
 		});
 		this.subscriptions.add(sub);
 	}
@@ -105,13 +115,12 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 				let dSub;
 					for (let exam of selectedExams) {
 						exam.unpublished = true;
-						if(exam.id == 283)
-							exam.filename = "Unpub15";
 					}
 					dSub = this.examService.publishExams(selectedExams).subscribe(
 						data => this.onSuccess(data),
 						error => this.onError(error)
 					);
+					this.selection.clear();
 			}
 			this.dialogRef = null;
 		});
