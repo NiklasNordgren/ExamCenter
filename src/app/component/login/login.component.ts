@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 			username: '',
 			password: ''
 		});
-		//ttest nedan
 		this.loginStateShareService.currentLoginState.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
 	}
 
