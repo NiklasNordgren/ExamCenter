@@ -12,4 +12,7 @@ export class LoginService {
 		const headers = { headers: new HttpHeaders().set('Content-Type', 'application/json') };
 		return this.http.post('/api/login/', loginData, headers);
 	}
+	logout(){
+		return this.http.post('/api/login/logout/', null);
+	}
 }

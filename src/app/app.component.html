@@ -1,5 +1,4 @@
 <div style="height: 84%;">
-
     <mat-toolbar color="primary" class="total-bar">
         <!-- Row for Login and help.-->
         <mat-toolbar-row class="row top">
@@ -9,7 +8,8 @@
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
                     <a class="about" mat-button href="/about">About</a>
 
-                    <a class="login" mat-button href="/login">Login (Admin)</a>
+                    <a *ngIf="!isLoggedIn" class="login" mat-button href="/login">Login (Admin)</a>
+                    <button (click)="logoutBtn();" *ngIf="isLoggedIn" class="login" mat-button >Logout</button>
                 </div>
                 <div fxShow="true" fxHide.gt-sm="true">
                     <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle();">
@@ -58,8 +58,13 @@
             <div fxLayout="column">
                 <a class="sidenav-links" (click)="sidenav.close(); goToPage('/subjects/academy/'+ academy.id);" *ngFor="let academy of academies"
                     mat-button>{{academy.shortDesc}}</a>
-                <a mat-button href="/login">Login (Admin)</a>
+                <a *ngIf="!isLoggedIn; else logout" mat-button href="/login">Login (Admin)</a>
+                
             </div>
         </mat-sidenav>
     </mat-sidenav-container>
 </div>
+
+<ng-template #logout>
+    <button mat-button (click)="logoutBtn();">Logout</button>    
+  </ng-template>

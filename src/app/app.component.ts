@@ -8,6 +8,9 @@ import {
 	MAT_TOOLTIP_DEFAULT_OPTIONS,
 	MatTooltipDefaultOptions
 } from '@angular/material/tooltip';
+import { UserService } from './service/user.service';
+import { LoginService } from './service/login.service';
+import { LoginStateShareService } from './service/login-state-share.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -31,12 +34,15 @@ export class AppComponent implements OnInit, OnDestroy {
 	constructor(
 		private breakpointObserver: BreakpointObserver,
 		private service: AcademyService,
-		private router: Router
+		private router: Router,
+		private userService: UserService,
+		private loginService: LoginService,
+		private loginStateShareService: LoginStateShareService
 	) {}
 
 	subscriptions: Subscription = new Subscription();
 	academies = [];
-
+	isLoggedIn;
 	isHandset$: Observable<boolean> = this.breakpointObserver
 		.observe(Breakpoints.Handset)
 		.pipe(
@@ -48,7 +54,13 @@ export class AppComponent implements OnInit, OnDestroy {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
 			this.convertAndSetAcademies(responseAcademies);
 		});
+		const subLogin = this.userService.isUserLoggedInAsAdmin().subscribe(isLoggedIn => {
+			this.changeLoginState(isLoggedIn);
+		});
+		const subLoginState = this.loginStateShareService.currentLoginState.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
 		this.subscriptions.add(sub);
+		this.subscriptions.add(subLogin);
+		this.subscriptions.add(subLoginState);
 	}
 
 	ngOnDestroy() {
@@ -65,10 +77,36 @@ export class AppComponent implements OnInit, OnDestroy {
 			});
 		});
 	}
+
 	goToPage(pageName: string) {
 		this.router.navigate([`${pageName}`]);
 	}
 	goToHomePage() {
 		this.goToPage('/');
 	}
+
+	logoutBtn(){
+		this.logout();
+	}
+
+	logout(){
+		const loginSub = this.loginService.logout().subscribe(
+			value => this.handleLogout(),
+			error => this.handleError()
+		);
+		this.subscriptions.add(loginSub);
+	}
+	
+	handleLogout(){
+		this.goToHomePage();
+		this.changeLoginState(false);
+	}
+
+	handleError(){
+		alert('Something went wrong while logging out. Please try again.');
+	}
+
+	changeLoginState(logginState: boolean) {
+		this.loginStateShareService.changeLoginState(logginState);
+	  }
 }
