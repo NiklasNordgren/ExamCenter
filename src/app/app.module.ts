@@ -32,7 +32,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -142,6 +142,7 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 		MatMenuModule,
 		MatTreeModule,
 		MatProgressBarModule,
+		MatSnackBarModule,
 		DragDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
