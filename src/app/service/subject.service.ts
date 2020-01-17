@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 	providedIn: 'root'
 })
 export class SubjectService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	getSubjectById(id: number) {
 		return this.http.get<Subject>('api/subjects/' + id);
@@ -17,20 +17,23 @@ export class SubjectService {
 		return this.http.get<Subject[]>('api/subjects/academy/' + academyId);
 	}
 
+
+	getUnpublishedSubjects() {
+		return this.http.get<Subject[]>('api/subjects/unpublished');
+	}
+
 	getAllPublishedSubjectsByAcademyId(academyId: number) {
 		return this.http.get<Subject[]>(
 			'api/subjects/published/academy/' + academyId
 		);
 	}
 
+
 	getAllSubjects() {
 		return this.http.get<Subject[]>('api/subjects/all');
 	}
 
 	saveSubject(subject: Subject): Observable<Subject> {
-		console.log('saving...');
-		console.log(subject);
-
 		return this.http.post<Subject>('/api/subjects/', subject);
 	}
 
@@ -38,7 +41,18 @@ export class SubjectService {
 		return this.http.delete('/api/subjects/' + id);
 	}
 
-	unpublishSubects(subjects: Subject[]): Observable<Subject> {
-		return this.http.post<Subject>('/api/subjects/unpublish/' + true, subjects);
+	publishSubject(subject: Subject) {
+		return this.http.post('/api/subjects/unpublish', subject);
+	}
+
+	unpublishSubjects(subjects: Subject[]) {
+		this.setSubjectsIsUnpublished(subjects, true);
+		return this.http.post<Subject[]>('/api/subjects/unpublishList/', subjects);
+	}
+
+	private setSubjectsIsUnpublished(subjects: Subject[], isUnPublished: boolean) {
+		subjects.forEach(subject => {
+			subject.unpublished = isUnPublished;
+		});
 	}
 }

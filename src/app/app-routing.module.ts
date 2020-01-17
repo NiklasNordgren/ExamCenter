@@ -8,7 +8,8 @@ import { TreeComponent } from './tree/tree.component';
 import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { AcademyComponent } from './component/academy/academy.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
+
 import { Academy } from './model/academy.model';
 import { CourseComponent } from './component/course/course.component';
 import { Course } from './model/course.model';
@@ -24,14 +25,14 @@ import { CourseHandlerComponent } from './component/course-handler/course-handle
 import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 import { OutboxComponent } from './component/outbox/outbox.component';
-import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
 import { AdminGuard } from './guard/admin.guard';
 import { SearchResultComponent } from './component/search-result/search-result.component';
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
-import { AdminFormComponent } from './admin-form/admin-form.component';
+import { AdminFormComponent } from './component/admin-form/admin-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
+import { NavigatorComponent } from './component/navigator/navigator.component';
 
 const routes: Routes = [
 	{
@@ -42,6 +43,10 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: LoginComponent
+	},
+	{
+		path: 'navigator',
+		component: NavigatorComponent
 	},
 	{
 		path: 'about',
@@ -107,10 +112,6 @@ const routes: Routes = [
 				component: SubjectFormComponent
 			},
 			{
-				path: 'course-handler',
-				component: CourseHandlerComponent
-			},
-			{
 				path: 'course-form/:id',
 				component: CourseFormComponent
 			},
@@ -131,8 +132,8 @@ const routes: Routes = [
 				component: FileUploadComponent
 			},
 			{
-				path: 'admin',
-				component: AdminComponent
+				path: "admin-handler",
+				component: AdminHandlerComponent
 			},
 			{
 				path: 'outbox',

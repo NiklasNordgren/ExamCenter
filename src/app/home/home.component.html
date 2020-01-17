@@ -39,8 +39,12 @@
             </a>
             <mat-divider></mat-divider>
             <div *ngIf="isSuperUser">
-                <a mat-list-item [routerLink]="['admin']">
+                <a mat-list-item [routerLink]="['admin-handler']">
                     <fa-icon [icon]="faUsersCog" class="list-item-icon"></fa-icon>Administer Users
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['outbox']">
+                    <fa-icon [icon]="faTrash" class="list-item-icon"></fa-icon>Outbox
                 </a>
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="['app-settings']">

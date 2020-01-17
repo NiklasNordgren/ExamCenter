@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
-import { Subscription } from 'rxjs';
+import { Subscription, from } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -11,6 +11,7 @@ import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
+import { Navigator } from 'src/app/util/navigator';
 
 @Component({
 	selector: 'app-course-handler',
@@ -33,12 +34,8 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	public selectedAcademyValue: number;
 	public selectedSubjectValue: number;
 
-	constructor(
-		private academyService: AcademyService,
-		private subjectService: SubjectService,
-		private courseService: CourseService
-	) {}
-
+  constructor(private academyService: AcademyService, private subjectService: SubjectService,
+    private courseService: CourseService, private navigator: Navigator){}
 	ngOnInit() {
 		this.dataSource = [];
 		const sub = this.academyService
@@ -98,9 +95,9 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert('Successfully unpublished selected academies');
+		alert('Successfully unpublished selected courses');
 	}
 	onError(error) {
-		alert('Something went wrong wile trying to unpublish academies.');
+		alert('Something went wrong wile trying to unpublish courses.');
 	}
 }

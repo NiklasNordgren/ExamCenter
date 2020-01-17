@@ -6,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { AcademyService } from '../../service/academy.service';
 import { element } from 'protractor';
 import { Navigator } from 'src/app/util/navigator';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 @Component({
 	selector: 'app-academy-form',
@@ -16,6 +19,7 @@ import { Navigator } from 'src/app/util/navigator';
 export class AcademyFormComponent implements OnInit, OnDestroy {
 	private form: FormGroup;
 	private subscriptions = new Subscription();
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	private id: number;
 	private academy: Academy;
 
@@ -23,7 +27,8 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute,
 		private service: AcademyService,
-		private navigator: Navigator
+		private navigator: Navigator,
+		private dialog: MatDialog
 	) {}
 
 	ngOnInit() {
@@ -75,18 +80,28 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/home/academy-handler');
+		this.openAcknowledgeDialog(data.name + " was updated", 'success');
 	}
 
 	onError(error) {
 		if (error.status === 401) {
-			alert('Not athorized. Please log in and try again');
+			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
 			this.navigator.goToPage('/login');
-		} else if (error.status === 405) {
-			alert('Error. Check if the name or abbreviation already exists.');
+		} else if (error.status === 409) {
+			this.openAcknowledgeDialog('The filename already exists as an exam.', 'error');
 		} else {
-			alert(
-				'Error. Something went wrong while trying to save or edit the academy.'
-			);
+			this.openAcknowledgeDialog('Something went wrong while trying to save the exam.', 'error');
 		}
+	}
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
 	}
 }

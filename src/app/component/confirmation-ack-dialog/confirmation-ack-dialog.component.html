@@ -1,0 +1,5 @@
+<h1 md-dialog-title  class="title">{{titleMessage | titlecase}}</h1>
+<div md-dialog-content class="content-message">{{contentMessage}} <p></div>
+<div md-dialog-actions align="center">
+    <button mat-raised-button color="accent" (click)="dialogRef.close(true)">{{confirmBtnText | titlecase}}</button>
+</div>

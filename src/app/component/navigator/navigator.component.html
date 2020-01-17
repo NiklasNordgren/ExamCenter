@@ -1,0 +1,40 @@
+<span>
+    <div *ngIf="academy != null" class="btn-wrapper">
+        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/subjects/academy/' + academy.id)">
+            <span class="content-button">
+                <div>
+                    {{academy.abbreviation}}
+                </div>
+                <div class="icon">
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                </div>
+            </span>
+        </a>
+    </div>
+
+    <div *ngIf="subject != null" class="btn-wrapper">
+        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/courses/subject/' + subject.id)">
+            <span class="content-button">
+                <div>
+                    {{subject.code}}
+                </div>
+                <div class="icon">
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                </div>
+            </span>
+        </a>
+    </div>
+
+    <div *ngIf="course != null" class="btn-wrapper">
+        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/exams/course/' + course.id)">
+            <span class="content-button">
+                <div>
+                    {{course.courseCode}}
+                </div>
+                <div class="icon">
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                </div>
+            </span>
+        </a>
+    </div>
+</span>

@@ -11,6 +11,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { CourseService } from 'src/app/service/course.service';
 import { Course } from 'src/app/model/course.model';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-exam',
@@ -28,20 +31,24 @@ export class ExamComponent implements OnInit, OnDestroy {
 	course: Course;
 	courseLoaded = false;
 	showingInfoMessage = false;
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	courseId;
+
 
 	constructor(
 		private route: ActivatedRoute,
 		private service: ExamService,
 		private fileService: FileService,
 		private courseService: CourseService,
-		private changeDetector: ChangeDetectorRef
+		private changeDetector: ChangeDetectorRef,
+		private dialog: MatDialog
 	) {}
 
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const courseId = parseInt(params.get('id'), 10);
-				this.setExamsByCourseId(courseId);
+				this.courseId = parseInt(params.get('id'), 10);
+				this.setExamsByCourseId(this.courseId);
 			})
 		);
 	}
@@ -53,24 +60,44 @@ export class ExamComponent implements OnInit, OnDestroy {
 	setExamsByCourseId(courseId: number) {
 		const sub = this.service
 			.getAllExamsByCourseId(courseId)
-			.subscribe(exams => {
-				this.data = [];
-				exams.forEach(exam => {
-					this.data.push({
-						id: exam.filename,
-						name: exam.filename,
-						shortDesc: ''
-					});
-					this.subscriptions.add(
-						this.courseService.getCourseById(courseId).subscribe(course => {
-							this.course = course;
-							this.courseLoaded = true;
-							this.changeDetector.detectChanges();
-						})
-					);
-				});
-			});
+			.subscribe
+			(exams => this.onSuccess(exams, courseId),
+			error => this.onError(error),
+			() => this.manageRequestResults());
+				
 		this.subscriptions.add(sub);
+	}
+
+	onSuccess(exams, courseId){
+		this.data = [];
+		exams.forEach(exam => {
+			this.data.push({
+				id: exam.filename,
+				name: exam.filename,
+				shortDesc: ''
+			});
+			
+		});
+		this.subscriptions.add(
+			this.courseService.getCourseById(courseId).subscribe(course => {
+				this.course = course;
+				this.changeDetector.detectChanges();
+			})
+		);
+	}
+	onError(error){
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = "Error";
+		this.dialogRef.componentInstance.contentMessage = "An error has occured while loading data.";
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
+
+	manageRequestResults(){
+		this.courseLoaded = true;
 	}
 
 	openPdf(row) {

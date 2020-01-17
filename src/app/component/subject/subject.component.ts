@@ -7,6 +7,7 @@ import {
 	IconDefinition,
 	faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
+import { AcademyService } from 'src/app/service/academy.service';
 
 @Component({
 	selector: 'app-subject',
@@ -28,6 +29,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private service: SubjectService,
+		private academyService: AcademyService,
 		private router: Router,
 		private navigator: Navigator
 	) {}
@@ -35,8 +37,8 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const academyId = parseInt(params.get('id'), 10);
-				this.setSubjetsByAcademyId(academyId);
+				this.academyId = parseInt(params.get('id'), 10);
+				this.setSubjetsByAcademyId(this.academyId);
 			})
 		);
 	}
@@ -60,4 +62,5 @@ export class SubjectComponent implements OnInit, OnDestroy {
 			});
 		this.subscriptions.add(sub);
 	}
+
 }

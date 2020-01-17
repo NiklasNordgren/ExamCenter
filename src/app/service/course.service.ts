@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Course } from '../model/course.model';
 import { Observable } from 'rxjs';
 
@@ -17,11 +17,43 @@ export class CourseService {
 		return this.http.get<Course[]>('api/courses/subject/' + subjectId);
 	}
 
-	getAllCourses() {
-		return this.http.get<Course[]>('api/courses/all');
+  getAllCourses(){
+    return this.http.get<Course[]>("api/courses/all");
+  }
+  getUnpublishedCourses() {
+		return this.http.get<Course[]>('/api/courses/unpublished');
+  }
+
+  saveCourse(course: Course){
+		return this.http.post<Course>('/api/courses', course);
 	}
 
-	unpublishCourses(courses: Course[]): Observable<Course> {
-		return this.http.post<Course>('/api/courses/unpublish/' + true, courses);
-	}
+	publishCourse(course: Course) {
+		return this.http.post('/api/courses/unpublish', course);
+  }
+
+  deleteCourse(id: number){
+    return this.http.delete('/api/courses/' + id);
+  }
+
+  deleteCourses(courses: Course[]) {
+    const options = {
+			headers: new HttpHeaders({
+			  'Content-Type': 'application/json',
+			}),
+			body: courses
+		  };
+    return this.http.delete('/api/courses/', options);
+  }
+
+  unpublishCourses(courses: Course[]){
+    this.setCoursesIsUnpublished(true, courses);
+    return this.http.post<Course>('/api/courses/unpublishList/', courses);
+  }
+  
+  private setCoursesIsUnpublished(isUnPublished: boolean, courses: Course[]){
+    courses.forEach(course => {
+      course.unpublished = isUnPublished;
+    });
+  }
 }

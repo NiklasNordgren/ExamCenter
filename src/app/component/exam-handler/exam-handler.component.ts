@@ -16,15 +16,8 @@ import { CourseService } from 'src/app/service/course.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
-
-export interface CustomExamArray {
-	id: number;
-	filename: string;
-	date: Date;
-	unpublishDate: Date;
-	unpublished: boolean;
-	academyName: string;
-}
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -42,44 +35,35 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	faPen = faPen;
 	faTrash = faTrash;
 
-	examArray: Array<CustomExamArray> = [];
 	academies = [];
 	subjects = [];
 	courses = [];
 	exams: Exam[] = [];
 
-	selectedAcademyValue: number;
-	selectedSubjectValue: number;
-	selectedCourseValue: number;
-
+	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = [
 		'select',
 		'filename',
 		'date',
 		'unpublishDate',
-		'unpublished',
 		'edit'
 	];
 
 	constructor(
-		private service: ExamService,
+		private examService: ExamService,
 		private courseService: CourseService,
 		private subjectService: SubjectService,
 		private academyService: AcademyService,
 		private navigator: Navigator,
 		private dialog: MatDialog,
 		private changeDetectorRef: ChangeDetectorRef
-	) {}
+	) { }
 
 	ngOnInit() {
-		const sub = this.academyService
-			.getAllAcademies()
-			.subscribe(responseResult => {
-				this.academies = responseResult;
-				this.selectedAcademyValue = this.academies[0].id;
-				this.selectedAcademy(this.selectedAcademyValue);
-			});
+		const sub = this.academyService.getAllAcademies().subscribe(responseResult => {
+			this.academies = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
@@ -88,53 +72,85 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	}
 
 	selectedAcademy(id: number) {
-		const sub = this.subjectService
-			.getAllSubjectsByAcademyId(id)
-			.subscribe(responseResult => {
-				this.subjects = responseResult;
-				this.selectedSubjectValue = this.subjects[0].id;
-				this.selectedSubject(this.selectedSubjectValue);
-			});
+		const sub = this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
+			this.subjects = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
 	selectedSubject(id: number) {
-		const sub = this.courseService
-			.getAllCoursesBySubjectId(id)
-			.subscribe(responseResult => {
-				this.courses = responseResult;
-			});
+		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
+			this.courses = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
 	selectedCourse(id: number) {
-		const sub = this.service
-			.getAllExamsByCourseId(id)
-			.subscribe(responseResult => {
-				this.exams = responseResult;
-			});
+		const sub = this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
+			this.exams = responseResult;
+		});
 		this.subscriptions.add(sub);
 	}
 
-	openDeleteDialog() {
-		const numberOfSelected = this.selection.selected.length;
+	openDialog() {
 
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
-		this.dialogRef.componentInstance.confirmMessage =
-			'Are you sure you want to delete ' + numberOfSelected + ' exam(s)?';
-		this.dialogRef.componentInstance.confirmBtnText = 'Delete';
+		this.dialogRef.componentInstance.contentMessage = this.makeContentText();
+		this.dialogRef.componentInstance.confirmBtnText = "unpublish";
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				for (const exam of this.selection.selected) {
-					this.service.deleteExam(exam.id);
-					this.exams = this.exams.filter(x => x.id !== exam.id);
-				}
+				const selectedExams = this.selection.selected;
+				let dSub;
+					for (let exam of selectedExams) {
+						exam.unpublished = true;
+						if(exam.id == 283)
+							exam.filename = "Unpub15";
+					}
+					dSub = this.examService.publishExams(selectedExams).subscribe(
+						data => this.onSuccess(data),
+						error => this.onError(error)
+					);
 			}
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
+	}
+
+	onSuccess(data: any) {
+		const selectedExams = this.selection.selected;
+		for (let exam of selectedExams) {
+			this.exams = this.exams.filter(x => x.id != exam.id);
+		}
+		const successfulAmount = data.length;
+		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
+		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulDutyText = successfulContentText.concat(successfulDutyText);
+		this.openAcknowledgeDialog(successfulDutyText, "publish");
+	}
+
+	onError(error: HttpErrorResponse) {
+		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
+	}
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
+
+	makeContentText() {
+		const numberOfSelected = this.selection.selected.length;
+		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
+
+		return dutyText = dutyText.concat(contentText);
 	}
 
 	isAllSelected() {
@@ -145,8 +161,10 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected()
-			? this.selection.clear()
-			: this.exams.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.exams.forEach(row => this.selection.select(row));
+	}
+
+	isAnyCheckboxSelected() {
+		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
 }

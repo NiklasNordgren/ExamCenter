@@ -53,7 +53,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TreeComponent } from './tree/tree.component';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
 import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
@@ -69,12 +69,14 @@ import { ExamHandlerComponent } from './component/exam-handler/exam-handler.comp
 import { AcademyFormComponent } from './component/academy-form/academy-form.component';
 import { SearchResultComponent } from './component/search-result/search-result.component';
 import { SearchComponent } from './component/search/search.component';
-import { AdminFormComponent } from './admin-form/admin-form.component';
+import { AdminFormComponent } from './component/admin-form/admin-form.component';
 import { SubjectFormComponent } from './component/subject-form/subject-form.component';
 import { ExamFormComponent } from './component/exam-form/exam-form.component';
 import { AdminGuard } from './guard/admin.guard';
 import { CourseFormComponent } from './component/course-form/course-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
+import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { NavigatorComponent } from './component/navigator/navigator.component';
 
 @NgModule({
 	declarations: [
@@ -92,11 +94,11 @@ import { SettingsComponent } from './component/settings/settings.component';
 		NavHorizComponent,
 		ListComponent,
 		AcademyComponent,
-		AdminComponent,
 		SubjectComponent,
 		CourseComponent,
 		ExamComponent,
 		AboutComponent,
+		AdminHandlerComponent,
 		AcademyHandlerComponent,
 		SubjectHandlerComponent,
 		CourseHandlerComponent,
@@ -112,7 +114,9 @@ import { SettingsComponent } from './component/settings/settings.component';
 		SubjectFormComponent,
 		ExamFormComponent,
 		CourseFormComponent,
-		SettingsComponent
+		SettingsComponent,
+		ConfirmationAckDialogComponent,
+		NavigatorComponent
 	],
 	imports: [
 		BrowserModule,
@@ -149,9 +153,10 @@ import { SettingsComponent } from './component/settings/settings.component';
 		MatListModule,
 		MatDatepickerModule,
 		MatDialogModule,
-		MatTabsModule
+		MatTabsModule, 
+		MatTooltipModule
 	],
-	entryComponents: [ConfirmationDialogComponent],
+	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
 		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
