@@ -4,8 +4,8 @@ import { Subscription } from "rxjs";
 import { faCog, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Settings } from "src/app/model/settings.model";
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
 	selector: "app-settings",
@@ -63,22 +63,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		let homePageHtml = this.form.controls.homePageHtml.value;
 		let aboutPageHtml = this.form.controls.aboutPageHtml.value;
-		let newHomePageHtml = this.sanitizer.sanitize(SecurityContext.HTML, homePageHtml);
-		let newAboutPageHtml = this.sanitizer.sanitize(SecurityContext.HTML, aboutPageHtml);
 		
-		let config = new MatSnackBarConfig();
-
 		let htmlOk = true;
-
-		if (newHomePageHtml !== homePageHtml) {
-			this.snackBar.open('Home page HTML was deemed unsafe.', 'OK');
+		let message = '';
+		console.log(homePageHtml);
+		
+		if (!this.safeHtml(homePageHtml)) {
+			message += 'Home page HTML code was deemed unsafe.\n';
 			htmlOk = false;
 		}
-		if (newAboutPageHtml !== aboutPageHtml) {
-			this.snackBar.open('About page HTML was deemed unsafe.', 'OK');
+		if (!this.safeHtml(aboutPageHtml)) {
+			message += 'About page HTML was deemed unsafe.';
 			htmlOk = false;
 		}
-		if (this.form.valid && htmlOk) {
+		if (!htmlOk) {
+			this.snackBar.open(message.trim(), "OK");
+		} else if (this.form.valid && htmlOk) {
 			let settings: Settings = new Settings();
 			settings.aboutPageHtml = this.form.controls.aboutPageHtml.value;
 			settings.homePageHtml = this.form.controls.homePageHtml.value;
@@ -89,19 +89,33 @@ export class SettingsComponent implements OnInit, OnDestroy {
 					let newSettingsList: Settings[] = [];
 					newSettingsList.push(settings);
 					if (this.settingsList.length >= 10) {
-						newSettingsList = [ ...newSettingsList, ... this.settingsList.slice(0, 9)];
+						newSettingsList = [
+							...newSettingsList,
+							...this.settingsList.slice(0, 9)
+						];
 					} else {
-						newSettingsList = [ ...newSettingsList, ... this.settingsList];
+						newSettingsList = [...newSettingsList, ...this.settingsList];
 					}
-					
 					this.settingsList = newSettingsList;
-					console.log(JSON.stringify(this.settingsList));
-					console.log('Length of new settingsList: ' + this.settingsList.length);
-					
+
+					let config = new MatSnackBarConfig();
 					config.duration = 3000;
-					this.snackBar.open('Settings saved.', '', config);
+					this.snackBar.open("Settings saved.", "", config);
 				})
 			);
 		}
 	}
+
+	private sanitizeHtml(html: string) {
+		return this.sanitizer.sanitize(SecurityContext.HTML, html);
+	}
+
+	private unescape(escapedString: string) {
+		return new DOMParser().parseFromString(escapedString,'text/html').querySelector('body').innerHTML;
+	}
+
+	private safeHtml(html: string) {
+		return html === this.unescape(this.sanitizeHtml(html));
+	}
+
 }
