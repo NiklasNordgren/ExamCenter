@@ -1,14 +1,21 @@
 .content-button{
     display: flex;
     justify-content: space-between;
+  
 }
 .btn-wrapper{
     display: inline;
 }
 .icon{
-    margin-left: 20pt;
+    margin-left: 5pt !important;
+    font-size: 20pt;
+}
+.icon2{
+  //  font-size: 8pt;
 }
 .link-btn{
+    min-width: 1%;
     margin-top: 3pt;
     margin-right: 1pt;
+    padding: 1pt !important;
 }
