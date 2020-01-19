@@ -6,6 +6,7 @@
             <span class="example-fill-remaining-space"></span>
             <span>
                 <div fxShow="true" fxHide.lt-md="true" class="right-container">
+                    <a *ngIf="isLoggedIn" mat-button href="/home">Admin page</a>
                     <a class="about" mat-button href="/about">About</a>
                     <a *ngIf="!isLoggedIn; else logout" class="login" mat-button href="/login">Login (Admin)</a>
                 </div>
