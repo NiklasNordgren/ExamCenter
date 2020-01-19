@@ -85,6 +85,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 						data => this.onSuccess(data),
 						error => this.onError(error)
 					);
+					this.selection.clear();
 				
 				this.subscriptions.add(dSub);
 				for (let subject of selectedSubjects) {
