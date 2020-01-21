@@ -10,6 +10,6 @@ export class LoginStateShareService {
   constructor() { }
 
   changeLoginState(loginState: boolean) {
-    this.loginStateSource.next(loginState)
+    this.loginStateSource.next(loginState);
   }
 }
