@@ -25,7 +25,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   @Input() academyId: number;
   @Input() subjectId: number;
   @Input() courseId: number;
-  private subscriptions: Subscription = new Subscription();
+  private subscriptions = new Subscription();
   academy: Academy;
   subject: Subject;
   course: Course;
@@ -36,10 +36,10 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private navigator: Navigator,
     private route: ActivatedRoute
-    ) {
+  ) {
   }
   ngOnInit() {
-    if(this.academyId != null)
+    if (this.academyId != null)
       this.handleAcademy(this.academyId);
     if (this.subjectId != null)
       this.handleSubject(this.subjectId);
@@ -47,39 +47,39 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       this.handleCourse(this.courseId);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
-  handleAcademy(academyId){
+  handleAcademy(academyId) {
     this.subscriptions.add(
-			this.route.paramMap.subscribe(params => {
+      this.route.paramMap.subscribe(params => {
         this.academyId = parseInt(params.get('id'), 10);
         this.getAcademy(this.academyId);
-			})
-		);
+      })
+    );
   }
 
-  getAcademy(academyId: number){
+  getAcademy(academyId: number) {
     this.subscriptions.add(
       this.academyService.getAcademyById(academyId).subscribe(academy => {
-      this.academy = academy;
-    }));
+        this.academy = academy;
+      }));
   }
 
   handleSubject(subjectId) {
     this.subscriptions.add(
       this.subjectService.getSubjectById(subjectId).subscribe(subject => {
-      this.subject = subject;
-      this.getAcademy(subject.academyId);
-    }));
+        this.subject = subject;
+        this.getAcademy(subject.academyId);
+      }));
   }
 
   handleCourse(courseId) {
     this.subscriptions.add(
       this.courseService.getCourseById(courseId).subscribe(course => {
-      this.course = course;
-      this.handleSubject(this.course.subjectId);
-    }));
+        this.course = course;
+        this.handleSubject(this.course.subjectId);
+      }));
   }
 }
