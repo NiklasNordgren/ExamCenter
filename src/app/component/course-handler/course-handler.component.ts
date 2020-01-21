@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Subscription, from } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
@@ -12,6 +12,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
 import { Navigator } from 'src/app/util/navigator';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 @Component({
 	selector: 'app-course-handler',
@@ -20,6 +22,7 @@ import { Navigator } from 'src/app/util/navigator';
 	providers: [Navigator]
 })
 export class CourseHandlerComponent implements OnInit, OnDestroy {
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions: Subscription = new Subscription();
 	displayedColumns: string[] = ['select', 'name', 'edit'];
 	academies = [];
@@ -35,7 +38,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	public selectedSubjectValue: number;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService,
-    private courseService: CourseService, private navigator: Navigator){}
+    private courseService: CourseService, private navigator: Navigator, private dialog: MatDialog){}
 	ngOnInit() {
 		this.dataSource = [];
 		const sub = this.academyService
@@ -95,9 +98,20 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
-		alert('Successfully unpublished selected courses');
+		this.showDialog('Success','Successfully unpublished selected courses');
 	}
 	onError(error) {
-		alert('Something went wrong wile trying to unpublish courses.');
+		this.showDialog('Error', 'Something went wrong wile trying to unpublish courses.');
+	}
+	
+	showDialog(header: string, message: string){
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = header;
+		this.dialogRef.componentInstance.contentMessage = message;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
 	}
 }

@@ -11,7 +11,9 @@ import { Course } from '../../model/course.model';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
-import { MatTable } from '@angular/material';
+import { MatTable, MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 export interface FileTableItem {
 	tempFileId: number;
@@ -35,7 +37,7 @@ export interface FileTableItem {
 	],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
-
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions = new Subscription();
 
 	academies: Academy[] = [];
@@ -84,7 +86,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		private examService: ExamService,
 		private academyService: AcademyService,
 		private subjectService: SubjectService,
-		private courseService: CourseService
+		private courseService: CourseService,
+		private dialog: MatDialog
 	) { }
 
 	ngOnInit() {
@@ -115,10 +118,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 				console.log('Succesfully added file: ' + fileItem.file.name + ' to the queue.');
 			} else {
 				if (this.isExamInUploadQueue(fileItem.file.name)) {
-					alert('Exam ' + fileItem.file.name + ' already exists in the upload queue.');
+					this.showErrorDialog('Exam ' + fileItem.file.name + ' already exists in the upload queue.');
 				}
 				if (this.isExamInDatabase(fileItem.file.name)) {
-					alert('Exam ' + fileItem.file.name + ' already exists in the database.');
+					this.showErrorDialog('Exam ' + fileItem.file.name + ' already exists in the database.');
 				}
 				this.removeFromQueue(fileItem);
 			}
@@ -127,7 +130,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 		this.uploader.onWhenAddingFileFailed = (file) => {
 			if (!this.isFileSizeValid(file.size)) {
-				alert('Max file size is 5MB.');
+				this.showErrorDialog('Max file size is 5MB.');
 			}
 			console.log('Failed to add file: ' + file.name + ' to the queue.');
 		};
@@ -153,8 +156,19 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 		this.uploader.onErrorItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
 			this.dataSource.find(x => x.name === fileItem.file.name).status = 'Upload error';
-			alert('Could not upload file.');
+			this.showErrorDialog('Could not upload file.');
 		};
+	}
+
+	showErrorDialog(message: string){
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = "Error";
+		this.dialogRef.componentInstance.contentMessage = message;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
 	}
 
 	fileOverDropZone(e: any): void {
