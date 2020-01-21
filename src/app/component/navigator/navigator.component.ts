@@ -7,7 +7,7 @@ import { SubjectService } from 'src/app/service/subject.service';
 import { CourseService } from 'src/app/service/course.service';
 import { Navigator } from 'src/app/util/navigator';
 import { ActivatedRoute } from '@angular/router';
-import { faChevronRight, faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
@@ -20,7 +20,6 @@ import { Subscription } from 'rxjs';
 
 export class NavigatorComponent implements OnInit, OnDestroy {
   faChevronRight = faChevronRight;
-  faGripLinesVertical = faGripLinesVertical;
   faHome = faHome;
   @Input() academyId: number;
   @Input() subjectId: number;
