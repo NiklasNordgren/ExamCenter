@@ -1,6 +1,19 @@
 <span>
+    <div class="btn-wrapper">
+        <a mat-button matTooltip="Go to homepage" class="link-btn" (click)="this.navigator.goToPage('/')">
+            <span class="content-button"> 
+                <div>
+                    <fa-icon [icon]="faHome"></fa-icon>
+                </div>
+                <div class="icon">
+                    <fa-icon [icon]="faGripLinesVertical"></fa-icon>
+                </div>
+            </span>
+        </a>
+    </div>
+
     <div *ngIf="academy != null" class="btn-wrapper">
-        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/subjects/academy/' + academy.id)">
+        <a mat-button matTooltip="{{academy.name}}" class="link-btn" (click)="this.navigator.goToPage('/subjects/academy/' + academy.id)">
             <span class="content-button">
                 <div>
                     {{academy.abbreviation}}
@@ -13,7 +26,7 @@
     </div>
 
     <div *ngIf="subject != null" class="btn-wrapper">
-        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/courses/subject/' + subject.id)">
+        <a mat-button matTooltip="{{subject.name}}" class="link-btn" (click)="this.navigator.goToPage('/courses/subject/' + subject.id)">
             <span class="content-button">
                 <div>
                     {{subject.code}}
@@ -26,7 +39,7 @@
     </div>
 
     <div *ngIf="course != null" class="btn-wrapper">
-        <a mat-raised-button color="accent" (click)="this.navigator.goToPage('/exams/course/' + course.id)">
+        <a mat-button matTooltip="{{course.name}}" class="link-btn" (click)="this.navigator.goToPage('/exams/course/' + course.id)">
             <span class="content-button">
                 <div>
                     {{course.courseCode}}

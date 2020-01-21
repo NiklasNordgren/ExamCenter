@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Course } from 'src/app/model/course.model';
 import { Subject } from 'src/app/model/subject.model';
@@ -6,7 +6,10 @@ import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { CourseService } from 'src/app/service/course.service';
 import { Navigator } from 'src/app/util/navigator';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute } from '@angular/router';
+import { faChevronRight, faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navigator',
@@ -15,20 +18,28 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
   providers: [Navigator]
 })
 
-export class NavigatorComponent implements OnInit {
+export class NavigatorComponent implements OnInit, OnDestroy {
   faChevronRight = faChevronRight;
+  faGripLinesVertical = faGripLinesVertical;
+  faHome = faHome;
   @Input() academyId: number;
   @Input() subjectId: number;
   @Input() courseId: number;
+  private subscriptions = new Subscription();
   academy: Academy;
   subject: Subject;
   course: Course;
 
-  constructor(private academyService: AcademyService, private subjectService: SubjectService, private courseService: CourseService,
-    private navigator: Navigator) {
+  constructor(
+    private academyService: AcademyService,
+    private subjectService: SubjectService,
+    private courseService: CourseService,
+    private navigator: Navigator,
+    private route: ActivatedRoute
+  ) {
   }
   ngOnInit() {
-    if(this.academyId != null)
+    if (this.academyId != null)
       this.handleAcademy(this.academyId);
     if (this.subjectId != null)
       this.handleSubject(this.subjectId);
@@ -36,23 +47,39 @@ export class NavigatorComponent implements OnInit {
       this.handleCourse(this.courseId);
   }
 
-  handleAcademy(academyId){
-    this.academyService.getAcademyById(academyId).subscribe(academy => {
-      this.academy = academy;
-    });
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  handleAcademy(academyId) {
+    this.subscriptions.add(
+      this.route.paramMap.subscribe(params => {
+        this.academyId = parseInt(params.get('id'), 10);
+        this.getAcademy(this.academyId);
+      })
+    );
+  }
+
+  getAcademy(academyId: number) {
+    this.subscriptions.add(
+      this.academyService.getAcademyById(academyId).subscribe(academy => {
+        this.academy = academy;
+      }));
   }
 
   handleSubject(subjectId) {
-    this.subjectService.getSubjectById(subjectId).subscribe(subject => {
-      this.subject = subject;
-      this.handleAcademy(subject.academyId);
-    });
+    this.subscriptions.add(
+      this.subjectService.getSubjectById(subjectId).subscribe(subject => {
+        this.subject = subject;
+        this.getAcademy(subject.academyId);
+      }));
   }
 
   handleCourse(courseId) {
-    this.courseService.getCourseById(courseId).subscribe(course => {
-      this.course = course;
-      this.handleSubject(this.course.subjectId);
-    });
+    this.subscriptions.add(
+      this.courseService.getCourseById(courseId).subscribe(course => {
+        this.course = course;
+        this.handleSubject(this.course.subjectId);
+      }));
   }
 }

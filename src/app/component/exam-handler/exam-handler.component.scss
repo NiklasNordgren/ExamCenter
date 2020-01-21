@@ -2,18 +2,22 @@ table {
     width: 100%;
 }
 
+h2 {
+    margin-bottom: 0pt;
+}
+
 .buttons-and-selectors {
     display: flex;
     flex-direction: row;
 }
     
 .selection-buttons-container {
-    margin-top: 32pt;
+ //   margin-top: 32pt;
     margin-right: 40pt;
 }
 
 .selectionButtons {
-    margin-right: 10pt;
+ //   margin-right: 10pt;
     margin-top: 10pt;
 }
 
@@ -42,7 +46,6 @@ table {
 
 @media screen and (max-width: 1430px) {
     .selection-buttons-container {
-        margin-top: 32pt;
         margin-right: 0pt;
     }
 }

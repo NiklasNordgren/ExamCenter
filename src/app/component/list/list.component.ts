@@ -22,13 +22,8 @@ export class ListComponent implements OnInit {
 	ngOnInit() {
 		if (this.shortHeader && this.shortHeader.length > 0) {
 			this.columnsToDisplay.push(this.shortHeader);
-			console.log('ShortHeader added');
 		}
 		this.columnsToDisplay.push(this.name);
-		console.log("data: ");
-		console.log(this.data);
-		
-		
 	}
 
 	rowClicked(clickedRow) {
