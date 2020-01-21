@@ -19,10 +19,10 @@ export class AboutComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.subscriptions.add(
-			this.settingsService.getCurrentSettings().subscribe(settings => {
+			this.settingsService.getAboutPageHtml().subscribe(aboutPageHtml => {
 				this.aboutPageHtml = this.sanitizer.sanitize(
 					SecurityContext.HTML,
-					settings.aboutPageHtml
+					aboutPageHtml
 				);
 			})
 		);

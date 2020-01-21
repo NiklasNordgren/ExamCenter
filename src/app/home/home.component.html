@@ -17,37 +17,37 @@
         <mat-nav-list>
             <div *ngIf="isSuperUser">
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['academy-handler']">
+                <a mat-list-item [routerLink]="['/home/academy-handler']">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Academy
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['subject-handler']">
+                <a mat-list-item [routerLink]="['/home/subject-handler']">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Subject
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['course-handler']">
+                <a mat-list-item [routerLink]="['/home/course-handler']">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Course
                 </a>
             </div>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['exam-handler']">
+            <a mat-list-item [routerLink]="['/home/exam-handler']">
                 <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Exam
             </a>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['file-upload']">
+            <a mat-list-item [routerLink]="['/home/file-upload']">
                 <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Upload Exams
             </a>
             <mat-divider></mat-divider>
             <div *ngIf="isSuperUser">
-                <a mat-list-item [routerLink]="['admin-handler']">
+                <a mat-list-item [routerLink]="['/home/admin-handler']">
                     <fa-icon [icon]="faUsersCog" class="list-item-icon"></fa-icon>Administer Users
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['outbox']">
+                <a mat-list-item [routerLink]="['/home/outbox']">
                     <fa-icon [icon]="faTrash" class="list-item-icon"></fa-icon>Outbox
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['app-settings']">
+                <a mat-list-item [routerLink]="['/home/app-settings']">
                     <fa-icon [icon]="faCog" class="list-item-icon"></fa-icon>App Settings
                 </a>
                 <mat-divider></mat-divider>

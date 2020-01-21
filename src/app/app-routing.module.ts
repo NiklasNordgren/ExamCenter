@@ -45,10 +45,6 @@ const routes: Routes = [
 		component: LoginComponent
 	},
 	{
-		path: 'navigator',
-		component: NavigatorComponent
-	},
-	{
 		path: 'about',
 		component: AboutComponent
 	},
@@ -79,7 +75,6 @@ const routes: Routes = [
 	},
 	{
 		path: 'home',
-		component: HomeComponent,
 		canActivate: [AdminGuard],
 		children: [
 			{
