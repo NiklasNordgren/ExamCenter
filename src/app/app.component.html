@@ -1,71 +1,67 @@
-<div style="height: 84%;">
-    <mat-toolbar color="primary" class="total-bar">
-        <!-- Row for Login and help.-->
-        <mat-toolbar-row class="row top">
-            <span></span>
-            <span class="example-fill-remaining-space"></span>
-            <span>
-                <div fxShow="true" fxHide.lt-md="true" class="right-container">
-                    <a *ngIf="isLoggedIn" mat-button href="/home">Admin page</a>
-                    <a class="about" mat-button href="/about">About</a>
-                    <a *ngIf="!isLoggedIn; else logout" class="login" mat-button href="/login">Login (Admin)</a>
-                </div>
-                <div fxShow="true" fxHide.gt-sm="true">
-                    <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button
-                        (click)="sidenav.toggle();">
-                        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-                    </button>
-                </div>
-            </span>
-        </mat-toolbar-row>
-        <!-- Row for Logo and Academy.-->
-        <mat-toolbar-row class="row bottom">
-            <span>
-                <div fxShow="true" fxHide.lt-md="true">
-                    <a href="/">
-                        <img src="../../assets/HiG_vit_text.svg" id="logo" matTooltip="Go to homepage" class="logo"
-                            style="background-color: black;" alt="University of Gävle logo">
-                    </a>
-                </div>
-                <div fxShow="true" fxHide.gt-sm="true">
-                    <a href="/">
-                        <img src="../../assets/HiG_vit_text.svg" (click)="goToHomePage()" id="logo-small"
-                            class="logo-small" style="background-color: black;" alt="University of Gävle logo">
-                    </a>
-                </div>
-            </span>
-            <span class="example-fill-remaining-space academies">
-                <div fxShow="true" fxHide.lt-md="true">
-                    <div class="flex-container">
-                        <button matTooltip={{academy.name}} (click)="goToPage('/subjects/academy/'+ academy.id)"
-                            mat-button class="button" *ngFor="let academy of academies">{{academy.shortDesc}}</button>
-                    </div>
-                </div>
-            </span>
-            <span>
-                <div class="search-box">
-                    <app-search></app-search>
-                </div>
-            </span>
-        </mat-toolbar-row>
-        <mat-toolbar-row class="xs-search-box row">
-            <app-search></app-search>
-        </mat-toolbar-row>
-    </mat-toolbar>
-    <mat-sidenav-container fxFlexFill>
-        <!--Här finns själva contentet på sidan (router-outlet)-->
-        <router-outlet *ngIf="!isLoggedIn"></router-outlet>
-        <app-home *ngIf="isLoggedIn"></app-home>
-        <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
-            <div fxLayout="column">
-                <a class="sidenav-links" (click)="sidenav.close(); goToPage('/subjects/academy/'+ academy.id);"
-                    *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
-                <a *ngIf="!isLoggedIn; else logout" mat-button href="/login">Login (Admin)</a>
-
+<mat-toolbar color="primary" class="total-bar">
+    <!-- Row for Login and help.-->
+    <mat-toolbar-row class="row top">
+        <span class="example-fill-remaining-space"></span>
+        <span>
+            <div fxShow="true" fxHide.lt-md="true" class="right-container">
+                <a *ngIf="isLoggedIn" mat-button href="/home">Admin page</a>
+                <a class="about" mat-button href="/about">About</a>
+                <a *ngIf="!isLoggedIn; else logout" class="login" mat-button href="/login">Login (Admin)</a>
             </div>
-        </mat-sidenav>
-    </mat-sidenav-container>
-</div>
+            <div fxShow="true" fxHide.gt-sm="true">
+                <button type="button" class="navigation-button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenav.toggle();">
+                    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                </button>
+            </div>
+        </span>
+    </mat-toolbar-row>
+    <!-- Row for Logo and Academy.-->
+    <mat-toolbar-row class="row bottom">
+        <span>
+            <div fxShow="true" fxHide.lt-md="true">
+                <a href="/">
+                    <img src="../../assets/HiG_vit_text.svg" id="logo" matTooltip="Go to homepage" class="logo"
+                        style="background-color: black;" alt="University of Gävle logo">
+                </a>
+            </div>
+            <div fxShow="true" fxHide.gt-sm="true">
+                <a href="/">
+                    <img src="../../assets/HiG_vit_text.svg" (click)="goToHomePage()" id="logo-small" class="logo-small"
+                        style="background-color: black;" alt="University of Gävle logo">
+                </a>
+            </div>
+        </span>
+        <span class="example-fill-remaining-space academies">
+            <div fxShow="true" fxHide.lt-md="true">
+                <div class="flex-container">
+                    <button matTooltip={{academy.name}} (click)="goToPage('/subjects/academy/'+ academy.id)" mat-button class="button"
+                        *ngFor="let academy of academies">{{academy.shortDesc}}</button>
+                </div>
+            </div>
+        </span>
+        <span>
+            <div class="search-box">
+                <app-search></app-search>
+            </div>
+        </span>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="xs-search-box row">
+        <app-search></app-search>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container fxFlexFill>
+    <!--Här finns själva contentet på sidan (router-outlet)-->
+    <router-outlet *ngIf="!isLoggedIn"></router-outlet>
+    <app-home *ngIf="isLoggedIn"></app-home>
+    <mat-sidenav #sidenav fxLayout="column" class="sidenav-container">
+        <div fxLayout="column">
+            <a class="sidenav-links" (click)="sidenav.close(); goToPage('/subjects/academy/'+ academy.id);"
+                *ngFor="let academy of academies" mat-button>{{academy.shortDesc}}</a>
+            <a *ngIf="!isLoggedIn; else logout" mat-button href="/login">Login (Admin)</a>
+
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container>
 
 <ng-template #logout>
     <button (click)="logoutBtn();" class="login" mat-button>Logout</button>

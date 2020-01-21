@@ -20,4 +20,11 @@ export class SettingsService {
 		return this.http.post<Settings>('/api/settings/', settings);
 	}
 
+	getAboutPageHtml() {
+		return this.http.get('/api/settings/about', {responseType: 'text'});
+	}
+
+	getHomePageHtml() {
+		return this.http.get('/api/settings/home', {responseType: 'text'});
+	}
 }
