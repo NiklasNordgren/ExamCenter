@@ -4,10 +4,8 @@ import { Subscription } from "rxjs";
 import { faCog, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Settings } from "src/app/model/settings.model";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 import { DomSanitizer } from "@angular/platform-browser";
-import { ConfirmationAckDialogComponent } from "../confirmation-ack-dialog/confirmation-ack-dialog.component";
-import { MatDialogRef, MatDialog } from "@angular/material";
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: "app-settings",
@@ -21,14 +19,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	faCog: IconDefinition = faCog;
 	private form: FormGroup;
 	selectedValue: Settings;
-	dialogRef: MatDialogRef<ConfirmationAckDialogComponent>;
 
 	constructor(
 		private settingsService: SettingsService,
 		private formBuilder: FormBuilder,
-		private snackBar: MatSnackBar,
 		private sanitizer: DomSanitizer,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
@@ -88,17 +84,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
 			htmlOk = false;
 		}
 		if (!htmlOk) {
-			this.openAcknowledgeDialog(message, "Error saving Settings");
+			this.statusMessageService.showErrorMessage("Error saving Settings", message);
 		} else if (this.form.valid && htmlOk) {
 			let settings: Settings = this.getNewSettingsFromForm();
 			this.subscriptions.add(
 				this.settingsService.postSettings(settings).subscribe(settings => {
 					this.setNewSettingsList(settings);
-
-					let config = new MatSnackBarConfig();
-					config.duration = 3000;
-					this.snackBar.open("Settings saved.", "", config);
-					this.selectedValue = this.settingsList[0];
+					this.statusMessageService.showSuccessMessage("Settings saved.");
 				})
 			);
 		}
@@ -150,17 +142,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 			j++;
 		}
 		return result;
-	}
-
-	private openAcknowledgeDialog(errorMessage: string, title: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = title;
-		this.dialogRef.componentInstance.contentMessage = errorMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
 	}
 
 	private getDifferenceErrorMessage(pageName: string, difference: string) {
