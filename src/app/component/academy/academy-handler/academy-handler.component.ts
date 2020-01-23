@@ -31,7 +31,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	successfulHttpRequest: Array<String>;
 	errorHttpRequest: Array<any> = [];
 
-	constructor(private service: AcademyService, private navigator: Navigator, private dialog: MatDialog) {}
+	constructor(private service: AcademyService, public navigator: Navigator, private dialog: MatDialog) {}
 
 	ngOnInit() {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {

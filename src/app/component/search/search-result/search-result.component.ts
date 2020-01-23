@@ -52,7 +52,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	constructor(
 		private searchService: SearchService,
 		private activatedRoute: ActivatedRoute,
-		private navigator: Navigator,
+		public navigator: Navigator,
 		private changeDetector: ChangeDetectorRef
 	) {}
 

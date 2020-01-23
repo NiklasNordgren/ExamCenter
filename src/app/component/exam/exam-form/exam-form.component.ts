@@ -38,7 +38,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService,
-		private navigator: Navigator, private dialog: MatDialog
+		public navigator: Navigator, private dialog: MatDialog
 	) { }
 
 	ngOnInit() {

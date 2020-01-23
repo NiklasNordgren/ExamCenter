@@ -26,7 +26,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 		{ value: true, viewValue: 'True' }
 	];
 
-	private form: FormGroup;
+	form: FormGroup;
 	private subscriptions = new Subscription();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -41,7 +41,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService, 
-		private navigator: Navigator, private dialog: MatDialog
+		public navigator: Navigator, private dialog: MatDialog
 	) {}
 
 	ngOnInit() {

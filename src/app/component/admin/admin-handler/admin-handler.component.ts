@@ -35,7 +35,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	displayedColumns: string[] = ['select', 'name', 'isSuperUser', 'edit'];
 	isDeleteButtonDisabled = true;
 
-	constructor(private service: UserService, private navigator: Navigator,	private dialog: MatDialog) {
+	constructor(private service: UserService, public navigator: Navigator,	private dialog: MatDialog) {
 	}
 
 	ngOnInit() {

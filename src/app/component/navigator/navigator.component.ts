@@ -33,7 +33,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     private academyService: AcademyService,
     private subjectService: SubjectService,
     private courseService: CourseService,
-    private navigator: Navigator,
+    public navigator: Navigator,
     private route: ActivatedRoute
   ) {
   }

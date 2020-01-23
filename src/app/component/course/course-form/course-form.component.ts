@@ -20,13 +20,14 @@ import { ExamService } from 'src/app/service/exam.service';
 export class CourseFormComponent implements OnInit {
 
   selectedAcademyValue: number;
-  private academies: Academy[];
-  private subjects: Subject[];
-  private courses: Course[];
-  private form: FormGroup;
+  academies: Academy[];
+  subjects: Subject[];
+  courses: Course[];
+  form: FormGroup;
+  id: number;
+  subject: Subject;
+
   private subscriptions = new Subscription();
-  private id: number;
-  private subject: Subject;
 
   subid: number;
   acaid: number;

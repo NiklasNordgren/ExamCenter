@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
 	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
 
-	private columnsToDisplay: string[] = [];
+	columnsToDisplay: string[] = [];
 
 	constructor(private router: Router) {}
 
