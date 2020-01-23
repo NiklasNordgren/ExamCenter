@@ -16,7 +16,14 @@ export class StatusMessageService {
   showErrorMessage(title: string, errorMessage: string) {
     this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = title;
-		this.dialogRef.componentInstance.contentMessage = errorMessage;
+    this.dialogRef.componentInstance.contentMessage = errorMessage;
+
+    const sub = this.dialogRef.afterClosed().subscribe(result => {
+      this.dialogRef = null;
+      console.log('DialogRef: ' + this.dialogRef);
+      
+		});
+		this.subscriptions.add(sub);
   }
 
 	showSuccessMessage(successMessage: string, confirmButtonText: string = '', duration: number = 3000) {
