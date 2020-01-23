@@ -29,7 +29,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatSnackBarModule } from '@angular/material';
@@ -124,7 +123,6 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 		MatSortModule,
 		MatGridListModule,
 		MatMenuModule,
-		MatTreeModule,
 		MatProgressBarModule,
 		MatSnackBarModule,
 		DragDropModule,
