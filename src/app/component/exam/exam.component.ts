@@ -80,7 +80,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 			this.data.push({
 				id: exam.filename,
 				name: exam.filename,
-				shortDesc: ""
+				shortDesc: "",
+				shortHeader: ""
 			});
 		});
 	}
