@@ -23,24 +23,18 @@ export interface CustomBooleanArray {
 	providers: [Navigator]
 })
 export class ExamFormComponent implements OnInit, OnDestroy {
-	boolean: CustomBooleanArray[] = [
-		{ value: false, viewValue: 'False' },
-		{ value: true, viewValue: 'True' }
-	];
 
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	form: FormGroup;
 	subscriptions: Subscription = new Subscription();
 
-	FORM_TYPE = { CREATE: 0 };
+	createFormId: number = 0;
 	exam: Exam = new Exam();
 	id: number;
 
 	isUnpublishedSelector = false;
 	courses: Course[];
-	titleText: string;
-	buttonText: string;
 
 	constructor(
 		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService,
@@ -62,13 +56,12 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
-				this.createForm(this.id);
+				this.handleId(this.id);
 			})
 		);
 	}
 
-	createForm(id: number) {
-		this.setEditFormText();
+	handleId(id: number) {
 		const sub = this.service.getExamById(id).subscribe(exam => {
 			this.exam = exam;
 			this.isUnpublishedSelector = exam.unpublished;
@@ -101,11 +94,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			);
 			this.subscriptions.add(sub);
 		}
-	}
-
-	setEditFormText() {
-		this.titleText = 'Edit Exam';
-		this.buttonText = 'Save';
 	}
 
 	onSuccess(data: any) {
