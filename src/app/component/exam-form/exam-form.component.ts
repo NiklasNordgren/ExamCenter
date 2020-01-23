@@ -46,7 +46,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			filename: '',
 			date: '',
 			unpublishDate: '',
-			unpublished: '',
 			course: ''
 		});
 
@@ -69,7 +68,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 				filename: exam.filename,
 				date: exam.date,
 				unpublishDate: exam.unpublishDate,
-				unpublished: exam.unpublished,
 				course: exam.courseId
 			});
 		});
@@ -85,7 +83,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			this.exam.filename = this.form.controls.filename.value;
 			this.exam.date = this.form.controls.date.value;
 			this.exam.unpublishDate = this.form.controls.unpublishDate.value;
-			this.exam.unpublished = this.form.controls.unpublished.value;
 			this.exam.courseId = this.form.controls.course.value;
 
 			const sub = this.service.saveExam(this.exam).subscribe(
