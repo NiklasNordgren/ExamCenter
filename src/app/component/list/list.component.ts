@@ -9,7 +9,7 @@ import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 })
 export class ListComponent implements OnInit {
 	@Input() data: any[];
-	@Input() shortHeader: string;
+	@Input() shortHeader: string = "";
 	@Input() name: string;
 	@Input() icon: IconDefinition;
 	@Input() actionDescription: string;

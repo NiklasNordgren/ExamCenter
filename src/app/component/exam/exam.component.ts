@@ -11,9 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { CourseService } from "src/app/service/course.service";
 import { Course } from "src/app/model/course.model";
-import { ConfirmationAckDialogComponent } from "../confirmation-ack-dialog/confirmation-ack-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material";
-import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: "app-exam",
@@ -30,8 +28,8 @@ export class ExamComponent implements OnInit, OnDestroy {
 	actionDescription = "Open PDF file in new tab";
 	course: Course;
 	showingInfoMessage = false;
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	courseId;
+	shortHeader: string = "";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -39,7 +37,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 		private fileService: FileService,
 		private courseService: CourseService,
 		private changeDetector: ChangeDetectorRef,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
@@ -80,20 +78,12 @@ export class ExamComponent implements OnInit, OnDestroy {
 			this.data.push({
 				id: exam.filename,
 				name: exam.filename,
-				shortDesc: ""
+				shortDesc: "",
 			});
 		});
 	}
 	onError(error) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = "Error";
-		this.dialogRef.componentInstance.contentMessage =
-			"An error has occured while loading data.";
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+		this.statusMessageService.showErrorMessage("Error", "An error has occured while loading data.")
 	}
 
 	openPdf(row) {
@@ -101,6 +91,9 @@ export class ExamComponent implements OnInit, OnDestroy {
 		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
 			window.open(fileURL, "_blank");
+		},
+		error => {
+			this.statusMessageService.showErrorMessage("Error", "Could not open PDF.");
 		});
 		this.subscriptions.add(sub);
 	}

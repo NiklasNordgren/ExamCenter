@@ -91,6 +91,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 				this.settingsService.postSettings(settings).subscribe(settings => {
 					this.setNewSettingsList(settings);
 					this.statusMessageService.showSuccessMessage("Settings saved.");
+					this.selectedValue = settings;
 				})
 			);
 		}
