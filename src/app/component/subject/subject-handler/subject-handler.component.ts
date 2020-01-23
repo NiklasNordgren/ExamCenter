@@ -37,7 +37,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private subjectService: SubjectService,
-		private navigator: Navigator,
+		public navigator: Navigator,
 		private academyService: AcademyService,
 		private dialog: MatDialog,
 	) {}

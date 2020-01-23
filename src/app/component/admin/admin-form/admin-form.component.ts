@@ -41,7 +41,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService, 
-		private navigator: Navigator, private dialog: MatDialog
+		public navigator: Navigator, private dialog: MatDialog
 	) {}
 
 	ngOnInit() {

@@ -27,7 +27,7 @@ export class CourseComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private service: CourseService,
-		private navigator: Navigator
+		public navigator: Navigator
 	) {}
 
 	ngOnInit() {

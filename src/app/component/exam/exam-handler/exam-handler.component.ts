@@ -59,7 +59,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		private courseService: CourseService,
 		private subjectService: SubjectService,
 		private academyService: AcademyService,
-		private navigator: Navigator,
+		public navigator: Navigator,
 		private dialog: MatDialog,
 		private changeDetectorRef: ChangeDetectorRef
 	) { }

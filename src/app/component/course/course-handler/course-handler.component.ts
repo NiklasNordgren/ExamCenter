@@ -38,7 +38,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	public selectedSubjectValue: number;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService,
-    private courseService: CourseService, private navigator: Navigator, private dialog: MatDialog){}
+    private courseService: CourseService, public navigator: Navigator, private dialog: MatDialog){}
 	ngOnInit() {
 		this.dataSource = [];
 		const sub = this.academyService

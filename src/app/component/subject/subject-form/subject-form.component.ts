@@ -39,7 +39,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private subjectService: SubjectService,
 		private academyService: AcademyService,
-		private navigator: Navigator,
+		public navigator: Navigator,
 		private dialog: MatDialog
 	) {}
 

@@ -28,7 +28,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute,
 		private service: AcademyService,
-		private navigator: Navigator,
+		public navigator: Navigator,
 		private dialog: MatDialog
 	) {}
 
