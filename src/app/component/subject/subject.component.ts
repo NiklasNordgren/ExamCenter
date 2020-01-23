@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
 import {
 	IconDefinition,
 	faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
-import { AcademyService } from 'src/app/service/academy.service';
 
 @Component({
 	selector: 'app-subject',
@@ -29,8 +28,6 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private service: SubjectService,
-		private academyService: AcademyService,
-		private router: Router,
 		private navigator: Navigator
 	) {}
 
