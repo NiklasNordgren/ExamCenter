@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 		this.subscriptions.add(
 			this.userService.isUserLoggedInAsSuperUser().subscribe(isSuperUser => {
-				console.log(isSuperUser);
 				this.isSuperUser = Boolean(isSuperUser);
 			})
 		);

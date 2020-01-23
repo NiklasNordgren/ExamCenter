@@ -22,20 +22,9 @@ export class FileService implements OnDestroy {
 	}
 
 	uploadFile(file: File) {
-		/*
-		const formdata: FormData = new FormData();
-		formdata.append('file', file);
-
-		const req = new HttpRequest('POST', '/upload', formdata, {
-			reportProgress: true,
-			responseType: 'text'
-		});
-		*/
 
 		const url = '/upload';
-
 		const body = new HttpParams().set('name', file.name).set('type', file.type);
-
 		const options = {
 			headers: new HttpHeaders().set(
 				'Content-Type',
@@ -44,12 +33,8 @@ export class FileService implements OnDestroy {
 		};
 
 		const sub = this.http.post(url, body.toString(), options).subscribe(
-			res => {
-				console.log('POST Request was successful: ' + res);
-			},
-			err => {
-				console.log('Error occurred: ' + err.toString);
-			}
+			res => {},
+			err => {}
 		);
 		this.subscriptions.add(sub);
 	}

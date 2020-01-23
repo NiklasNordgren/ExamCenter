@@ -107,8 +107,6 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	}
 
 	onSuccess(data: any) {
-		console.log(data);
-		
 		this.form.reset();
 		this.navigator.goToPage('/home/admin-handler');
 		let suffixText: string;
