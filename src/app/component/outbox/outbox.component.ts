@@ -335,8 +335,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	
 	publishAcademies() {
 		for (let customAcademy of this.academySelection.selected) {
-			console.log("hereee");
-
 			this.publishAcademy(customAcademy);
 		}
 	}
@@ -375,8 +373,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	deleteAcademy(element: CustomAcademy) {
-		console.log("yup aca");
-		
 		this.academyService.deleteAcademy(element.id);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}

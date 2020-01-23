@@ -21,7 +21,6 @@ export class AcademyComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.subscriptions.add(
 			this.settingsService.getHomePageHtml().subscribe(homePageHtml => {
-				console.log(homePageHtml);
 				this.homePageHtml = this.sanitizer.sanitize(SecurityContext.HTML, homePageHtml);
 			})
 		);
