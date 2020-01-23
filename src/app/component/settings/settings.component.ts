@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	settingsLoaded: boolean = false;
 	settingsList: Settings[] = [];
 	faCog: IconDefinition = faCog;
-	private form: FormGroup;
+	form: FormGroup;
 	selectedValue: Settings;
 
 	constructor(

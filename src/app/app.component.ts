@@ -83,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.router.navigate([`${pageName}`]);
 	}
 	goToHomePage() {
-		this.goToPage('/');
+		this.goToPage('');
 	}
 
 	logoutBtn() {
@@ -115,5 +115,5 @@ export class AppComponent implements OnInit, OnDestroy {
 	isRouteLogin(): boolean{
 		return this.router.url.endsWith("/login");
 	}
-	
+
 }

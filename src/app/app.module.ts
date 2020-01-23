@@ -45,7 +45,6 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialogComponent } from './component/confirmation-dialog/confirmation-dialog.component';
 import { AdminHandlerComponent } from "./component/admin/admin-handler/admin-handler.component";
-import { NavHorizComponent } from './component/nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
@@ -76,7 +75,6 @@ import { GlobalErrorHandler } from './util/error-handler';
 		LoginComponent,
 		AdminComponent,
 		FileUploadComponent,
-		NavHorizComponent,
 		ListComponent,
 		AcademyComponent,
 		SubjectComponent,

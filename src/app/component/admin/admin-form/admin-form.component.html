@@ -1,9 +1,9 @@
 <div class="wrapper">
   <h2>{{titleText}}</h2>
-  <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+  <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit()">
       <mat-form-field>
-          <mat-label for="name">Name</mat-label>
-          <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. tenta@hig.se"
+          <mat-label for="name">Username</mat-label>
+          <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. tenta"
               size="100pt">
       </mat-form-field>
 

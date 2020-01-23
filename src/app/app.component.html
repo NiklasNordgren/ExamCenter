@@ -19,14 +19,14 @@
     <mat-toolbar-row class="row bottom">
         <span>
             <div fxShow="true" fxHide.lt-md="true">
-                <a href="/">
-                    <img src="../../assets/HiG_vit_text.svg" id="logo" matTooltip="Go to homepage" class="logo"
+                <a href="/" class="link">
+                    <img src="../../assets/HiG_vit_text.svg" matToolTip="Go to homepage" id="logo" class="logo"
                         style="background-color: black;" alt="University of Gävle logo">
                 </a>
             </div>
             <div fxShow="true" fxHide.gt-sm="true">
-                <a href="/">
-                    <img src="../../assets/HiG_vit_text.svg" (click)="goToHomePage()" id="logo-small" class="logo-small"
+                <a href="/" class="link-small">
+                    <img src="../../assets/HiG_vit_text.svg" matToolTip="Go to homepage" id="logo-small" class="logo-small"
                         style="background-color: black;" alt="University of Gävle logo">
                 </a>
             </div>
@@ -64,5 +64,6 @@
 </mat-sidenav-container>
 
 <ng-template #logout>
+    
     <button (click)="logoutBtn();" class="login" mat-button>Logout</button>
 </ng-template>

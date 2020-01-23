@@ -29,6 +29,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 	course: Course;
 	showingInfoMessage = false;
 	courseId;
+	shortHeader: string = "";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -77,7 +78,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 			this.data.push({
 				id: exam.filename,
 				name: exam.filename,
-				shortDesc: ""
+				shortDesc: "",
 			});
 		});
 	}

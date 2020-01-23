@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div class="buttons-and-selectors">
         <div class="selection-buttons-container">
+            <h2>Subjects</h2>
             <button class="selectionButtons" color="accent" mat-raised-button
                 (click)="this.navigator.goToPage('/admin/subject-form/0')">
                 <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
@@ -31,13 +32,13 @@
             <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox color="warn" (change)="$event ? masterToggle() : null; isAnyCheckboxSelected()"
                     [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="surprise">
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" >
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
                 <mat-checkbox color="warn" (click)="$event.stopPropagation()"
                     (change)="$event ? selection.toggle(row) : null; isAnyCheckboxSelected()" [checked]="selection.isSelected(row)"
-                    [aria-label]="surprise">
+                    >
                 </mat-checkbox>
             </td>
         </ng-container>

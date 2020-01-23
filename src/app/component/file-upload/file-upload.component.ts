@@ -21,7 +21,6 @@ import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confi
 export interface FileTableItem {
 	tempFileId: number;
 	name: string;
-	size: string;
 	status: string;
 	autoMatchCourse: string;
 	autoMatchDate: string;
@@ -82,7 +81,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	faTimes = faTimes;
 
 	dataSource: FileTableItem[] = [];
-	displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
+	displayedColumns: string[] = ['name', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
 
 	unpublishTime: number;
 
@@ -123,7 +122,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 				fileItem.withCredentials = false;
 				fileItem.index = this.tempFileId;
 
-				this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + ' kB', status: '', autoMatchCourse: '', autoMatchDate: '' });
+				this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, status: '', autoMatchCourse: '', autoMatchDate: '' });
 				this.changeDetectorRef.detectChanges();
 				const row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
 				this.setAutoMatchedCourseStatus(row);
@@ -265,9 +264,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		if (this.activeExam) {
 			const convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
 			this.activeExam.date = convertedDate;
-			console.log("convertedDate: " + convertedDate);
-			console.log("unpublishTime: " + this.unpublishTime);
-			
 			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + this.unpublishTime, convertedDate.getMonth(), convertedDate.getDate());
 		}
 	}

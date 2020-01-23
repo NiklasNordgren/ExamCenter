@@ -15,7 +15,7 @@ export class SearchComponent implements OnInit {
 	@ViewChild('searchString', { static: false }) searchString: ElementRef;
 	faInfoCircle: IconDefinition = faInfoCircle;
 
-	constructor(private navigator: Navigator) {}
+	constructor(public navigator: Navigator) {}
 
 	ngOnInit() {}
 

@@ -28,7 +28,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private service: SubjectService,
-		private navigator: Navigator
+		public navigator: Navigator
 	) {}
 
 	ngOnInit() {

@@ -14,13 +14,14 @@ import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confi
 	styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-	private isLoading = false;
-	private form: FormGroup;
-	private subscriptions = new Subscription();
-	private isLoggedIn;
+	isLoading = false;
+	form: FormGroup;
+	isLoggedIn;
 	faUser = faUser;
 	faUnlock = faUnlock;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+
+	private subscriptions = new Subscription();
 
 	constructor(
 		private formBuilder: FormBuilder,

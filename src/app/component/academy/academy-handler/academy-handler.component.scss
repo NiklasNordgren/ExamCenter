@@ -2,29 +2,23 @@ table {
   width: 100%;
 }
 
+h2 {
+  margin-bottom: 0pt;
+}
+
 .buttons-and-selectors {
   display: flex;
   flex-direction: row;
+  margin-bottom: 10pt;
 }
   
 .selection-buttons-container {
-  margin-top: 32pt;
   margin-right: 40pt;
 }
 
 .selectionButtons {
   margin-right: 10pt;
   margin-top: 10pt;
-}
-
-.selectors-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.selectors {
-  flex-direction: column;
-  margin-right: 10pt;
 }
 
 .editButton {
@@ -42,7 +36,6 @@ table {
 
 @media screen and (max-width: 1430px) {
   .selection-buttons-container {
-      margin-top: 32pt;
       margin-right: 0pt;
   }
 }
