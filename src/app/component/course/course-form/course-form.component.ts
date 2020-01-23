@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
 import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
@@ -11,6 +11,9 @@ import { Subject } from 'src/app/model/subject.model';
 import { CourseService } from 'src/app/service/course.service';
 import { Course } from 'src/app/model/course.model';
 import { ExamService } from 'src/app/service/exam.service';
+import { Navigator } from 'src/app/util/navigator';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 
 @Component({
   selector: 'app-course-form',
@@ -19,7 +22,6 @@ import { ExamService } from 'src/app/service/exam.service';
 })
 export class CourseFormComponent implements OnInit {
 
-  selectedAcademyValue: number;
   academies: Academy[];
   subjects: Subject[];
   courses: Course[];
@@ -31,18 +33,24 @@ export class CourseFormComponent implements OnInit {
 
   subid: number;
   acaid: number;
-  dataSource = [];
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
+  selectedAcademyValue: number;
   selectedSubjectValue: number;
-  selectedCourseValue: number;
   exams: any;
   course: any;
+  createFormId: number = 0;
+  dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute,
-    private subjectService: SubjectService, private academyService: AcademyService,
-    private courseService: CourseService, private examService: ExamService) { }
+  constructor(private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private subjectService: SubjectService,
+    private academyService: AcademyService,
+    private courseService: CourseService,
+    private examService: ExamService,
+    public navigator: Navigator,
+    private dialog: MatDialog) { }
 
 
   ngOnInit() {
@@ -64,17 +72,30 @@ export class CourseFormComponent implements OnInit {
     //Get all the academies for the dropdownlist of academies.
     this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
+      this.selectedAcademyValue = this.academies[0].id;
+			this.selectedAcademy(this.selectedAcademyValue);
     });
-    this.subjectService.getAllSubjects().subscribe(responseSubs => {
-      this.subjects = responseSubs;
-    });
-
-    this.dataSource = this.academies;
-
   }
+
+  selectedAcademy(academyId: number) {
+    const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseResult => {
+			this.subjects = responseResult;
+			this.selectedSubjectValue = this.subjects[0].id;
+			this.selectedSubject(this.selectedSubjectValue);
+		});
+		this.subscriptions.add(sub);
+  }
+
+  selectedSubject(subjectId: number) {
+    const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseResult => {
+			this.courses = responseResult;
+		});
+		this.subscriptions.add(sub);
+  }
+
   handleId() {
-    if (this.id !== 0) {
-      const cours = this.courseService.getCourseById(this.id).subscribe(course => {
+    if (this.id !== this.createFormId) {
+      const sub = this.courseService.getCourseById(this.id).subscribe(course => {
         this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
           this.form = this.formBuilder.group({
             academy: subject.academyId,
@@ -84,106 +105,54 @@ export class CourseFormComponent implements OnInit {
           });
         });
       });
-      this.subscriptions.add(cours);
+      this.subscriptions.add(sub);
     }
-  }
-  /*
-    handleId(courseId: number) {
-    
-      if (courseId !== 0) {
-         this.course = this.courseService.getCourseById(courseId).subscribe(course =>{
-           name: course.name;
-         });
-        
-        this.form = this.formBuilder.group({
-          academy: 1,
-          subject: 2,
-          code: '1',
-          name: this.course.name
-        });
-      }
- 
-    }
-  
-  /*
-  
-        const sub = this.subjectService.getSubjectById(id).subscribe(subject => {
-          this.subject.id = subject.id;
-          this.subject.unpublished = subject.unpublished;
-          this.form = this.formBuilder.group({
-            academy: this.course.subjectId,
-            subject: this.course.subjectId,
-            code: this.course.courseCode,
-            name: this.course.name
-          });
-        });
-        this.subscriptions.add(sub);
-      }
-    
-    /*
-    handleId() {
-      if (this.id != 0) {
-        this.courseService.getCourseById(this.id).subscribe(course => {
-          this.form = this.formBuilder.group({
-            academy: this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
-             subject.academyId} ),
-            subject: course.subjectId,
-            code: course.courseCode,
-            name: course.name
-          });
-          this.selectedSubjectValue = course.subjectId;
-        });
-  
-      }
-    }*/
-  onSubmit() {
-    if (this.form.valid) {
-      this.form.reset();
-    }
-  }
-  selectedAcademy(academyId: number) {
-    this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
-      this.subjects = responseSubjects;
-      this.dataSource = this.subjects;
-      this.selectedSubjectValue = this.subjects[0].id;
-      //     this.selectedSubject(this.selectedSubjectValue);
-    });
   }
 
-  selectedSubject(subjectId: number) {
-    this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseCourses => {
-      this.courses = responseCourses;
-      if(this.courses.length == 0 ){
-        
-      }else {
-      this.dataSource = this.courses;
-      this.selectedCourseValue = this.courses[0].id;
-      // this.selectedCourse(this.selectedCourseValue);
-      }
-    });
+  onSubmit() {
+    if (this.form.valid) {
+      if (this.id !== this.createFormId) { this.subject.id = this.id; }
+      this.subject.name = this.form.controls.name.value;
+      this.subject.code = this.form.controls.code.value;
+      this.subject.academyId = this.form.controls.academy.value;
+      const sub = this.subjectService.saveSubject(this.subject).subscribe(
+        data => this.onSuccess(data),
+        error => this.onError(error)
+      );
+      this.subscriptions.add(sub);
+    }
   }
-  /*
-  selectedAcademy(academyId: number) {
-		const sub = this.subjectService
-			.getAllSubjectsByAcademyId(academyId)
-			.subscribe(responseSubjects => {
-				this.subjects = responseSubjects;
-				this.dataSource = this.subjects;
-			});
-		this.subscriptions.add(sub);
-  }
-  
-  /*
-  selectedCourse(courseId: number){
-    this.examService.getAllExamsByCourseId(courseId).subscribe(responseExams => {
-      this.exams = responseExams;
-      this.dataSource = this.exams;
-    });
-  }
-*/
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
+  onSuccess(data) {
+		this.form.reset();
+		this.navigator.goToPage('/admin/course-handler');
+		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
+	}
+	
+	onError(error) {
+		if (error.status === 401) {
+			this.navigator.goToPage('/login');
+			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
+		} else if (error.status === 405) {
+			this.openAcknowledgeDialog('Check if the name already exists.', 'error');
+		} else {
+			this.openAcknowledgeDialog('Something went wrong while trying to save or edit the course.', 'error');
+		}
+	} 
+
+	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
 }
 

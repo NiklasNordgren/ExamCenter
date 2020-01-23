@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Academy } from 'src/app/model/academy.model';
-import { MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Subject } from 'src/app/model/subject.model';
 import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Navigator } from 'src/app/util/navigator';
@@ -26,7 +26,6 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 	form: FormGroup;
 	subscriptions = new Subscription();
 	id: number;
-	dataSource = [];
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
@@ -61,7 +60,6 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		this.academyService.getAllAcademies().subscribe(responseAcademies => {
 			this.academies = responseAcademies;
 		});
-		this.dataSource = this.subjects;
 	}
 	handleId() {
 		if (this.id !== this.createFormId) {
@@ -100,15 +98,16 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			.getAllSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.dataSource = this.subjects;
 			});
 		this.subscriptions.add(sub);
 	}
+
 	onSuccess(data) {
 		this.form.reset();
 		this.navigator.goToPage('/admin/subject-handler');
 		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
 	}
+	
 	onError(error) {
 		if (error.status === 401) {
 			this.navigator.goToPage('/login');
