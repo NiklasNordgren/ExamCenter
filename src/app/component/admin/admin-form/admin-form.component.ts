@@ -26,7 +26,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 		{ value: true, viewValue: 'True' }
 	];
 
-	private form: FormGroup;
+	form: FormGroup;
 	private subscriptions = new Subscription();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 

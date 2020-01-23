@@ -16,12 +16,13 @@ import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/co
 	providers: [Navigator]
 })
 export class AcademyFormComponent implements OnInit, OnDestroy {
-	private form: FormGroup;
-	private subscriptions = new Subscription();
+	form: FormGroup;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
-	private id: number;
-	private academy: Academy = new Academy();
+	id: number;
+	academy: Academy = new Academy();
 	createFormId: number = 0;
+
+	private subscriptions = new Subscription();
 
 	constructor(
 		private formBuilder: FormBuilder,
