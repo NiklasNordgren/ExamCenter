@@ -33,7 +33,7 @@
         </span>
         <span class="example-fill-remaining-space academies">
             <div fxShow="true" fxHide.lt-md="true">
-                <div class="flex-container">
+                <div *ngIf="!isRouteLogin()" class="flex-container">
                     <button matTooltip={{academy.name}} (click)="goToPage('/subjects/academy/'+ academy.id)" mat-button class="button"
                         *ngFor="let academy of academies">{{academy.shortDesc}}</button>
                 </div>

@@ -88,8 +88,7 @@ export class CourseFormComponent implements OnInit {
   }
   /*
     handleId(courseId: number) {
-      console.log("inne i handleid course id: "+ courseId);
-      
+    
       if (courseId !== 0) {
          this.course = this.courseService.getCourseById(courseId).subscribe(course =>{
            name: course.name;
@@ -102,8 +101,7 @@ export class CourseFormComponent implements OnInit {
           name: this.course.name
         });
       }
-      console.log('name ' + this.course.name );
-      
+ 
     }
   
   /*
@@ -139,7 +137,6 @@ export class CourseFormComponent implements OnInit {
     }*/
   onSubmit() {
     if (this.form.valid) {
-      console.log("Form Submitted!");
       this.form.reset();
     }
   }

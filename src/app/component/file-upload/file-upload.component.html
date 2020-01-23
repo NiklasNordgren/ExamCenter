@@ -34,28 +34,28 @@
     
             <ng-container matColumnDef="autoMatchCourse">
                 <th mat-header-cell *matHeaderCellDef>
-                    <fa-icon [icon]="faGraduationCap" title="Automatically matched exam course."></fa-icon>
+                    <fa-icon [icon]="faGraduationCap" matTooltip="Automatically matched exam course."></fa-icon>
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element.autoMatchCourse === 'true'; else elseBlock">
-                        <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
+                        <fa-icon [icon]="faCheck" matTooltip="Success" style="color: #1edb1e;"></fa-icon>
                     </div>
                     <ng-template #elseBlock>
-                        <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
+                        <fa-icon [icon]="faTimes" matTooltip="Failure" style="color: #db1e1e;"></fa-icon>
                     </ng-template>
                 </td>
             </ng-container>
     
             <ng-container matColumnDef="autoMatchDate">
                 <th mat-header-cell *matHeaderCellDef>
-                    <fa-icon [icon]="faCalendarAlt" title="Automatically matched exam date."></fa-icon>
+                    <fa-icon [icon]="faCalendarAlt" matTooltip="Automatically matched exam date."></fa-icon>
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element.autoMatchDate === 'true'; else elseBlock">
-                        <fa-icon [icon]="faCheck" title="Success" style="color: #1edb1e;"></fa-icon>
+                        <fa-icon [icon]="faCheck" matTooltip="Success" style="color: #1edb1e;"></fa-icon>
                     </div>
                     <ng-template #elseBlock>
-                        <fa-icon [icon]="faTimes" title="Failure" style="color: #db1e1e;"></fa-icon>
+                        <fa-icon [icon]="faTimes" matTooltip="Failure" style="color: #db1e1e;"></fa-icon>
                     </ng-template>
                 </td>
             </ng-container>

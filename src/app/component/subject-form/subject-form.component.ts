@@ -30,6 +30,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	createFormId: number = 0;
 
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -63,7 +64,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		this.dataSource = this.subjects;
 	}
 	handleId() {
-		if (this.id !== 0) {
+		if (this.id !== this.createFormId) {
 			const sub = this.subjectService.getSubjectById(this.id).subscribe(subject => {
 				this.subject.id = subject.id;
 				this.subject.unpublished = subject.unpublished;
@@ -83,7 +84,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 
 	onSubmit() {
 		if (this.form.valid) {
-			if (this.id !== 0) { this.subject.id = this.id; }
+			if (this.id !== this.createFormId) { this.subject.id = this.id; }
 			this.subject.name = this.form.controls.name.value;
 			this.subject.code = this.form.controls.code.value;
 			this.subject.academyId = this.form.controls.academy.value;
@@ -106,16 +107,16 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 	onSuccess(data) {
 		this.form.reset();
 		this.navigator.goToPage('/home/subject-handler');
-		this.openAcknowledgeDialog(data.name + " was updated", 'success');
+		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
 	}
 	onError(error) {
 		if (error.status === 401) {
 			this.navigator.goToPage('/login');
 			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
 		} else if (error.status === 405) {
-			this.openAcknowledgeDialog('Check if the name or abbreviation already exists.', 'error');
+			this.openAcknowledgeDialog('Check if the name already exists.', 'error');
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save or edit the academy.', 'error');
+			this.openAcknowledgeDialog('Something went wrong while trying to save or edit the subject.', 'error');
 		}
 	} 
 

@@ -16,18 +16,14 @@ export class TestSwipeComponent implements AfterViewInit {
 		number_tabs;
 		ngAfterViewInit() {
 				this.tabNum = this.tabs.length;
-				console.log(this.group);
 		}
 		swipe(eType) {
-				console.log(eType);
 				if (eType === this.SWIPE_ACTION.LEFT && this.selected > 0) {
-					console.log('movin left');
 					this.selected--;
 			} else if (eType === this.SWIPE_ACTION.RIGHT && this.selected < this.tabNum) {
-					console.log('movin right');
 					this.selected++;
 			}
-				console.log(this.selected);
+
 		}
 
 }

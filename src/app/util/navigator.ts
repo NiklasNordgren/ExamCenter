@@ -11,8 +11,6 @@ export class Navigator {
    * @param pageName The path to the page to navigate to.
    */
 	public goToPage(pageName: string) {
-		console.log('Navigator was called');
-
 		this.router.navigate([`${pageName}`]);
 	}
 }
