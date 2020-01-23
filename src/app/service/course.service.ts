@@ -25,7 +25,7 @@ export class CourseService {
   }
 
   saveCourse(course: Course){
-		return this.http.post<Course>('/api/courses', course);
+		return this.http.post<Course>('/api/courses/', course);
 	}
 
 	publishCourse(course: Course) {

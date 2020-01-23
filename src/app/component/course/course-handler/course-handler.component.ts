@@ -34,8 +34,8 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	faPen = faPen;
 	faTrash = faTrash;
 	isUnpublishButtonDisabled = true;
-	public selectedAcademyValue: number;
-	public selectedSubjectValue: number;
+	selectedAcademyValue: number;
+	selectedSubjectValue: number;
 
   constructor(private academyService: AcademyService, private subjectService: SubjectService,
     private courseService: CourseService, public navigator: Navigator, private dialog: MatDialog){}
