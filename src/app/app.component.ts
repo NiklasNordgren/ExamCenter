@@ -116,4 +116,8 @@ export class AppComponent implements OnInit, OnDestroy {
 		return this.router.url.endsWith("/login");
 	}
 
+	openPdf(){
+		open("../assets/usermanual.pdf", "_blank");
+	}
+
 }
