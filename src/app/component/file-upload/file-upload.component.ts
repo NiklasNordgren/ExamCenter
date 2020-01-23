@@ -107,7 +107,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 	getUnpublishYear() {
 		const sub = this.settingsService.getUnpublishTime().subscribe(time => {
-			this.unpublishTime = new Number("time").valueOf();
+			this.unpublishTime = new Number(time).valueOf();
 		});
 		this.subscriptions.add(sub);
 	}
@@ -129,7 +129,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 				this.setAutoMatchedCourseStatus(row);
 				this.setAutoMatchedDateStatus(row);
 				this.tempFileId++;
-				console.log('Succesfully added file: ' + fileItem.file.name + ' to the queue.');
 			} else {
 				if (this.isExamInUploadQueue(fileItem.file.name)) {
 					this.showErrorDialog('Exam ' + fileItem.file.name + ' already exists in the upload queue.');
@@ -146,18 +145,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 			if (!this.isFileSizeValid(file.size)) {
 				this.showErrorDialog('Max file size is 5MB.');
 			}
-			console.log('Failed to add file: ' + file.name + ' to the queue.');
 		};
 
 		this.uploader.onCompleteItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
-			console.log('Item: ' + fileItem.file.name);
-			console.log('Status: ' + status);
-			console.log('Response: ' + response);
-
 			if (status === 200) {
 				const exam = this.examsToUpload.find(x => x.filename === fileItem.file.name);
 				const sub = this.examService.saveExam(exam).subscribe(e => {
-					console.log(e);
 					this.dataSource.find(x => x.tempFileId === exam.tempId).status = 'Uploaded';
 					this.removeFromExamsToUpload(exam.tempId);
 					exam.uploaded = true;
@@ -272,6 +265,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		if (this.activeExam) {
 			const convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
 			this.activeExam.date = convertedDate;
+			console.log("convertedDate: " + convertedDate);
+			console.log("unpublishTime: " + this.unpublishTime);
+			
 			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + this.unpublishTime, convertedDate.getMonth(), convertedDate.getDate());
 		}
 	}

@@ -1,0 +1,60 @@
+<div *ngIf="!(isHandset$ | async); then webBrowser else mobileBrowser"></div>
+<ng-template #webBrowser>
+</ng-template>
+<ng-template #mobileBrowser>
+    <mat-toolbar color="accent">
+        <mat-toolbar-row>
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                *ngIf="isHandset$ | async">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</ng-template>
+<mat-sidenav-container class="sidenav-container" (swipeleft)="drawer.close()" (swiperight)="drawer.open()">
+    <mat-sidenav #drawer mode="side" class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-nav-list>
+            <div *ngIf="isSuperUser">
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/admin/academy-handler']">
+                    <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Academy
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/admin/subject-handler']">
+                    <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Subject
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/admin/course-handler']">
+                    <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Course
+                </a>
+            </div>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['/admin/exam-handler']">
+                <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Exam
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['/admin/file-upload']">
+                <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Upload Exams
+            </a>
+            <mat-divider></mat-divider>
+            <div *ngIf="isSuperUser">
+                <a mat-list-item [routerLink]="['/admin/admin-handler']">
+                    <fa-icon [icon]="faUsersCog" class="list-item-icon"></fa-icon>Administer Users
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/admin/outbox']">
+                    <fa-icon [icon]="faTrash" class="list-item-icon"></fa-icon>Outbox
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/admin/app-settings']">
+                    <fa-icon [icon]="faCog" class="list-item-icon"></fa-icon>App Settings
+                </a>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
