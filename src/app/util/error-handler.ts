@@ -1,5 +1,6 @@
 import { ErrorHandler, Injectable } from "@angular/core";
 import { StatusMessageService } from "../service/status-message.service";
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -11,6 +12,8 @@ export class GlobalErrorHandler implements ErrorHandler {
         "Error",
         "An error occurred. Status code: " + error.message
       );
+    } else {
+      throwError(error);
     }
 	}
 }
