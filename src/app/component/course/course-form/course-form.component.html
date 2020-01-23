@@ -2,7 +2,7 @@
     <h2 *ngIf="id == 0">New Course</h2>
     <h2 *ngIf="id > 0">Edit Course</h2>
 
-    <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit(form.value)">
+    <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit()">
         <mat-form-field>
             <mat-label>Academy list</mat-label>
             <mat-select formControlName="academy" name="academies">
