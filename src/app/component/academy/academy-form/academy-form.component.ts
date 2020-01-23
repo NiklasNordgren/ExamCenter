@@ -5,9 +5,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AcademyService } from '../../../service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-academy-form',
@@ -17,7 +15,6 @@ import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/co
 })
 export class AcademyFormComponent implements OnInit, OnDestroy {
 	form: FormGroup;
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	id: number;
 	academy: Academy = new Academy();
 	createFormId: number = 0;
@@ -29,7 +26,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private service: AcademyService,
 		public navigator: Navigator,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
@@ -95,14 +92,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+	openAcknowledgeDialog(errorMessage: string, typeText: string) {
+		this.statusMessageService.showErrorMessage(typeText, errorMessage);
 	}
 }
