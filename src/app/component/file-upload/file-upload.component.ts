@@ -107,7 +107,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 	getUnpublishYear() {
 		const sub = this.settingsService.getUnpublishTime().subscribe(time => {
-			this.unpublishTime = new Number("time").valueOf();
+			this.unpublishTime = new Number(time).valueOf();
 		});
 		this.subscriptions.add(sub);
 	}
@@ -265,6 +265,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		if (this.activeExam) {
 			const convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
 			this.activeExam.date = convertedDate;
+			console.log("convertedDate: " + convertedDate);
+			console.log("unpublishTime: " + this.unpublishTime);
+			
 			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + this.unpublishTime, convertedDate.getMonth(), convertedDate.getDate());
 		}
 	}

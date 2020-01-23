@@ -11,9 +11,7 @@ import {
 import { UserService } from './service/user.service';
 import { LoginService } from './service/login.service';
 import { LoginStateShareService } from './service/login-state-share.service';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmationDialogComponent } from './component/confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from './service/status-message.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -41,9 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private loginService: LoginService,
 		private loginStateShareService: LoginStateShareService,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) { }
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions: Subscription = new Subscription();
 	academies = [];
 	isLoggedIn;
@@ -102,27 +99,17 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	handleLogout() {
+		this.statusMessageService.showSuccessMessage('Successfully logged out.');
 		this.goToPage('/login');
 		this.changeLoginState(false);
 	}
 
 	handleError() {
-		this.showErrorDialog('Something went wrong while logging out. Please try again.');
+		this.statusMessageService.showErrorMessage('Error', 'Something went wrong while logging out. Please try again.');
 	}
 
 	changeLoginState(logginState: boolean) {
 		this.loginStateShareService.changeLoginState(logginState);
-	}
-
-	showErrorDialog(message: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = 'Error';
-		this.dialogRef.componentInstance.contentMessage = message;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
 	}
 
 	isRouteLogin(): boolean{
