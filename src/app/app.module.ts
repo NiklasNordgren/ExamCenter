@@ -39,41 +39,33 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LogoutComponent } from './logout/logout.component';
+import { AdminComponent } from './component/admin/admin.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
-import { SelectExamPropertiesComponent } from './component/select-exam-properties/select-exam-properties.component';
+import { SelectExamPropertiesComponent } from './component/file-upload/select-exam-properties/select-exam-properties.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialogComponent } from './component/confirmation-dialog/confirmation-dialog.component';
-import { NavComponent } from './nav/nav.component';
-import { AddressFormComponent } from './address-form/address-form.component';
-import { TableComponent } from './component/table/table.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { TreeComponent } from './tree/tree.component';
-import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
-import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
-import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
+import { AdminHandlerComponent } from "./component/admin/admin-handler/admin-handler.component";
+import { NavHorizComponent } from './component/nav-horiz/nav-horiz.component';
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from './component/about/about.component';
 import { LoginComponent } from './component/login/login.component';
-import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
-import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
-import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
-import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
-import { AcademyFormComponent } from './component/academy-form/academy-form.component';
-import { SearchResultComponent } from './component/search-result/search-result.component';
+import { AcademyHandlerComponent } from './component/academy/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy/academy-form/academy-form.component';
+import { SearchResultComponent } from './component/search/search-result/search-result.component';
 import { SearchComponent } from './component/search/search.component';
-import { AdminFormComponent } from './component/admin-form/admin-form.component';
-import { SubjectFormComponent } from './component/subject-form/subject-form.component';
-import { ExamFormComponent } from './component/exam-form/exam-form.component';
+import { AdminFormComponent } from './component/admin/admin-form/admin-form.component';
+import { SubjectFormComponent } from './component/subject/subject-form/subject-form.component';
+import { ExamFormComponent } from './component/exam/exam-form/exam-form.component';
 import { AdminGuard } from './guard/admin.guard';
-import { CourseFormComponent } from './component/course-form/course-form.component';
+import { CourseFormComponent } from './component/course/course-form/course-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
 import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { NavigatorComponent } from './component/navigator/navigator.component';
@@ -81,15 +73,8 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 @NgModule({
 	declarations: [
 		AppComponent,
-		NavComponent,
-		AddressFormComponent,
-		TableComponent,
-		DashboardComponent,
-		TreeComponent,
-		DragDropComponent,
 		LoginComponent,
-		HomeComponent,
-		LogoutComponent,
+		AdminComponent,
 		FileUploadComponent,
 		NavHorizComponent,
 		ListComponent,
@@ -107,7 +92,6 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 		SelectExamPropertiesComponent,
 		OutboxComponent,
 		ConfirmationDialogComponent,
-		TestSwipeComponent,
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,

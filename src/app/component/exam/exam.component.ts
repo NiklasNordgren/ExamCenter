@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { ExamService } from "src/app/service/exam.service";
-import { FileService } from "src/app/file.service";
+import { FileService } from "src/app/service/file.service";
 import {
 	faExternalLinkAlt,
 	faInfoCircle,

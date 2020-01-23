@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	handleResponse(isLoggedIn) {
 		if (isLoggedIn) {
-			this.router.navigate(['/home/']);
+			this.router.navigate(['/admin/']);
 			this.changeLoginState(true);
 		} else {
 			this.form.patchValue({
