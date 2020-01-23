@@ -9,8 +9,11 @@ import { Academy } from '../../model/academy.model';
 import { Subject } from '../../model/subject.model';
 import { Course } from '../../model/course.model';
 import { Subscription } from 'rxjs';
+
 import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
+import { SettingsService } from '../../service/settings.service';
+
 import { MatTable, MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
