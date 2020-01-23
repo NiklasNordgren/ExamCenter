@@ -32,6 +32,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 	showingInfoMessage = false;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	courseId;
+	shortHeader: string = "";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -81,7 +82,6 @@ export class ExamComponent implements OnInit, OnDestroy {
 				id: exam.filename,
 				name: exam.filename,
 				shortDesc: "",
-				shortHeader: ""
 			});
 		});
 	}
