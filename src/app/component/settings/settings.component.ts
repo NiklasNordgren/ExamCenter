@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, SecurityContext } from "@angular/core";
+import { Component, OnInit, OnDestroy, SecurityContext, ElementRef, ViewChild } from "@angular/core";
 import { SettingsService } from "src/app/service/settings.service";
 import { Subscription } from "rxjs";
 import { faCog, IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -70,52 +70,58 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 		let htmlOk = true;
 		let message = "";
-
+		let difference = "";
 		if (!this.safeHtml(homePageHtml)) {
-			console.log();
-			let difference = this.getHtmlDifference(
+			difference = this.getHtmlDifference(
 				this.sanitizeUnescape(homePageHtml),
 				homePageHtml
 			);
-			message += `Home page HTML code was deemed unsafe. The potential security hazards found were:\n${difference}\n`;
+			message += this.getDifferenceErrorMessage("Home", difference);
 			htmlOk = false;
 		}
 		if (!this.safeHtml(aboutPageHtml)) {
-			let difference = this.getHtmlDifference(
+			difference = this.getHtmlDifference(
 				this.sanitizeUnescape(aboutPageHtml),
 				aboutPageHtml
 			);
-			message += `About page HTML code was deemed unsafe. The potential security hazards found were:\n${difference}\n`;
+			message += this.getDifferenceErrorMessage("About", difference);
 			htmlOk = false;
 		}
 		if (!htmlOk) {
 			this.openAcknowledgeDialog(message, "Error saving Settings");
 		} else if (this.form.valid && htmlOk) {
-			let settings: Settings = new Settings();
-			settings.aboutPageHtml = this.form.controls.aboutPageHtml.value;
-			settings.homePageHtml = this.form.controls.homePageHtml.value;
-			settings.cookieSessionMinutes = this.form.controls.cookieSessionMinutes.value;
-			settings.unpublishTimeYears = this.form.controls.unpublishTimeYears.value;
+			let settings: Settings = this.getNewSettingsFromForm();
 			this.subscriptions.add(
 				this.settingsService.postSettings(settings).subscribe(settings => {
-					let newSettingsList: Settings[] = [];
-					newSettingsList.push(settings);
-					if (this.settingsList.length >= 10) {
-						newSettingsList = [
-							...newSettingsList,
-							...this.settingsList.slice(0, 9)
-						];
-					} else {
-						newSettingsList = [...newSettingsList, ...this.settingsList];
-					}
-					this.settingsList = newSettingsList;
+					this.setNewSettingsList(settings);
 
 					let config = new MatSnackBarConfig();
 					config.duration = 3000;
 					this.snackBar.open("Settings saved.", "", config);
+					this.selectedValue = this.settingsList[0];
 				})
 			);
 		}
+	}
+
+	private getNewSettingsFromForm() {
+		let settings = new Settings();
+		settings.aboutPageHtml = this.form.controls.aboutPageHtml.value;
+		settings.homePageHtml = this.form.controls.homePageHtml.value;
+		settings.cookieSessionMinutes = this.form.controls.cookieSessionMinutes.value;
+		settings.unpublishTimeYears = this.form.controls.unpublishTimeYears.value;
+		return settings;
+	}
+
+	private setNewSettingsList(settings: Settings) {
+		let newSettingsList: Settings[] = [];
+		newSettingsList.push(settings);
+		if (this.settingsList.length >= 10) {
+			newSettingsList = [...newSettingsList, ...this.settingsList.slice(0, 9)];
+		} else {
+			newSettingsList = [...newSettingsList, ...this.settingsList];
+		}
+		this.settingsList = newSettingsList;
 	}
 
 	private sanitizeHtml(html: string) {
@@ -155,5 +161,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
+	}
+
+	private getDifferenceErrorMessage(pageName: string, difference: string) {
+		let message = `${pageName} page HTML code has incorrect syntax or was deemed unsafe.\n`;
+		if (difference.length > 0) {
+			message += `The potential security hazards or syntax errors found were:\n${difference}\n`;
+		}
+		return message;
 	}
 }

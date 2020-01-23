@@ -78,7 +78,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	isSelectionButtonsDisabled = true;
 
 	clickedId: number;
-// head
+
 	displayedExamColumns: string[] = ['select', 'filename', 'date', 'unpublishDate', 'courseName', 'actions'];
 	displayedCourseColumns: string[] = ['select', 'name', 'courseCode', 'subjectName', 'actions'];
 	displayedSubjectColumns: string[] = ['select', 'name', 'code', 'academyName', 'actions'];

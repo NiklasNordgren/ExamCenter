@@ -48,6 +48,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.courseId = parseInt(params.get('id'), 10);
+				this.getCourseById(this.courseId);
 				this.setExamsByCourseId(this.courseId);
 			})
 		);
@@ -55,6 +56,15 @@ export class ExamComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscriptions.unsubscribe();
+	}
+
+	getCourseById(courseId){
+		this.subscriptions.add(
+			this.courseService.getCourseById(courseId).subscribe(course => {
+				this.course = course;
+				this.changeDetector.detectChanges();
+			})
+		);
 	}
 
 	setExamsByCourseId(courseId: number) {
@@ -78,12 +88,6 @@ export class ExamComponent implements OnInit, OnDestroy {
 			});
 			
 		});
-		this.subscriptions.add(
-			this.courseService.getCourseById(courseId).subscribe(course => {
-				this.course = course;
-				this.changeDetector.detectChanges();
-			})
-		);
 	}
 	onError(error){
 		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});

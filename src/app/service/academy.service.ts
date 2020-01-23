@@ -27,7 +27,7 @@ export class AcademyService {
 	}
 
 	unpublishAcademies(academies: Academy[]) {
-		this.setAcademiesIsUnpublished(academies, true)
+		this.setAcademiesIsUnpublished(academies, true);
 		return this.http.post<Academy[]>('/api/academies/unpublishList/', academies);
 	}
 
@@ -37,7 +37,7 @@ export class AcademyService {
 
 	deleteAcademy(id: number) {
 		return this.http.delete('/api/academies/' + id).subscribe(data => {
-		});;
+		});
 	}
 
 	private setAcademiesIsUnpublished( academies: Academy[], isUnPublished: boolean) {
