@@ -27,4 +27,8 @@ export class SettingsService {
 	getHomePageHtml() {
 		return this.http.get('/api/settings/home', {responseType: 'text'});
 	}
+
+	getUnpublishTime() {
+		return this.http.get('/api/settings/unpublishTime', {responseType: 'text'});
+	}
 }
