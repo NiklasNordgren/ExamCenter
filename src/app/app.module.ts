@@ -140,8 +140,8 @@ import { GlobalErrorHandler } from './util/error-handler';
 	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
-		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
-		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+		// { provide: ErrorHandler, useClass: GlobalErrorHandler }
 	],
 	bootstrap: [AppComponent]
 })

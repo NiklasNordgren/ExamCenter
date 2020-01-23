@@ -7,13 +7,13 @@ export class GlobalErrorHandler implements ErrorHandler {
 	constructor(private statusMessageService: StatusMessageService) {}
 
 	handleError(error: Error) {
-    if (!error.message.includes('route')) {
-      this.statusMessageService.showErrorMessage(
-        "Error",
-        "An error occurred. Status code: " + error.message
-      );
-    } else {
-      throwError(error);
-    }
+    // if (!error.message.includes('route')) {
+    //   this.statusMessageService.showErrorMessage(
+    //     "Error",
+    //     "An error occurred. Status code: " + error.message
+    //   );
+    // } else {
+    //   throwError(error);
+    // }
 	}
 }
