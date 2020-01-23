@@ -102,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	handleLogout() {
-		this.goToHomePage();
+		this.goToPage('/login');
 		this.changeLoginState(false);
 	}
 
@@ -124,4 +124,9 @@ export class AppComponent implements OnInit, OnDestroy {
 		});
 		this.subscriptions.add(sub);
 	}
+
+	isRouteLogin(): boolean{
+		return this.router.url.endsWith("/login");
+	}
+	
 }
