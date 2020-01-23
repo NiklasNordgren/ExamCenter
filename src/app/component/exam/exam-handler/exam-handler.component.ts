@@ -116,7 +116,6 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 					for (let exam of selectedExams) {
 						exam.unpublished = true;
 					}
-					console.log(selectedExams);
 					
 					dSub = this.examService.publishExams(selectedExams).subscribe(
 						data => this.onSuccess(data),
