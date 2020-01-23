@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div class="buttons-and-selectors">
         <div class="selection-buttons-container">
+            <h2>Academies</h2>
             <button class="selectionButtons" color="accent" mat-raised-button
                 (click)="this.navigator.goToPage('/home/academy-form/0')">
 
@@ -12,7 +13,6 @@
         </button>
         </div>
     </div>
-    <h2>Academies</h2>
     <mat-divider></mat-divider>
     <table mat-table [dataSource]="academies" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 

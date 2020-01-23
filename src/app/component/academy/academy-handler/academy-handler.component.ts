@@ -97,7 +97,6 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 						data => this.onSuccess(data),
 						error => this.onError(error)
 					);
-					this.selection.clear();
 				
 				this.subscriptions.add(dSub);
 				for (let academy of selectedAcademies) {
@@ -119,6 +118,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		this.selection.clear();
 	}
 
 	onError(error: HttpErrorResponse) {

@@ -116,11 +116,12 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 					for (let exam of selectedExams) {
 						exam.unpublished = true;
 					}
+					console.log(selectedExams);
+					
 					dSub = this.examService.publishExams(selectedExams).subscribe(
 						data => this.onSuccess(data),
 						error => this.onError(error)
 					);
-					this.selection.clear();
 			}
 			this.dialogRef = null;
 		});
@@ -137,6 +138,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		this.selection.clear();
 	}
 
 	onError(error: HttpErrorResponse) {
