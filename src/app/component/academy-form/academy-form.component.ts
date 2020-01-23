@@ -21,7 +21,8 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	private subscriptions = new Subscription();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	private id: number;
-	private academy: Academy;
+	private academy: Academy = new Academy();
+	createFormId: number = 0;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -45,7 +46,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	}
 
 	handleId() {
-		if (this.id !== 0) {
+		if (this.id !== this.createFormId) {
 			const sub = this.service.getAcademyById(this.id).subscribe(academy => {
 				this.form = this.formBuilder.group({
 					abbreviation: academy.abbreviation,
@@ -62,25 +63,25 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 
 	onSubmit() {
 		if (this.form.valid) {
-			this.academy = new Academy();
+			if (this.id !== this.createFormId) {
+				this.academy.id = this.id;
+			}
+			this.academy.name = this.form.controls.name.value;
+			this.academy.abbreviation = this.form.controls.abbreviation.value;
+	
+			const sub = this.service.saveAcademy(this.academy).subscribe(
+				data => this.onSuccess(data),
+				error => this.onError(error)
+			);
+			this.subscriptions.add(sub);
 		}
-		if (this.id !== 0) {
-			this.academy.id = this.id;
-		}
-		this.academy.name = this.form.controls.name.value;
-		this.academy.abbreviation = this.form.controls.abbreviation.value;
-
-		const sub = this.service.saveAcademy(this.academy).subscribe(
-			data => this.onSuccess(data),
-			error => this.onError(error)
-		);
-		this.subscriptions.add(sub);
+		
 	}
 
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/home/academy-handler');
-		this.openAcknowledgeDialog(data.name + " was updated", 'success');
+		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
 	}
 
 	onError(error) {
@@ -88,9 +89,9 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
 			this.navigator.goToPage('/login');
 		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The filename already exists as an exam.', 'error');
+			this.openAcknowledgeDialog('The name already exists as an academy.', 'error');
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the exam.', 'error');
+			this.openAcknowledgeDialog('Something went wrong while trying to save the academy.', 'error');
 		}
 	}
 

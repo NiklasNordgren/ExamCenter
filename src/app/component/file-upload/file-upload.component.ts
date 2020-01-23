@@ -9,8 +9,11 @@ import { Academy } from '../../model/academy.model';
 import { Subject } from '../../model/subject.model';
 import { Course } from '../../model/course.model';
 import { Subscription } from 'rxjs';
+
 import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
+import { SettingsService } from '../../service/settings.service';
+
 import { MatTable, MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
@@ -81,8 +84,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	dataSource: FileTableItem[] = [];
 	displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
 
+	unpublishTime: number;
+
 	constructor(
 		private changeDetectorRef: ChangeDetectorRef,
+		private settingsService: SettingsService,
 		private examService: ExamService,
 		private academyService: AcademyService,
 		private subjectService: SubjectService,
@@ -91,11 +97,19 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
+		this.getUnpublishYear();
 		this.getAllAcademies();
 		this.getAllSubjects();
 		this.getAllCourses();
 		this.getAllExams();
 		this.initUploader();
+	}
+
+	getUnpublishYear() {
+		const sub = this.settingsService.getUnpublishTime().subscribe(time => {
+			this.unpublishTime = new Number("time").valueOf();
+		});
+		this.subscriptions.add(sub);
 	}
 
 	initUploader(): void {
@@ -251,7 +265,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		if (this.activeExam) {
 			const convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
 			this.activeExam.date = convertedDate;
-			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + 5, convertedDate.getMonth(), convertedDate.getDate());
+			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + this.unpublishTime, convertedDate.getMonth(), convertedDate.getDate());
 		}
 	}
 
