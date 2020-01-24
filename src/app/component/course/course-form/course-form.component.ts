@@ -141,7 +141,6 @@ export class CourseFormComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     if (this.form.valid) {
       if (this.id !== this.createFormId) {
         this.course.id = this.id;
@@ -149,6 +148,8 @@ export class CourseFormComponent implements OnInit {
       this.course.name = this.form.controls.name.value;
       this.course.courseCode = this.form.controls.code.value;
       this.course.subjectId = this.form.controls.subject.value;
+      console.log(this.course);
+      
      // this.course.unpublished = false;
       const sub = this.courseService.saveCourse(this.course).subscribe(
         data => this.onSuccess(data),
@@ -169,7 +170,7 @@ export class CourseFormComponent implements OnInit {
       this.navigator.goToPage('/login');
       this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
     } else if (error.status === 405) {
-      this.openAcknowledgeDialog('Check if the name already exists.', 'error');
+      this.openAcknowledgeDialog('Check if the name or course code already exists.', 'error');
     } else {
       this.openAcknowledgeDialog('Something went wrong while trying to save or edit the course.', 'error');
     }
