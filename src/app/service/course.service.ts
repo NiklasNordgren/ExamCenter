@@ -24,10 +24,10 @@ export class CourseService {
 		return this.http.get<Course[]>('/api/courses/unpublished');
   }
 
-  saveCourse(course: Course){
+  saveCourse(course: Course) {
 		return this.http.post<Course>('/api/courses/', course);
-	}
-
+  }
+ 
 	publishCourse(course: Course) {
 		return this.http.post('/api/courses/unpublish', course);
   }

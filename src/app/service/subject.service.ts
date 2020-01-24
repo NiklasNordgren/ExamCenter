@@ -33,7 +33,7 @@ export class SubjectService {
 		return this.http.get<Subject[]>('api/subjects/all');
 	}
 
-	saveSubject(subject: Subject): Observable<Subject> {
+	saveSubject(subject: Subject) {
 		return this.http.post<Subject>('/api/subjects/', subject);
 	}
 

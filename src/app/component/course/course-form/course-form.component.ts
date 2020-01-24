@@ -68,39 +68,41 @@ export class CourseFormComponent implements OnInit {
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
         this.id = parseInt(params.get('id'), 10);
-        this.academyService.getAllAcademies().subscribe(responseAcademies => {
-          this.academies = responseAcademies;
-        });
-      
-        this.handleId();
-        
+
+        this.academyService.getAllAcademies().subscribe(
+          responseAcademies =>  {this.academies = responseAcademies
+            this.handleId();},
+          error => this.onError(error)
+        );
       })
     );
-
-    //Get all the academies for the dropdownlist of academies.
-    
-  }
-
-  stuff() {
-   
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
+  stuff() {
+    this.handleId();
+  }
+
   selectedAcademy(academyId: number) {
     const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseResult => {
       this.subjects = responseResult;
-      this.selectedSubjectValue = this.subjects[0].id;
-      
-      this.selectedSubject(this.selectedSubjectValue);
-      
+      if (this.id == this.createFormId) {
+        console.log(this.subjects);
+        
+    
+        this.selectedSubjectValue = this.subjects[0].id;
+        this.selectedSubject(this.selectedSubjectValue);
+      }
     });
     this.subscriptions.add(sub);
   }
 
   selectedSubject(subjectId: number) {
+    console.log(subjectId);
+
     const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseResult => {
       this.courses = responseResult;
     });
@@ -114,24 +116,25 @@ export class CourseFormComponent implements OnInit {
         error => this.onError(error)
       );
       this.subscriptions.add(sub);
+    } else {
+      this.selectedAcademyValue = this.academies[0].id;
+      this.selectedAcademy(this.selectedAcademyValue);
     }
   }
 
   handleCourse(course: Course) {
     this.course = course;
     const sub = this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
-      
+
       this.form = this.formBuilder.group({
         academy: subject.academyId,
         subject: subject.id,
         code: course.courseCode,
         name: course.name
       });
-   
-      if (this.id !== this.createFormId) {
-          this.selectedAcademy(subject.academyId);
-          this.selectedSubject(subject.id);
-      }
+
+      this.selectedAcademy(subject.academyId);
+      this.selectedSubject(subject.id);
 
     });
     this.subscriptions.add(sub);
@@ -146,7 +149,7 @@ export class CourseFormComponent implements OnInit {
       this.course.name = this.form.controls.name.value;
       this.course.courseCode = this.form.controls.code.value;
       this.course.subjectId = this.form.controls.subject.value;
-      this.course.unpublished = false;
+     // this.course.unpublished = false;
       const sub = this.courseService.saveCourse(this.course).subscribe(
         data => this.onSuccess(data),
         error => this.onError(error)
