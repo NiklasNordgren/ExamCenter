@@ -27,22 +27,11 @@ export class CourseFormComponent implements OnInit {
   subjects: Subject[];
   courses: Course[];
   form: FormGroup;
-  id: number;
-  subject: Subject;
-
   private subscriptions = new Subscription();
-
-  subid: number;
-  acaid: number;
+  id: number;
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
-  selectedAcademyValue: number;
-  selectedSubjectValue: number;
-  academyId: number;
-  subjectId: number;
-  exams: any;
-  course: Course = new Course();
   createFormId: number = 0;
   dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -52,8 +41,7 @@ export class CourseFormComponent implements OnInit {
     private academyService: AcademyService,
     private courseService: CourseService,
     public navigator: Navigator,
-    private dialog: MatDialog,
-    private changeRef: ChangeDetectorRef) { }
+    private dialog: MatDialog) { }
 
 
   ngOnInit() {
@@ -61,97 +49,78 @@ export class CourseFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       academy: '',
       subject: '',
-      code: '',
+      courseCode: '',
       name: ''
     });
     //If id != 0, it specifies editing an object. Here's how we find the object in question.
     this.subscriptions.add(
-      this.route.paramMap.subscribe(params => {
-        this.id = parseInt(params.get('id'), 10);
+			this.route.paramMap.subscribe(params => {
+				this.id = parseInt(params.get('id'), 10);
 
-        this.academyService.getAllAcademies().subscribe(
-          responseAcademies =>  {this.academies = responseAcademies
-            this.handleId();},
-          error => this.onError(error)
-        );
-      })
-    );
-  }
+        const sub = this.academyService.getAllAcademies().subscribe(
+					responseAcademies => {
+						this.academies = responseAcademies
+						this.handleId();
+					},
+					error => this.onError(error)
+				);
+				this.subscriptions.add(sub);
+			})
+		);
+	}
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
-  stuff() {
-    this.handleId();
+  handleId() {
+    if (this.id == this.createFormId) {
+			this.form.get("academy").setValue(this.academies[0].id);
+      this.selectedAcademy(this.academies[0].id);
+    } else {
+      const sub = this.courseService.getCourseById(this.id).subscribe(
+        course => this.handleCourse(course)
+      );
+      this.subscriptions.add(sub);
+    }
+  }
+
+  handleCourse(course: Course) {
+    const sub = this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
+      this.form = this.formBuilder.group({
+        academy: subject.academyId,
+        subject: subject.id,
+        courseCode: course.courseCode,
+        name: course.name
+      });
+
+      this.selectedAcademy(subject.academyId);
+
+
+    });
+    this.subscriptions.add(sub);
   }
 
   selectedAcademy(academyId: number) {
     const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseResult => {
       this.subjects = responseResult;
-      if (this.id == this.createFormId) {
-        console.log(this.subjects);
-        
-    
-        this.selectedSubjectValue = this.subjects[0].id;
-        this.selectedSubject(this.selectedSubjectValue);
-      }
-    });
-    this.subscriptions.add(sub);
-  }
-
-  selectedSubject(subjectId: number) {
-    console.log(subjectId);
-
-    const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseResult => {
-      this.courses = responseResult;
-    });
-    this.subscriptions.add(sub);
-  }
-
-  handleId() {
-    if (this.id !== this.createFormId) {
-      const sub = this.courseService.getCourseById(this.id).subscribe(
-        course => this.handleCourse(course),
-        error => this.onError(error)
-      );
-      this.subscriptions.add(sub);
-    } else {
-      this.selectedAcademyValue = this.academies[0].id;
-      this.selectedAcademy(this.selectedAcademyValue);
-    }
-  }
-
-  handleCourse(course: Course) {
-    this.course = course;
-    const sub = this.subjectService.getSubjectById(course.subjectId).subscribe(subject => {
-
-      this.form = this.formBuilder.group({
-        academy: subject.academyId,
-        subject: subject.id,
-        code: course.courseCode,
-        name: course.name
-      });
-
-      this.selectedAcademy(subject.academyId);
-      this.selectedSubject(subject.id);
-
+      (this.id == this.createFormId) ? this.form.get("subject").setValue(this.subjects[0].id) : null;
     });
     this.subscriptions.add(sub);
   }
 
   onSubmit() {
     if (this.form.valid) {
-      if (this.id !== this.createFormId) {
-        this.course.id = this.id;
-      }
-      this.course.name = this.form.controls.name.value;
-      this.course.courseCode = this.form.controls.code.value;
-      this.course.subjectId = this.form.controls.subject.value;
-      console.log(this.course);
+      let course = new Course();
+
+      (this.id !== this.createFormId) ? course.id = this.id : null;
       
-     // this.course.unpublished = false;
-      const sub = this.courseService.saveCourse(this.course).subscribe(
+      course.name = this.form.controls.name.value;
+      course.courseCode = this.form.controls.courseCode.value;
+      course.subjectId = this.form.controls.subject.value;
+      console.log(course);
+
+      const sub = this.courseService.saveCourse(course).subscribe(
         data => this.onSuccess(data),
         error => this.onError(error)
       );

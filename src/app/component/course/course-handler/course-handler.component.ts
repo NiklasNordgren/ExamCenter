@@ -37,8 +37,8 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	selectedAcademyValue: number;
 	selectedSubjectValue: number;
 
-  constructor(private academyService: AcademyService, private subjectService: SubjectService,
-    private courseService: CourseService, public navigator: Navigator, private dialog: MatDialog){}
+	constructor(private academyService: AcademyService, private subjectService: SubjectService,
+		private courseService: CourseService, public navigator: Navigator, private dialog: MatDialog) { }
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()
@@ -84,14 +84,14 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			if (result) {
 				const selectedCourses = this.selection.selected;
 				let dSub;
-					for (let course of selectedCourses) {
-						course.unpublished = true;
-					}
-					dSub = this.courseService.unpublishCourses(selectedCourses).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
-					);
-				
+				for (let course of selectedCourses) {
+					course.unpublished = true;
+				}
+				dSub = this.courseService.unpublishCourses(selectedCourses).subscribe(
+					data => this.onSuccess(data),
+					error => this.onError(error)
+				);
+
 				this.subscriptions.add(dSub);
 				for (let course of selectedCourses) {
 					this.courses = this.courses.filter(x => x.id != course.id);
@@ -143,7 +143,11 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			this.courses = this.courses.filter(x => x.id != subject.id);
 		}
 		const successfulAmount = data.length;
-		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " course" : " courses") : "";
+		let successfulContentText = (successfulAmount !== 0)
+			? successfulAmount + ((successfulAmount == 1)
+				? " course"
+				: " courses")
+			: "";
 		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");

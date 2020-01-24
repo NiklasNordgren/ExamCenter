@@ -114,7 +114,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 			this.academies = this.academies.filter(x => x.id != academy.id);
 		}
 		const successfulAmount = data.length;
-		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
+		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " academy" : " academies") : "";
 		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");

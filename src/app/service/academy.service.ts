@@ -18,7 +18,7 @@ export class AcademyService {
 		return this.http.get<Academy>('/api/academies/' + id);
 	}
 
-	saveAcademy(academy: any): Observable<Academy> {
+	saveAcademy(academy: any) {
 		return this.http.post<Academy>('/api/academies/', academy);
 	}
 
