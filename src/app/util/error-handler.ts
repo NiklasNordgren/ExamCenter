@@ -65,10 +65,10 @@ class ApiError {
 
 	constructor(error: HttpErrorResponse) {
 		this.error = error;
-		this.status = error.status || NaN;
-		this.statusText = error.statusText;
-		this.errorType = error.error.errorType || "Unknown type";
-		this.errorMessages = error.error.errors || error.error || [];
+		this.status = error.status || 500;
+        this.statusText = error.statusText || '';
+		this.errorType = error.error.errorType || error.statusText || 'Server error';
+		this.errorMessages = error.error.errors || Array.from(error.error) || [];
 	}
 
 	getErrorType(): string {
