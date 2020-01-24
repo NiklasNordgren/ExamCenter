@@ -17,37 +17,37 @@
         <mat-nav-list>
             <div *ngIf="isSuperUser">
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['/admin/academy-handler']">
+                <a mat-list-item [routerLink]="['/admin/academy-handler']" (click)="drawer.close()">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Academy
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['/admin/subject-handler']">
+                <a mat-list-item [routerLink]="['/admin/subject-handler']" (click)="drawer.close()">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Subject
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['/admin/course-handler']">
+                <a mat-list-item [routerLink]="['/admin/course-handler']" (click)="drawer.close()">
                     <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Course
                 </a>
             </div>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['/admin/exam-handler']">
+            <a mat-list-item [routerLink]="['/admin/exam-handler']" (click)="drawer.close()">
                 <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Exam
             </a>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['/admin/file-upload']">
+            <a mat-list-item [routerLink]="['/admin/file-upload']" (click)="drawer.close()">
                 <fa-icon [icon]="faUpload" class="list-item-icon"></fa-icon>Upload Exams
             </a>
             <mat-divider></mat-divider>
             <div *ngIf="isSuperUser">
-                <a mat-list-item [routerLink]="['/admin/admin-handler']">
+                <a mat-list-item [routerLink]="['/admin/admin-handler']" (click)="drawer.close()">
                     <fa-icon [icon]="faUsersCog" class="list-item-icon"></fa-icon>Administer Users
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['/admin/outbox']">
+                <a mat-list-item [routerLink]="['/admin/outbox']" (click)="drawer.close()">
                     <fa-icon [icon]="faTrash" class="list-item-icon"></fa-icon>Outbox
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="['/admin/app-settings']">
+                <a mat-list-item [routerLink]="['/admin/app-settings']" (click)="drawer.close()">
                     <fa-icon [icon]="faCog" class="list-item-icon"></fa-icon>App Settings
                 </a>
                 <mat-divider></mat-divider>

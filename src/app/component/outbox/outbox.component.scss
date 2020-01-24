@@ -1,20 +1,28 @@
 table {
-    width: 100%;
+	width: 100%;
 }
 
 .select-buttons {
-    position: sticky;
-    top: 0;
-    text-align: center;
+	position: sticky;
+	top: 0;
+	text-align: center;
+	z-index: 1337;
+	opacity: 0.95;
 }
 
 .publishSelectedButton {
-    margin-top: 10pt;
-    margin-bottom: 10pt;
+	&:hover {
+		cursor: pointer;
+	}
+	margin-top: 10pt;
+	margin-bottom: 10pt;
 }
 
 .deleteSelectedButton {
-    margin-left: 10pt;
+	&:hover {
+		cursor: pointer;
+	}
+	margin-left: 10pt;
 }
 
 .button-icon {
@@ -23,101 +31,103 @@ table {
 }
 
 .tables {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
-  
+
 h3 {
 	text-align: left;
 	margin-left: 18pt;
 }
 
 .toggle-button {
-    position: relative;
+	position: relative;
 }
- 
+
 .singleButtons {
-    float: right;
+	float: right;
 }
 .publishBtn {
-    margin-right: 10pt;
+	margin-right: 10pt;
 }
 
 .buttonText {
-    margin-left: 3pt;
+	margin-left: 3pt;
 }
 
 .column23 {
-    width: 15%;
+	width: 15%;
 }
 
 td.mat-cell {
-    padding-right: 20pt;
+	padding-right: 20pt;
 }
 
 .actions {
-   width: 25%
+	width: 25%;
 }
 
 .variant-exam-column {
-    width: 25%;
+	width: 25%;
 }
 
 .firm-exam-column {
-    width: 10%;
+	width: 10%;
 }
 
-.variant-course-column, .variant-subject-column {
-    width: 30%;
+.variant-course-column,
+.variant-subject-column {
+	width: 30%;
 }
 
-.firm-course-column, .firm-subject-column{
-  width: 10%;
+.firm-course-column,
+.firm-subject-column {
+	width: 10%;
 }
 
 .variant-academy-column {
-    width: 50%;
+	width: 50%;
 }
 
 .firm-academy-column {
-  width: 20%;
+	width: 20%;
 }
 
 @media screen and (max-width: 1300px) {
-    .button-text {
-        display: none;
-    }
-    
-    .mat-column-filename {
-        word-wrap: break-word ;
-        word-break: break-word;
-        white-space: unset ;
-        flex: 0 0 54% ;
-        width: 54% ;
-    }
-    
-    .mat-column-date {
-        display: none;
-    }
-    
-    .mat-column-unpublishDate {
-        white-space: nowrap;
-        flex: 0 0 14% ;
-        width: 14% ; 
-    }
-    
-    .mat-column-actions {
-        white-space: nowrap;
-        overflow: hidden;
-        flex: 0 0 32% ;
-        width: 32% ; 
-    }
-    
-    .deleteBtn {
-        margin-left: 3px;
-    }
-    
-    .publishBtn {
-        margin-left: 3px;
-    }
+	.button-text {
+		display: none;
+	}
+
+	.mat-column-filename {
+		word-wrap: break-word;
+		word-break: break-word;
+		white-space: unset;
+		flex: 0 0 54%;
+		width: 54%;
+	}
+
+	.mat-column-date {
+		display: none;
+	}
+
+	.mat-column-unpublishDate {
+		white-space: nowrap;
+		flex: 0 0 14%;
+		width: 14%;
+	}
+
+	.mat-column-actions {
+		white-space: nowrap;
+		overflow: hidden;
+		flex: 0 0 32%;
+		width: 32%;
+	}
+
+	.deleteBtn {
+		margin-left: 3px;
+	}
+
+	.publishBtn {
+		margin-left: 3px;
+	}
 }
