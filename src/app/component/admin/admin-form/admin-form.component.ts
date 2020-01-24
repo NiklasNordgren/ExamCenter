@@ -121,7 +121,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 		} else if (error.status === 409) {
 			this.openAcknowledgeDialog('The name already exists as an admin.', 'Error');
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'Error');
+			throw(error);
 		}
 	}
 

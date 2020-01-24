@@ -27,16 +27,17 @@ export class GlobalErrorHandler implements ErrorHandler {
 	}
 
 	private handleHttpErrorResponse(error: HttpErrorResponse) {
-        let apiError = new ApiError(error);
+				let apiError = new ApiError(error);
         console.log(JSON.stringify(error));
         
 		/*
-		 * Add switch cases for specific status codes and errorTypes that we know can be thrown by the REST API.
+		 * Add switch cases for specific status codes and errorTypes that can be thrown by the REST API.
 		 * The default messages should suffice in most cases but specific solutions should be set.
 		 */
+		let errorType = apiError.getErrorType();
 		switch (apiError.getStatus()) {
 			case 400: {
-				if (apiError.getErrorType().includes("Data integrity violation")) {
+				if (errorType.includes("Data integrity violation") || errorType.includes('Entity validation error')) {
 					let solution = `This error is caused by not adhering to rules for creating or updating objects.
                     Please refer to the user manual for more info.`;
 					apiError.setErrorSolution(solution);
@@ -99,11 +100,11 @@ class ApiError {
 		let errorTitle = this.errorType;
         let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"\n`;
         if (this.errorMessages.length > 0) {
-            errorMessage += 'Errors: '
+            errorMessage += 'Error(s): '
             this.errorMessages.forEach(msg => {
                 errorMessage = errorMessage + msg + "\n";
             });
-        }
+				}
 		errorMessage += `Solution: ${this.errorSolution}`;
 		return { errorTitle, errorMessage };
 	}
