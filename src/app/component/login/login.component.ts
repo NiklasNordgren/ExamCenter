@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	login() {
 		const sub = this.loginService.login(this.form.value).subscribe(
 			isLoggedIn => this.handleResponse(isLoggedIn),
-			// error => this.handleError(error)
+			error => this.handleError(error)
 		);
 		this.subscriptions.add(sub);
 	}

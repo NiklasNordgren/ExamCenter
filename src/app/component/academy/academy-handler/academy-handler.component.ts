@@ -1,6 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
@@ -9,7 +8,6 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-academy-handler',
@@ -27,9 +25,6 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	faTrash = faTrash;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
-
-	successfulHttpRequest: Array<String>;
-	errorHttpRequest: Array<any> = [];
 
 	constructor(private service: AcademyService, public navigator: Navigator, private dialog: MatDialog) {}
 
@@ -94,8 +89,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 						academy.unpublished = true;
 					}
 					dSub = this.service.unpublishAcademies(selectedAcademies).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
+						data => this.onSuccess(data)
 					);
 				
 				this.subscriptions.add(dSub);
@@ -119,10 +113,6 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");
 		this.selection.clear();
-	}
-
-	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
 	}
 
 }

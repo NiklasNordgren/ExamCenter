@@ -92,16 +92,12 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.courseService
 			.unpublishCourses(this.selection.selected)
 			.subscribe(
-				data => this.onSuccess(data),
-				error => this.onError(error)
+				data => this.onSuccess(data)
 			);
 		this.subscriptions.add(sub);
 	}
 	onSuccess(data) {
 		this.showDialog('Success','Successfully unpublished selected courses');
-	}
-	onError(error) {
-		this.showDialog('Error', 'Something went wrong wile trying to unpublish courses.');
 	}
 	
 	showDialog(header: string, message: string){

@@ -1,6 +1,7 @@
 import { ErrorHandler, Injectable, NgZone } from "@angular/core";
 import { StatusMessageService } from "../service/status-message.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { stringToKeyValue } from "@angular/flex-layout/extended/typings/style/style-transforms";
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -13,85 +14,95 @@ export class GlobalErrorHandler implements ErrorHandler {
 	) {}
 
 	handleError(error: Error | HttpErrorResponse) {
-		console.log(error);
-
 		if (error instanceof HttpErrorResponse) {
 			this.handleHttpErrorResponse(error);
 		} else {
 			this.ngZone.run(() => {
 				this.statusMessageService.showErrorMessage(
-                    'Error',
-                    JSON.stringify(error.message)
+					"Error",
+					JSON.stringify(error.message)
 				);
 			});
 		}
 	}
 
 	private handleHttpErrorResponse(error: HttpErrorResponse) {
-		let errorObj = this.getErrorMessages(error);
-
-		switch (error.status) {
+        let apiError = new ApiError(error);
+        console.log(JSON.stringify(error));
+        
+		/*
+		 * Add switch cases for specific status codes and errorTypes that we know can be thrown by the REST API.
+		 * The default messages should suffice in most cases but specific solutions should be set.
+		 */
+		switch (apiError.getStatus()) {
 			case 400: {
-				console.log("Inside 400");
-
-				if (errorObj.error1.includes("Entity validation error")) {
-					this.setEntityValidationErrorMessages(error);
-				} else if (errorObj.error1.includes("Data Integrity Violation Error")) {
-					this.setDataIntegrityViolationErrorMessages(errorObj.error2);
-				} else {
-					this.errorTitle = "Bad request";
-					this.errorMessage =
-						'The server responded with a status of 400, "Bad request".';
+				if (apiError.getErrorType().includes("Data integrity violation")) {
+					let solution = `This error is caused by not adhering to rules for creating or updating objects.
+                    Please refer to the user manual for more info.`;
+					apiError.setErrorSolution(solution);
 				}
 				break;
 			}
-			case 401: {
-				this.errorTitle = "Unathorized";
-				this.errorMessage = "Unauthorized";
-				break;
-			}
-			case 500: {
-				this.errorTitle = "Server error";
-				this.errorMessage = "Internal server error";
-				break;
-			}
 			default: {
-				this.errorTitle = "Server error";
-				this.errorMessage = "Unknown server error";
+				break;
 			}
 		}
+		let { errorTitle, errorMessage } = apiError.toFormattedErrorMessage();
 		this.ngZone.run(() => {
-			this.statusMessageService.showErrorMessage(
-				this.errorTitle,
-				this.errorMessage
-			);
+			this.statusMessageService.showErrorMessage(errorTitle, errorMessage);
 		});
 	}
+}
 
-	private getErrorMessages(error: HttpErrorResponse) {
-		let msg = error.error.errors;
-		let [errorMsg1, errorMsg2] = msg;
-		return { error1: errorMsg1, error2: errorMsg2 };
+class ApiError {
+	private error: HttpErrorResponse;
+	private status: number;
+	private statusText: string = "";
+	private errorType: string = "";
+	private errorMessages: string[] = [];
+	private errorSolution: string =
+		"Try again later. If the problem persists, contact the system administrator.";
+
+	constructor(error: HttpErrorResponse) {
+		this.error = error;
+		this.status = error.status || NaN;
+		this.statusText = error.statusText;
+		this.errorType = error.error.errorType || "Unknown type";
+		this.errorMessages = error.error.errors || error.error || [];
 	}
 
-	private setDataIntegrityViolationErrorMessages(errorMessage: string) {
-		this.errorTitle = "Constraint error";
-		this.errorMessage = `The server responded with:  ${errorMessage}
-                        This error is caused by not adhering to rules for creating or updating objects.
-                        Please refer to the user manual for more info.`;
+	getErrorType(): string {
+		return this.errorType;
 	}
 
-	private setEntityValidationErrorMessages(error) {
-		let entityError = this.getEntityValidationErrors(error);
-		this.errorTitle = "Entity validation error";
-		entityError.errors.forEach(element => {
-			this.errorMessage += element + "\n";
+	getErrorMessages(): string[] {
+		return this.errorMessages;
+	}
+
+	getErrorSolution(): string {
+		return this.errorSolution;
+	}
+
+	getStatus(): number {
+		return this.status;
+	}
+
+	getStatusText(): string {
+		return this.statusText;
+	}
+
+	setErrorSolution(errorSolution: string) {
+		this.errorSolution = errorSolution;
+	}
+
+	toFormattedErrorMessage(): { errorTitle: string; errorMessage: string } {
+		let errorTitle = this.errorType;
+		let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"
+        Errors: `;
+		this.errorMessages.forEach(msg => {
+			errorMessage = errorMessage + msg + "\n";
 		});
-	}
-
-	private getEntityValidationErrors(error: HttpErrorResponse) {
-		let msg = error.error.errors;
-		let [errorMsg1, errorMsg2, ...errorList] = msg;
-		return { errorMessage: errorMsg1, errors: errorList };
+		errorMessage += `Solution: ${this.errorSolution}`;
+		return { errorTitle, errorMessage };
 	}
 }

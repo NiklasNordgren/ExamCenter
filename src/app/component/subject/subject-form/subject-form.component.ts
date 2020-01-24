@@ -115,8 +115,6 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
 		} else if (error.status === 405) {
 			this.openAcknowledgeDialog('Check if the name already exists.', 'error');
-		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save or edit the subject.', 'error');
 		}
 	} 
 

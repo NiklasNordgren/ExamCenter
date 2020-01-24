@@ -62,15 +62,15 @@ export class CourseFormComponent implements OnInit {
     );
 
     //Get all the academies for the dropdownlist of academies.
-    this.academyService.getAllAcademies().subscribe(responseAcademies => {
+    const sub1 = this.academyService.getAllAcademies().subscribe(responseAcademies => {
       this.academies = responseAcademies;
     });
-    this.subjectService.getAllSubjects().subscribe(responseSubs => {
+    const sub2 = this.subjectService.getAllSubjects().subscribe(responseSubs => {
       this.subjects = responseSubs;
     });
 
     this.dataSource = this.academies;
-
+    this.subscriptions.add(sub1).add(sub2);
   }
   handleId() {
     if (this.id !== 0) {
@@ -142,16 +142,17 @@ export class CourseFormComponent implements OnInit {
     }
   }
   selectedAcademy(academyId: number) {
-    this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
+    const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseSubjects => {
       this.subjects = responseSubjects;
       this.dataSource = this.subjects;
       this.selectedSubjectValue = this.subjects[0].id;
       //     this.selectedSubject(this.selectedSubjectValue);
     });
+    this.subscriptions.add(sub);
   }
 
   selectedSubject(subjectId: number) {
-    this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseCourses => {
+    const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(responseCourses => {
       this.courses = responseCourses;
       if(this.courses.length == 0 ){
         
@@ -161,6 +162,7 @@ export class CourseFormComponent implements OnInit {
       // this.selectedCourse(this.selectedCourseValue);
       }
     });
+    this.subscriptions.add(sub);
   }
   /*
   selectedAcademy(academyId: number) {

@@ -116,12 +116,12 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	onError(error) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
+			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'Error');
 			this.navigator.goToPage('/login');
 		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The name already exists as an admin.', 'error');
+			this.openAcknowledgeDialog('The name already exists as an admin.', 'Error');
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'error');
+			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'Error');
 		}
 	}
 
