@@ -97,11 +97,13 @@ class ApiError {
 
 	toFormattedErrorMessage(): { errorTitle: string; errorMessage: string } {
 		let errorTitle = this.errorType;
-		let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"
-        Errors: `;
-		this.errorMessages.forEach(msg => {
-			errorMessage = errorMessage + msg + "\n";
-		});
+        let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"\n`;
+        if (this.errorMessages.length > 0) {
+            errorMessage += 'Errors: '
+            this.errorMessages.forEach(msg => {
+                errorMessage = errorMessage + msg + "\n";
+            });
+        }
 		errorMessage += `Solution: ${this.errorSolution}`;
 		return { errorTitle, errorMessage };
 	}
