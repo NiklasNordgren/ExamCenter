@@ -150,7 +150,7 @@ export class CourseFormComponent implements OnInit {
     } else if (error.status === 405) {
       this.openAcknowledgeDialog('Check if the name or course code already exists.', 'error');
     } else {
-      this.openAcknowledgeDialog("Something went wrong while trying to save or edit the course.\n\nThe course code may not contain the subject's code", 'error');
+      this.openAcknowledgeDialog("Something went wrong while trying to save or edit the course.\n\nThe course code might not contain the subject's code", 'error');
     }
   }
 
