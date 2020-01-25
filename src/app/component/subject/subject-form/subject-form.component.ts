@@ -64,7 +64,11 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			})
 		);
 	}
-	
+
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+	}
+
 	handleId() {
 		if (this.id == this.createFormId) {
 			this.form.get("academy").setValue(this.academies[0].id);
@@ -78,10 +82,6 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			});
 			this.subscriptions.add(sub);
 		}
-	}
-
-	ngOnDestroy() {
-		this.subscriptions.unsubscribe();
 	}
 
 	onSubmit() {

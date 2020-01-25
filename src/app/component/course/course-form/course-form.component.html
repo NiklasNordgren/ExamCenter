@@ -16,7 +16,7 @@
         <mat-form-field>
             <mat-label>Subject list</mat-label>
             <mat-select formControlName="subject" name="subjects">
-                <mat-option required placeholder="Subject List"
+                <mat-option required (click)="selectedSubject(subject)" placeholder="Subject List"
                     *ngFor="let subject of subjects" [value]="subject.id">
                     {{subject.name}}
                 </mat-option>
@@ -25,7 +25,7 @@
 
         <mat-form-field>
             <mat-label for="courseCode">Course code</mat-label>
-            <input matInput id="courseCode" required type="text" formControlName="courseCode" placeholder="Ex. DVG324, MAG051"
+            <input matInput id="courseCode" required type="text" formControlName="courseCode" placeholder="{{subjectCode}}      Ex. DVG324, MAG051"
                 size="100pt">
         </mat-form-field>
 
