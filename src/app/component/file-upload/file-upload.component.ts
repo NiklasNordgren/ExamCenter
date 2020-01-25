@@ -14,9 +14,8 @@ import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
 import { SettingsService } from '../../service/settings.service';
 
-import { MatTable, MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { MatTable } from '@angular/material';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export interface FileTableItem {
 	tempFileId: number;
@@ -39,7 +38,6 @@ export interface FileTableItem {
 	],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions = new Subscription();
 
 	academies: Academy[] = [];
@@ -92,7 +90,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		private academyService: AcademyService,
 		private subjectService: SubjectService,
 		private courseService: CourseService,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
@@ -167,14 +165,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	}
 
 	showErrorDialog(message: string){
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = "Error";
-		this.dialogRef.componentInstance.contentMessage = message;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+		this.statusMessageService.showErrorMessage('Error', message);
 	}
 
 	fileOverDropZone(e: any): void {

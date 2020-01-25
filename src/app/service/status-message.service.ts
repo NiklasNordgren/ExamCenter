@@ -19,9 +19,7 @@ export class StatusMessageService {
     this.dialogRef.componentInstance.contentMessage = errorMessage;
 
     const sub = this.dialogRef.afterClosed().subscribe(result => {
-      this.dialogRef = null;
-      console.log('DialogRef: ' + this.dialogRef);
-      
+      this.dialogRef = null;      
 		});
 		this.subscriptions.add(sub);
   }
@@ -30,5 +28,6 @@ export class StatusMessageService {
     let config = new MatSnackBarConfig();
     config.duration = duration;
 		this.snackBar.open(successMessage, confirmButtonText, config);
-	}
+  }
+  
 }

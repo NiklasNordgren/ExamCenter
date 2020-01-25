@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AcademyService } from '../../../service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
 import { StatusMessageService } from 'src/app/service/status-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-academy-form',
@@ -68,7 +69,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	
 			const sub = this.service.saveAcademy(this.academy).subscribe(
 				data => this.onSuccess(data),
-				error => this.onError(error)
+				// error => this.onError(error)
 			);
 			this.subscriptions.add(sub);
 		}
@@ -81,14 +82,15 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
 	}
 
-	onError(error) {
+	onError(error: HttpErrorResponse) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
+			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'Error');
 			this.navigator.goToPage('/login');
-		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The name already exists as an academy.', 'error');
+		} else if (error.status === 400) {
+			this.openAcknowledgeDialog(`Failed to add Academy:
+			${JSON.stringify(error.error)}`, 'Error');			
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the academy.', 'error');
+			this.openAcknowledgeDialog('Something went wrong while trying to save the academy.', 'Error');
 		}
 	}
 

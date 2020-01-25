@@ -158,4 +158,3 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
 	}
 }
-

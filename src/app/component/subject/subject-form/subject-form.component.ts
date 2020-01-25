@@ -89,7 +89,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			let subject = new Subject();
 
 			(this.id !== this.createFormId) ? subject.id = this.id : null;
-			
+
 			subject.name = this.form.controls.name.value;
 			subject.code = this.form.controls.code.value;
 			subject.academyId = this.form.controls.academy.value;

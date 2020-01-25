@@ -65,8 +65,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 
 	setExamsByCourseId(courseId: number) {
 		const sub = this.service.getAllExamsByCourseId(courseId).subscribe(
-			exams => this.onSuccess(exams, courseId),
-			error => this.onError(error)
+			exams => this.onSuccess(exams, courseId)
 		);
 
 		this.subscriptions.add(sub);
@@ -81,9 +80,6 @@ export class ExamComponent implements OnInit, OnDestroy {
 				shortDesc: "",
 			});
 		});
-	}
-	onError(error) {
-		this.statusMessageService.showErrorMessage("Error", "An error has occured while loading data.")
 	}
 
 	openPdf(row) {

@@ -101,15 +101,15 @@ export class CourseFormComponent implements OnInit {
     });
     this.subscriptions.add(sub);
   }
- 
+
   selectedAcademy(academyId: number, initialize?: string) {
     const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseResult => {
       this.subjects = responseResult;
-      
+
       if (!(initialize === "init")) {
         this.selectedSubject(this.subjects[0]);
       }
-      
+
     });
     this.subscriptions.add(sub);
   }
@@ -165,4 +165,3 @@ export class CourseFormComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 }
-

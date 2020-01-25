@@ -116,11 +116,9 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 					for (let exam of selectedExams) {
 						exam.unpublished = true;
 					}
-					console.log(selectedExams);
 					
 					dSub = this.examService.publishExams(selectedExams).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
+						data => this.onSuccess(data)
 					);
 			}
 			this.dialogRef = null;
@@ -139,10 +137,6 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		successfulDutyText = successfulContentText.concat(successfulDutyText);
 		this.openAcknowledgeDialog(successfulDutyText, "publish");
 		this.selection.clear();
-	}
-
-	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
 	}
 
 	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
