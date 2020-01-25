@@ -96,17 +96,17 @@ export class CourseFormComponent implements OnInit {
       });
       this.subjectCode = subject.code;
 
-      this.selectedAcademy(subject.academyId, "init");
+      this.selectedAcademy(subject.academyId, true);
 
     });
     this.subscriptions.add(sub);
   }
 
-  selectedAcademy(academyId: number, initialize?: string) {
+  selectedAcademy(academyId: number, isNotInitialized?: boolean) {
     const sub = this.subjectService.getAllSubjectsByAcademyId(academyId).subscribe(responseResult => {
       this.subjects = responseResult;
 
-      if (!(initialize === "init")) {
+      if (!isNotInitialized) {
         this.selectedSubject(this.subjects[0]);
       }
 
@@ -118,6 +118,7 @@ export class CourseFormComponent implements OnInit {
     this.form.get("subject").setValue(subject.id)
     this.subjectCode = subject.code;
   }
+  
   onSubmit() {
     if (this.form.valid) {
       let course = new Course();
@@ -127,7 +128,6 @@ export class CourseFormComponent implements OnInit {
       course.name = this.form.controls.name.value;
       course.courseCode = this.form.controls.courseCode.value;
       course.subjectId = this.form.controls.subject.value;
-      console.log(course);
 
       const sub = this.courseService.saveCourse(course).subscribe(
         data => this.onSuccess(data),
