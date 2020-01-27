@@ -1,55 +1,55 @@
-.form-entity{
-    margin: 5pt;
+.form-entity {
+	margin: 5pt;
 }
 .center {
-    display: flex;
-    justify-content: center;
-  }
-.login-whole-screen{
-    margin: auto;
-    width: 70%;
-    max-width: 350pt;
-    padding: 10px;
-    margin-top: 30pt;
+	display: flex;
+	justify-content: center;
+}
+.login-whole-screen {
+	margin: auto;
+	width: 70%;
+	max-width: 350pt;
+	padding: 10px;
+	margin-top: 30pt;
 }
 .container {
-    display: flex; /* or inline-flex */
-    justify-content: center;
-  }
-  .wrapper{
-    margin: auto;
-    width: 70%;
-    max-width: 350pt;
-    padding: 10px;
-    margin-top: 30pt;
-    display: flex;
-    flex-direction: column;
-}
-button{
-    max-width: 300pt;
-    align-self: center;
+	display: flex; /* or inline-flex */
+	justify-content: center;
 }
 
+.login-wrapper {
+	margin: auto;
+	width: 70%;
+	max-width: 350pt;
+	padding: 10px;
+	margin-top: 30pt;
+	display: flex;
+	flex-direction: column;
+}
+
+button {
+	max-width: 300pt;
+	align-self: center;
+}
 
 mat-form-field input {
-    font-size: 20px;
-    align-self: center;
-
+	font-size: 20px;
+	align-self: center;
 }
 
 h2 {
-    font-size: 25px;
-    align-self: center;
+	font-size: 25px;
+	align-self: center;
 }
-.header{
-    align-self: center;
-    margin-bottom: 50pt;
+.header {
+	align-self: center;
+	margin-bottom: 50pt;
 }
-.loginbtn{
-    font-size: 15pt;
-    padding-bottom: 2pt;
-    padding-top: 2pt;
+.loginbtn {
+	font-size: 15pt;
+	padding-bottom: 2pt;
+	padding-top: 2pt;
 }
-.icon{
-    font-size: 23pt;
+.icon {
+	font-size: 23pt;
 }

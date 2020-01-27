@@ -4,4 +4,5 @@ export class Settings {
 	homePageHtml: string;
 	aboutPageHtml: string;
 	unpublishTimeYears: number;
+	created: Date;
 }

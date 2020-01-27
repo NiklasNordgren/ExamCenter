@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Settings } from './../model/settings.model';
-import { Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,11 +8,27 @@ import { Observable } from 'rxjs';
 export class SettingsService {
 	constructor(private http: HttpClient) {}
 
-	getSettings() {
-		return this.http.get<Observable<Settings>>('/api/settings/');
+	getCurrentSettings() {
+		return this.http.get<Settings>('/api/settings/');
 	}
 
-	updateSettings(settings: Settings) {
-		return this.http.patch<Observable<Settings>>('/api/settings/', settings);
+	getTenLatestSettings() {
+		return this.http.get<Settings[]>('/api/settings/tenLatest');
+	}
+
+	postSettings(settings: Settings) {
+		return this.http.post<Settings>('/api/settings/', settings);
+	}
+
+	getAboutPageHtml() {
+		return this.http.get('/api/settings/about', {responseType: 'text'});
+	}
+
+	getHomePageHtml() {
+		return this.http.get('/api/settings/home', {responseType: 'text'});
+	}
+
+	getUnpublishTime() {
+		return this.http.get('/api/settings/unpublishTime', {responseType: 'text'});
 	}
 }

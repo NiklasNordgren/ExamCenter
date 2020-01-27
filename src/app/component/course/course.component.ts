@@ -20,20 +20,21 @@ export class CourseComponent implements OnInit, OnDestroy {
 	name = 'Course';
 	data = [];
 	url = '/exams/course/';
+	subjectId;
 	icon: IconDefinition = faChevronRight;
 	actionDescription = 'Navigate to selected course';
 
 	constructor(
 		private route: ActivatedRoute,
 		private service: CourseService,
-		private navigator: Navigator
+		public navigator: Navigator
 	) {}
 
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const subjectId = parseInt(params.get('id'), 10);
-				this.setCoursesBySubjectId(subjectId);
+				this.subjectId = parseInt(params.get('id'), 10);
+				this.setCoursesBySubjectId(this.subjectId);
 			})
 		);
 	}

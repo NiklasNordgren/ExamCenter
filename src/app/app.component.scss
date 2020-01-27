@@ -9,12 +9,19 @@
 	color: white;
 }
 .logo {
-	margin-left: 100%;
-	min-width: 70pt;
+	width: 70pt;
 }
+
+.link {
+	padding-left: 70pt;
+}
+
+.link-small {
+	padding-left: 10pt;
+}
+
 .logo-small {
-	margin-left: 10pt;
-	min-width: 70pt;
+	width: 70pt;
 }
 .right-container {
 	margin-right: 40pt;

@@ -9,26 +9,21 @@ import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 })
 export class ListComponent implements OnInit {
 	@Input() data: any[];
-	@Input() shortHeader: string;
+	@Input() shortHeader: string = "";
 	@Input() name: string;
 	@Input() icon: IconDefinition;
 	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
 
-	private columnsToDisplay: string[] = [];
+	columnsToDisplay: string[] = [];
 
 	constructor(private router: Router) {}
 
 	ngOnInit() {
 		if (this.shortHeader && this.shortHeader.length > 0) {
 			this.columnsToDisplay.push(this.shortHeader);
-			console.log('ShortHeader added');
 		}
 		this.columnsToDisplay.push(this.name);
-		console.log("data: ");
-		console.log(this.data);
-		
-		
 	}
 
 	rowClicked(clickedRow) {

@@ -1,14 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AddressFormComponent } from './address-form/address-form.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { TableComponent } from './component/table/table.component';
-import { TreeComponent } from './tree/tree.component';
-import { HomeComponent } from './home/home.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { AcademyComponent } from './component/academy/academy.component';
-import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
+import { AdminHandlerComponent } from "./component/admin/admin-handler/admin-handler.component";
 
 import { Academy } from './model/academy.model';
 import { CourseComponent } from './component/course/course.component';
@@ -17,20 +11,20 @@ import { Subject } from 'rxjs';
 import { SubjectComponent } from './component/subject/subject.component';
 import { Exam } from './model/exam.model';
 import { ExamComponent } from './component/exam/exam.component';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from './component/about/about.component';
 import { LoginComponent } from './component/login/login.component';
-import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
-import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
-import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
-import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
-import { AcademyFormComponent } from './component/academy-form/academy-form.component';
+import { AcademyHandlerComponent } from './component/academy/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy/academy-form/academy-form.component';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { AdminGuard } from './guard/admin.guard';
-import { SearchResultComponent } from './component/search-result/search-result.component';
-import { CourseFormComponent } from './component/course-form/course-form.component';
-import { SubjectFormComponent } from './component/subject-form/subject-form.component';
-import { ExamFormComponent } from './component/exam-form/exam-form.component';
-import { AdminFormComponent } from './component/admin-form/admin-form.component';
+import { SearchResultComponent } from './component/search/search-result/search-result.component';
+import { CourseFormComponent } from './component/course/course-form/course-form.component';
+import { SubjectFormComponent } from './component/subject/subject-form/subject-form.component';
+import { ExamFormComponent } from './component/exam/exam-form/exam-form.component';
+import { AdminFormComponent } from './component/admin/admin-form/admin-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
 
 const routes: Routes = [
@@ -73,8 +67,7 @@ const routes: Routes = [
 		data: Exam
 	},
 	{
-		path: 'home',
-		component: HomeComponent,
+		path: 'admin',
 		canActivate: [AdminGuard],
 		children: [
 			{

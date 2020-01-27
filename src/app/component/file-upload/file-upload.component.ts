@@ -9,14 +9,17 @@ import { Academy } from '../../model/academy.model';
 import { Subject } from '../../model/subject.model';
 import { Course } from '../../model/course.model';
 import { Subscription } from 'rxjs';
+
 import { SubjectService } from '../../service/subject.service';
 import { CourseService } from '../../service/course.service';
+import { SettingsService } from '../../service/settings.service';
+
 import { MatTable } from '@angular/material';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export interface FileTableItem {
 	tempFileId: number;
 	name: string;
-	size: string;
 	status: string;
 	autoMatchCourse: string;
 	autoMatchDate: string;
@@ -35,7 +38,6 @@ export interface FileTableItem {
 	],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
-
 	subscriptions = new Subscription();
 
 	academies: Academy[] = [];
@@ -77,22 +79,34 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	faTimes = faTimes;
 
 	dataSource: FileTableItem[] = [];
-	displayedColumns: string[] = ['name', 'size', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
+	displayedColumns: string[] = ['name', 'autoMatchCourse', 'autoMatchDate', 'status', 'actions'];
+
+	unpublishTime: number;
 
 	constructor(
 		private changeDetectorRef: ChangeDetectorRef,
+		private settingsService: SettingsService,
 		private examService: ExamService,
 		private academyService: AcademyService,
 		private subjectService: SubjectService,
-		private courseService: CourseService
+		private courseService: CourseService,
+		private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
+		this.getUnpublishYear();
 		this.getAllAcademies();
 		this.getAllSubjects();
 		this.getAllCourses();
 		this.getAllExams();
 		this.initUploader();
+	}
+
+	getUnpublishYear() {
+		const sub = this.settingsService.getUnpublishTime().subscribe(time => {
+			this.unpublishTime = new Number(time).valueOf();
+		});
+		this.subscriptions.add(sub);
 	}
 
 	initUploader(): void {
@@ -106,19 +120,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 				fileItem.withCredentials = false;
 				fileItem.index = this.tempFileId;
 
-				this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, size: Math.round(fileItem.file.size / 1000) + ' kB', status: '', autoMatchCourse: '', autoMatchDate: '' });
+				this.dataSource = this.dataSource.concat({ tempFileId: this.tempFileId, name: fileItem.file.name, status: '', autoMatchCourse: '', autoMatchDate: '' });
 				this.changeDetectorRef.detectChanges();
 				const row = this.dataSource.find(x => x.tempFileId === this.tempFileId);
 				this.setAutoMatchedCourseStatus(row);
 				this.setAutoMatchedDateStatus(row);
 				this.tempFileId++;
-				console.log('Succesfully added file: ' + fileItem.file.name + ' to the queue.');
 			} else {
 				if (this.isExamInUploadQueue(fileItem.file.name)) {
-					alert('Exam ' + fileItem.file.name + ' already exists in the upload queue.');
+					this.showErrorDialog('Exam ' + fileItem.file.name + ' already exists in the upload queue.');
 				}
 				if (this.isExamInDatabase(fileItem.file.name)) {
-					alert('Exam ' + fileItem.file.name + ' already exists in the database.');
+					this.showErrorDialog('Exam ' + fileItem.file.name + ' already exists in the database.');
 				}
 				this.removeFromQueue(fileItem);
 			}
@@ -127,20 +140,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 		this.uploader.onWhenAddingFileFailed = (file) => {
 			if (!this.isFileSizeValid(file.size)) {
-				alert('Max file size is 5MB.');
+				this.showErrorDialog('Max file size is 5MB.');
 			}
-			console.log('Failed to add file: ' + file.name + ' to the queue.');
 		};
 
 		this.uploader.onCompleteItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
-			console.log('Item: ' + fileItem.file.name);
-			console.log('Status: ' + status);
-			console.log('Response: ' + response);
-
 			if (status === 200) {
 				const exam = this.examsToUpload.find(x => x.filename === fileItem.file.name);
 				const sub = this.examService.saveExam(exam).subscribe(e => {
-					console.log(e);
 					this.dataSource.find(x => x.tempFileId === exam.tempId).status = 'Uploaded';
 					this.removeFromExamsToUpload(exam.tempId);
 					exam.uploaded = true;
@@ -153,8 +160,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
 		this.uploader.onErrorItem = (fileItem: FileItem, response: any, status: any, headers: any) => {
 			this.dataSource.find(x => x.name === fileItem.file.name).status = 'Upload error';
-			alert('Could not upload file.');
+			this.showErrorDialog('Could not upload file.');
 		};
+	}
+
+	showErrorDialog(message: string){
+		this.statusMessageService.showErrorMessage('Error', message);
 	}
 
 	fileOverDropZone(e: any): void {
@@ -244,7 +255,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 		if (this.activeExam) {
 			const convertedDate = new Date(examDate.getTime() - (examDate.getTimezoneOffset() * 60000));
 			this.activeExam.date = convertedDate;
-			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + 5, convertedDate.getMonth(), convertedDate.getDate());
+			this.activeExam.unpublishDate = new Date(convertedDate.getFullYear() + this.unpublishTime, convertedDate.getMonth(), convertedDate.getDate());
 		}
 	}
 

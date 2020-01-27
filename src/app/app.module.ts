@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -29,68 +29,52 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LogoutComponent } from './logout/logout.component';
+import { AdminComponent } from './component/admin/admin.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
-import { SelectExamPropertiesComponent } from './component/select-exam-properties/select-exam-properties.component';
+import { SelectExamPropertiesComponent } from './component/file-upload/select-exam-properties/select-exam-properties.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { OutboxComponent } from './component/outbox/outbox.component';
 import { ConfirmationDialogComponent } from './component/confirmation-dialog/confirmation-dialog.component';
-import { NavComponent } from './nav/nav.component';
-import { AddressFormComponent } from './address-form/address-form.component';
-import { TableComponent } from './component/table/table.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { TreeComponent } from './tree/tree.component';
-import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { TestSwipeComponent } from './component/test-swipe/test-swipe.component';
-import { AdminHandlerComponent } from "./component/admin-handler/admin-handler.component";
-import { NavHorizComponent } from './nav-horiz/nav-horiz.component';
+import { AdminHandlerComponent } from "./component/admin/admin-handler/admin-handler.component";
 import { ListComponent } from './component/list/list.component';
 import { AcademyComponent } from './component/academy/academy.component';
 import { SubjectComponent } from './component/subject/subject.component';
 import { CourseComponent } from './component/course/course.component';
 import { ExamComponent } from './component/exam/exam.component';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from './component/about/about.component';
 import { LoginComponent } from './component/login/login.component';
-import { AcademyHandlerComponent } from './component/academy-handler/academy-handler.component';
-import { SubjectHandlerComponent } from './component/subject-handler/subject-handler.component';
-import { CourseHandlerComponent } from './component/course-handler/course-handler.component';
-import { ExamHandlerComponent } from './component/exam-handler/exam-handler.component';
-import { AcademyFormComponent } from './component/academy-form/academy-form.component';
-import { SearchResultComponent } from './component/search-result/search-result.component';
+import { AcademyHandlerComponent } from './component/academy/academy-handler/academy-handler.component';
+import { SubjectHandlerComponent } from './component/subject/subject-handler/subject-handler.component';
+import { CourseHandlerComponent } from './component/course/course-handler/course-handler.component';
+import { ExamHandlerComponent } from './component/exam/exam-handler/exam-handler.component';
+import { AcademyFormComponent } from './component/academy/academy-form/academy-form.component';
+import { SearchResultComponent } from './component/search/search-result/search-result.component';
 import { SearchComponent } from './component/search/search.component';
-import { AdminFormComponent } from './component/admin-form/admin-form.component';
-import { SubjectFormComponent } from './component/subject-form/subject-form.component';
-import { ExamFormComponent } from './component/exam-form/exam-form.component';
+import { AdminFormComponent } from './component/admin/admin-form/admin-form.component';
+import { SubjectFormComponent } from './component/subject/subject-form/subject-form.component';
+import { ExamFormComponent } from './component/exam/exam-form/exam-form.component';
 import { AdminGuard } from './guard/admin.guard';
-import { CourseFormComponent } from './component/course-form/course-form.component';
+import { CourseFormComponent } from './component/course/course-form/course-form.component';
 import { SettingsComponent } from './component/settings/settings.component';
 import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { NavigatorComponent } from './component/navigator/navigator.component';
+import { GlobalErrorHandler } from './util/error-handler';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		NavComponent,
-		AddressFormComponent,
-		TableComponent,
-		DashboardComponent,
-		TreeComponent,
-		DragDropComponent,
 		LoginComponent,
-		HomeComponent,
-		LogoutComponent,
+		AdminComponent,
 		FileUploadComponent,
-		NavHorizComponent,
 		ListComponent,
 		AcademyComponent,
 		SubjectComponent,
@@ -106,7 +90,6 @@ import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dia
 		SelectExamPropertiesComponent,
 		OutboxComponent,
 		ConfirmationDialogComponent,
-		TestSwipeComponent,
 		SearchResultComponent,
 		SearchComponent,
 		AdminFormComponent,
@@ -114,7 +97,8 @@ import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dia
 		ExamFormComponent,
 		CourseFormComponent,
 		SettingsComponent,
-		ConfirmationAckDialogComponent
+		ConfirmationAckDialogComponent,
+		NavigatorComponent
 	],
 	imports: [
 		BrowserModule,
@@ -138,8 +122,8 @@ import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dia
 		MatSortModule,
 		MatGridListModule,
 		MatMenuModule,
-		MatTreeModule,
 		MatProgressBarModule,
+		MatSnackBarModule,
 		DragDropModule,
 		FileUploadModule,
 		FontAwesomeModule,
@@ -156,7 +140,8 @@ import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dia
 	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
-		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
+		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
 	],
 	bootstrap: [AppComponent]
 })

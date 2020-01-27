@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
 import {
@@ -28,15 +28,14 @@ export class SubjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private service: SubjectService,
-		private router: Router,
-		private navigator: Navigator
+		public navigator: Navigator
 	) {}
 
 	ngOnInit() {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
-				const academyId = parseInt(params.get('id'), 10);
-				this.setSubjetsByAcademyId(academyId);
+				this.academyId = parseInt(params.get('id'), 10);
+				this.setSubjetsByAcademyId(this.academyId);
 			})
 		);
 	}
@@ -60,4 +59,5 @@ export class SubjectComponent implements OnInit, OnDestroy {
 			});
 		this.subscriptions.add(sub);
 	}
+
 }
