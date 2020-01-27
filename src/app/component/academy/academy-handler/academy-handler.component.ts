@@ -58,10 +58,10 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " academies";
 
-		return dutyText = dutyText.concat(contentText);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
@@ -109,9 +109,9 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " academy" : " academies") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.openAcknowledgeDialog(successfulServiceText, "publish");
 		this.selection.clear();
 	}
 

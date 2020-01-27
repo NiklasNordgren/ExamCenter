@@ -25,7 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class CourseHandlerComponent implements OnInit, OnDestroy {
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ['select', 'name', 'edit'];
+	displayedColumns: string[] = ['select', 'name', 'courseCode', 'edit'];
 	academies = [];
 	subjects = [];
 	courses = [];
@@ -105,10 +105,10 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " courses";
 
-		return dutyText = dutyText.concat(contentText);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 
@@ -148,9 +148,9 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 				? " course"
 				: " courses")
 			: "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.openAcknowledgeDialog(successfulServiceText, "publish");
 		this.selection.clear();
 	}
 
