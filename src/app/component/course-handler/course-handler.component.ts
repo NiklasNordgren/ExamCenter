@@ -35,8 +35,13 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	public selectedSubjectValue: number;
 	isUnpublishButtonDisabled = true;
 
-  constructor(private academyService: AcademyService, private subjectService: SubjectService,
-    private courseService: CourseService, private navigator: Navigator){}
+  constructor(
+	private academyService: AcademyService, 
+	private subjectService: SubjectService,
+	private courseService: CourseService, 
+	private navigator: Navigator
+	){}
+
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()
@@ -99,5 +104,8 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	}
 	onError(error) {
 		alert('Something went wrong wile trying to unpublish courses.');
+	}
+	isAnyCheckboxSelected() {
+		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
 }

@@ -67,19 +67,21 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
-		this.dataSource = [];
-		const sub = this.academyService.getAllAcademies().subscribe(responseResult => {
-			this.academies = responseResult;
-			this.selectedAcademyValue = this.academies[0].id;
-			this.selectedAcademy(this.selectedAcademyValue);
-		});
+			const sub = this.academyService
+			.getAllAcademies()
+			.subscribe(responseAcademies => {
+				this.academies = responseAcademies;
+				this.selectedAcademyValue = this.academies[0].id;
+				this.selectedAcademy(this.selectedAcademyValue);
+				this.dataSource = this.academies;
+			});
+
 		this.subscriptions.add(sub);
-	}
+		}
 
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
 	}
-
 
 	selectedAcademy(academyId: number) {
 		const sub = this.subjectService
@@ -91,16 +93,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 			});
 		this.subscriptions.add(sub);
 	}
-/*
-	selectedAcademy(id: number) {
-		const sub = this.subjectService.getAllSubjectsByAcademyId(id).subscribe(responseResult => {
-			this.subjects = responseResult;
-			this.selectedSubjectValue = this.subjects[0].id;
-			this.selectedSubject(this.selectedSubjectValue);
-		});
-		this.subscriptions.add(sub);
-	}
-*/
+	
+
 	selectedSubject(id: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
 			this.courses = responseResult;
@@ -112,6 +106,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	selectedCourse(id: number) {
 		const sub = this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
 			this.exams = responseResult;
+			this.dataSource = this.exams;
 		});
 		this.subscriptions.add(sub);
 	}
