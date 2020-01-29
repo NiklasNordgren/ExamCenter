@@ -10,6 +10,8 @@ import { Course } from 'src/app/model/course.model';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { StatusMessageService } from 'src/app/service/status-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface CustomBooleanArray {
 	value: boolean;
@@ -37,8 +39,13 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	courses: Course[];
 
 	constructor(
-		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ExamService, private courseService: CourseService,
-		public navigator: Navigator, private dialog: MatDialog
+		private formBuilder: FormBuilder, 
+		private route: ActivatedRoute, 
+		private service: ExamService, 
+		private courseService: CourseService,
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
@@ -96,28 +103,16 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/admin/exam-handler');
-		this.openAcknowledgeDialog(data.filename + " was updated", 'success');
+		this.statusMessageService.showSuccessMessage(data.name + " was " + 
+			((this.id == this.createFormId) ? "created" : "updated"));
 	}
 
-	onError(error) {
+	onError(error: HttpErrorResponse) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not authorized. Please log in and try again', 'error');
-			this.navigator.goToPage('/login');
-		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The filename already exists as an exam.', 'error');
+			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
+			this.navigator.goToPage('/login');	
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the exam.', 'error');
+			throw(error);
 		}
-	}
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
 	}
 }

@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from 'src/app/service/status-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-academy-handler',
@@ -26,7 +28,11 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
-	constructor(private service: AcademyService, public navigator: Navigator, private dialog: MatDialog) {}
+	constructor(
+		private service: AcademyService, 
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService) {}
 
 	ngOnInit() {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
@@ -64,17 +70,6 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		return serviceText = serviceText.concat(contentText);
 	}
 
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-	}
-
 	openDialog() {
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
@@ -89,7 +84,8 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 						academy.unpublished = true;
 					}
 					dSub = this.service.unpublishAcademies(selectedAcademies).subscribe(
-						data => this.onSuccess(data)
+						data => this.onSuccess(data),
+						error => this.onError(error)
 					);
 				
 				this.subscriptions.add(dSub);
@@ -111,8 +107,12 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " academy" : " academies") : "";
 		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulServiceText = successfulContentText.concat(successfulServiceText);
-		this.openAcknowledgeDialog(successfulServiceText, "publish");
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
+	}
+
+	onError(error: HttpErrorResponse) {
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 
 }

@@ -69,7 +69,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	
 			const sub = this.service.saveAcademy(this.academy).subscribe(
 				data => this.onSuccess(data),
-				// error => this.onError(error)
+			 	error => this.onError(error)
 			);
 			this.subscriptions.add(sub);
 		}
@@ -79,22 +79,16 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/admin/academy-handler');
-		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
+		this.statusMessageService.showSuccessMessage(data.name + " was " + 
+		((this.id == this.createFormId) ? "created" : "updated"));
 	}
 
 	onError(error: HttpErrorResponse) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'Error');
-			this.navigator.goToPage('/login');
-		} else if (error.status === 400) {
-			this.openAcknowledgeDialog(`Failed to add Academy:
-			${JSON.stringify(error.error)}`, 'Error');			
+			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
+			this.navigator.goToPage('/login');	
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the academy.', 'Error');
+			throw(error);
 		}
-	}
-
-	openAcknowledgeDialog(errorMessage: string, typeText: string) {
-		this.statusMessageService.showErrorMessage(typeText, errorMessage);
 	}
 }
