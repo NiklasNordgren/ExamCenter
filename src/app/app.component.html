@@ -41,12 +41,12 @@
             </div>
         </span>
         <span>
-            <div class="search-box">
+            <div class="search-box" *ngIf="!isRouteLogin()">
                 <app-search></app-search>
             </div>
         </span>
     </mat-toolbar-row>
-    <mat-toolbar-row class="xs-search-box row">
+    <mat-toolbar-row class="xs-search-box row" *ngIf="!isRouteLogin()">
         <app-search></app-search>
     </mat-toolbar-row>
 </mat-toolbar>
