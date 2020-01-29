@@ -18,9 +18,15 @@ body {
   width: 50%;
 }
 
+.mat-snack-bar-container {
+  background-color: white;
+  border: solid 2px green;
+}
+
 simple-snack-bar span {
-  margin:auto;
+  margin: auto;
   text-align: center;
+  color: black;
 }
 
 .wrapper {
