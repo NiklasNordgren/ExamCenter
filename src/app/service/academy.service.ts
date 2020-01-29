@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AcademyService {
 
-	private academyUrl = 'backend:9000/academies/';
+	private academyUrl = 'backend/academies/';
 
 	constructor(private http: HttpClient) { }
 
