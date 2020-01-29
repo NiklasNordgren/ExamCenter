@@ -61,8 +61,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					for (let user of this.selection.selected) {
-						const dSub = this.service.deleteUser(user.id).subscribe(result => {
-						});
+						const dSub = this.service.deleteUser(user.id).subscribe();
 						this.subscriptions.add(dSub);
 						this.users = this.users.filter(x => x.id !== user.id);
 					}

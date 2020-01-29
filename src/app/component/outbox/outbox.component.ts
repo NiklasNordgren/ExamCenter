@@ -140,9 +140,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Exam();
 		} else {
 			output = new CustomExam();
-			this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
+			this.subscriptions.add(
+				this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
 				output.courseName = responseCourse.name;
-			});
+			}));
 		}
 		output.id = input.id;
 		output.filename = input.filename;
@@ -159,9 +160,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Course();
 		} else {
 			output = new CustomCourse();
-			this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
+			this.subscriptions.add(
+				this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
 				output.subjectName = responseSubject.name;
-			});
+			}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -177,10 +179,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Subject();
 		} else {
 			output = new CustomSubject();
-			const sub = this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
+			this.subscriptions.add(
+				this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
 				output.academyName = responseAcademy.name;
-			});
-			this.subscriptions.add(sub);
+			}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -291,8 +293,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	publishExam(element: CustomExam) {
 		let exam = this.examConverter(element);
-		this.examService.publishExam(exam).subscribe(data => {
-		});
+		this.subscriptions.add(
+			this.examService.publishExam(exam).subscribe(data => {
+		}));
 		this.exams = this.exams.filter(x => x.id != exam.id);
 	}
 
@@ -305,8 +308,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishCourse(element: CustomCourse) {
 		let course = this.courseConverter(element);
 		course.unpublished = false;
-		const sub = this.courseService.publishCourse(course).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.courseService.publishCourse(course).subscribe()
+		);
 		this.courses = this.courses.filter(x => x.id != course.id); 
 	}
 
@@ -319,8 +323,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishSubject(element: CustomSubject) {
 		let subject = this.subjectConverter(element);
 		subject.unpublished = false;
-		const sub = this.subjectService.publishSubject(subject).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.subjectService.publishSubject(subject).subscribe()
+		);
 		this.subjects = this.subjects.filter(x => x.id != subject.id); 
 	}
 	
@@ -333,8 +338,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishAcademy(element: CustomAcademy) {
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
-		const sub = this.academyService.unpublishAcademy(academy).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.academyService.unpublishAcademy(academy).subscribe()
+		);
 		this.academies = this.academies.filter(x => x.id != academy.id); 
 	}
 	
@@ -345,8 +351,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	deleteExam(element: CustomExam) {
-		const sub = this.examService.deleteExam(element.id).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.examService.deleteExam(element.id).subscribe()
+		);
 		this.exams = this.exams.filter(x => x.id != element.id);
 	}
 
@@ -356,13 +363,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			exams.push(this.examConverter(customExam));
 			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
-		const sub = this.examService.deleteExams(exams).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.examService.deleteExams(exams).subscribe()
+		);
 	}
 
 	deleteCourse(element: CustomCourse) {
-		const sub = this.courseService.deleteCourse(element.id).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.courseService.deleteCourse(element.id).subscribe()
+		);
 		this.courses = this.courses.filter(x => x.id != element.id);
 	}
 	
@@ -372,13 +381,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			courses.push(this.courseConverter(customCourse));
 			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
-		const sub = this.courseService.deleteCourses(courses).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.courseService.deleteCourses(courses).subscribe()
+		);
 	}
 
 	deleteSubject(element: CustomSubject) {
-		const sub = this.subjectService.deleteSubject(element.id).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.subjectService.deleteSubject(element.id).subscribe()
+		);
 		this.subjects = this.subjects.filter(x => x.id != element.id);
 	}
 	
@@ -388,13 +399,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			subjects.push(this.courseConverter(customSubject));
 			this.courses = this.courses.filter(x => x.id != customSubject.id);
 		}
-		const sub = this.subjectService.deleteSubjects(subjects).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.subjectService.deleteSubjects(subjects).subscribe()
+		);
 	}
 
 	deleteAcademy(element: CustomAcademy) {
-		const sub = this.academyService.deleteAcademy(element.id).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.academyService.deleteAcademy(element.id).subscribe()
+		);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}
 	
@@ -404,8 +417,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			academies.push(this.courseConverter(CustomAcademy));
 			this.courses = this.courses.filter(x => x.id != customAcademy.id);
 		}
-		const sub = this.academyService.deleteAcademies(academies).subscribe();
-		this.subscriptions.add(sub);
+		this.subscriptions.add(
+			this.academyService.deleteAcademies(academies).subscribe()
+		);
 	}
 
 	isAllExamsSelected() {
