@@ -177,9 +177,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Subject();
 		} else {
 			output = new CustomSubject();
-			this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
+			const sub = this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
 				output.academyName = responseAcademy.name;
 			});
+			this.subscriptions.add(sub);
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -304,8 +305,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishCourse(element: CustomCourse) {
 		let course = this.courseConverter(element);
 		course.unpublished = false;
-		this.courseService.publishCourse(course).subscribe(data => {
-		});
+		const sub = this.courseService.publishCourse(course).subscribe();
+		this.subscriptions.add(sub);
 		this.courses = this.courses.filter(x => x.id != course.id); 
 	}
 
@@ -318,8 +319,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishSubject(element: CustomSubject) {
 		let subject = this.subjectConverter(element);
 		subject.unpublished = false;
-		this.subjectService.publishSubject(subject).subscribe(data => {
-		});
+		const sub = this.subjectService.publishSubject(subject).subscribe();
+		this.subscriptions.add(sub);
 		this.subjects = this.subjects.filter(x => x.id != subject.id); 
 	}
 	
@@ -332,8 +333,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishAcademy(element: CustomAcademy) {
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
-		this.academyService.unpublishAcademy(academy).subscribe(data => {
-		});
+		const sub = this.academyService.unpublishAcademy(academy).subscribe();
+		this.subscriptions.add(sub);
 		this.academies = this.academies.filter(x => x.id != academy.id); 
 	}
 	
@@ -344,47 +345,67 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	deleteExam(element: CustomExam) {
-		this.examService.deleteExam(element.id);
+		const sub = this.examService.deleteExam(element.id).subscribe();
+		this.subscriptions.add(sub);
 		this.exams = this.exams.filter(x => x.id != element.id);
 	}
 
 	deleteExams() {
+		let exams: Exam[] = [];
 		for (let customExam of this.examSelection.selected) {
-			this.deleteExam(customExam);
+			exams.push(this.examConverter(customExam));
+			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
+		const sub = this.examService.deleteExams(exams).subscribe();
+		this.subscriptions.add(sub);
 	}
 
 	deleteCourse(element: CustomCourse) {
-		this.courseService.deleteCourse(element.id);
+		const sub = this.courseService.deleteCourse(element.id).subscribe();
+		this.subscriptions.add(sub);
 		this.courses = this.courses.filter(x => x.id != element.id);
 	}
 	
 	deleteCourses() {
+		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
-			this.deleteCourse(customCourse);
+			courses.push(this.courseConverter(customCourse));
+			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
+		const sub = this.courseService.deleteCourses(courses).subscribe();
+		this.subscriptions.add(sub);
 	}
 
 	deleteSubject(element: CustomSubject) {
-		this.subjectService.deleteSubject(element.id);
+		const sub = this.subjectService.deleteSubject(element.id).subscribe();
+		this.subscriptions.add(sub);
 		this.subjects = this.subjects.filter(x => x.id != element.id);
 	}
 	
 	deleteSubjects() {
+		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
-			this.deleteSubject(customSubject);
+			subjects.push(this.courseConverter(customSubject));
+			this.courses = this.courses.filter(x => x.id != customSubject.id);
 		}
+		const sub = this.subjectService.deleteSubjects(subjects).subscribe();
+		this.subscriptions.add(sub);
 	}
 
 	deleteAcademy(element: CustomAcademy) {
-		this.academyService.deleteAcademy(element.id);
+		const sub = this.academyService.deleteAcademy(element.id).subscribe();
+		this.subscriptions.add(sub);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}
 	
 	deleteAcademies() {
-		for (let academy of this.academySelection.selected) {
-			this.deleteAcademy(academy);
+		let academies : Academy[] = [];
+		for (let customAcademy of this.academySelection.selected) {
+			academies.push(this.courseConverter(CustomAcademy));
+			this.courses = this.courses.filter(x => x.id != customAcademy.id);
 		}
+		const sub = this.academyService.deleteAcademies(academies).subscribe();
+		this.subscriptions.add(sub);
 	}
 
 	isAllExamsSelected() {

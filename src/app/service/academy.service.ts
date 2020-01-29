@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Academy } from '../model/academy.model';
 import { Observable } from 'rxjs';
 
@@ -36,11 +36,20 @@ export class AcademyService {
 	}
 
 	deleteAcademy(id: number) {
-		return this.http.delete('/api/academies/' + id).subscribe(data => {
-		});
+		return this.http.delete('/api/academies/' + id);
 	}
 
-	private setAcademiesIsUnpublished( academies: Academy[], isUnPublished: boolean) {
+	deleteAcademies(academies: Academy[]) {
+		const options = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			body: academies
+		};
+		return this.http.delete('/api/subjects/', options);
+	}
+
+	private setAcademiesIsUnpublished(academies: Academy[], isUnPublished: boolean) {
 		academies.forEach(academy => {
 			academy.unpublished = isUnPublished;
 		});
