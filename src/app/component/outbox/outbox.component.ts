@@ -198,41 +198,41 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	
 
-	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
+	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, service: string) {
 
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
 		contentText = contentText.concat((courseAmount !== 0) ? "\n" + courseAmount + (courseAmount == 1 ? " course" : " courses") : "");
 		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
 		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academy" : " academies") : "");
 
-		let dutyText = (contentText.length !== 0) ? "Are you sure you want to " + duty + "\n": "";
-		return dutyText = dutyText.concat(contentText);
+		let serviceText = (contentText.length !== 0) ? "Are you sure you want to " + service + "\n": "";
+		return serviceText = serviceText.concat(contentText);
 	}
 
-	openSelectionDialog(duty: string) {
+	openSelectionDialog(service: string) {
 		let amountExamsSelected = this.examSelection.selected.length;
 		let amountCoursesSelected = this.courseSelection.selected.length;
 		let amountSubjectsSelected = this.subjectSelection.selected.length;
 		let amountAcademiesSelected = this.academySelection.selected.length;
 			
-		let dutyText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
+		let serviceText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, service);
 
 		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
 			this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 			});
 			this.dialogRef.componentInstance.titleMessage = "confirm";
-			this.dialogRef.componentInstance.contentMessage = dutyText;
-			this.dialogRef.componentInstance.confirmBtnText = duty;
+			this.dialogRef.componentInstance.contentMessage = serviceText;
+			this.dialogRef.componentInstance.confirmBtnText = service;
 			
 			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
-					if (duty == "publish") {
+					if (service == "publish") {
 						(amountExamsSelected !== 0) ? this.publishExams() : "";
 						(amountCoursesSelected !== 0) ? this.publishCourses() : "";
 						(amountSubjectsSelected !== 0) ? this.publishSubjects() : "";
 						(amountAcademiesSelected !== 0) ? this.publishAcademies() : "";
 						
-					} else if (duty == "delete"){
+					} else if (service == "delete"){
 						(amountExamsSelected !== 0) ? this.deleteExams() : "";
 						(amountCoursesSelected !== 0) ? this.deleteCourses() : "";
 						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : "";
@@ -246,8 +246,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	openSingleElementDialog(element: any, duty: string) {
-		let content: string = "Are you sure you want to " + duty + " this ";
+	openSingleElementDialog(element: any, service: string) {
+		let content: string = "Are you sure you want to " + service + " this ";
 		if (element instanceof CustomExam) {
 			content = content.concat("exam?\n\n" + element.filename);
 		} else if (element instanceof CustomCourse) {
@@ -262,16 +262,16 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		});
 		this.dialogRef.componentInstance.titleMessage = "confirm";
 		this.dialogRef.componentInstance.contentMessage = content;
-		this.dialogRef.componentInstance.confirmBtnText = duty;
+		this.dialogRef.componentInstance.confirmBtnText = service;
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				if (duty == "publish") {
+				if (service == "publish") {
 					(element instanceof CustomExam) ? this.publishExam(element) : "";
 					(element instanceof CustomCourse) ? this.publishCourse(element) : "";
 					(element instanceof CustomSubject) ? this.publishSubject(element) : "";
 					(element instanceof CustomAcademy) ? this.publishAcademy(element) : "";
-				} else if (duty == "delete") {
+				} else if (service == "delete") {
 					(element instanceof CustomExam) ? this.deleteExam(element) : "";
 					(element instanceof CustomCourse) ? this.deleteCourse(element) : "";
 					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";

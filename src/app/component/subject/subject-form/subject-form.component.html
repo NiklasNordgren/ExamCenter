@@ -6,7 +6,7 @@
         <mat-form-field>
             <mat-label>Academy list</mat-label>
             <mat-select formControlName="academy" name="academies">
-                <mat-option required (click)="selectedAcademy(academy.id)" placeholder="Academy list"
+                <mat-option required placeholder="Academy list"
                     *ngFor="let academy of academies" [value]="academy.id">
                     {{academy.name}}
                 </mat-option>
@@ -24,8 +24,10 @@
         </mat-form-field>
 
         <div>
-            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
-                class="btn btn-primary">Save</button>
+            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">
+                Save
+            </button>
+
             <button mat-raised-button class="btn btn-primary" class="cancelButton"
                 (click)="this.navigator.goToPage('/admin/subject-handler/')">
                 Cancel

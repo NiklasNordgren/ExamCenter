@@ -71,6 +71,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 	search(searchText: string) {
 		this.subscriptions.add(
 			this.searchService.searchSubjects(this.searchString).subscribe(subjects => {
+				this.subjectData = [];
 				subjects.forEach(subject => {
 					this.subjectData.push({
 						name: subject.name,
@@ -83,6 +84,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 		);
 		this.subscriptions.add(
 			this.searchService.searchCourses(this.searchString).subscribe(courses => {
+				this.courseData = [];
 				courses.forEach(course => {
 					this.courseData.push({
 						name: course.name,

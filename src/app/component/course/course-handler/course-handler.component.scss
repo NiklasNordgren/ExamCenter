@@ -1,21 +1,61 @@
 table {
 	width: 100%;
-}
-
-.newButton {
+  }
+  
+  h2 {
+	margin-bottom: 0pt;
+  }
+  
+  .buttons-and-selectors {
+	display: flex;
+	flex-direction: row;
+  }
+	
+  .selection-buttons-container {
+	margin-right: 40pt;
+  }
+  
+  .selectionButtons {
+	margin-right: 10pt;
 	margin-top: 10pt;
-	margin-bottom: 10pt;
-}
-
-.editButton {
+  }
+  
+  .selectors-container {
+	display: flex;
+	flex-direction: row;
+  }
+  
+  .selectors {
+	flex-direction: column;
+	margin-right: 10pt;
+  }
+  
+  .editButton {
 	float: right;
 	background-color: #ffe92f;
-}
-
-.deleteButton {
-	margin-left: 10pt;
-}
-
-.buttonText {
+  }
+  
+  .buttonText {
 	margin-left: 3pt;
-}
+  }
+  
+  .column {
+	width: 20%
+  }
+  
+  @media screen and (max-width: 1430px) {
+	.selection-buttons-container {
+		margin-right: 0pt;
+	}
+  }
+  
+  @media screen and (max-width: 1370px) {
+	.buttons-and-selectors {
+		flex-direction: column;
+	}
+  
+	.selectors-container {
+		display: flex;
+		flex-direction: row;
+	}
+  }

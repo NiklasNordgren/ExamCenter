@@ -23,12 +23,11 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	displayedColumns: string[] = ['select', 'name', 'code', 'edit'];
 	academies = [];
 	subjects = [];
-	dataSource = this.academies;
 	selection = new SelectionModel<Subject>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
-	public selectedValue: number;
+	selectedValue: number;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -43,7 +42,6 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit() {
-		this.dataSource = this.subjects;
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
@@ -63,7 +61,6 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 			.getAllPublishedSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.dataSource = this.subjects;
 			});
 		this.subscriptions.add(sub);
 	}
@@ -99,17 +96,17 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " subjects";
 
-		return dutyText = dutyText.concat(contentText);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
+	openAcknowledgeDialog(message: string, typeText: string) {
 		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
+		this.dialogRef.componentInstance.contentMessage = message;
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			this.dialogRef = null;
@@ -120,19 +117,18 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.dataSource.length;
+		const numRows = this.subjects.length;
 		return numSelected === numRows;
 	}
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected()
-			? this.selection.clear()
-			: this.dataSource.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.subjects.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
 		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
+
 	onSuccess(data: any) {
 		const selectedSubjects = this.selection.selected;
 		for (let subject of selectedSubjects) {
@@ -140,9 +136,9 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " subject" : " subjects") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.openAcknowledgeDialog(successfulServiceText, "publish");
 		this.selection.clear();
 	}
 
