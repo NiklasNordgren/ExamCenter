@@ -16,6 +16,7 @@ import { Academy } from 'src/app/model/academy.model';
 import { Subject } from 'src/app/model/subject.model';
 
 import { UnpublishService } from '../../service/unpublish.service';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export class CustomExam {
 	id: number;
@@ -84,8 +85,13 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	displayedSubjectColumns: string[] = ['select', 'name', 'code', 'academyName', 'actions'];
 	displayedAcademyColumns: string[] = ['select', 'name', 'abbreviation', 'actions'];
 
-	constructor(private router: Router, private examService: ExamService, private courseService: CourseService,
-		private subjectService: SubjectService, private academyService: AcademyService, private dialog: MatDialog) { }
+	constructor(
+		private router: Router, 
+		private examService: ExamService, 
+		private courseService: CourseService,
+		private subjectService: SubjectService, 
+		private academyService: AcademyService, 
+		private dialog: MatDialog) { }
 
 	ngOnInit() {
 		let sub: any;
@@ -134,9 +140,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Exam();
 		} else {
 			output = new CustomExam();
-			this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
+			this.subscriptions.add(
+				this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
 				output.courseName = responseCourse.name;
-			});
+			}));
 		}
 		output.id = input.id;
 		output.filename = input.filename;
@@ -153,9 +160,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Course();
 		} else {
 			output = new CustomCourse();
-			this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
+			this.subscriptions.add(
+				this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
 				output.subjectName = responseSubject.name;
-			});
+			}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -171,9 +179,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new Subject();
 		} else {
 			output = new CustomSubject();
-			this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
+			this.subscriptions.add(
+				this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
 				output.academyName = responseAcademy.name;
-			});
+			}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -196,47 +205,45 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		return output;
 	}
 
-	
-
-	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, duty: string) {
+	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, service: string) {
 
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
 		contentText = contentText.concat((courseAmount !== 0) ? "\n" + courseAmount + (courseAmount == 1 ? " course" : " courses") : "");
 		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
 		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academy" : " academies") : "");
 
-		let dutyText = (contentText.length !== 0) ? "Are you sure you want to " + duty + "\n": "";
-		return dutyText = dutyText.concat(contentText);
+		let serviceText = (contentText.length !== 0) ? "Are you sure you want to " + service + "\n": "";
+		return serviceText = serviceText.concat(contentText);
 	}
 
-	openSelectionDialog(duty: string) {
+	openSelectionDialog(service: string) {
 		let amountExamsSelected = this.examSelection.selected.length;
 		let amountCoursesSelected = this.courseSelection.selected.length;
 		let amountSubjectsSelected = this.subjectSelection.selected.length;
 		let amountAcademiesSelected = this.academySelection.selected.length;
 			
-		let dutyText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, duty);
+		let serviceText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, service);
 
 		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
 			this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 			});
 			this.dialogRef.componentInstance.titleMessage = "confirm";
-			this.dialogRef.componentInstance.contentMessage = dutyText;
-			this.dialogRef.componentInstance.confirmBtnText = duty;
+			this.dialogRef.componentInstance.contentMessage = serviceText;
+			this.dialogRef.componentInstance.confirmBtnText = service;
 			
 			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
-					if (duty == "publish") {
-						(amountExamsSelected !== 0) ? this.publishExams() : "";
-						(amountCoursesSelected !== 0) ? this.publishCourses() : "";
-						(amountSubjectsSelected !== 0) ? this.publishSubjects() : "";
-						(amountAcademiesSelected !== 0) ? this.publishAcademies() : "";
+					if (service == "publish") {
+						(amountExamsSelected !== 0) ? this.publishExams() : null;
+						(amountCoursesSelected !== 0) ? this.publishCourses() : null;
+						(amountSubjectsSelected !== 0) ? this.publishSubjects() : null;
+						(amountAcademiesSelected !== 0) ? this.publishAcademies() : null;
 						
-					} else if (duty == "delete"){
-						(amountExamsSelected !== 0) ? this.deleteExams() : "";
-						(amountCoursesSelected !== 0) ? this.deleteCourses() : "";
-						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : "";
-						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : "";
+					} else if (service == "delete"){
+						(amountExamsSelected !== 0) ? this.deleteExams() : null;
+						(amountCoursesSelected !== 0) ? this.deleteCourses() : null;
+						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : null;
+						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : null;
 					} 
 					this.clearSelections();
 				}
@@ -246,8 +253,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	openSingleElementDialog(element: any, duty: string) {
-		let content: string = "Are you sure you want to " + duty + " this ";
+	openSingleElementDialog(element: any, service: string) {
+		let content: string = "Are you sure you want to " + service + " this ";
 		if (element instanceof CustomExam) {
 			content = content.concat("exam?\n\n" + element.filename);
 		} else if (element instanceof CustomCourse) {
@@ -262,20 +269,20 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		});
 		this.dialogRef.componentInstance.titleMessage = "confirm";
 		this.dialogRef.componentInstance.contentMessage = content;
-		this.dialogRef.componentInstance.confirmBtnText = duty;
+		this.dialogRef.componentInstance.confirmBtnText = service;
 
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				if (duty == "publish") {
-					(element instanceof CustomExam) ? this.publishExam(element) : "";
-					(element instanceof CustomCourse) ? this.publishCourse(element) : "";
-					(element instanceof CustomSubject) ? this.publishSubject(element) : "";
-					(element instanceof CustomAcademy) ? this.publishAcademy(element) : "";
-				} else if (duty == "delete") {
-					(element instanceof CustomExam) ? this.deleteExam(element) : "";
-					(element instanceof CustomCourse) ? this.deleteCourse(element) : "";
-					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";
-					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : "";
+				if (service == "publish") {
+					(element instanceof CustomExam) ? this.publishExam(element) : null;
+					(element instanceof CustomCourse) ? this.publishCourse(element) : null;
+					(element instanceof CustomSubject) ? this.publishSubject(element) : null;
+					(element instanceof CustomAcademy) ? this.publishAcademy(element) : null;
+				} else if (service == "delete") {
+					(element instanceof CustomExam) ? this.deleteExam(element) : null;
+					(element instanceof CustomCourse) ? this.deleteCourse(element) : null;
+					(element instanceof CustomSubject) ? this.deleteSubject(element) : null;
+					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : null;
 				}
 				this.clearSelections();
 			}
@@ -286,8 +293,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	publishExam(element: CustomExam) {
 		let exam = this.examConverter(element);
-		this.examService.publishExam(exam).subscribe(data => {
-		});
+		this.subscriptions.add(
+			this.examService.publishExam(exam).subscribe(data => {
+		}));
 		this.exams = this.exams.filter(x => x.id != exam.id);
 	}
 
@@ -300,8 +308,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishCourse(element: CustomCourse) {
 		let course = this.courseConverter(element);
 		course.unpublished = false;
-		this.courseService.publishCourse(course).subscribe(data => {
-		});
+		this.subscriptions.add(
+			this.courseService.publishCourse(course).subscribe()
+		);
 		this.courses = this.courses.filter(x => x.id != course.id); 
 	}
 
@@ -314,8 +323,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishSubject(element: CustomSubject) {
 		let subject = this.subjectConverter(element);
 		subject.unpublished = false;
-		this.subjectService.publishSubject(subject).subscribe(data => {
-		});
+		this.subscriptions.add(
+			this.subjectService.publishSubject(subject).subscribe()
+		);
 		this.subjects = this.subjects.filter(x => x.id != subject.id); 
 	}
 	
@@ -328,8 +338,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	publishAcademy(element: CustomAcademy) {
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
-		this.academyService.unpublishAcademy(academy).subscribe(data => {
-		});
+		this.subscriptions.add(
+			this.academyService.unpublishAcademy(academy).subscribe()
+		);
 		this.academies = this.academies.filter(x => x.id != academy.id); 
 	}
 	
@@ -340,47 +351,75 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	deleteExam(element: CustomExam) {
-		this.examService.deleteExam(element.id);
+		this.subscriptions.add(
+			this.examService.deleteExam(element.id).subscribe()
+		);
 		this.exams = this.exams.filter(x => x.id != element.id);
 	}
 
 	deleteExams() {
+		let exams: Exam[] = [];
 		for (let customExam of this.examSelection.selected) {
-			this.deleteExam(customExam);
+			exams.push(this.examConverter(customExam));
+			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
+		this.subscriptions.add(
+			this.examService.deleteExams(exams).subscribe()
+		);
 	}
 
 	deleteCourse(element: CustomCourse) {
-		this.courseService.deleteCourse(element.id);
+		this.subscriptions.add(
+			this.courseService.deleteCourse(element.id).subscribe()
+		);
 		this.courses = this.courses.filter(x => x.id != element.id);
 	}
 	
 	deleteCourses() {
+		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
-			this.deleteCourse(customCourse);
+			courses.push(this.courseConverter(customCourse));
+			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
+		this.subscriptions.add(
+			this.courseService.deleteCourses(courses).subscribe()
+		);
 	}
 
 	deleteSubject(element: CustomSubject) {
-		this.subjectService.deleteSubject(element.id);
+		this.subscriptions.add(
+			this.subjectService.deleteSubject(element.id).subscribe()
+		);
 		this.subjects = this.subjects.filter(x => x.id != element.id);
 	}
 	
 	deleteSubjects() {
+		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
-			this.deleteSubject(customSubject);
+			subjects.push(this.courseConverter(customSubject));
+			this.courses = this.courses.filter(x => x.id != customSubject.id);
 		}
+		this.subscriptions.add(
+			this.subjectService.deleteSubjects(subjects).subscribe()
+		);
 	}
 
 	deleteAcademy(element: CustomAcademy) {
-		this.academyService.deleteAcademy(element.id);
+		this.subscriptions.add(
+			this.academyService.deleteAcademy(element.id).subscribe()
+		);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}
 	
 	deleteAcademies() {
-		for (let academy of this.academySelection.selected) {
-			this.deleteAcademy(academy);
+		let academies : Academy[] = [];
+		for (let customAcademy of this.academySelection.selected) {
+			academies.push(this.courseConverter(CustomAcademy));
+			this.courses = this.courses.filter(x => x.id != customAcademy.id);
 		}
+		this.subscriptions.add(
+			this.academyService.deleteAcademies(academies).subscribe()
+		);
 	}
 
 	isAllExamsSelected() {

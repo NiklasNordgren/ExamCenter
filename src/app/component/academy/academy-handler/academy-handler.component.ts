@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from 'src/app/service/status-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-academy-handler',
@@ -26,7 +28,11 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
-	constructor(private service: AcademyService, public navigator: Navigator, private dialog: MatDialog) {}
+	constructor(
+		private service: AcademyService, 
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService) {}
 
 	ngOnInit() {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
@@ -58,21 +64,10 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " academies";
 
-		return dutyText = dutyText.concat(contentText);
-	}
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 	openDialog() {
@@ -89,7 +84,8 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 						academy.unpublished = true;
 					}
 					dSub = this.service.unpublishAcademies(selectedAcademies).subscribe(
-						data => this.onSuccess(data)
+						data => this.onSuccess(data),
+						error => this.onError(error)
 					);
 				
 				this.subscriptions.add(dSub);
@@ -109,10 +105,14 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " academy" : " academies") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
+	}
+
+	onError(error: HttpErrorResponse) {
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 
 }

@@ -18,6 +18,7 @@ import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -62,7 +63,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		private academyService: AcademyService,
 		public navigator: Navigator,
 		private dialog: MatDialog,
-		private changeDetectorRef: ChangeDetectorRef
+		private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
@@ -127,7 +128,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 					}
 					
 					dSub = this.examService.publishExams(selectedExams).subscribe(
-						data => this.onSuccess(data)
+						data => this.onSuccess(data),
+						error => this.onError(error)
 					);
 			}
 			this.dialogRef = null;
@@ -142,29 +144,22 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
 	}
 
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+	onError(error: HttpErrorResponse) {
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].filename : numberOfSelected + " exams";
 
-		return dutyText = dutyText.concat(contentText);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 	isAllSelected() {

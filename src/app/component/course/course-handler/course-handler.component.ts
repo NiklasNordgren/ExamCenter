@@ -15,6 +15,7 @@ import { Navigator } from 'src/app/util/navigator';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-course-handler',
@@ -24,7 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class CourseHandlerComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
-	displayedColumns: string[] = ['select', 'name', 'edit'];
+	displayedColumns: string[] = ['select', 'name', 'courseCode', 'edit'];
 	academies = [];
 	subjects = [];
 	courses = [];
@@ -37,15 +38,14 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	public selectedSubjectValue: number;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	
 
-	constructor(
-		private academyService: AcademyService,
+	constructor(private academyService: AcademyService, 
 		private subjectService: SubjectService,
-		private courseService: CourseService,
-		private navigator: Navigator,
-		private dialog: MatDialog
-	) { }
-
+		private courseService: CourseService, 
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService) { }
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()
@@ -133,39 +133,32 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	}
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
-		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " subjects";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
+		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " courses";
 
-		return dutyText = dutyText.concat(contentText);
-	}
-
-	onSuccess(data: any) {
-		const selectedCourses = this.selection.selected;
-		for (let course of selectedCourses) {
-			this.courses = this.courses.filter(x => x.id != course.id);
-		}
-		const successfulAmount = data.length;
-		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " course" : " courses") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
-		this.selection.clear();
-	}
-	
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-	}
-	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
+		return serviceText = serviceText.concat(contentText);
 	}
 	isAnyCheckboxSelected() {
 		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
+	}
+	onSuccess(data: any) {
+		const selectedCourses = this.selection.selected;
+		for (let subject of selectedCourses) {
+			this.courses = this.courses.filter(x => x.id != subject.id);
+		}
+		const successfulAmount = data.length;
+		let successfulContentText = (successfulAmount !== 0)
+			? successfulAmount + ((successfulAmount == 1)
+				? " course"
+				: " courses")
+			: "";
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
+		this.selection.clear();
+	}
+
+	onError(error: HttpErrorResponse) {
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 }

@@ -1,35 +1,28 @@
 .example-fill-remaining-space {
-	/* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
 	flex: 1 1 auto;
 }
 .academies {
-	margin-left: 10pt;
 	max-height: 30pt;
 	color: white;
+	margin-right: 25pt;
 }
 .logo {
+	position: absolute;
+	margin-top: 15pt;
+	margin-left: 20pt;
 	width: 70pt;
 }
 
-.link {
-	padding-left: 70pt;
+.start-alignment{
+	margin-left: 140pt;
 }
 
-.link-small {
-	padding-left: 10pt;
-}
-
-.logo-small {
-	width: 70pt;
-}
 .right-container {
 	margin-right: 40pt;
 }
 .flex-container {
 	display: flex;
 	flex-direction: row;
-	margin-left: 20pt;
 	margin-top: 20pt;
 }
 .row {
@@ -39,7 +32,6 @@
 }
 .button {
 	border-radius: 0pt;
-	margin-left: 30pt;
 }
 .button:hover {
 	background-color: #0072bc;
@@ -69,6 +61,11 @@ body {
 .navigation-button {
 	position: relative;
 	top: 20pt;
+}
+
+.page-header{
+	margin-top: 50pt;
+	font-size: x-large;
 }
 
 .search-box {

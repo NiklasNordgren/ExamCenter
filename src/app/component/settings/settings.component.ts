@@ -25,7 +25,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		private formBuilder: FormBuilder,
 		private sanitizer: DomSanitizer,
 		private statusMessageService: StatusMessageService
-	) {}
+	) { }
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		this.subscriptions.unsubscribe();
 	}
 
-	chooseSetting(setting: Settings) {}
+	chooseSetting(setting: Settings) { }
 
 	setFormControls(setting: Settings) {
 		this.form.controls.cookieSessionMinutes.setValue(
@@ -86,14 +86,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		if (!htmlOk) {
 			this.statusMessageService.showErrorMessage("Error saving Settings", message);
 		} else if (this.form.valid && htmlOk) {
-			let settings: Settings = this.getNewSettingsFromForm();
-			this.subscriptions.add(
-				this.settingsService.postSettings(settings).subscribe(settings => {
-					this.setNewSettingsList(settings);
-					this.statusMessageService.showSuccessMessage("Settings saved.");
-					this.selectedValue = settings;
-				})
-			);
+			if (this.form.controls.cookieSessionMinutes.value < 5) {
+				this.statusMessageService.showErrorMessage("Error saving Settings", "The cookie session length cannot be shorter than 5 minutes.");
+			} else {
+				let settings: Settings = this.getNewSettingsFromForm();
+				this.subscriptions.add(
+					this.settingsService.postSettings(settings).subscribe(settings => {
+						this.setNewSettingsList(settings);
+						this.statusMessageService.showSuccessMessage("Settings saved.");
+						this.selectedValue = settings;
+					})
+				);
+			}
 		}
 	}
 
