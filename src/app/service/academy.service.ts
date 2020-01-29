@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Academy } from '../model/academy.model';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,8 @@ export class AcademyService {
 	constructor(private http: HttpClient) { }
 
 	getAllAcademies() {
-		return this.http.get<Academy[]>('/api/academies/all');
+		let httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
+		return this.http.get<Academy[]>('/api/academies/all', httpOptions);
 	}
 
 	getAcademyById(id: number) {
