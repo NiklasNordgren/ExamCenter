@@ -11,8 +11,8 @@ export class AcademyService {
 	constructor(private http: HttpClient) { }
 
 	getAllAcademies() {
-		let httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
-		return this.http.get<Academy[]>('/api/academies/all', httpOptions);
+		//let httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
+		return this.http.get<Academy[]>('localhost:9000/academies/all');
 	}
 
 	getAcademyById(id: number) {
