@@ -12,7 +12,7 @@ export class AcademyService {
 
 	getAllAcademies() {
 		//let httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
-		return this.http.get<Academy[]>('localhost:9000/academies/all');
+		return this.http.get<Academy[]>('/api/academies/all');
 	}
 
 	getAcademyById(id: number) {
