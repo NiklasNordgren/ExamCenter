@@ -118,6 +118,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			this.dialogRef = null;
 		});
+		
 		this.subscriptions.add(sub);
 	}
 }

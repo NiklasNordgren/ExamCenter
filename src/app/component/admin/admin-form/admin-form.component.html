@@ -3,12 +3,12 @@
   <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit()">
       <mat-form-field>
           <mat-label for="name">Username</mat-label>
-          <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. tenta"
+          <input matInput id="name" required type="text" formControlName="name" placeholder="Ex. abc"
               size="100pt">
       </mat-form-field>
 
       <mat-form-field>
-          <mat-label>Is Super User</mat-label>
+          <mat-label>Super user privileges?</mat-label>
           <mat-select [(value)]="isSuperUserSelector" formControlName="isSuperUser" class="select">
               <mat-option *ngFor="let bool of boolean" [value]="bool.value">
                   {{bool.viewValue}}

@@ -43,6 +43,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 			this.users = responseUsers;
 		});
 		this.subscriptions.add(sub);
+		
 	}
 
 	ngOnDestroy() {
@@ -62,8 +63,10 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 					});
 					this.subscriptions.add(dSub);
 					this.users = this.users.filter(x => x.id !== user.id);
+					this.selection.clear();
 				}
 			}
+
 			this.dialogRef = null;
 		});
 		this.subscriptions.add(sub);
