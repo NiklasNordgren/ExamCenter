@@ -16,6 +16,7 @@ import { Academy } from 'src/app/model/academy.model';
 import { Subject } from 'src/app/model/subject.model';
 
 import { UnpublishService } from '../../service/unpublish.service';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export class CustomExam {
 	id: number;
@@ -84,8 +85,13 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	displayedSubjectColumns: string[] = ['select', 'name', 'code', 'academyName', 'actions'];
 	displayedAcademyColumns: string[] = ['select', 'name', 'abbreviation', 'actions'];
 
-	constructor(private router: Router, private examService: ExamService, private courseService: CourseService,
-		private subjectService: SubjectService, private academyService: AcademyService, private dialog: MatDialog) { }
+	constructor(
+		private router: Router, 
+		private examService: ExamService, 
+		private courseService: CourseService,
+		private subjectService: SubjectService, 
+		private academyService: AcademyService, 
+		private dialog: MatDialog) { }
 
 	ngOnInit() {
 		let sub: any;
@@ -196,8 +202,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		return output;
 	}
 
-	
-
 	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, service: string) {
 
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
@@ -227,16 +231,16 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					if (service == "publish") {
-						(amountExamsSelected !== 0) ? this.publishExams() : "";
-						(amountCoursesSelected !== 0) ? this.publishCourses() : "";
-						(amountSubjectsSelected !== 0) ? this.publishSubjects() : "";
-						(amountAcademiesSelected !== 0) ? this.publishAcademies() : "";
+						(amountExamsSelected !== 0) ? this.publishExams() : null;
+						(amountCoursesSelected !== 0) ? this.publishCourses() : null;
+						(amountSubjectsSelected !== 0) ? this.publishSubjects() : null;
+						(amountAcademiesSelected !== 0) ? this.publishAcademies() : null;
 						
 					} else if (service == "delete"){
-						(amountExamsSelected !== 0) ? this.deleteExams() : "";
-						(amountCoursesSelected !== 0) ? this.deleteCourses() : "";
-						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : "";
-						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : "";
+						(amountExamsSelected !== 0) ? this.deleteExams() : null;
+						(amountCoursesSelected !== 0) ? this.deleteCourses() : null;
+						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : null;
+						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : null;
 					} 
 					this.clearSelections();
 				}
@@ -267,15 +271,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				if (service == "publish") {
-					(element instanceof CustomExam) ? this.publishExam(element) : "";
-					(element instanceof CustomCourse) ? this.publishCourse(element) : "";
-					(element instanceof CustomSubject) ? this.publishSubject(element) : "";
-					(element instanceof CustomAcademy) ? this.publishAcademy(element) : "";
+					(element instanceof CustomExam) ? this.publishExam(element) : null;
+					(element instanceof CustomCourse) ? this.publishCourse(element) : null;
+					(element instanceof CustomSubject) ? this.publishSubject(element) : null;
+					(element instanceof CustomAcademy) ? this.publishAcademy(element) : null;
 				} else if (service == "delete") {
-					(element instanceof CustomExam) ? this.deleteExam(element) : "";
-					(element instanceof CustomCourse) ? this.deleteCourse(element) : "";
-					(element instanceof CustomSubject) ? this.deleteSubject(element) : "";
-					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : "";
+					(element instanceof CustomExam) ? this.deleteExam(element) : null;
+					(element instanceof CustomCourse) ? this.deleteCourse(element) : null;
+					(element instanceof CustomSubject) ? this.deleteSubject(element) : null;
+					(element instanceof CustomAcademy) ? this.deleteAcademy(element) : null;
 				}
 				this.clearSelections();
 			}

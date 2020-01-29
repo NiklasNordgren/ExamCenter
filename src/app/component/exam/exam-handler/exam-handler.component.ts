@@ -18,6 +18,7 @@ import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -61,7 +62,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		private academyService: AcademyService,
 		public navigator: Navigator,
 		private dialog: MatDialog,
-		private changeDetectorRef: ChangeDetectorRef
+		private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
@@ -118,7 +119,8 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 					}
 					
 					dSub = this.examService.publishExams(selectedExams).subscribe(
-						data => this.onSuccess(data)
+						data => this.onSuccess(data),
+						error => this.onError(error)
 					);
 			}
 			this.dialogRef = null;
@@ -135,19 +137,12 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
 		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulServiceText = successfulContentText.concat(successfulServiceText);
-		this.openAcknowledgeDialog(successfulServiceText, "publish");
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
 	}
 
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+	onError(error: HttpErrorResponse) {
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 
 	makeContentText() {
