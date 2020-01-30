@@ -31,7 +31,7 @@ export class AcademyComponent implements OnInit, OnDestroy {
 				err => {
 					this.statusMessage.showErrorMessage(
 						"Server error",
-						"Could not load page content. Please contact the maintainers of the site."
+						"Could not load page content. Please contact the maintainers of the site. studentcentrum@hig.se"
 					);
 				}
 			)

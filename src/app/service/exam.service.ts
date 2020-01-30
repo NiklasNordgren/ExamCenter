@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 	providedIn: 'root'
 })
 export class ExamService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	getAllExams() {
 		return this.http.get<Exam[]>('api/exams/all');
@@ -32,10 +32,10 @@ export class ExamService {
 	deleteExams(exams: Exam[]) {
 		const options = {
 			headers: new HttpHeaders({
-			  'Content-Type': 'application/json',
+				'Content-Type': 'application/json',
 			}),
 			body: exams
-		  };
+		};
 		return this.http.delete<Exam[]>('/api/exams/', options);
 	}
 

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Subscription, from } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
+import { MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
@@ -15,6 +15,7 @@ import { Navigator } from 'src/app/util/navigator';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-course-handler',
@@ -23,22 +24,28 @@ import { HttpErrorResponse } from '@angular/common/http';
 	providers: [Navigator]
 })
 export class CourseHandlerComponent implements OnInit, OnDestroy {
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	subscriptions: Subscription = new Subscription();
 	displayedColumns: string[] = ['select', 'name', 'courseCode', 'edit'];
 	academies = [];
 	subjects = [];
 	courses = [];
+	dataSource = [];
 	selection = new SelectionModel<Course>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	public selectedAcademyValue: number;
+	public selectedSubjectValue: number;
 	isUnpublishButtonDisabled = true;
-	selectedAcademyValue: number;
-	selectedSubjectValue: number;
+	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	
 
-	constructor(private academyService: AcademyService, private subjectService: SubjectService,
-		private courseService: CourseService, public navigator: Navigator, private dialog: MatDialog) { }
+	constructor(private academyService: AcademyService, 
+		private subjectService: SubjectService,
+		private courseService: CourseService, 
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService) { }
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()
@@ -70,10 +77,32 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			.getAllCoursesBySubjectId(subjectId)
 			.subscribe(responseCourses => {
 				this.courses = responseCourses;
+				this.dataSource = this.courses;
 			});
 		this.subscriptions.add(sub);
 	}
 
+	// For the checkboxes
+	isAllSelected() {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.dataSource.length;
+		return numSelected === numRows;
+	}
+	// Selects all rows if they are not all selected; otherwise clear selection.
+	masterToggle() {
+		this.isAllSelected()
+			? this.selection.clear()
+			: this.dataSource.forEach(row => this.selection.select(row));
+	}
+	unpublishSelection() {
+		const sub = this.courseService
+			.unpublishCourses(this.selection.selected)
+			.subscribe(
+				data => this.onSuccess(data),
+				error => this.onError(error)
+			);
+		this.subscriptions.add(sub);
+	}
 	openDialog() {
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
@@ -84,8 +113,8 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			if (result) {
 				const selectedCourses = this.selection.selected;
 				let dSub;
-				for (let course of selectedCourses) {
-					course.unpublished = true;
+				for (let subject of selectedCourses) {
+					subject.unpublished = true;
 				}
 				dSub = this.courseService.unpublishCourses(selectedCourses).subscribe(
 					data => this.onSuccess(data),
@@ -102,7 +131,6 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		});
 		this.subscriptions.add(sub);
 	}
-
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
 		let serviceText = "Are you sure you want to unpublish" + "\n\n";
@@ -110,30 +138,6 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 
 		return serviceText = serviceText.concat(contentText);
 	}
-
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-	}
-
-	// For the checkboxes
-	isAllSelected() {
-		const numSelected = this.selection.selected.length;
-		const numRows = this.courses.length;
-		return numSelected === numRows;
-	}
-	/** Selects all rows if they are not all selected; otherwise clear selection. */
-	masterToggle() {
-		this.isAllSelected() ? this.selection.clear() : this.courses.forEach(row => this.selection.select(row));
-	}
-
 	isAnyCheckboxSelected() {
 		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
@@ -150,11 +154,11 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			: "";
 		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
 		successfulServiceText = successfulContentText.concat(successfulServiceText);
-		this.openAcknowledgeDialog(successfulServiceText, "publish");
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
 	}
 
 	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 }

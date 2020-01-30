@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ConfirmationAckDialogComponent } from '../component/confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { Subscription } from 'rxjs';
@@ -6,13 +6,17 @@ import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class StatusMessageService {
+export class StatusMessageService implements OnDestroy{
 
   subscriptions: Subscription = new Subscription();
   dialogRef: MatDialogRef<ConfirmationAckDialogComponent>;
 
-  constructor(private snackBar: MatSnackBar, private dialog: MatDialog) { }
+  constructor(private snackBar: MatSnackBar, private dialog: MatDialog){ }
 
+  ngOnDestroy() {
+		this.subscriptions.unsubscribe();
+  }
+  
   showErrorMessage(title: string, errorMessage: string) {
     this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = title;

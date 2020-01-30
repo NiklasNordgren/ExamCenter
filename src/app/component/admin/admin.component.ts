@@ -5,7 +5,8 @@ import { shareReplay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AcademyService } from '../../service/academy.service';
 import { Academy } from '../../model/academy.model';
-import { faUsersCog, faUpload, IconDefinition, faCog, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUsersCog, faUpload, IconDefinition, faCog, faTrash,
+	faScroll, faBook, faBookOpen, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../service/user.service';
 import { Subscription } from 'rxjs';
 
@@ -20,6 +21,11 @@ export class AdminComponent implements OnInit, OnDestroy {
 	faUpload: IconDefinition = faUpload;
 	faCog: IconDefinition = faCog;
 	faTrash: IconDefinition = faTrash;
+	faScroll: IconDefinition = faScroll;
+	faBook: IconDefinition = faBook;
+	faBookOpen: IconDefinition = faBookOpen;
+	faGraduationCap: IconDefinition = faGraduationCap;
+
 	academies: Academy[] = [];
 	isSuperUser: boolean;
 
