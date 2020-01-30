@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div class="buttons-and-selectors">
         <div class="selection-buttons-container">
+            <h2>Courses</h2>
             <button class="selectionButtons" color="accent" mat-raised-button
                 (click)="this.navigator.goToPage('/admin/course-form/0')">
                 <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
@@ -10,8 +11,8 @@
                 <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Unpublish Checked</span>
             </button>
         </div>
-        <h2>Courses</h2>
         <mat-divider></mat-divider>
+        
         <div class="selectors-container">
             <div class="selectors">
                 <h4>Choose Academy</h4>
