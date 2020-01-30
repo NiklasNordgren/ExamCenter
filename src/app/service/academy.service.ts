@@ -46,7 +46,7 @@ export class AcademyService {
 			}),
 			body: academies
 		};
-		return this.http.delete('/api/subjects/', options);
+		return this.http.delete('/api/academies/', options);
 	}
 
 	private setAcademiesIsUnpublished(academies: Academy[], isUnPublished: boolean) {

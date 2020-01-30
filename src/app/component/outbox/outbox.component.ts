@@ -202,6 +202,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		output.id = input.id;
 		output.name = input.name;
 		output.abbreviation = input.abbreviation;
+		
 		return output;
 	}
 
@@ -436,10 +437,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 	
 	deleteAcademies() {
-		let academies : Academy[] = [];
+		let academies: Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
-			academies.push(this.academyConverter(CustomAcademy));
-			this.academies = this.academies.filter(x => x.id != customAcademy.id);
+			academies.push(this.academyConverter(customAcademy));
+			this.academies = this.academies.filter(x => x.id != customAcademy.id); 
 		}
 		this.subscriptions.add(
 			this.academyService.deleteAcademies(academies).subscribe()
