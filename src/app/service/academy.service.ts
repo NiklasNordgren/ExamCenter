@@ -8,12 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class AcademyService {
 
-	private academyUrl = 'http://backend:9000/academies/';
-
 	constructor(private http: HttpClient) { }
 
 	getAllAcademies() {
-		return this.http.get<Academy[]>(this.academyUrl + 'all');
+		return this.http.get<Academy[]>('api/academies/all');
 	}
 
 	getAcademyById(id: number) {
