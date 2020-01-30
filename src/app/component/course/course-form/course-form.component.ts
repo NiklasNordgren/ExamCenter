@@ -10,10 +10,8 @@ import { AcademyService } from 'src/app/service/academy.service';
 import { Subject } from 'src/app/model/subject.model';
 import { CourseService } from 'src/app/service/course.service';
 import { Course } from 'src/app/model/course.model';
-import { ExamService } from 'src/app/service/exam.service';
 import { Navigator } from 'src/app/util/navigator';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -27,7 +25,6 @@ export class CourseFormComponent implements OnInit {
 
   academies: Academy[];
   subjects: Subject[];
-  courses: Course[];
   form: FormGroup;
   private subscriptions = new Subscription();
   id: number;

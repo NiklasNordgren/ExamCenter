@@ -23,9 +23,30 @@
         </mat-form-field>
 
         <mat-form-field>
+            <mat-label>Academy list</mat-label>
+            <mat-select formControlName="academy" name="academies">
+                <mat-option required (click)="selectedAcademy(academy.id)" placeholder="Academy list"
+                    *ngFor="let academy of academies" [value]="academy.id">
+                    {{academy.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Subject list</mat-label>
+            <mat-select formControlName="subject" name="subjects">
+                <mat-option required (click)="selectedSubject(subject)" placeholder="Subject List"
+                    *ngFor="let subject of subjectsFilteredByAcademyId" [value]="subject.id">
+                    {{subject.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
             <mat-label>Course list</mat-label>
             <mat-select formControlName="course" name="courses" class="select">
-                <mat-option required placeholder="Course list" *ngFor="let course of courses" [value]="course.id">
+                <mat-option required placeholder="Course list"
+                 *ngFor="let course of coursesFilteredBySubjectId" [value]="course.id">
                     {{course.name}}
                 </mat-option>
             </mat-select>

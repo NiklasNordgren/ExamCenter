@@ -12,6 +12,10 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Academy } from 'src/app/model/academy.model';
+import { Subject } from 'src/app/model/subject.model';
+import { SubjectService } from 'src/app/service/subject.service';
+import { AcademyService } from 'src/app/service/academy.service';
 
 export interface CustomBooleanArray {
 	value: boolean;
@@ -36,14 +40,20 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	id: number;
 
 	isUnpublishedSelector = false;
+	academies: Academy[];
+	subjects: Subject[];
 	courses: Course[];
+	subjectsFilteredByAcademyId: Subject[];
+	coursesFilteredBySubjectId: Course[];
 
 	constructor(
-		private formBuilder: FormBuilder, 
-		private route: ActivatedRoute, 
-		private service: ExamService, 
+		private formBuilder: FormBuilder,
+		private route: ActivatedRoute,
+		private service: ExamService,
+		private subjectService: SubjectService,
+		private academyService: AcademyService,
 		private courseService: CourseService,
-		public navigator: Navigator, 
+		public navigator: Navigator,
 		private dialog: MatDialog,
 		private statusMessageService: StatusMessageService
 	) { }
@@ -53,12 +63,35 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			filename: '',
 			date: '',
 			unpublishDate: '',
+			academy: '',
+			subject: '',
 			course: ''
 		});
 
-		const sub = this.courseService.getAllCourses().subscribe(responseResult => {
-			this.courses = responseResult;
-		});
+		let sub = this.academyService.getAllAcademies().subscribe(
+			responseAcademies => {
+				this.academies = responseAcademies
+			},
+			error => this.onError(error)
+		);
+		this.subscriptions.add(sub);
+
+		sub = this.subjectService.getAllSubjects().subscribe(
+			responseSubjects => {
+				this.subjects = responseSubjects
+			},
+			error => this.onError(error)
+		);
+		this.subscriptions.add(sub);
+
+		sub = this.courseService.getAllCourses().subscribe(
+			responseCourses => {
+				this.courses = responseCourses
+			},
+			error => this.onError(error)
+		);
+		this.subscriptions.add(sub);
+
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
@@ -68,19 +101,60 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	}
 
 	handleId(id: number) {
-		const sub = this.service.getExamById(id).subscribe(exam => {
+		const dsub = this.service.getExamById(this.id).subscribe(exam => {
 			this.exam = exam;
+			//nu kan vi hitta course
 			this.isUnpublishedSelector = exam.unpublished;
+			let course = this.findCourseById(exam.courseId);
+			let subject = this.findSubjectById(course.subjectId);
+			let academy = this.findAcademyById(subject.academyId);
+
+			//nu kan vi filtrera
+
+			this.selectedAcademy(academy.id);
+			
+
+
 			this.form = this.formBuilder.group({
 				filename: exam.filename,
 				date: exam.date,
 				unpublishDate: exam.unpublishDate,
+				academy: academy.id,
+				subject: subject.id,
 				course: exam.courseId
 			});
 		});
-		this.subscriptions.add(sub);
+		this.subscriptions.add(dsub);
 
 	}
+
+	findCourseById(courseId: number){
+		return this.courses.find(course => course.id == courseId);
+
+	}
+
+	findSubjectById(subjectId: number){
+		return this.subjects.find(subject => subject.id == subjectId);
+	}
+
+	findAcademyById(academyId: number){
+		return this.academies.find(academy => academy.id == academyId);
+	}
+
+	selectedAcademy(academyId: number) {
+		this.subjectsFilteredByAcademyId = this.subjects.filter(subject => subject.academyId == academyId);
+		this.selectedSubject(this.subjectsFilteredByAcademyId[0].id)
+	}
+
+	selectedSubject(subjectId: number) {
+		this.coursesFilteredBySubjectId = this.courses.filter(course => course.subjectId == subjectId);
+		this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
+	}
+
+	selectedCourse(courseId: number) {
+		this.form.get("course").setValue(courseId)
+	}
+
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
 	}
@@ -103,16 +177,16 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/admin/exam-handler');
-		this.statusMessageService.showSuccessMessage(data.name + " was " + 
+		this.statusMessageService.showSuccessMessage(data.name + " was " +
 			((this.id == this.createFormId) ? "created" : "updated"));
 	}
 
 	onError(error: HttpErrorResponse) {
 		if (error.status === 401) {
 			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
-			this.navigator.goToPage('/login');	
+			this.navigator.goToPage('/login');
 		} else {
-			throw(error);
+			throw (error);
 		}
 	}
 
@@ -124,7 +198,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			this.dialogRef = null;
 		});
-		
+
 		this.subscriptions.add(sub);
 	}
 }
