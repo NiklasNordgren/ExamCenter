@@ -110,10 +110,10 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			let academy = this.findAcademyById(subject.academyId);
 
 			//nu kan vi filtrera
-
-			this.selectedAcademy(academy.id);
-			
-
+			const isInitialized = false;
+			this.selectedAcademy(academy.id, isInitialized);
+			this.selectedSubject(subject.id, isInitialized);
+			this.selectedCourse(course.id);
 
 			this.form = this.formBuilder.group({
 				filename: exam.filename,
@@ -121,35 +121,52 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 				unpublishDate: exam.unpublishDate,
 				academy: academy.id,
 				subject: subject.id,
-				course: exam.courseId
+				course: course.id
 			});
+
 		});
 		this.subscriptions.add(dsub);
 
 	}
 
-	findCourseById(courseId: number){
+	findCourseById(courseId: number) {
 		return this.courses.find(course => course.id == courseId);
-
 	}
 
-	findSubjectById(subjectId: number){
+	findSubjectById(subjectId: number) {
 		return this.subjects.find(subject => subject.id == subjectId);
 	}
 
-	findAcademyById(academyId: number){
+	findAcademyById(academyId: number) {
 		return this.academies.find(academy => academy.id == academyId);
 	}
 
-	selectedAcademy(academyId: number) {
+	selectedAcademy(academyId: number, isInitialized = true) {
 		this.subjectsFilteredByAcademyId = this.subjects.filter(subject => subject.academyId == academyId);
-		this.selectedSubject(this.subjectsFilteredByAcademyId[0].id);
+		if (this.subjectsFilteredByAcademyId && this.subjectsFilteredByAcademyId.length > 0) {
+			if (isInitialized) {
+				this.selectedSubject(this.subjectsFilteredByAcademyId[0].id);
+			}
+		} else {
+			this.selectedSubject(0);
+			this.selectedCourse(0);
+		}
+		
+		console.log(isInitialized);
+
 	}
 
-	selectedSubject(subjectId: number) {
+	selectedSubject(subjectId: number, isInitialized = true) {
 		this.form.get("subject").setValue(subjectId);
 		this.coursesFilteredBySubjectId = this.courses.filter(course => course.subjectId == subjectId);
-		this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
+		if (this.coursesFilteredBySubjectId && this.coursesFilteredBySubjectId.length > 0) {
+			if (isInitialized) {
+					this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
+			} 
+		} else {
+			this.selectedCourse(0);
+		}
+		
 	}
 
 	selectedCourse(courseId: number) {
