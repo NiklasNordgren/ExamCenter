@@ -29,10 +29,10 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	constructor(
-		private service: AcademyService, 
-		public navigator: Navigator, 
+		private service: AcademyService,
+		public navigator: Navigator,
 		private dialog: MatDialog,
-		private statusMessageService: StatusMessageService) {}
+		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
@@ -79,15 +79,12 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedAcademies = this.selection.selected;
-				let dSub;
-					for (let academy of selectedAcademies) {
-						academy.unpublished = true;
-					}
-					dSub = this.service.unpublishAcademies(selectedAcademies).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
-					);
-				
+				const isUnpublished = true;
+				const dSub = this.service.publishAcademies(selectedAcademies, isUnpublished).subscribe(
+					data => this.onSuccess(data),
+					error => this.onError(error)
+				);
+
 				this.subscriptions.add(dSub);
 				for (let academy of selectedAcademies) {
 					this.academies = this.academies.filter(x => x.id != academy.id);

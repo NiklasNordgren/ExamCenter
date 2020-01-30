@@ -46,12 +46,12 @@ export class CourseService {
     return this.http.delete('/api/courses/', options);
   }
 
-  unpublishCourses(courses: Course[]) {
-    this.setCoursesIsUnpublished(true, courses);
+  publishCourses(courses: Course[], isUnPublished: boolean) {
+    this.setCoursesIsUnpublished(courses, isUnPublished);
     return this.http.post<Course>('/api/courses/unpublishList/', courses);
   }
 
-  private setCoursesIsUnpublished(isUnPublished: boolean, courses: Course[]) {
+  private setCoursesIsUnpublished( courses: Course[], isUnPublished: boolean) {
     courses.forEach(course => {
       course.unpublished = isUnPublished;
     });

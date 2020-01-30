@@ -47,8 +47,14 @@ export class ExamService {
 		return this.http.post('/api/exams/unpublish', exam);
 	}
 
-	publishExams(exams: Exam[]) {
+	publishExams(exams: Exam[], isUnPublished: boolean) {
+		this.setExamsIsUnpublished(exams, isUnPublished);
 		return this.http.post('/api/exams/unpublishList', exams);
 	}
 
+	private setExamsIsUnpublished( exams: Exam[], isUnPublished: boolean) {
+		exams.forEach(exam => {
+		  exam.unpublished = isUnPublished;
+		});
+	  }
 }

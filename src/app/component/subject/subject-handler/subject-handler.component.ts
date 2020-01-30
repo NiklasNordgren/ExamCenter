@@ -42,7 +42,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		private academyService: AcademyService,
 		private dialog: MatDialog,
 		private statusMessageService: StatusMessageService
-	) {}
+	) { }
 
 	ngOnInit() {
 		const sub = this.academyService
@@ -77,15 +77,12 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedSubjects = this.selection.selected;
-				let dSub;
-					for (let subject of selectedSubjects) {
-						subject.unpublished = true;
-					}
-					dSub = this.subjectService.unpublishSubjects(selectedSubjects).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
-					);
-				
+				const isUnpublished = true;
+				const dSub = this.subjectService.publishSubjects(selectedSubjects, isUnpublished).subscribe(
+					data => this.onSuccess(data),
+					error => this.onError(error)
+				);
+
 				this.subscriptions.add(dSub);
 				for (let subject of selectedSubjects) {
 					this.subjects = this.subjects.filter(x => x.id != subject.id);

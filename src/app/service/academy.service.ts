@@ -26,8 +26,8 @@ export class AcademyService {
 		return this.http.post<Academy>('/api/academies/unpublish', academy);
 	}
 
-	unpublishAcademies(academies: Academy[]) {
-		this.setAcademiesIsUnpublished(academies, true);
+	publishAcademies(academies: Academy[], isUnPublished: boolean) {
+		this.setAcademiesIsUnpublished(academies, isUnPublished);
 		return this.http.post<Academy[]>('/api/academies/unpublishList/', academies);
 	}
 
