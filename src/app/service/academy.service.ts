@@ -8,37 +8,35 @@ import { Observable } from 'rxjs';
 })
 export class AcademyService {
 
-	private academyUrl = 'http://localhost:9000/academies/';
-
 	constructor(private http: HttpClient) { }
 
 	getAllAcademies() {
-		return this.http.get<Academy[]>(this.academyUrl + 'all');
+		return this.http.get<Academy[]>('/api/academies/all');
 	}
 
 	getAcademyById(id: number) {
-		return this.http.get<Academy>(this.academyUrl + id);
+		return this.http.get<Academy>('/api/academies/' + id);
 	}
 
 	saveAcademy(academy: any) {
-		return this.http.post<Academy>(this.academyUrl, academy);
+		return this.http.post<Academy>('/api/academies/', academy);
 	}
 
 	unpublishAcademy(academy: Academy) {
-		return this.http.post<Academy>(this.academyUrl + 'unpublish', academy);
+		return this.http.post<Academy>('/api/academies/unpublish', academy);
 	}
 
 	unpublishAcademies(academies: Academy[]) {
 		this.setAcademiesIsUnpublished(academies, true);
-		return this.http.post<Academy[]>(this.academyUrl + 'unpublishList/', academies);
+		return this.http.post<Academy[]>('/api/academies/unpublishList/', academies);
 	}
 
 	getUnpublishedAcademies() {
-		return this.http.get<Academy[]>(this.academyUrl + 'unpublished');
+		return this.http.get<Academy[]>('api/academies/unpublished');
 	}
 
 	deleteAcademy(id: number) {
-		return this.http.delete(this.academyUrl + id).subscribe(data => {
+		return this.http.delete('/api/academies/' + id).subscribe(data => {
 		});
 	}
 

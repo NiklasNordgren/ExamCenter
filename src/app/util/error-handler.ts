@@ -18,7 +18,10 @@ export class GlobalErrorHandler implements ErrorHandler {
 			this.handleHttpErrorResponse(error);
 		} else {
 			this.ngZone.run(() => {
-				console.log(JSON.stringify(error));
+				this.statusMessageService.showErrorMessage(
+					"Error",
+					JSON.stringify(error.message)
+				);
 			});
 		}
 	}
@@ -66,7 +69,7 @@ class ApiError {
 		this.status = error.status || 500;
         this.statusText = error.statusText || '';
 		this.errorType = error.error.errorType || error.statusText || 'Server error';
-		this.errorMessages = error.error.errors || [error.error] || [];
+		this.errorMessages = error.error.errors || Array.from(error.error) || [];
 	}
 
 	getErrorType(): string {
