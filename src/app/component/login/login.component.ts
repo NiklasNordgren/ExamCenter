@@ -67,10 +67,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 		let errorMessage = '';
 		if (error.status === 404) {
 			errorMessage = 'Username or password is incorrect.';
+			this.showErrorDialog(errorMessage);
 		} else {
-			errorMessage = "An unknown error occured.";
+			throw(error);
 		}
-		this.showErrorDialog(errorMessage);
 	}
 
 	showErrorDialog(message: string) {

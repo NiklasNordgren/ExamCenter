@@ -1,7 +1,6 @@
 import { ErrorHandler, Injectable, NgZone } from "@angular/core";
 import { StatusMessageService } from "../service/status-message.service";
 import { HttpErrorResponse } from "@angular/common/http";
-import { stringToKeyValue } from "@angular/flex-layout/extended/typings/style/style-transforms";
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -11,9 +10,10 @@ export class GlobalErrorHandler implements ErrorHandler {
 	constructor(
 		private statusMessageService: StatusMessageService,
 		private ngZone: NgZone
-	) {}
+	) { }
 
 	handleError(error: Error | HttpErrorResponse) {
+		console.log(JSON.stringify(error));
 		if (error instanceof HttpErrorResponse) {
 			this.handleHttpErrorResponse(error);
 		} else {
@@ -27,9 +27,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 	}
 
 	private handleHttpErrorResponse(error: HttpErrorResponse) {
-				let apiError = new ApiError(error);
-        console.log(JSON.stringify(error));
-        
+		let apiError = new ApiError(error);
+		console.log(JSON.stringify(error));
+
 		/*
 		 * Add switch cases for specific status codes and errorTypes that can be thrown by the REST API.
 		 * The default messages should suffice in most cases but specific solutions should be set.
@@ -43,6 +43,11 @@ export class GlobalErrorHandler implements ErrorHandler {
 					apiError.setErrorSolution(solution);
 				}
 				break;
+			}
+			case 401: {
+				if (errorType.includes("Login error")) {
+					apiError.setErrorSolution('');
+				}
 			}
 			default: {
 				break;
@@ -67,7 +72,7 @@ class ApiError {
 	constructor(error: HttpErrorResponse) {
 		this.error = error;
 		this.status = error.status || 500;
-        this.statusText = error.statusText || '';
+		this.statusText = error.statusText || '';
 		this.errorType = error.error.errorType || error.statusText || 'Server error';
 		this.errorMessages = error.error.errors || Array.from(error.error) || [];
 	}
@@ -98,14 +103,16 @@ class ApiError {
 
 	toFormattedErrorMessage(): { errorTitle: string; errorMessage: string } {
 		let errorTitle = this.errorType;
-        let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"\n`;
-        if (this.errorMessages.length > 0) {
-            errorMessage += 'Error(s): '
-            this.errorMessages.forEach(msg => {
-                errorMessage = errorMessage + msg + "\n";
-            });
-				}
-		errorMessage += `Solution: ${this.errorSolution}`;
+		let errorMessage = `The server responded with a status of ${this.error.status}: "${this.error.statusText}"\n`;
+		if (this.errorMessages.length > 0) {
+			errorMessage += 'Error(s): '
+			this.errorMessages.forEach(msg => {
+				errorMessage = errorMessage + msg + "\n";
+			});
+		}
+		if (this.errorSolution.length > 0) {
+			errorMessage += `Solution: ${this.errorSolution}`;
+		}
 		return { errorTitle, errorMessage };
 	}
 }
