@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'src/app/model/subject.model';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faBook } from '@fortawesome/free-solid-svg-icons';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subscription } from 'rxjs';
@@ -28,6 +28,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faBook = faBook;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	selectedAcademyValue: number;

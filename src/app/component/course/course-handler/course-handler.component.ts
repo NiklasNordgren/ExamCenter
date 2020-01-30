@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subject } from 'src/app/model/subject.model';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
@@ -34,6 +34,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faBookOpen = faBookOpen;
 	public selectedAcademyValue: number;
 	public selectedSubjectValue: number;
 	isUnpublishButtonDisabled = true;
@@ -46,6 +47,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		public navigator: Navigator, 
 		private dialog: MatDialog,
 		private statusMessageService: StatusMessageService) { }
+		
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()

@@ -7,7 +7,8 @@ import {
 	faUsersCog,
 	faSearch,
 	faPen,
-	faTrash
+	faTrash,
+	faScroll,
 } from '@fortawesome/free-solid-svg-icons';
 import { ExamService } from '../../../service/exam.service';
 import { Exam } from '../../../model/exam.model';
@@ -16,7 +17,6 @@ import { CourseService } from 'src/app/service/course.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 
@@ -31,6 +31,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faUsersCog = faUsersCog;
 	faSearch = faSearch;
+	faScroll = faScroll;
 
 	selection = new SelectionModel<Exam>(true, []);
 	faPen = faPen;

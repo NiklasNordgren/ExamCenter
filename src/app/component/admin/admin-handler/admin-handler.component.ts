@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: 'app-admin-handler',
@@ -37,8 +38,10 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	displayedColumns: string[] = ['select', 'name', 'isSuperUser', 'edit'];
 	isDeleteButtonDisabled = true;
 
-	constructor(private service: UserService, public navigator: Navigator, private dialog: MatDialog) {
-	}
+	constructor(private service: UserService, 
+		public navigator: Navigator, 
+		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {
 		const sub = this.service.getAllUsers().subscribe(responseUsers => {
@@ -67,11 +70,12 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 						this.users = this.users.filter(x => x.id !== user.id);
 					}
 				}
+				this.onSuccess();
 				this.dialogRef = null;
 			});
 			this.subscriptions.add(sub);
 		} else {
-			this.openAcknowledgeDialog("error", "Cannot delete the last or all super user administator accounts");
+			this.statusMessageService.showErrorMessage("Error", "Cannot delete the last or all super user administator accounts");
 		}
 	}
 
@@ -79,11 +83,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 		const selectedAdmins = this.selection.selected;
 		const superUsers = this.users.filter(x => x.isSuperUser == true);
 		const union = superUsers.filter(x => selectedAdmins.includes(x));
-		if (union.length == superUsers.length) {
-			return true;
-		} else {
-			return false;
-		}
+		return (union.length == superUsers.length);
 	}
 
 	makeDeleteContentText() {
@@ -94,36 +94,21 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 		return serviceText = serviceText.concat(contentText);
 	}
 
-	onSuccess(data: any) {
+	onSuccess() {
 		const selectedAdmins = this.selection.selected;
 		for (let admin of selectedAdmins) {
 			this.users = this.users.filter(x => x.id != admin.id);
 		}
-		const successfulAmount = data.length;
-		let successfulContentText = (successfulAmount !== 0)
-			? successfulAmount + ((successfulAmount == 1)
+		
+		let successfulContentText = (selectedAdmins.length !== 0)
+			? selectedAdmins.length + ((selectedAdmins.length == 1)
 				? " administrator"
 				: " administators")
 			: "";
 		let successfulServiceText = (successfulContentText.length !== 0) ? " got deleted" : "";
 		successfulServiceText = successfulContentText.concat(successfulServiceText);
-		this.openAcknowledgeDialog("delete", successfulServiceText);
 		this.selection.clear();
-	}
-
-	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("error", "Something went wrong\nError: " + error.statusText);
-	}
-
-	openAcknowledgeDialog(typeText: string, message: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = message;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 	}
 
 	isAllSelected() {
@@ -135,7 +120,6 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
 		this.isAllSelected() ? this.selection.clear() : this.users.forEach(row => this.selection.select(row));
-		this.isAnyCheckboxSelected();
 	}
 
 	isAnyCheckboxSelected() {

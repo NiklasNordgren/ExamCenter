@@ -3,11 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -25,6 +24,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faGraduationCap = faGraduationCap;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
