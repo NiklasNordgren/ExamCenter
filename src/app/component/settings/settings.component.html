@@ -7,7 +7,7 @@
   <mat-form-field class="full-width">
     <mat-select placeholder="Settings" [(ngModel)]="selectedValue" name="settingsList">
       <mat-option *ngFor="let setting of settingsList" [value]="setting" (click)="setFormControls(setting)">
-        {{ setting.created | date:'yyyy-MM-dd HH:mm:ss' }}
+        {{ setting.created | date:'medium' }}
       </mat-option>
     </mat-select>
   </mat-form-field>
