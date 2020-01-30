@@ -143,16 +143,17 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	selectedAcademy(academyId: number) {
 		this.subjectsFilteredByAcademyId = this.subjects.filter(subject => subject.academyId == academyId);
-		this.selectedSubject(this.subjectsFilteredByAcademyId[0].id)
+		this.selectedSubject(this.subjectsFilteredByAcademyId[0].id);
 	}
 
 	selectedSubject(subjectId: number) {
+		this.form.get("subject").setValue(subjectId);
 		this.coursesFilteredBySubjectId = this.courses.filter(course => course.subjectId == subjectId);
 		this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
 	}
 
 	selectedCourse(courseId: number) {
-		this.form.get("course").setValue(courseId)
+		this.form.get("course").setValue(courseId);
 	}
 
 	ngOnDestroy() {
