@@ -54,8 +54,8 @@ export class SubjectService {
 		return this.http.post('/api/subjects/unpublish', subject);
 	}
 
-	unpublishSubjects(subjects: Subject[]) {
-		this.setSubjectsIsUnpublished(subjects, true);
+	publishSubjects(subjects: Subject[], isUnPublished: boolean) {
+		this.setSubjectsIsUnpublished(subjects, isUnPublished);
 		return this.http.post<Subject[]>('/api/subjects/unpublishList/', subjects);
 	}
 

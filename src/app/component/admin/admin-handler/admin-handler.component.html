@@ -1,5 +1,8 @@
 <div class="wrapper">
-    <h2>Users</h2>
+    <h2>
+        <fa-icon [icon]="faUsersCog"></fa-icon>
+        Users
+    </h2>
     <button class="newButton" color="accent" mat-raised-button
         (click)="this.navigator.goToPage('/admin/admin-form/0')">
         <fa-icon [icon]="faUserPlus"></fa-icon><span class="buttonText"> New</span>

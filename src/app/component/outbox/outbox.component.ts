@@ -300,9 +300,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	publishExams() {
+		const isUnpublished = false;
+		let exams: Exam[] = [];
 		for (let customExam of this.examSelection.selected) {
-			this.publishExam(customExam);
+			exams.push(this.examConverter(customExam));
+			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
+		this.subscriptions.add(
+			this.examService.publishExams(exams, isUnpublished).subscribe(data => {
+		}));
 	}
 
 	publishCourse(element: CustomCourse) {
@@ -315,9 +321,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	publishCourses() {
+		const isUnpublished = false;
+		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
-			this.publishCourse(customCourse);
+			courses.push(this.courseConverter(customCourse));
+			this.courses = this.courses.filter(x => x.id != customCourse.id); 
 		}
+		this.subscriptions.add(
+			this.courseService.publishCourses(courses, isUnpublished).subscribe()
+		);
 	}
 
 	publishSubject(element: CustomSubject) {
@@ -330,9 +342,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 	
 	publishSubjects() {
+		const isUnpublished = false;
+		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
-			this.publishSubject(customSubject);
+			subjects.push(this.subjectConverter(customSubject));
+			this.subjects = this.subjects.filter(x => x.id != customSubject.id); 
 		}
+		this.subscriptions.add(
+			this.subjectService.publishSubjects(subjects, isUnpublished).subscribe()
+		);
 	}
 
 	publishAcademy(element: CustomAcademy) {
@@ -345,9 +363,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 	
 	publishAcademies() {
+		const isUnpublished = false;
+		let academies: Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
-			this.publishAcademy(customAcademy);
+			academies.push(this.academyConverter(customAcademy));
+			this.academies = this.academies.filter(x => x.id != customAcademy.id); 
 		}
+		this.subscriptions.add(
+			this.academyService.publishAcademies(academies, isUnpublished).subscribe()
+		);
 	}
 
 	deleteExam(element: CustomExam) {
@@ -414,8 +438,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	deleteAcademies() {
 		let academies : Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
-			academies.push(this.courseConverter(CustomAcademy));
-			this.courses = this.courses.filter(x => x.id != customAcademy.id);
+			academies.push(this.academyConverter(CustomAcademy));
+			this.academies = this.academies.filter(x => x.id != customAcademy.id);
 		}
 		this.subscriptions.add(
 			this.academyService.deleteAcademies(academies).subscribe()

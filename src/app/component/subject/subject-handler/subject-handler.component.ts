@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'src/app/model/subject.model';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faBook } from '@fortawesome/free-solid-svg-icons';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subscription } from 'rxjs';
@@ -28,6 +28,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faBook = faBook;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	selectedAcademyValue: number;
@@ -41,7 +42,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		private academyService: AcademyService,
 		private dialog: MatDialog,
 		private statusMessageService: StatusMessageService
-	) {}
+	) { }
 
 	ngOnInit() {
 		const sub = this.academyService
@@ -76,15 +77,12 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedSubjects = this.selection.selected;
-				let dSub;
-					for (let subject of selectedSubjects) {
-						subject.unpublished = true;
-					}
-					dSub = this.subjectService.unpublishSubjects(selectedSubjects).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
-					);
-				
+				const isUnpublished = true;
+				const dSub = this.subjectService.publishSubjects(selectedSubjects, isUnpublished).subscribe(
+					data => this.onSuccess(data),
+					error => this.onError(error)
+				);
+
 				this.subscriptions.add(dSub);
 				for (let subject of selectedSubjects) {
 					this.subjects = this.subjects.filter(x => x.id != subject.id);
