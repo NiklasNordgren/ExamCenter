@@ -12,6 +12,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 @Component({
 	selector: 'app-subject-handler',
 	templateUrl: 'subject-handler.component.html',
@@ -23,14 +24,13 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	displayedColumns: string[] = ['select', 'name', 'code', 'edit'];
 	academies = [];
 	subjects = [];
-	dataSource = this.academies;
 	selection = new SelectionModel<Subject>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
-	public selectedValue: number;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+	selectedAcademyValue: number;
 
 	successfulHttpRequest: Array<String>;
 	errorHttpRequest: Array<any> = [];
@@ -40,16 +40,16 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		public navigator: Navigator,
 		private academyService: AcademyService,
 		private dialog: MatDialog,
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
-		this.dataSource = this.subjects;
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
 				this.academies = responseAcademies;
-				this.selectedValue = this.academies[0].id;
-				this.selectedAcademy(this.selectedValue);
+				this.selectedAcademyValue = this.academies[0].id;
+				this.selectedAcademy(this.selectedAcademyValue);
 			});
 		this.subscriptions.add(sub);
 	}
@@ -63,7 +63,6 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 			.getAllPublishedSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.dataSource = this.subjects;
 			});
 		this.subscriptions.add(sub);
 	}
@@ -99,40 +98,27 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 
 	makeContentText() {
 		const numberOfSelected = this.selection.selected.length;
-		let dutyText = "Are you sure you want to unpublish" + "\n\n";
+		let serviceText = "Are you sure you want to unpublish" + "\n\n";
 		let contentText = (numberOfSelected == 1) ? this.selection.selected[0].name : numberOfSelected + " subjects";
 
-		return dutyText = dutyText.concat(contentText);
-	}
-
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
+		return serviceText = serviceText.concat(contentText);
 	}
 
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.dataSource.length;
+		const numRows = this.subjects.length;
 		return numSelected === numRows;
 	}
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected()
-			? this.selection.clear()
-			: this.dataSource.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.subjects.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
 		(this.selection.selected.length !== 0) ? this.isUnpublishButtonDisabled = false : this.isUnpublishButtonDisabled = true;
 	}
+
 	onSuccess(data: any) {
 		const selectedSubjects = this.selection.selected;
 		for (let subject of selectedSubjects) {
@@ -140,13 +126,13 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " subject" : " subjects") : "";
-		let successfulDutyText = (successfulContentText.length !== 0) ? " got unpublished" : "";
-		successfulDutyText = successfulContentText.concat(successfulDutyText);
-		this.openAcknowledgeDialog(successfulDutyText, "publish");
+		let successfulServiceText = (successfulContentText.length !== 0) ? " got unpublished" : "";
+		successfulServiceText = successfulContentText.concat(successfulServiceText);
+		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
 	}
 
 	onError(error: HttpErrorResponse) {
-		this.openAcknowledgeDialog("Something went wrong\nError: " + error.statusText, "publish");
+		this.statusMessageService.showErrorMessage("Error", "Something went wrong\nError: " + error.statusText);
 	}
 }

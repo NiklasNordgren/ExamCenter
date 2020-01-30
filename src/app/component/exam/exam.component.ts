@@ -11,9 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { CourseService } from "src/app/service/course.service";
 import { Course } from "src/app/model/course.model";
-import { ConfirmationAckDialogComponent } from "../confirmation-ack-dialog/confirmation-ack-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material";
-import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 @Component({
 	selector: "app-exam",
@@ -30,7 +28,6 @@ export class ExamComponent implements OnInit, OnDestroy {
 	actionDescription = "Open PDF file in new tab";
 	course: Course;
 	showingInfoMessage = false;
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	courseId;
 	shortHeader: string = "";
 
@@ -40,7 +37,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 		private fileService: FileService,
 		private courseService: CourseService,
 		private changeDetector: ChangeDetectorRef,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
@@ -68,8 +65,7 @@ export class ExamComponent implements OnInit, OnDestroy {
 
 	setExamsByCourseId(courseId: number) {
 		const sub = this.service.getAllExamsByCourseId(courseId).subscribe(
-			exams => this.onSuccess(exams, courseId),
-			error => this.onError(error)
+			exams => this.onSuccess(exams, courseId)
 		);
 
 		this.subscriptions.add(sub);
@@ -85,23 +81,15 @@ export class ExamComponent implements OnInit, OnDestroy {
 			});
 		});
 	}
-	onError(error) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = "Error";
-		this.dialogRef.componentInstance.contentMessage =
-			"An error has occured while loading data.";
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-	}
 
 	openPdf(row) {
 		const filename = row.id;
 		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
 			const fileURL = URL.createObjectURL(pdfBlob);
 			window.open(fileURL, "_blank");
+		},
+		error => {
+			this.statusMessageService.showErrorMessage("Error", "Could not open PDF.");
 		});
 		this.subscriptions.add(sub);
 	}

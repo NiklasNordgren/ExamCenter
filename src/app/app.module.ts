@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -67,6 +67,7 @@ import { CourseFormComponent } from './component/course/course-form/course-form.
 import { SettingsComponent } from './component/settings/settings.component';
 import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { NavigatorComponent } from './component/navigator/navigator.component';
+import { GlobalErrorHandler } from './util/error-handler';
 
 @NgModule({
 	declarations: [
@@ -139,7 +140,8 @@ import { NavigatorComponent } from './component/navigator/navigator.component';
 	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
-		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
+		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
 	],
 	bootstrap: [AppComponent]
 })

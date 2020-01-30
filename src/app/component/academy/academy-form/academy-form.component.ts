@@ -5,9 +5,8 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AcademyService } from '../../../service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from 'src/app/service/status-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-academy-form',
@@ -17,7 +16,6 @@ import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/co
 })
 export class AcademyFormComponent implements OnInit, OnDestroy {
 	form: FormGroup;
-	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	id: number;
 	academy: Academy = new Academy();
 	createFormId: number = 0;
@@ -29,7 +27,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private service: AcademyService,
 		public navigator: Navigator,
-		private dialog: MatDialog
+		private statusMessageService: StatusMessageService
 	) {}
 
 	ngOnInit() {
@@ -71,7 +69,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	
 			const sub = this.service.saveAcademy(this.academy).subscribe(
 				data => this.onSuccess(data),
-				error => this.onError(error)
+			 	error => this.onError(error)
 			);
 			this.subscriptions.add(sub);
 		}
@@ -81,28 +79,16 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		this.form.reset();
 		this.navigator.goToPage('/admin/academy-handler');
-		this.openAcknowledgeDialog(data.name + " was " + ((this.id == this.createFormId) ? "created" : "updated"), 'success');
+		this.statusMessageService.showSuccessMessage(data.name + " was " + 
+		((this.id == this.createFormId) ? "created" : "updated"));
 	}
 
-	onError(error) {
+	onError(error: HttpErrorResponse) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
-			this.navigator.goToPage('/login');
-		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The name already exists as an academy.', 'error');
+			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
+			this.navigator.goToPage('/login');	
 		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the academy.', 'error');
+			throw(error);
 		}
-	}
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
 	}
 }

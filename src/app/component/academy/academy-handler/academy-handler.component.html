@@ -3,7 +3,7 @@
         <div class="selection-buttons-container">
             <h2>Academies</h2>
             <button class="selectionButtons" color="accent" mat-raised-button
-                (click)="this.navigator.goToPage('/home/academy-form/0')">
+                (click)="this.navigator.goToPage('/admin/academy-form/0')">
 
                 <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
             </button>
@@ -50,7 +50,7 @@
             <button mat-raised-button (click)="this.navigator.goToPage('/home/academy-form')"> Edit </button>
             -->
                 <button class="editButton" mat-raised-button
-                    (click)="this.navigator.goToPage('/home/academy-form/' + element.id)">
+                    (click)="this.navigator.goToPage('/admin/academy-form/' + element.id)">
                     <fa-icon [icon]="faPen"></fa-icon>
                     <span style="margin-left: 3pt;">
                         Edit

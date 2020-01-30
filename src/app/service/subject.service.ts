@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from '../model/subject.model';
 import { Observable } from 'rxjs';
 
@@ -28,17 +28,26 @@ export class SubjectService {
 		);
 	}
 
-
 	getAllSubjects() {
 		return this.http.get<Subject[]>('api/subjects/all');
 	}
 
-	saveSubject(subject: Subject): Observable<Subject> {
+	saveSubject(subject: Subject) {
 		return this.http.post<Subject>('/api/subjects/', subject);
 	}
 
 	deleteSubject(id: number) {
 		return this.http.delete('/api/subjects/' + id);
+	}
+
+	deleteSubjects(subjects: Subject[]) {
+		const options = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			body: subjects
+		};
+		return this.http.delete('/api/subjects/', options);
 	}
 
 	publishSubject(subject: Subject) {

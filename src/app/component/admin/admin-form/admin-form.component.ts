@@ -40,9 +40,9 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	buttonText: string;
 
 	constructor(
-		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService, 
+		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService,
 		public navigator: Navigator, private dialog: MatDialog
-	) {}
+	) { }
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
@@ -83,19 +83,79 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		if (this.form.valid) {
 			if (this.isCreateForm) {
-				this.user = new User();
+				this.saveUser();
+			} else {
+				this.isLastSuperUser();
 			}
-			this.user.name = this.form.controls.name.value;
-			this.user.isSuperUser = this.form.controls.isSuperUser.value;
-
-			const sub = this.service.saveUser(this.user).subscribe(
-				data => this.onSuccess(data),
-				error => this.onError(error)
-			);
-			this.subscriptions.add(sub);
 		}
 	}
-	
+
+	saveUser() {
+		if (this.isCreateForm) {
+			this.user = new User();
+		}
+		this.user.name = this.form.controls.name.value;
+		this.user.isSuperUser = this.form.controls.isSuperUser.value;
+
+		const sub = this.service.saveUser(this.user).subscribe(
+			data => this.onSuccess(data),
+			error => this.onError(error)
+		);
+		this.subscriptions.add(sub);
+
+	}
+
+	isLastSuperUser() {
+		if (this.user.isSuperUser == true && this.form.controls.isSuperUser.value == false) {
+			let users: User[];
+			const sub = this.service.getAllUsers().subscribe(
+				data => users = data,
+				error => this.onError(error),
+				() => {
+					const superUsers = users.filter(x => x.isSuperUser == true);
+					if (superUsers.length == 1) {
+						this.openAcknowledgeDialog('error', 'Cannot demote the last super user administatrator account.');
+					} else {
+						this.saveUser();
+					}
+				}
+			);
+			this.subscriptions.add(sub);
+		} else {
+			this.saveUser();
+		}
+	}
+
+	onSuccess(data: any) {
+		this.form.reset();
+		this.navigator.goToPage('/admin/admin-handler');
+		let suffixText: string;
+		(this.isCreateForm) ? suffixText = " was added" : suffixText = " was updated";
+		this.openAcknowledgeDialog('success', data.name + suffixText);
+	}
+
+	onError(error) {
+		if (error.status === 401) {
+			this.openAcknowledgeDialog('Error', 'Not authorized. Please log in and try again');
+			this.navigator.goToPage('/login');
+		} else if (error.status === 409) {
+			this.openAcknowledgeDialog('Error', 'The name already exists as an admin.');
+		} else {
+			throw (error);
+		}
+	}
+
+	openAcknowledgeDialog(typeText: string, message: string) {
+		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
+		this.dialogRef.componentInstance.titleMessage = typeText;
+		this.dialogRef.componentInstance.contentMessage = message;
+
+		const sub = this.dialogRef.afterClosed().subscribe(result => {
+			this.dialogRef = null;
+		});
+		this.subscriptions.add(sub);
+	}
+
 	setCreateFormText() {
 		this.titleText = 'Create Admin';
 		this.buttonText = 'Create';
@@ -104,35 +164,5 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 	setEditFormText() {
 		this.titleText = 'Edit Admin';
 		this.buttonText = 'Save';
-	}
-
-	onSuccess(data: any) {
-		this.form.reset();
-		this.navigator.goToPage('/admin/admin-handler');
-		let suffixText: string;
-		(this.isCreateForm) ? suffixText = " was added": suffixText = " was updated";
-		this.openAcknowledgeDialog(data.name + suffixText, 'success');
-	}
-
-	onError(error) {
-		if (error.status === 401) {
-			this.openAcknowledgeDialog('Not athorized. Please log in and try again', 'error');
-			this.navigator.goToPage('/login');
-		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('The name already exists as an admin.', 'error');
-		} else {
-			this.openAcknowledgeDialog('Something went wrong while trying to save the admin.', 'error');
-		}
-	}
-
-	openAcknowledgeDialog(erorrMessage: string, typeText: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = erorrMessage;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
 	}
 }

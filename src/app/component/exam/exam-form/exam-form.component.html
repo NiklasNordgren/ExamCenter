@@ -18,10 +18,10 @@
 
         <mat-form-field>
             <mat-label for="unpublishDate">Unpublish Date</mat-label>
-            <input matInput id="unpublishDate" required type="text" formControlName="unpublishDate" placeholder="Ex. DVG324, MAG051"
-                size="100pt">
+            <input matInput id="unpublishDate" required type="text" formControlName="unpublishDate"
+                placeholder="Ex. DVG324, MAG051" size="100pt">
         </mat-form-field>
-       
+
         <mat-form-field>
             <mat-label>Course list</mat-label>
             <mat-select formControlName="course" name="courses" class="select">
@@ -30,10 +30,15 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        <div>
+            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">Save
+            </button>
 
-        <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
-            class="btn btn-primary">Save</button>
-            
+            <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                (click)="this.navigator.goToPage('/admin/admin-handler/')">
+                Cancel
+            </button>
+        </div>
 
     </form>
 </div>

@@ -16,7 +16,7 @@
         <mat-form-field>
             <mat-label>Subject list</mat-label>
             <mat-select formControlName="subject" name="subjects">
-                <mat-option required (click)="selectedSubject(subject.id)" placeholder="Subject List"
+                <mat-option required (click)="selectedSubject(subject)" placeholder="Subject List"
                     *ngFor="let subject of subjects" [value]="subject.id">
                     {{subject.name}}
                 </mat-option>
@@ -24,8 +24,8 @@
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label for="code">Course code</mat-label>
-            <input matInput id="code" required type="text" formControlName="code" placeholder="Ex. DVG324, MAG051"
+            <mat-label for="courseCode">Course code</mat-label>
+            <input matInput id="courseCode" required type="text" formControlName="courseCode" placeholder="Ex. DVG324, MAG051"
                 size="100pt">
         </mat-form-field>
 
@@ -35,9 +35,15 @@
                 placeholder="Ex. Datorsystem, Linjär algebra">
         </mat-form-field>
 
-        <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit"
-            class="btn btn-primary">Save</button>
+        <div>
+            <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit" class="btn btn-primary">
+                Save
+            </button>
 
-
+            <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                (click)="this.navigator.goToPage('/admin/course-handler/')">
+                Cancel
+            </button>
+        </div>
     </form>
 </div>

@@ -1,4 +1,5 @@
 <div class="wrapper">
+    <h2>Users</h2>
     <button class="newButton" color="accent" mat-raised-button
         (click)="this.navigator.goToPage('/admin/admin-form/0')">
         <fa-icon [icon]="faUserPlus"></fa-icon><span class="buttonText"> New</span>
@@ -14,13 +15,14 @@
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                <mat-checkbox color="warn" (change)="$event ? masterToggle() : null; isAnyCheckboxSelected()"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()" >
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-                <mat-checkbox color="warn" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null; isAnyCheckboxSelected()"
+                <mat-checkbox color="warn" (click)="$event.stopPropagation()" 
+                (change)="$event ? selection.toggle(row) : null; isAnyCheckboxSelected()"
                     [checked]="selection.isSelected(row)" >
                 </mat-checkbox>
             </td>

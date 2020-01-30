@@ -39,9 +39,10 @@ export class AppComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private loginService: LoginService,
 		private loginStateShareService: LoginStateShareService,
-		private statusMessageService: StatusMessageService
+		private statusMessageService: StatusMessageService,
 	) { }
 	subscriptions: Subscription = new Subscription();
+	textPageHeader = "Exam Centre";
 	academies = [];
 	isLoggedIn;
 	isHandset$: Observable<boolean> = this.breakpointObserver
@@ -114,6 +115,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	isRouteLogin(): boolean{
 		return this.router.url.endsWith("/login");
+	}
+
+	openPdf(){
+		open("../assets/usermanual.pdf", "_blank");
 	}
 
 }
