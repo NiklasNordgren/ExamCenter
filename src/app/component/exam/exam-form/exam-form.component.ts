@@ -60,12 +60,12 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
-			filename: '',
-			date: '',
-			unpublishDate: '',
 			academy: '',
 			subject: '',
-			course: ''
+			course: '',
+			filename: '',
+			date: '',
+			unpublishDate: ''
 		});
 
 		let sub = this.academyService.getAllAcademies().subscribe(
@@ -151,9 +151,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			this.selectedSubject(0);
 			this.selectedCourse(0);
 		}
-		
-		console.log(isInitialized);
-
 	}
 
 	selectedSubject(subjectId: number, isInitialized = true) {
@@ -166,7 +163,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		} else {
 			this.selectedCourse(0);
 		}
-		
 	}
 
 	selectedCourse(courseId: number) {
