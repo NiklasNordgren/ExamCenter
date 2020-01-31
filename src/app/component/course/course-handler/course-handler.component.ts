@@ -1,19 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Academy } from 'src/app/model/academy.model';
-import { Subscription, from } from 'rxjs';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
-import { Subject } from 'src/app/model/subject.model';
 import { faPlus, faPen, faTrash, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
 import { Navigator } from 'src/app/util/navigator';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 
