@@ -5,7 +5,7 @@
     <form fxLayout="column" [formGroup]="form" class="example-form" (ngSubmit)="onSubmit()">
         <mat-form-field>
             <mat-label>Academy list</mat-label>
-            <mat-select formControlName="academy" name="academies">
+            <mat-select formControlName="academy" name="academies" class="select">
                 <mat-option required placeholder="Academy list"
                     *ngFor="let academy of academies" [value]="academy.id">
                     {{academy.name}}
