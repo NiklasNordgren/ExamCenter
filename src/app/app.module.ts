@@ -6,10 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {
-	HammerGestureConfig,
-	HAMMER_GESTURE_CONFIG
-} from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatSliderModule } from '@angular/material/slider';
@@ -140,8 +136,7 @@ import { GlobalErrorHandler } from './util/error-handler';
 	entryComponents: [ConfirmationDialogComponent, ConfirmationAckDialogComponent],
 	providers: [
 		AdminGuard,
-		{ provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
-		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
+			{ provide: ErrorHandler, useClass: GlobalErrorHandler }
 	],
 	bootstrap: [AppComponent]
 })
