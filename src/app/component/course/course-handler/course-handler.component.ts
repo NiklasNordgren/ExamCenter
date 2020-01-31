@@ -63,16 +63,20 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			.getAllSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.selectedSubjectValue = this.subjects[0].id;
-				this.selectedSubject(this.selectedSubjectValue);
+				if (this.subjects.length > 0) {
+					this.selectedSubjectValue = this.subjects[0].id;
+					this.selectedSubject(this.selectedSubjectValue);
+				} else {
+					this.selectedSubjectValue = 0;
+					this.selectedSubject(0);
+				}
 			});
 		this.subscriptions.add(sub);
 	}
 
 	selectedSubject(subjectId: number) {
-		const sub = this.courseService
-			.getAllCoursesBySubjectId(subjectId)
-			.subscribe(responseCourses => {
+		const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(
+			responseCourses => {
 				this.courses = responseCourses;
 				this.dataSource = this.courses;
 			});
