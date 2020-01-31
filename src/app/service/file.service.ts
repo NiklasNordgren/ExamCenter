@@ -16,18 +16,9 @@ export class FileService implements OnDestroy {
 	}
 
 	downloadFile(fileName: string): Observable<Blob> {
-		
-		/*
 		return this.http
 			.get('/api/files/download/' + fileName, { responseType: 'blob' })
 			.pipe(map(blob => new Blob([blob], { type: 'application/pdf' })));
-		*/
-
-		return this.http.get('/api/files/download/', { responseType: 'blob' })
-		.pipe(map(blob => new Blob([blob]), { type: 'text/json; charset=utf-8' }));
-			
-
-		
 	}
 
 	uploadFile(file: File) {
