@@ -86,47 +86,75 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	displayedAcademyColumns: string[] = ['select', 'name', 'abbreviation', 'actions'];
 
 	constructor(
-		private router: Router, 
-		private examService: ExamService, 
+		private router: Router,
+		private examService: ExamService,
 		private courseService: CourseService,
-		private subjectService: SubjectService, 
-		private academyService: AcademyService, 
+		private subjectService: SubjectService,
+		private academyService: AcademyService,
 		private dialog: MatDialog) { }
 
 	ngOnInit() {
-		let sub: any;
+		this.getAcademies();
+		this.getSubjects();
+		this.getCourses();
+		this.getExams();
+	}
 
-		sub = this.examService.getUnpublishedExams().subscribe(responseExams => {
-			for (let exam of responseExams) {
-				let customExam = this.examConverter(exam);
-				this.exams.push(customExam);
-			}
-		});
-		this.subscriptions.add(sub);
 
-		sub = this.courseService.getUnpublishedCourses().subscribe(responseCourses => {
-			for (let course of responseCourses) {
-				let customCourse = this.courseConverter(course);
-				this.courses.push(customCourse);
-			}
-		});
-		this.subscriptions.add(sub);
 
-		sub = this.subjectService.getUnpublishedSubjects().subscribe(responseSubjects => {
-			for (let subject of responseSubjects) {
-				let customSubject = this.subjectConverter(subject);
-				this.subjects.push(customSubject);
-			}
-		});
-		this.subscriptions.add(sub);
+	getAcademies() {
+		this.subscriptions.add(
+			this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
+				this.academies = [];
+				for (let academy of responseAcademies) {
+					let customAcademy = this.academyConverter(academy);
+					this.academies.push(customAcademy);
+				}
+			})
+		);
+	}
 
-		sub = this.academyService.getUnpublishedAcademies().subscribe(responseAcademies => {
-			for (let academy of responseAcademies) {
-				let customAcademy = this.academyConverter(academy);
-				this.academies.push(customAcademy);
-			}
-		});
-		this.subscriptions.add(sub);
+	getSubjects() {
+		this.subscriptions.add(
+			this.subjectService.getUnpublishedSubjects().subscribe(responseSubjects => {
+				this.subjects = [];
+				for (let subject of responseSubjects) {
+					let customSubject = this.subjectConverter(subject);
+					this.subjects.push(customSubject);
+				}
+			})
+		);
+	}
+
+	getCourses() {
+		this.subscriptions.add(
+			this.courseService.getUnpublishedCourses().subscribe(responseCourses => {
+				this.courses = [];
+				for (let course of responseCourses) {
+					let customCourse = this.courseConverter(course);
+					this.courses.push(customCourse);
+				}
+			})
+		);
+	}
+
+	getExams() {
+		this.subscriptions.add(
+			this.examService.getUnpublishedExams().subscribe(responseExams => {
+				this.exams = [];
+				for (let exam of responseExams) {
+					let customExam = this.examConverter(exam);
+					this.exams.push(customExam);
+				}
+			})
+		);
+	}
+
+	updateLists() {
+		this.getAcademies();
+		this.getSubjects();
+		this.getCourses();
+		this.getExams();
 	}
 
 	ngOnDestroy() {
@@ -142,8 +170,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new CustomExam();
 			this.subscriptions.add(
 				this.courseService.getCourseById(input.courseId).subscribe(responseCourse => {
-				output.courseName = responseCourse.name;
-			}));
+					output.courseName = responseCourse.name;
+				}));
 		}
 		output.id = input.id;
 		output.filename = input.filename;
@@ -162,8 +190,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new CustomCourse();
 			this.subscriptions.add(
 				this.subjectService.getSubjectById(input.subjectId).subscribe(responseSubject => {
-				output.subjectName = responseSubject.name;
-			}));
+					output.subjectName = responseSubject.name;
+				}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -181,8 +209,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			output = new CustomSubject();
 			this.subscriptions.add(
 				this.academyService.getAcademyById(input.academyId).subscribe(responseAcademy => {
-				output.academyName = responseAcademy.name;
-			}));
+					output.academyName = responseAcademy.name;
+				}));
 		}
 		output.id = input.id;
 		output.name = input.name;
@@ -202,7 +230,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		output.id = input.id;
 		output.name = input.name;
 		output.abbreviation = input.abbreviation;
-		
+
 		return output;
 	}
 
@@ -213,7 +241,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
 		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academy" : " academies") : "");
 
-		let serviceText = (contentText.length !== 0) ? "Are you sure you want to " + service + "\n": "";
+		let serviceText = (contentText.length !== 0) ? "Are you sure you want to " + service + "\n" : "";
 		return serviceText = serviceText.concat(contentText);
 	}
 
@@ -222,16 +250,16 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let amountCoursesSelected = this.courseSelection.selected.length;
 		let amountSubjectsSelected = this.subjectSelection.selected.length;
 		let amountAcademiesSelected = this.academySelection.selected.length;
-			
+
 		let serviceText = this.selectionDialogText(amountExamsSelected, amountCoursesSelected, amountSubjectsSelected, amountAcademiesSelected, service);
 
-		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0){
+		if (amountExamsSelected !== 0 || amountCoursesSelected !== 0 || amountSubjectsSelected !== 0 || amountAcademiesSelected !== 0) {
 			this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
 			});
 			this.dialogRef.componentInstance.titleMessage = "confirm";
 			this.dialogRef.componentInstance.contentMessage = serviceText;
 			this.dialogRef.componentInstance.confirmBtnText = service;
-			
+
 			const sub = this.dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					if (service == "publish") {
@@ -239,13 +267,13 @@ export class OutboxComponent implements OnInit, OnDestroy {
 						(amountCoursesSelected !== 0) ? this.publishCourses() : null;
 						(amountSubjectsSelected !== 0) ? this.publishSubjects() : null;
 						(amountAcademiesSelected !== 0) ? this.publishAcademies() : null;
-						
-					} else if (service == "delete"){
+
+					} else if (service == "delete") {
 						(amountExamsSelected !== 0) ? this.deleteExams() : null;
 						(amountCoursesSelected !== 0) ? this.deleteCourses() : null;
 						(amountSubjectsSelected !== 0) ? this.deleteSubjects() : null;
 						(amountAcademiesSelected !== 0) ? this.deleteAcademies() : null;
-					} 
+					}
 					this.clearSelections();
 				}
 				this.dialogRef = null;
@@ -262,7 +290,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			content = content.concat("course?\n\n" + element.name);
 		} else if (element instanceof CustomSubject) {
 			content = content.concat("subject?\n\n" + element.name);
-		}else if (element instanceof CustomAcademy) {
+		} else if (element instanceof CustomAcademy) {
 			content = content.concat("academy?\n\n" + element.name);
 		}
 
@@ -288,7 +316,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				this.clearSelections();
 			}
 			this.dialogRef = null;
-		}); 
+		});
 		this.subscriptions.add(sub);
 	}
 
@@ -296,7 +324,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let exam = this.examConverter(element);
 		this.subscriptions.add(
 			this.examService.publishExam(exam).subscribe(data => {
-		}));
+			}));
 		this.exams = this.exams.filter(x => x.id != exam.id);
 	}
 
@@ -308,17 +336,20 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
 		this.subscriptions.add(
-			this.examService.publishExams(exams, isUnpublished).subscribe(data => {
-		}));
+			this.examService.publishExams(exams, isUnpublished).subscribe());
 	}
 
 	publishCourse(element: CustomCourse) {
 		let course = this.courseConverter(element);
 		course.unpublished = false;
 		this.subscriptions.add(
-			this.courseService.publishCourse(course).subscribe()
+			this.courseService.publishCourse(course).subscribe(
+				data => null,
+				error => null,
+				() => this.getExams()
+			)
 		);
-		this.courses = this.courses.filter(x => x.id != course.id); 
+		this.courses = this.courses.filter(x => x.id != course.id);
 	}
 
 	publishCourses() {
@@ -326,10 +357,14 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
 			courses.push(this.courseConverter(customCourse));
-			this.courses = this.courses.filter(x => x.id != customCourse.id); 
+			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
 		this.subscriptions.add(
-			this.courseService.publishCourses(courses, isUnpublished).subscribe()
+			this.courseService.publishCourses(courses, isUnpublished).subscribe(
+				data => null,
+				error => null,
+				() => this.getExams()
+			)
 		);
 	}
 
@@ -337,20 +372,34 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let subject = this.subjectConverter(element);
 		subject.unpublished = false;
 		this.subscriptions.add(
-			this.subjectService.publishSubject(subject).subscribe()
+			this.subjectService.publishSubject(subject).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
-		this.subjects = this.subjects.filter(x => x.id != subject.id); 
+		this.subjects = this.subjects.filter(x => x.id != subject.id);
 	}
-	
+
 	publishSubjects() {
 		const isUnpublished = false;
 		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
 			subjects.push(this.subjectConverter(customSubject));
-			this.subjects = this.subjects.filter(x => x.id != customSubject.id); 
+			this.subjects = this.subjects.filter(x => x.id != customSubject.id);
 		}
 		this.subscriptions.add(
-			this.subjectService.publishSubjects(subjects, isUnpublished).subscribe()
+			this.subjectService.publishSubjects(subjects, isUnpublished).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 	}
 
@@ -358,20 +407,36 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let academy = this.academyConverter(element);
 		academy.unpublished = false;
 		this.subscriptions.add(
-			this.academyService.unpublishAcademy(academy).subscribe()
+			this.academyService.unpublishAcademy(academy).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getSubjects()
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
-		this.academies = this.academies.filter(x => x.id != academy.id); 
+		this.academies = this.academies.filter(x => x.id != academy.id);
 	}
-	
+
 	publishAcademies() {
 		const isUnpublished = false;
 		let academies: Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
 			academies.push(this.academyConverter(customAcademy));
-			this.academies = this.academies.filter(x => x.id != customAcademy.id); 
+			this.academies = this.academies.filter(x => x.id != customAcademy.id);
 		}
 		this.subscriptions.add(
-			this.academyService.publishAcademies(academies, isUnpublished).subscribe()
+			this.academyService.publishAcademies(academies, isUnpublished).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getSubjects()
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 	}
 
@@ -395,11 +460,17 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	deleteCourse(element: CustomCourse) {
 		this.subscriptions.add(
-			this.courseService.deleteCourse(element.id).subscribe()
+			this.courseService.deleteCourse(element.id).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getExams()
+				}
+			)
 		);
 		this.courses = this.courses.filter(x => x.id != element.id);
 	}
-	
+
 	deleteCourses() {
 		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
@@ -407,43 +478,77 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
 		this.subscriptions.add(
-			this.courseService.deleteCourses(courses).subscribe()
+			this.courseService.deleteCourses(courses).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getExams()
+				}
+			)
 		);
 	}
 
 	deleteSubject(element: CustomSubject) {
 		this.subscriptions.add(
-			this.subjectService.deleteSubject(element.id).subscribe()
+			this.subjectService.deleteSubject(element.id).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 		this.subjects = this.subjects.filter(x => x.id != element.id);
 	}
-	
+
 	deleteSubjects() {
 		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
-			subjects.push(this.courseConverter(customSubject));
-			this.courses = this.courses.filter(x => x.id != customSubject.id);
+			subjects.push(this.subjectConverter(customSubject));
+			this.subjects = this.subjects.filter(x => x.id != customSubject.id);
 		}
 		this.subscriptions.add(
-			this.subjectService.deleteSubjects(subjects).subscribe()
+			this.subjectService.deleteSubjects(subjects).subscribe(	
+				() => {
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 	}
 
 	deleteAcademy(element: CustomAcademy) {
 		this.subscriptions.add(
-			this.academyService.deleteAcademy(element.id).subscribe()
+			this.academyService.deleteAcademy(element.id).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getSubjects()
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 		this.academies = this.academies.filter(x => x.id != element.id);
 	}
-	
+
 	deleteAcademies() {
 		let academies: Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
 			academies.push(this.academyConverter(customAcademy));
-			this.academies = this.academies.filter(x => x.id != customAcademy.id); 
+			this.academies = this.academies.filter(x => x.id != customAcademy.id);
 		}
 		this.subscriptions.add(
-			this.academyService.deleteAcademies(academies).subscribe()
+			this.academyService.deleteAcademies(academies).subscribe(
+				data => null,
+				error => null,
+				() => {
+					this.getSubjects()
+					this.getCourses()
+					this.getExams()
+				}
+			)
 		);
 	}
 
@@ -493,7 +598,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	isAnyCheckboxSelected() {
-		(this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 || this.subjectSelection.selected.length !== 0 
+		(this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 || this.subjectSelection.selected.length !== 0
 			|| this.academySelection.selected.length !== 0) ? this.isSelectionButtonsDisabled = false : this.isSelectionButtonsDisabled = true;
 	}
 

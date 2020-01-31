@@ -73,7 +73,6 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 			);
 			this.subscriptions.add(sub);
 		}
-		
 	}
 
 	onSuccess(data: any) {
