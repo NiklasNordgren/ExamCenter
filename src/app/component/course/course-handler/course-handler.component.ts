@@ -68,7 +68,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 					this.selectedSubject(this.selectedSubjectValue);
 				} else {
 					this.selectedSubjectValue = 0;
-					this.selectedSubject(0);
+					this.selectedSubject(this.selectedSubjectValue);
 				}
 			});
 		this.subscriptions.add(sub);

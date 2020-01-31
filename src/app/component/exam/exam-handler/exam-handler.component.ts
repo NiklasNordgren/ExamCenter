@@ -89,8 +89,13 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 			.getAllSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
 				this.subjects = responseSubjects;
-				this.selectedSubjectValue = this.subjects[0].id;
-				this.selectedSubject(this.selectedSubjectValue);
+				if (this.subjects.length > 0) {
+					this.selectedSubjectValue = this.subjects[0].id;
+					this.selectedSubject(this.selectedSubjectValue);
+				} else {
+					this.selectedSubjectValue = 0;
+					this.selectedSubject(this.selectedSubjectValue);
+				}
 			});
 		this.subscriptions.add(sub);
 	}
@@ -99,8 +104,14 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	selectedSubject(id: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
 			this.courses = responseResult;
-			this.selectedCourseValue = this.courses[0].id;
-			this.selectedCourse(this.selectedCourseValue);
+			if (this.courses.length > 0) {
+				this.selectedCourseValue = this.courses[0].id;
+				this.selectedCourse(this.selectedCourseValue);
+			} else {
+				this.selectedCourseValue = 0;
+				this.selectedCourse(this.selectedCourseValue);
+			}
+			
 		});
 		this.subscriptions.add(sub);
 	}
