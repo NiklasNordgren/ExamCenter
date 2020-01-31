@@ -49,8 +49,9 @@ export class SelectExamPropertiesComponent implements OnInit {
 	}
 
 	academyChanged(): void {
-		this.subjectsFilteredByAcademyId = this.subjects.filter(x => x.academyId === this.selectedAcademyId);
+		this.subjectsFilteredByAcademyId = this.subjects.filter(subject => subject.academyId == this.selectedAcademyId);			
 		if (this.subjectsFilteredByAcademyId && this.subjectsFilteredByAcademyId.length > 0) {
+			this.selectedSubjectId = this.subjectsFilteredByAcademyId[0].id;
 			this.subjectChanged();
 		} else {
 			this.setSelectedCourseId(0);
@@ -58,7 +59,7 @@ export class SelectExamPropertiesComponent implements OnInit {
 	}
 
 	subjectChanged(): void {
-		this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId === this.selectedSubjectId);
+		this.coursesFilteredBySubjectId = this.courses.filter(x => x.subjectId == this.selectedSubjectId);
 		if (this.coursesFilteredBySubjectId && this.coursesFilteredBySubjectId.length > 0) {
 			this.setSelectedCourseId(this.coursesFilteredBySubjectId[0].id);
 		} else {
@@ -79,16 +80,16 @@ export class SelectExamPropertiesComponent implements OnInit {
 	}
 
 	isExamUploaded(): boolean {
-		return this.uploadedExams.find(x => x.tempId === this.id) === undefined ? false : true;
+		return this.uploadedExams.find(x => x.tempId == this.id) == undefined ? false : true;
 	}
 
 	tryToAutoMatchDate(): Date {
 
-		const matchedDateString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.match(this.regexpDate);
+		const matchedDateString = this.examsToUpload.find(x => x.tempId == this.tempId).filename.match(this.regexpDate);
 
-		if (matchedDateString && (matchedDateString[0].length === 6 || matchedDateString[0].length === 8)) {
+		if (matchedDateString && (matchedDateString[0].length == 6 || matchedDateString[0].length == 8)) {
 			this.autoMatchDateSuccessful();
-			if (matchedDateString[0].length === 6) {
+			if (matchedDateString[0].length == 6) {
 				return new Date('20' + matchedDateString[0].substring(0, 2) + '-' + matchedDateString[0].substring(2, 4) + '-' + matchedDateString[0].substring(4, 6));
 			} else {
 				return new Date(matchedDateString[0].substring(0, 4) + '-' + matchedDateString[0].substring(4, 6) + '-' + matchedDateString[0].substring(6, 8));
@@ -101,12 +102,12 @@ export class SelectExamPropertiesComponent implements OnInit {
 
 	tryToAutoMatchCourse(): void {
 
-		const courseCodeString = this.examsToUpload.find(x => x.tempId === this.tempId).filename.trim().split(' ')[0];
-		const courseMatch = this.courses.find(x => x.courseCode === courseCodeString);
+		const courseCodeString = this.examsToUpload.find(x => x.tempId == this.tempId).filename.trim().split(' ')[0];
+		const courseMatch = this.courses.find(x => x.courseCode == courseCodeString);
 
 		if (courseMatch) {
-			const courseSubject = this.subjects.find(x => x.id === courseMatch.subjectId);
-			const courseAcademy = this.academies.find(x => x.id === courseSubject.academyId);
+			const courseSubject = this.subjects.find(x => x.id == courseMatch.subjectId);
+			const courseAcademy = this.academies.find(x => x.id == courseSubject.academyId);
 
 			this.selectedAcademyId = courseAcademy.id;
 			this.selectedSubjectId = courseSubject.id;
@@ -115,7 +116,7 @@ export class SelectExamPropertiesComponent implements OnInit {
 
 		} else {
 			this.selectedAcademyId = this.academies[0].id;
-			this.selectedSubjectId = this.subjects.filter(x => x.academyId === this.selectedAcademyId)[0].id;
+			this.selectedSubjectId = this.subjects.filter(x => x.academyId == this.selectedAcademyId)[0].id;
 			this.setSelectedCourseId(this.courses.filter(x => x.subjectId)[0].id);
 		}
 		this.academyChanged();
@@ -123,11 +124,11 @@ export class SelectExamPropertiesComponent implements OnInit {
 	}
 
 	autoMatchDateSuccessful() {
-		this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchDate = true;
+		this.examsToUpload.find(x => x.tempId == this.tempId).autoMatchDate = true;
 	}
 
 	autoMatchCourseSuccessful() {
-		this.examsToUpload.find(x => x.tempId === this.tempId).autoMatchCourse = true;
+		this.examsToUpload.find(x => x.tempId == this.tempId).autoMatchCourse = true;
 	}
 
 }

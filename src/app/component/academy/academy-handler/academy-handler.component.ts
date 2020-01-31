@@ -3,11 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -25,14 +24,15 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faGraduationCap = faGraduationCap;
 	isUnpublishButtonDisabled = true;
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	constructor(
-		private service: AcademyService, 
-		public navigator: Navigator, 
+		private service: AcademyService,
+		public navigator: Navigator,
 		private dialog: MatDialog,
-		private statusMessageService: StatusMessageService) {}
+		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
@@ -79,15 +79,12 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedAcademies = this.selection.selected;
-				let dSub;
-					for (let academy of selectedAcademies) {
-						academy.unpublished = true;
-					}
-					dSub = this.service.unpublishAcademies(selectedAcademies).subscribe(
-						data => this.onSuccess(data),
-						error => this.onError(error)
-					);
-				
+				const isUnpublished = true;
+				const dSub = this.service.publishAcademies(selectedAcademies, isUnpublished).subscribe(
+					data => this.onSuccess(data),
+					error => this.onError(error)
+				);
+
 				this.subscriptions.add(dSub);
 				for (let academy of selectedAcademies) {
 					this.academies = this.academies.filter(x => x.id != academy.id);

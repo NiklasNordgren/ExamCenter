@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subject } from 'src/app/model/subject.model';
-import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Course } from 'src/app/model/course.model';
 import { CourseService } from 'src/app/service/course.service';
@@ -34,6 +34,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
+	faBookOpen = faBookOpen;
 	public selectedAcademyValue: number;
 	public selectedSubjectValue: number;
 	isUnpublishButtonDisabled = true;
@@ -46,6 +47,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		public navigator: Navigator, 
 		private dialog: MatDialog,
 		private statusMessageService: StatusMessageService) { }
+		
 	ngOnInit() {
 		const sub = this.academyService
 			.getAllAcademies()
@@ -94,15 +96,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 			? this.selection.clear()
 			: this.dataSource.forEach(row => this.selection.select(row));
 	}
-	unpublishSelection() {
-		const sub = this.courseService
-			.unpublishCourses(this.selection.selected)
-			.subscribe(
-				data => this.onSuccess(data),
-				error => this.onError(error)
-			);
-		this.subscriptions.add(sub);
-	}
+
 	openDialog() {
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {});
 		this.dialogRef.componentInstance.titleMessage = 'Confirm';
@@ -112,11 +106,9 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedCourses = this.selection.selected;
+				const isUnpublished = true;
 				let dSub;
-				for (let subject of selectedCourses) {
-					subject.unpublished = true;
-				}
-				dSub = this.courseService.unpublishCourses(selectedCourses).subscribe(
+				dSub = this.courseService.publishCourses(selectedCourses, isUnpublished).subscribe(
 					data => this.onSuccess(data),
 					error => this.onError(error)
 				);

@@ -203,7 +203,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 	}
 
 	getAllAcademies() {
-		const sub = this.academyService.getAllAcademies().subscribe(academies => {
+		const sub = this.academyService.getAllAcademies().subscribe(academies => {			
 			this.academies = academies;
 		});
 		this.subscriptions.add(sub);
