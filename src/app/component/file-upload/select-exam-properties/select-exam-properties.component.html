@@ -21,14 +21,14 @@
             <option *ngFor="let subject of subjectsFilteredByAcademyId" [value]="subject.id">{{subject.name}}</option>
         </ng-template>
         <ng-template #subjectsUnavailable>
-            <option [value]="">No subjects available</option>
+            <option [value]="0">No subjects available</option>
         </ng-template>
     </select>
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Select course</mat-label>
-    <select matNativeControl required [disabled]="isExamUploaded()" (change)="setSelectedCourseId($event.target.value)">
+    <select matNativeControl required [disabled]="isExamUploaded()" [(ngModel)]="selectedCourseId" (change)="setSelectedCourseId($event.target.value)">
         <div
             *ngIf="coursesFilteredBySubjectId && coursesFilteredBySubjectId.length > 0; then coursesAvailable else coursesUnavailable">
         </div>
@@ -36,7 +36,7 @@
             <option *ngFor="let course of coursesFilteredBySubjectId" [value]="course.id">{{course.name}}</option>
         </ng-template>
         <ng-template #coursesUnavailable>
-            <option>No courses available</option>
+            <option [value]="0">No courses available</option>
         </ng-template>
     </select>
 </mat-form-field>
