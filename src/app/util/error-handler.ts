@@ -74,7 +74,7 @@ class ApiError {
 		this.status = error.status || 500;
 		this.statusText = error.statusText || '';
 		this.errorType = error.error.errorType || error.statusText || 'Server error';
-		this.errorMessages = error.error.errors || [error.error] || [];
+		this.errorMessages = error.error.errors || [JSON.stringify(error.error)] || [];
 	}
 
 	getErrorType(): string {
