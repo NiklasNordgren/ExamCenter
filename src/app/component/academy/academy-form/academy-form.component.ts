@@ -17,8 +17,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AcademyFormComponent implements OnInit, OnDestroy {
 	form: FormGroup;
 	id: number;
+	returnNav: string;
 	academy: Academy = new Academy();
 	createFormId: number = 0;
+	cancelNav = "";
 
 	private subscriptions = new Subscription();
 
@@ -38,6 +40,8 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
+				this.returnNav = params.get('returnNav');
+				
 				this.handleId();
 			})
 		);
@@ -50,6 +54,7 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 					abbreviation: academy.abbreviation,
 					name: academy.name
 				});
+				this.academy.unpublished = academy.unpublished;
 			});
 			this.subscriptions.add(sub);
 		}
@@ -77,7 +82,10 @@ export class AcademyFormComponent implements OnInit, OnDestroy {
 
 	onSuccess(data: any) {
 		this.form.reset();
-		this.navigator.goToPage('/admin/academy-handler');
+		(!this.returnNav)
+			? this.navigator.goToPage('/admin/academy-handler')
+			: this.navigator.goToPage('/admin/outbox')
+
 		this.statusMessageService.showSuccessMessage(data.name + " was " + 
 		((this.id == this.createFormId) ? "created" : "updated"));
 	}

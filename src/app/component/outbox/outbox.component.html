@@ -35,13 +35,13 @@
                     <th mat-header-cell *matHeaderCellDef>
                         <mat-checkbox color="warn" (change)="$event ? masterExamToggle() : null"
                             [checked]="examSelection.hasValue() && isAllExamsSelected()"
-                            [indeterminate]="examSelection.hasValue() && !isAllExamsSelected()" >
+                            [indeterminate]="examSelection.hasValue() && !isAllExamsSelected()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
                             (change)="$event ? examSelection.toggle(row) : null; isAnyCheckboxSelected()"
-                            [checked]="examSelection.isSelected(row)" >
+                            [checked]="examSelection.isSelected(row)">
                         </mat-checkbox>
                     </td>
                 </ng-container>
@@ -70,12 +70,20 @@
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
-                            <button mat-raised-button matTooltip="Publish this item" color="accent" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
+                            <button mat-raised-button matTooltip="Publish this item" color="accent"
+                                (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
                                 <span class="button-text"> Publish</span>
                             </button>
 
-                            <button mat-raised-button color="warn" matTooltip="Delete this item" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
+                            <button class="editButton" mat-raised-button
+                                (click)="this.navigator.goToPage('/admin/exam-form/' + element.id + '/outbox')">
+                                <fa-icon [icon]="faPen"></fa-icon>
+                                <span class="button-text"> Edit</span>
+                            </button>
+
+                            <button mat-raised-button color="warn" matTooltip="Delete this item"
+                                (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
                                 <fa-icon [icon]="faTrash"></fa-icon>
                                 <span class="button-text"> Delete</span>
                             </button>
@@ -106,21 +114,20 @@
                     <th mat-header-cell *matHeaderCellDef>
                         <mat-checkbox color="warn" (change)="$event ? masterCourseToggle() : null"
                             [checked]="courseSelection.hasValue() && isAllCoursesSelected()"
-                            [indeterminate]="courseSelection.hasValue() && !isAllCoursesSelected()"
-                            >
+                            [indeterminate]="courseSelection.hasValue() && !isAllCoursesSelected()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
                             (change)="$event ? courseSelection.toggle(row) : null; isAnyCheckboxSelected()"
-                            [checked]="courseSelection.isSelected(row)" >
+                            [checked]="courseSelection.isSelected(row)">
                         </mat-checkbox>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef > Name </th>
-                    <td mat-cell *matCellDef="let course"  class="variant-course-column"> {{course.name}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let course" class="variant-course-column"> {{course.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseCode">
@@ -137,12 +144,20 @@
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
-                            <button mat-raised-button color="accent" matTooltip="Publish this item" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
+                            <button mat-raised-button color="accent" matTooltip="Publish this item"
+                                (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
                                 <span class="button-text"> Publish</span>
                             </button>
 
-                            <button mat-raised-button color="warn" matTooltip="Delete this item" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
+                            <button class="editButton" mat-raised-button
+                                (click)="this.navigator.goToPage('/admin/course-form/' + element.id + '/outbox')">
+                                <fa-icon [icon]="faPen"></fa-icon>
+                                <span class="button-text"> Edit</span>
+                            </button>
+
+                            <button mat-raised-button color="warn" matTooltip="Delete this item"
+                                (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
                                 <fa-icon [icon]="faTrash"></fa-icon>
                                 <span class="button-text"> Delete</span>
                             </button>
@@ -173,14 +188,13 @@
                     <th mat-header-cell *matHeaderCellDef>
                         <mat-checkbox color="warn" (change)="$event ? masterSubjectToggle() : null"
                             [checked]="subjectSelection.hasValue() && isAllSubjectsSelected()"
-                            [indeterminate]="subjectSelection.hasValue() && !isAllSubjectsSelected()"
-                            >
+                            [indeterminate]="subjectSelection.hasValue() && !isAllSubjectsSelected()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
                             (change)="$event ? subjectSelection.toggle(row) : null; isAnyCheckboxSelected()"
-                            [checked]="subjectSelection.isSelected(row)" >
+                            [checked]="subjectSelection.isSelected(row)">
                         </mat-checkbox>
                     </td>
                 </ng-container>
@@ -204,12 +218,20 @@
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
-                            <button mat-raised-button color="accent" matTooltip="Publish this item" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
+                            <button mat-raised-button color="accent" matTooltip="Publish this item"
+                                (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
                                 <span class="button-text"> Publish</span>
                             </button>
 
-                            <button mat-raised-button color="warn" matTooltip="Delete this item" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
+                            <button class="editButton" mat-raised-button
+                                (click)="this.navigator.goToPage('/admin/subject-form/' + element.id + '/outbox')">
+                                <fa-icon [icon]="faPen"></fa-icon>
+                                <span class="button-text"> Edit</span>
+                            </button>
+
+                            <button mat-raised-button color="warn" matTooltip="Delete this item"
+                                (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
                                 <fa-icon [icon]="faTrash"></fa-icon>
                                 <span class="button-text"> Delete</span>
                             </button>
@@ -240,14 +262,13 @@
                     <th mat-header-cell *matHeaderCellDef>
                         <mat-checkbox color="warn" (change)="$event ? masterAcademyToggle() : null"
                             [checked]="academySelection.hasValue() && isAllAcademiesSelected()"
-                            [indeterminate]="academySelection.hasValue() && !isAllAcademiesSelected()"
-                            >
+                            [indeterminate]="academySelection.hasValue() && !isAllAcademiesSelected()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
                         <mat-checkbox color="warn" (click)="$event.stopPropagation()"
                             (change)="$event ? academySelection.toggle(row) : null; isAnyCheckboxSelected()"
-                            [checked]="academySelection.isSelected(row)" >
+                            [checked]="academySelection.isSelected(row)">
                         </mat-checkbox>
                     </td>
                 </ng-container>
@@ -266,12 +287,20 @@
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element" class="actions">
                         <div class="singleButtons">
-                            <button mat-raised-button color="accent" matTooltip="Publish this item" (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
+                            <button mat-raised-button color="accent" matTooltip="Publish this item"
+                                (click)="openSingleElementDialog(element, 'publish')" class="publishBtn">
                                 <fa-icon [icon]="faFileMedical"></fa-icon>
                                 <span class="button-text"> Publish</span>
                             </button>
 
-                            <button mat-raised-button color="warn" matTooltip="Delete this item" (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
+                            <button class="editButton" mat-raised-button
+                                (click)="this.navigator.goToPage('/admin/academy-form/' + element.id + '/outbox')">
+                                <fa-icon [icon]="faPen"></fa-icon>
+                                <span class="button-text"> Edit</span>
+                            </button>
+
+                            <button mat-raised-button color="warn" matTooltip="Delete this item"
+                                (click)="openSingleElementDialog(element, 'delete')" class="deleteBtn">
                                 <fa-icon [icon]="faTrash"></fa-icon>
                                 <span class="button-text"> Delete</span>
                             </button>

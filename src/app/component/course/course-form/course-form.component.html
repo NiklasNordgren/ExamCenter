@@ -40,10 +40,20 @@
                 Save
             </button>
 
-            <button mat-raised-button class="btn btn-primary" class="cancelButton"
+            <ng-container *ngIf="!returnNav; then returnToHandler; else returnToOutbox">
+            </ng-container>
+            <ng-template #returnToHandler>
+              <button mat-raised-button class="btn btn-primary" class="cancelButton"
                 (click)="this.navigator.goToPage('/admin/course-handler/')">
                 Cancel
-            </button>
+              </button>
+            </ng-template>
+            <ng-template #returnToOutbox>
+              <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                (click)="this.navigator.goToPage('/admin/outbox/')">
+                Cancel
+              </button>
+            </ng-template>
         </div>
     </form>
 </div>

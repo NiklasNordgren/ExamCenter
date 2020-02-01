@@ -6,8 +6,7 @@
         <mat-form-field>
             <mat-label>Academy list</mat-label>
             <mat-select formControlName="academy" name="academies" class="select">
-                <mat-option required placeholder="Academy list"
-                    *ngFor="let academy of academies" [value]="academy.id">
+                <mat-option required placeholder="Academy list" *ngFor="let academy of academies" [value]="academy.id">
                     {{academy.name}}
                 </mat-option>
             </mat-select>
@@ -28,10 +27,20 @@
                 Save
             </button>
 
-            <button mat-raised-button class="btn btn-primary" class="cancelButton"
-                (click)="this.navigator.goToPage('/admin/subject-handler/')">
-                Cancel
-            </button>
+            <ng-container *ngIf="!returnNav; then returnToHandler; else returnToOutbox">
+            </ng-container>
+            <ng-template #returnToHandler>
+                <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                    (click)="this.navigator.goToPage('/admin/subject-handler/')">
+                    Cancel
+                </button>
+            </ng-template>
+            <ng-template #returnToOutbox>
+                <button mat-raised-button class="btn btn-primary" class="cancelButton"
+                    (click)="this.navigator.goToPage('/admin/outbox/')">
+                    Cancel
+                </button>
+            </ng-template>
         </div>
     </form>
 </div>

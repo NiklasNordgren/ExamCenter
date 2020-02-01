@@ -1,11 +1,11 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { faFileMedical, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFileMedical, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ExamService } from '../../service/exam.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Navigator } from 'src/app/util/navigator';
 import { CourseService } from 'src/app/service/course.service';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
@@ -51,13 +51,15 @@ export class CustomAcademy {
 @Component({
 	selector: 'app-outbox',
 	templateUrl: './outbox.component.html',
-	styleUrls: ['./outbox.component.scss']
+	styleUrls: ['./outbox.component.scss'],
+	providers: [Navigator]
 })
 export class OutboxComponent implements OnInit, OnDestroy {
 	subscriptions: Subscription = new Subscription();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
 	faFileMedical = faFileMedical;
+	faPen = faPen;
 	faTrash = faTrash;
 
 	exams: Array<CustomExam> = [];
@@ -90,6 +92,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		private subjectService: SubjectService,
 		private academyService: AcademyService,
 		private dialog: MatDialog,
+		public navigator: Navigator,
 		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {

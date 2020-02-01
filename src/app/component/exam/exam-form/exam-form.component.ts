@@ -38,6 +38,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	createFormId: number = 0;
 	exam: Exam = new Exam();
 	id: number;
+	returnNav: string;
 
 	isUnpublishedSelector = false;
 	academies: Academy[];
@@ -95,6 +96,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
+				this.returnNav = params.get('returnNav');
 				this.handleId(this.id);
 			})
 		);
@@ -103,13 +105,12 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 	handleId(id: number) {
 		const dsub = this.service.getExamById(this.id).subscribe(exam => {
 			this.exam = exam;
-			//nu kan vi hitta course
+
 			this.isUnpublishedSelector = exam.unpublished;
 			let course = this.findCourseById(exam.courseId);
 			let subject = this.findSubjectById(course.subjectId);
 			let academy = this.findAcademyById(subject.academyId);
 
-			//nu kan vi filtrera
 			const isInitialized = false;
 			this.selectedAcademy(academy.id, isInitialized);
 			this.selectedSubject(subject.id, isInitialized);
@@ -123,6 +124,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 				subject: subject.id,
 				course: course.id
 			});
+			this.exam.unpublished = exam.unpublished;
 
 		});
 		this.subscriptions.add(dsub);
@@ -190,7 +192,10 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	onSuccess(data: any) {
 		this.form.reset();
-		this.navigator.goToPage('/admin/exam-handler');
+		(!this.returnNav)
+			? this.navigator.goToPage('/admin/exam-handler')
+			: this.navigator.goToPage('/admin/outbox')
+
 		this.statusMessageService.showSuccessMessage(data.name + " was " +
 			((this.id == this.createFormId) ? "created" : "updated"));
 	}

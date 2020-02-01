@@ -48,10 +48,6 @@
         <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element">
-                <!--
-                
-            <button mat-raised-button (click)="this.navigator.goToPage('/home/academy-form')"> Edit </button>
-            -->
                 <button class="editButton" mat-raised-button
                     (click)="this.navigator.goToPage('/admin/academy-form/' + element.id)">
                     <fa-icon [icon]="faPen"></fa-icon>
