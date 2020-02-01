@@ -15,7 +15,6 @@ import { Course } from 'src/app/model/course.model';
 import { Academy } from 'src/app/model/academy.model';
 import { Subject } from 'src/app/model/subject.model';
 
-import { UnpublishService } from '../../service/unpublish.service';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export class CustomExam {
@@ -86,7 +85,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	displayedAcademyColumns: string[] = ['select', 'name', 'abbreviation', 'actions'];
 
 	constructor(
-		private router: Router,
 		private examService: ExamService,
 		private courseService: CourseService,
 		private subjectService: SubjectService,
@@ -100,7 +98,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		this.getCourses();
 		this.getExams();
 	}
-	// Fixa så att man ej kan publisha en subject om aca är unpublished
 
 	getAcademies() {
 		this.subscriptions.add(
@@ -323,9 +320,14 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let exam = this.examConverter(element);
 		if (!this.isParentUnpublished(this.courses, exam.subjectId)) {
 			this.subscriptions.add(
-				this.examService.publishExam(exam).subscribe());
-			this.exams = this.exams.filter(x => x.id != exam.id);
-			this.examSelection.clear();
+				this.examService.publishExam(exam).subscribe(
+					res => {
+						this.exams = this.exams.filter(x => x.id != exam.id);
+						this.examSelection.clear();
+						this.statusMessageService.showSuccessMessage(exam.filename + " got published.");
+					},
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err)
+				));
 		} else {
 			this.statusMessageService.showErrorMessage("Course not published", "The course this exam belongs to is unpublished. \n" +
 				"Please publish the course if you want this published.");
@@ -346,8 +348,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		}
 		if (exams.length > 0) {
 			this.subscriptions.add(
-				this.examService.publishExams(exams, isUnpublished).subscribe());
-			this.examSelection.clear();
+				this.examService.publishExams(exams, isUnpublished).subscribe(
+					res => this.examSelection.clear(),
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err)
+				));
 		}
 		if (errorExams.length > 0) {
 			let courseNoun = "course";
@@ -370,13 +374,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			course.unpublished = false;
 			this.subscriptions.add(
 				this.courseService.publishCourse(course).subscribe(
-					data => null,
-					error => null,
+					res => {
+						this.courses = this.courses.filter(x => x.id != course.id);
+						this.courseSelection.clear();
+						this.statusMessageService.showSuccessMessage(course.name + " got published.");
+					},
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 					() => this.getExams()
 				)
 			);
-			this.courses = this.courses.filter(x => x.id != course.id);
-			this.courseSelection.clear();
 		} else {
 			this.statusMessageService.showErrorMessage("Subject not published", "The subject this course belongs to is unpublished. \n" +
 				"Please publish the subject if you want this published.");
@@ -398,13 +404,12 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		if (courses.length > 0) {
 			this.subscriptions.add(
 				this.courseService.publishCourses(courses, isUnpublished).subscribe(
-					data => null,
-					error => null,
+					res => this.courseSelection.clear(),
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 					() => this.getExams()
 				)
 			);
-			this.courseSelection.clear();
-		} 
+		}
 		if (errorCourses.length > 0) {
 			let subjectNoun = "subject";
 			let lastSubjectName = "";
@@ -426,16 +431,18 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			subject.unpublished = false;
 			this.subscriptions.add(
 				this.subjectService.publishSubject(subject).subscribe(
-					data => null,
-					error => null,
+					res => {
+						this.subjects = this.subjects.filter(x => x.id != subject.id);
+						this.subjectSelection.clear();
+						this.statusMessageService.showSuccessMessage(subject.name + " got published.");
+					},
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 					() => {
 						this.getCourses()
 						this.getExams()
 					}
 				)
 			);
-			this.subjects = this.subjects.filter(x => x.id != subject.id);
-			this.subjectSelection.clear();
 		} else {
 			this.statusMessageService.showErrorMessage("Academy not published", "The academy this subject belongs to is unpublished. \n" +
 				"Please publish the academy if you want this published.");
@@ -453,21 +460,19 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			} else {
 				errorSubjects.push(customSubject);
 			}
-
 		}
 		if (subjects.length > 0) {
 			this.subscriptions.add(
 				this.subjectService.publishSubjects(subjects, isUnpublished).subscribe(
-					data => null,
-					error => null,
+					res => this.subjectSelection.clear(),
+					err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 					() => {
 						this.getCourses()
 						this.getExams()
 					}
 				)
 			);
-			this.subjectSelection.clear();
-		} 
+		}
 		if (errorSubjects.length > 0) {
 			let academyNoun = "academy";
 			let lastAcademyName = "";
@@ -488,8 +493,12 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		academy.unpublished = false;
 		this.subscriptions.add(
 			this.academyService.unpublishAcademy(academy).subscribe(
-				data => null,
-				error => null,
+				res => {
+					this.academies = this.academies.filter(x => x.id != academy.id);
+					this.academySelection.clear();
+					this.statusMessageService.showSuccessMessage(academy.name + " got published.");
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getSubjects()
 					this.getCourses()
@@ -497,8 +506,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				}
 			)
 		);
-		this.academies = this.academies.filter(x => x.id != academy.id);
-		this.academySelection.clear();
 	}
 
 	publishAcademies() {
@@ -510,8 +517,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		}
 		this.subscriptions.add(
 			this.academyService.publishAcademies(academies, isUnpublished).subscribe(
-				data => null,
-				error => null,
+				res => this.academySelection.clear(),
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getSubjects()
 					this.getCourses()
@@ -519,54 +526,72 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				}
 			)
 		);
-		this.academySelection.clear();
 	}
 
 	deleteExam(element: CustomExam) {
 		this.subscriptions.add(
-			this.examService.deleteExam(element.id).subscribe()
+			this.examService.deleteExam(element.id).subscribe(
+				res => {
+					this.exams = this.exams.filter(x => x.id != element.id);
+					this.examSelection.clear();
+					this.statusMessageService.showSuccessMessage("Exam deleted");
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
+			)
 		);
-		this.exams = this.exams.filter(x => x.id != element.id);
-		this.examSelection.clear();
 	}
 
 	deleteExams() {
 		let exams: Exam[] = [];
 		for (let customExam of this.examSelection.selected) {
 			exams.push(this.examConverter(customExam));
-			this.exams = this.exams.filter(x => x.id != customExam.id);
 		}
-		this.examSelection.clear();
+
 		this.subscriptions.add(
-			this.examService.deleteExams(exams).subscribe()
+			this.examService.deleteExams(exams).subscribe(
+				res => {
+					exams.forEach(exam =>
+						this.exams = this.exams.filter(x => x.id != exam.id));
+					this.examSelection.clear();
+					this.statusMessageService.showSuccessMessage("Exams deleted");
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err)
+
+			)
 		);
 	}
 
 	deleteCourse(element: CustomCourse) {
 		this.subscriptions.add(
 			this.courseService.deleteCourse(element.id).subscribe(
-				data => null,
-				error => null,
+				res => {
+					this.courses = this.courses.filter(x => x.id != element.id);
+					this.courseSelection.clear();
+					this.statusMessageService.showSuccessMessage("Course deleted");
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getExams()
 				}
 			)
 		);
-		this.courses = this.courses.filter(x => x.id != element.id);
-		this.courseSelection.clear();
 	}
 
 	deleteCourses() {
 		let courses: Course[] = [];
 		for (let customCourse of this.courseSelection.selected) {
 			courses.push(this.courseConverter(customCourse));
-			this.courses = this.courses.filter(x => x.id != customCourse.id);
 		}
-		this.courseSelection.clear();
+
 		this.subscriptions.add(
 			this.courseService.deleteCourses(courses).subscribe(
-				data => null,
-				error => null,
+				res => {
+					courses.forEach(course =>
+						this.courses = this.courses.filter(x => x.id != course.id));
+					this.courseSelection.clear();
+					this.statusMessageService.showSuccessMessage("Courses deleted");
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getExams()
 				}
@@ -577,27 +602,35 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	deleteSubject(element: CustomSubject) {
 		this.subscriptions.add(
 			this.subjectService.deleteSubject(element.id).subscribe(
-				data => null,
-				error => null,
+				res => {
+					this.subjects = this.subjects.filter(x => x.id != element.id);
+					this.subjectSelection.clear();
+					this.statusMessageService.showSuccessMessage("Subject deleted")
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getCourses()
 					this.getExams()
 				}
 			)
 		);
-		this.subjects = this.subjects.filter(x => x.id != element.id);
-		this.subjectSelection.clear();
+
 	}
 
 	deleteSubjects() {
 		let subjects: Subject[] = [];
 		for (let customSubject of this.subjectSelection.selected) {
 			subjects.push(this.subjectConverter(customSubject));
-			this.subjects = this.subjects.filter(x => x.id != customSubject.id);
 		}
-		this.subjectSelection.clear();
 		this.subscriptions.add(
 			this.subjectService.deleteSubjects(subjects).subscribe(
+				res => {
+					subjects.forEach(subject =>
+						this.subjects = this.subjects.filter(x => x.id != subject.id));
+					this.subjectSelection.clear();
+					this.statusMessageService.showSuccessMessage("Subjects deleted")
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getCourses()
 					this.getExams()
@@ -609,8 +642,12 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	deleteAcademy(element: CustomAcademy) {
 		this.subscriptions.add(
 			this.academyService.deleteAcademy(element.id).subscribe(
-				data => null,
-				error => null,
+				res => {
+					this.academies = this.academies.filter(x => x.id != element.id);
+					this.academySelection.clear();
+					this.statusMessageService.showSuccessMessage("Academy deleted")
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getSubjects()
 					this.getCourses()
@@ -618,21 +655,23 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				}
 			)
 		);
-		this.academies = this.academies.filter(x => x.id != element.id);
-		this.academySelection.clear();
 	}
 
 	deleteAcademies() {
 		let academies: Academy[] = [];
 		for (let customAcademy of this.academySelection.selected) {
 			academies.push(this.academyConverter(customAcademy));
-			this.academies = this.academies.filter(x => x.id != customAcademy.id);
 		}
-		this.academySelection.clear();
+		
 		this.subscriptions.add(
 			this.academyService.deleteAcademies(academies).subscribe(
-				data => null,
-				error => null,
+				res => {
+					academies.forEach(academy =>
+						this.academies = this.academies.filter(x => x.id != academy.id));
+						this.academySelection.clear();
+						this.statusMessageService.showSuccessMessage("Academies deleted")
+				},
+				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
 					this.getSubjects()
 					this.getCourses()
