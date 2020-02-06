@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Navigator } from 'src/app/util/navigator';
 import { Exam } from '../../../model/exam.model';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { AppDateAdapter, APP_DATE_FORMATS} from '../../file-upload/select-exam-properties/format-datepicker'
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../file-upload/select-exam-properties/format-datepicker'
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ExamService } from '../../../service/exam.service';
@@ -28,7 +28,7 @@ export interface CustomBooleanArray {
 	selector: 'app-address-form',
 	templateUrl: './exam-form.component.html',
 	styleUrls: ['./exam-form.component.scss'],
-	providers: [Navigator, 
+	providers: [Navigator,
 		{ provide: DateAdapter, useClass: AppDateAdapter },
 		{ provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }]
 })
@@ -73,37 +73,7 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			unpublishDate: ''
 		});
 
-		let sub = this.academyService.getAllAcademies().subscribe(
-			responseAcademies => {
-				this.academies = responseAcademies
-			},
-			error => this.onError(error)
-		);
-		this.subscriptions.add(sub);
-
-		sub = this.subjectService.getAllSubjects().subscribe(
-			responseSubjects => {
-				this.subjects = responseSubjects
-			},
-			error => this.onError(error)
-		);
-		this.subscriptions.add(sub);
-
-		sub = this.courseService.getAllCourses().subscribe(
-			responseCourses => {
-				this.courses = responseCourses
-			},
-			error => this.onError(error)
-		);
-		this.subscriptions.add(sub);
-
-		this.subscriptions.add(
-			this.route.paramMap.subscribe(params => {
-				this.id = parseInt(params.get('id'), 10);
-				this.returnNav = params.get('returnNav');
-				this.handleId(this.id);
-			})
-		);
+		this.getAcademies();
 	}
 
 	handleId(id: number) {
@@ -155,7 +125,6 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			}
 		} else {
 			this.selectedSubject(0);
-			this.selectedCourse(0);
 		}
 	}
 
@@ -164,8 +133,8 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		this.coursesFilteredBySubjectId = this.courses.filter(course => course.subjectId == subjectId);
 		if (this.coursesFilteredBySubjectId && this.coursesFilteredBySubjectId.length > 0) {
 			if (isInitialized) {
-					this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
-			} 
+				this.selectedCourse(this.coursesFilteredBySubjectId[0].id);
+			}
 		} else {
 			this.selectedCourse(0);
 		}
@@ -173,6 +142,47 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 
 	selectedCourse(courseId: number) {
 		this.form.get("course").setValue(courseId);
+	}
+
+	getAcademies() {
+		this.subscriptions.add(
+			this.academyService.getAllAcademies().subscribe(
+				responseAcademies => this.academies = responseAcademies,
+				error => this.onError(error),
+				() => this.getSubjects()
+			)
+		);
+
+	}
+
+	getSubjects() {
+		this.subscriptions.add(
+			this.subjectService.getAllSubjects().subscribe(
+				responseSubjects => this.subjects = responseSubjects,
+				error => this.onError(error),
+				() => this.getCourses()
+			)
+		);
+	}
+
+	getCourses() {
+		this.subscriptions.add(
+			this.courseService.getAllCourses().subscribe(
+				responseCourses => this.courses = responseCourses,
+				error => this.onError(error),
+				() => this.getParams()
+			)
+		);
+	}
+
+	getParams() {
+		this.subscriptions.add(
+			this.route.paramMap.subscribe(params => {
+				this.id = parseInt(params.get('id'), 10);
+				this.returnNav = params.get('returnNav');
+				this.handleId(this.id);
+			})
+		);
 	}
 
 	ngOnDestroy() {
