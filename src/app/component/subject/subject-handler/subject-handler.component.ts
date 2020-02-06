@@ -1,16 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'src/app/model/subject.model';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
 import { faPlus, faPen, faTrash, faBook } from '@fortawesome/free-solid-svg-icons';
-import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subscription } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 @Component({

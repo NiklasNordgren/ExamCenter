@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from 'src/app/service/subject.service';
