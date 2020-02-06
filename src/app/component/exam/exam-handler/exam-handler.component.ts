@@ -177,6 +177,13 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		return numSelected === numRows;
 	}
 
+	convertToDate(date : Array<number>){
+		if(date.length >= 3)
+			return date[0] + '-' + date[1] + '-' + date[2];
+		else
+			return 'No date avalible';
+	}
+
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
 		this.isAllSelected() ? this.selection.clear() : this.exams.forEach(row => this.selection.select(row));
