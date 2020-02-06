@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTable } from '@angular/material';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +26,12 @@ export class ListComponent implements OnInit {
 			this.columnsToDisplay.push(this.shortHeader);
 		}
 		this.columnsToDisplay.push(this.name);
+	}
 
+	ngOnChanges() {
+		if (this.data.length > 0) {
+			this.sortByName();
+		} 
 	}
 
 	rowClicked(clickedRow) {
