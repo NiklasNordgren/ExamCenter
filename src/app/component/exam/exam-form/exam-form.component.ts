@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Navigator } from 'src/app/util/navigator';
 import { Exam } from '../../../model/exam.model';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppDateAdapter, APP_DATE_FORMATS} from '../../file-upload/select-exam-properties/format-datepicker'
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ExamService } from '../../../service/exam.service';
@@ -26,7 +28,9 @@ export interface CustomBooleanArray {
 	selector: 'app-address-form',
 	templateUrl: './exam-form.component.html',
 	styleUrls: ['./exam-form.component.scss'],
-	providers: [Navigator]
+	providers: [Navigator, 
+		{ provide: DateAdapter, useClass: AppDateAdapter },
+		{ provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }]
 })
 export class ExamFormComponent implements OnInit, OnDestroy {
 
