@@ -39,28 +39,39 @@ export class ListComponent implements OnInit {
 	}
 
 	sortByName() {
+		let isAlreadySorted = true;
 		this.data.sort((a, b) => {
 			if (a.name > b.name) {
 				return 1;
 			}
 			if (a.name < b.name) {
+				isAlreadySorted = false;
 				return -1;
 			}
 			return 0;
 		});
+		
+		if (isAlreadySorted) {
+			this.data.reverse();
+		}
 		this.table.renderRows();
 	}
 
 	sortByDescription() {
+		let isAlreadySorted = true;
 		this.data.sort((a, b) => {
 			if (a.shortDesc > b.shortDesc) {
 				return 1;
 			}
 			if (a.shortDesc < b.shortDesc) {
+				isAlreadySorted = false;
 				return -1;
 			}
 			return 0;
 		});
+		if (isAlreadySorted) {
+			this.data.reverse();
+		}
 		this.table.renderRows();
 	}
 }
