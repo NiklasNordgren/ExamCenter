@@ -83,12 +83,15 @@ export class ExamComponent implements OnInit, OnDestroy {
 	}
 
 	openPdf(row) {
+		
 		const filename = row.id;
 		const sub = this.fileService.downloadFile(filename).subscribe(pdfBlob => {
+				
 			const fileURL = URL.createObjectURL(pdfBlob);
 			console.log("fileURL: " + fileURL);
 			console.log("filename: " + filename);
 			window.open(fileURL, "_blank");
+
 		},
 		error => {
 			this.statusMessageService.showErrorMessage("Error", "Could not open PDF.");

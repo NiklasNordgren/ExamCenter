@@ -84,6 +84,10 @@ const routes: Routes = [
 				component: AcademyHandlerComponent
 			},
 			{
+				path: 'academy-form/:id/:returnNav',
+				component: AcademyFormComponent
+			},
+			{
 				path: 'academy-form/:id',
 				component: AcademyFormComponent
 			},
@@ -92,12 +96,20 @@ const routes: Routes = [
 				component: SubjectHandlerComponent
 			},
 			{
-				path: 'course-handler',
-				component: CourseHandlerComponent
+				path: 'subject-form/:id/:returnNav',
+				component: SubjectFormComponent
 			},
 			{
 				path: 'subject-form/:id',
 				component: SubjectFormComponent
+			},
+			{
+				path: 'course-handler',
+				component: CourseHandlerComponent
+			},
+			{
+				path: 'course-form/:id/:returnNav',
+				component: CourseFormComponent
 			},
 			{
 				path: 'course-form/:id',
@@ -106,6 +118,10 @@ const routes: Routes = [
 			{
 				path: 'exam-handler',
 				component: ExamHandlerComponent
+			},
+			{
+				path: 'exam-form/:id/:returnNav',
+				component: ExamFormComponent
 			},
 			{
 				path: 'exam-form/:id',

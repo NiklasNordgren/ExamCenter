@@ -1,22 +1,23 @@
 table {
     width: 100%;
 }
-  
-.newButton {
-    margin-top: 10pt;
-    margin-bottom: 10pt;
-}
-  
+ 
 .editButton {
     float: right;
     background-color: #ffe92f;
 }
   
-.deleteButton {
-    margin-left: 10pt;
+.selectionButtons {
+	margin-right: 10pt;
 }
-  
+
+h2 {
+    margin-bottom: 10pt;
+}
+
 .buttonText {
     margin-left: 3pt;
 }
+
+
     

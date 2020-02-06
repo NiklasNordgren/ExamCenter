@@ -24,9 +24,11 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 
 	academies: Academy[];
 	subjects: Subject[];
+	subject: Subject = new Subject();
 	form: FormGroup;
 	subscriptions = new Subscription();
 	id: number;
+	returnNav: string;
 	faPlus = faPlus;
 	faPen = faPen;
 	faTrash = faTrash;
@@ -54,6 +56,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 		this.subscriptions.add(
 			this.route.paramMap.subscribe(params => {
 				this.id = parseInt(params.get('id'), 10);
+				this.returnNav = params.get('returnNav');
 
 				const sub = this.academyService.getAllAcademies().subscribe(
 					responseAcademies => {
@@ -81,6 +84,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 					code: subject.code,
 					name: subject.name
 				});
+				this.subject.unpublished = subject.unpublished;
 			});
 			this.subscriptions.add(sub);
 		}
@@ -88,14 +92,15 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 
 	onSubmit() {
 		if (this.form.valid) {
-			let subject = new Subject();
 
-			(this.id !== this.createFormId) ? subject.id = this.id : null;
+			(this.id !== this.createFormId)
+				? this.subject.id = this.id
+				: null;
 
-			subject.name = this.form.controls.name.value;
-			subject.code = this.form.controls.code.value;
-			subject.academyId = this.form.controls.academy.value;
-			const sub = this.subjectService.saveSubject(subject).subscribe(
+			this.subject.name = this.form.controls.name.value;
+			this.subject.code = this.form.controls.code.value;
+			this.subject.academyId = this.form.controls.academy.value;
+			const sub = this.subjectService.saveSubject(this.subject).subscribe(
 				data => this.onSuccess(data),
 				error => this.onError(error)
 			);
@@ -105,7 +110,10 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 
 	onSuccess(data) {
 		this.form.reset();
-		this.navigator.goToPage('/admin/subject-handler');
+		(!this.returnNav)
+			? this.navigator.goToPage('/admin/subject-handler')
+			: this.navigator.goToPage('/admin/outbox')
+
 		this.statusMessageService.showSuccessMessage(data.name + " was " +
 			((this.id == this.createFormId) ? "created" : "updated"), 'success');
 	}
@@ -115,7 +123,7 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
 			this.navigator.goToPage('/login');
 		} else {
-			throw(error);
+			throw (error);
 		}
 	}
 }

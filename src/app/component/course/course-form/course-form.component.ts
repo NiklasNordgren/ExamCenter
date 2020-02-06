@@ -25,9 +25,11 @@ export class CourseFormComponent implements OnInit {
 
   academies: Academy[];
   subjects: Subject[];
+  course: Course = new Course();
   form: FormGroup;
   private subscriptions = new Subscription();
   id: number;
+  returnNav: string;
   faPlus = faPlus;
   faPen = faPen;
   faTrash = faTrash;
@@ -55,6 +57,7 @@ export class CourseFormComponent implements OnInit {
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
         this.id = parseInt(params.get('id'), 10);
+        this.returnNav = params.get('returnNav');
 
         const sub = this.academyService.getAllAcademies().subscribe(
           responseAcademies => {
@@ -93,6 +96,7 @@ export class CourseFormComponent implements OnInit {
         courseCode: course.courseCode,
         name: course.name
       });
+      this.course.unpublished = course.unpublished;
       this.subjectCode = subject.code;
 
       this.selectedAcademy(subject.academyId, true);
@@ -120,15 +124,16 @@ export class CourseFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      let course = new Course();
 
-      (this.id !== this.createFormId) ? course.id = this.id : null;
+      (this.id !== this.createFormId)
+        ? this.course.id = this.id
+        : null;
 
-      course.name = this.form.controls.name.value;
-      course.courseCode = this.form.controls.courseCode.value;
-      course.subjectId = this.form.controls.subject.value;
+      this.course.name = this.form.controls.name.value;
+      this.course.courseCode = this.form.controls.courseCode.value;
+      this.course.subjectId = this.form.controls.subject.value;
 
-      const sub = this.courseService.saveCourse(course).subscribe(
+      const sub = this.courseService.saveCourse(this.course).subscribe(
         data => this.onSuccess(data),
         error => this.onError(error)
       );
@@ -138,8 +143,11 @@ export class CourseFormComponent implements OnInit {
 
   onSuccess(data) {
     this.form.reset();
-    this.navigator.goToPage('/admin/course-handler');
-    this.statusMessageService.showSuccessMessage(data.name + " was " + 
+    (!this.returnNav)
+      ? this.navigator.goToPage('/admin/course-handler')
+      : this.navigator.goToPage('/admin/outbox')
+
+    this.statusMessageService.showSuccessMessage(data.name + " was " +
       ((this.id == this.createFormId) ? "created" : "updated"), 'success');
   }
 
@@ -148,7 +156,7 @@ export class CourseFormComponent implements OnInit {
       this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
       this.navigator.goToPage('/login');
     } else {
-      throw(error);
+      throw (error);
     }
   }
 

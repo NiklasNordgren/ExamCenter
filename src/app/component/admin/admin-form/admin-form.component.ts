@@ -8,6 +8,7 @@ import { UserService } from '../../../service/user.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
+import { StatusMessageService } from 'src/app/service/status-message.service';
 
 export interface CustomBooleanArray {
 	value: boolean;
@@ -41,7 +42,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private formBuilder: FormBuilder, private route: ActivatedRoute, private service: UserService,
-		public navigator: Navigator, private dialog: MatDialog
+		public navigator: Navigator, private statusMessageService: StatusMessageService
 	) { }
 
 	ngOnInit() {
@@ -114,7 +115,7 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 				() => {
 					const superUsers = users.filter(x => x.isSuperUser == true);
 					if (superUsers.length == 1) {
-						this.openAcknowledgeDialog('error', 'Cannot demote the last super user administatrator account.');
+						this.statusMessageService.showErrorMessage('Cannot demote the last super user administatrator account.', 'Error');
 					} else {
 						this.saveUser();
 					}
@@ -131,31 +132,20 @@ export class AdminFormComponent implements OnInit, OnDestroy {
 		this.navigator.goToPage('/admin/admin-handler');
 		let suffixText: string;
 		(this.isCreateForm) ? suffixText = " was added" : suffixText = " was updated";
-		this.openAcknowledgeDialog('success', data.name + suffixText);
+		this.statusMessageService.showSuccessMessage('success', data.name + suffixText);
 	}
 
 	onError(error) {
 		if (error.status === 401) {
-			this.openAcknowledgeDialog('Error', 'Not authorized. Please log in and try again');
+			this.statusMessageService.showErrorMessage('Not authorized. Please log in and try again', 'Error');
 			this.navigator.goToPage('/login');
 		} else if (error.status === 409) {
-			this.openAcknowledgeDialog('Error', 'The name already exists as an admin.');
+			this.statusMessageService.showErrorMessage('The name already exists as an admin.', 'Error');
 		} else {
 			throw (error);
 		}
 	}
-
-	openAcknowledgeDialog(typeText: string, message: string) {
-		this.dialogRef = this.dialog.open(ConfirmationAckDialogComponent, {});
-		this.dialogRef.componentInstance.titleMessage = typeText;
-		this.dialogRef.componentInstance.contentMessage = message;
-
-		const sub = this.dialogRef.afterClosed().subscribe(result => {
-			this.dialogRef = null;
-		});
-		this.subscriptions.add(sub);
-	}
-
+	
 	setCreateFormText() {
 		this.titleText = 'Create Admin';
 		this.buttonText = 'Create';

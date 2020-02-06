@@ -37,8 +37,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		const sub = this.settingsService
 			.getTenLatestSettings()
 			.subscribe(settingsList => {
-				this.settingsList = settingsList;
+				this.settingsList = settingsList;				
 				this.setFormControls(settingsList[0]);
+				settingsList[0] = this.setSettingListIfDefault(settingsList[0]);
 				this.settingsLoaded = true;
 				this.selectedValue = settingsList[0];
 			});
@@ -47,6 +48,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
+	}
+
+	setSettingListIfDefault(setting: Settings){
+		if(setting.created == null)
+			setting.created = new Date();
+		return setting;
 	}
 
 	chooseSetting(setting: Settings) { }
@@ -58,6 +65,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		this.form.controls.unpublishTimeYears.setValue(setting.unpublishTimeYears);
 		this.form.controls.homePageHtml.setValue(setting.homePageHtml);
 		this.form.controls.aboutPageHtml.setValue(setting.aboutPageHtml);
+	}
+
+	convertToDate(date : Array<number>){
+		if(date.length >= 6)
+			return date[0] + '-' + date[1] + '-' + date[2] + ' ' + date[3] + ':' + date[4] + ':' + date[5];
+		else
+			return 'Default date';
 	}
 
 	onSubmit() {
@@ -102,11 +116,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	}
 
 	private getNewSettingsFromForm() {
+		console.log('get newest setting');
+		
 		let settings = new Settings();
 		settings.aboutPageHtml = this.form.controls.aboutPageHtml.value;
 		settings.homePageHtml = this.form.controls.homePageHtml.value;
 		settings.cookieSessionMinutes = this.form.controls.cookieSessionMinutes.value;
 		settings.unpublishTimeYears = this.form.controls.unpublishTimeYears.value;
+		console.log('newest done');
+		
 		return settings;
 	}
 
