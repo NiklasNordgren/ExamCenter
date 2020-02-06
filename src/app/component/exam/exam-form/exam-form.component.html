@@ -57,7 +57,8 @@
         
         <div class="datePicker">
             <mat-form-field>
-                <input matInput required [matDatepicker]="datePicker" placeholder="Date" formControlName="date">
+                <mat-label for="date">Date</mat-label>
+                <input matInput required [matDatepicker]="datePicker" formControlName="date">
                 <mat-datepicker #datePicker></mat-datepicker>
             </mat-form-field>
             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
@@ -65,7 +66,8 @@
 
         <div class="datePicker">
             <mat-form-field>
-                <input matInput required [matDatepicker]="unpublishDatePicker" placeholder="Unpublish Date" formControlName="unpublishDate">
+                <mat-label for="unpublishDate">Unpublish Date</mat-label>
+                <input matInput required [matDatepicker]="unpublishDatePicker" formControlName="unpublishDate">
                 <mat-datepicker #unpublishDatePicker></mat-datepicker>
             </mat-form-field>
             <mat-datepicker-toggle matSuffix [for]="unpublishDatePicker"></mat-datepicker-toggle>
