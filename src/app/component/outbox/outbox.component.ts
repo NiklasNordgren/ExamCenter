@@ -234,6 +234,13 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		return output;
 	}
 
+	convertToDate(date : Array<number>){
+		if(date.length >= 3)
+			return date[0] + '-' + date[1] + '-' + date[2];
+		else
+			return 'No date avalible';
+	}
+
 	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, service: string) {
 
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";

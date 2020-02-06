@@ -53,12 +53,12 @@
 
                 <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef> Date </th>
-                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{exam.date}} </td>
+                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{convertToDate(exam.date)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="unpublishDate">
                     <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
-                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{exam.unpublishDate}} </td>
+                    <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{convertToDate(exam.unpublishDate)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseName">
