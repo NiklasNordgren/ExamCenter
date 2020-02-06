@@ -72,6 +72,13 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			date: '',
 			unpublishDate: ''
 		});
+		let sub = this.academyService.getAllAcademies().subscribe(
+			responseAcademies => {
+				this.academies = responseAcademies
+			},
+			error => this.onError(error)
+		);
+		this.subscriptions.add(sub);
 
 		this.getAcademies();
 	}
@@ -89,20 +96,43 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 			this.selectedAcademy(academy.id, isInitialized);
 			this.selectedSubject(subject.id, isInitialized);
 			this.selectedCourse(course.id);
+			
+			let dateArray: Array<number> = [];
+			dateArray.push(exam.date[0]);
+			dateArray.push(exam.date[1]);
+			dateArray.push(exam.date[2]);
+
+			let unpublishDateArray: Array<number> = [];
+			unpublishDateArray.push(exam.unpublishDate[0]);
+			unpublishDateArray.push(exam.unpublishDate[1]);
+			unpublishDateArray.push(exam.unpublishDate[2]);
 
 			this.form = this.formBuilder.group({
-				filename: exam.filename,
-				date: exam.date,
-				unpublishDate: exam.unpublishDate,
 				academy: academy.id,
 				subject: subject.id,
-				course: course.id
+				course: course.id,
+				filename: exam.filename,
+				date: this.convertToDate(dateArray),
+				unpublishDate: this.convertToDate(unpublishDateArray)
 			});
 			this.exam.unpublished = exam.unpublished;
 
 		});
 		this.subscriptions.add(dsub);
+	}
 
+	convertToDate(date: Array<number>) {
+		if (date.length >= 3) {
+			return date[0] + '-' +
+				((date[1] < 10)
+					? '0' + date[1]
+					: date[1])
+				+ '-' +
+				((date[2] < 10)
+					? '0' + date[2]
+					: date[2])
+		} else
+			return 'No date avalible';
 	}
 
 	findCourseById(courseId: number) {
