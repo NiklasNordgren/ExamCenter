@@ -55,7 +55,7 @@
                 placeholder="Ex. Datorsystem, Linjär algebra">
         </mat-form-field>
         
-        <div style="display: inline;">
+        <div class="datePicker">
             <mat-form-field>
                 <input matInput required [matDatepicker]="datePicker" placeholder="Date" formControlName="date">
                 <mat-datepicker #datePicker></mat-datepicker>
@@ -63,7 +63,7 @@
             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
         </div>
 
-        <div style="display: inline;">
+        <div class="datePicker">
             <mat-form-field>
                 <input matInput required [matDatepicker]="unpublishDatePicker" placeholder="Unpublish Date" formControlName="unpublishDate">
                 <mat-datepicker #unpublishDatePicker></mat-datepicker>
