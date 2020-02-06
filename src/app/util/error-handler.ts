@@ -17,12 +17,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 		if (error instanceof HttpErrorResponse) {
 			this.handleHttpErrorResponse(error);
 		} else {
-			this.ngZone.run(() => {
-				this.statusMessageService.showErrorMessage(
-					"Error",
-					JSON.stringify(error.message)
-				);
-			});
+			console.error(JSON.stringify(error));
 		}
 	}
 
@@ -54,9 +49,11 @@ export class GlobalErrorHandler implements ErrorHandler {
 			}
 		}
 		let { errorTitle, errorMessage } = apiError.toFormattedErrorMessage();
-		this.ngZone.run(() => {
-			this.statusMessageService.showErrorMessage(errorTitle, errorMessage);
-		});
+		if (error.message !== "{}") {
+			this.ngZone.run(() => {
+				this.statusMessageService.showErrorMessage(errorTitle, errorMessage);
+			});
+		}
 	}
 }
 
