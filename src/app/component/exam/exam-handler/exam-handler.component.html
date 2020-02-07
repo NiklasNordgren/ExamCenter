@@ -70,7 +70,7 @@
     </div>
 
 
-    <table mat-table [dataSource]="exams" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+    <table mat-table [dataSource]="examSource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
@@ -88,17 +88,17 @@
         </ng-container>
 
         <ng-container matColumnDef="filename" class="column">
-            <th mat-header-cell *matHeaderCellDef> File </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> File </th>
             <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
         </ng-container>
 
         <ng-container matColumnDef="date" class="column">
-            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
             <td mat-cell *matCellDef="let element"> {{convertToDate(element.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="unpublishDate" class="column">
-            <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Unpublish Date </th>
             <td mat-cell *matCellDef="let element"> {{convertToDate(element.unpublishDate)}} </td>
         </ng-container>
 

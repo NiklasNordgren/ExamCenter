@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTable } from '@angular/material';
+import { MatSort, Sort } from '@angular/material/sort';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
 	@Input() icon: IconDefinition;
 	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
-	@ViewChild(MatTable, { static: false }) table: MatTable<any>;
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 
 	columnsToDisplay: string[] = [];
 
@@ -28,50 +28,29 @@ export class ListComponent implements OnInit {
 		this.columnsToDisplay.push(this.name);
 	}
 
-	ngOnChanges() {
-		if (this.data.length > 0) {
-			this.sortByName();
-		} 
-	}
-
+	
 	rowClicked(clickedRow) {
 		this.clicked.emit(clickedRow);
 	}
 
-	sortByName() {
-		let isAlreadySorted = true;
-		this.data.sort((a, b) => {
-			if (a.name > b.name) {
-				return 1;
-			}
-			if (a.name < b.name) {
-				isAlreadySorted = false;
-				return -1;
-			}
-			return 0;
-		});
-		
-		if (isAlreadySorted) {
-			this.data.reverse();
+	sortData(sort: Sort) {
+		const data = this.data.slice();
+		if (!sort.active || sort.direction === '') {
+			this.data = data;
+			return;
 		}
-		this.table.renderRows();
-	}
 
-	sortByDescription() {
-		let isAlreadySorted = true;
-		this.data.sort((a, b) => {
-			if (a.shortDesc > b.shortDesc) {
-				return 1;
+		this.data = data.sort((a, b) => {			
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'name': return compare(a.name, b.name, isAsc);
+				case 'shortDesc': return compare(a.shortDesc, b.shortDesc, isAsc);
+				default: return 0;
 			}
-			if (a.shortDesc < b.shortDesc) {
-				isAlreadySorted = false;
-				return -1;
-			}
-			return 0;
 		});
-		if (isAlreadySorted) {
-			this.data.reverse();
-		}
-		this.table.renderRows();
-	}
+	} 
+}
+
+function compare(a: string, b: string, isAsc: boolean) {
+	return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
