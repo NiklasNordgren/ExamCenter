@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Sort } from '@angular/material/sort';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,7 +15,6 @@ export class ListComponent implements OnInit {
 	@Input() icon: IconDefinition;
 	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
-	@ViewChild(MatSort, {static: true}) sort: MatSort;
 
 	columnsToDisplay: string[] = [];
 

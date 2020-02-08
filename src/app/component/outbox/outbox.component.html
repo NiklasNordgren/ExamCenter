@@ -28,7 +28,7 @@
         </button>
 
         <div *ngIf="showExams">
-            <table mat-table [dataSource]="exams" class="mat-elevation-z8">
+            <table mat-table [dataSource]="exams" matSort (matSortChange)="sortExam($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -47,22 +47,22 @@
                 </ng-container>
 
                 <ng-container matColumnDef="filename">
-                    <th mat-header-cell *matHeaderCellDef> Filename </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="filename"> Filename </th>
                     <td mat-cell *matCellDef="let exam" class="variant-exam-column"> {{exam.filename}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> Date </th>
                     <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{convertToDate(exam.date)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="unpublishDate">
-                    <th mat-header-cell *matHeaderCellDef> Unpublish Date </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="unpublishDate"> Unpublish Date </th>
                     <td mat-cell *matCellDef="let exam" class="firm-exam-column"> {{convertToDate(exam.unpublishDate)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseName">
-                    <th mat-header-cell *matHeaderCellDef> Course Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="courseName"> Course Name </th>
                     <td mat-cell *matCellDef="let exam" class="variant-exam-column"> {{exam.courseName}} </td>
                 </ng-container>
 
@@ -107,7 +107,7 @@
         </button>
 
         <div *ngIf="showCourses">
-            <table mat-table [dataSource]="courses" class="mat-elevation-z8">
+            <table mat-table [dataSource]="courses" matSort (matSortChange)="sortCourse($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -126,17 +126,17 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
                     <td mat-cell *matCellDef="let course" class="variant-course-column"> {{course.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="courseCode">
-                    <th mat-header-cell *matHeaderCellDef> Course Code </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="courseCode"> Course Code </th>
                     <td mat-cell *matCellDef="let course" class="firm-course-column"> {{course.courseCode}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="subjectName">
-                    <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="subjectName"> Subject Name </th>
                     <td mat-cell *matCellDef="let course" class="variant-course-column"> {{course.subjectName}} </td>
                 </ng-container>
 
@@ -181,7 +181,7 @@
         </button>
 
         <div *ngIf="showSubjects">
-            <table mat-table [dataSource]="subjects" class="mat-elevation-z8">
+            <table mat-table [dataSource]="subjects" matSort (matSortChange)="sortSubject($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -200,17 +200,17 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
                     <td mat-cell *matCellDef="let subject" class="variant-subject-column"> {{subject.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="code">
-                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="code"> Code </th>
                     <td mat-cell *matCellDef="let subject" class="variant-firm-column"> {{subject.code}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="academyName">
-                    <th mat-header-cell *matHeaderCellDef> Academy Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="academyName"> Academy Name </th>
                     <td mat-cell *matCellDef="let subject" class="variant-subject-column"> {{subject.academyName}} </td>
                 </ng-container>
 
@@ -255,7 +255,7 @@
         </button>
 
         <div *ngIf="showAcademies">
-            <table mat-table [dataSource]="academies" class="mat-elevation-z8">
+            <table mat-table [dataSource]="academies" matSort (matSortChange)="sortAcademy($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -274,12 +274,12 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
                     <td mat-cell *matCellDef="let academy" class="variant-academy-column"> {{academy.name}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="abbreviation">
-                    <th mat-header-cell *matHeaderCellDef> Abbreviation </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="abbreviation"> Abbreviation </th>
                     <td mat-cell *matCellDef="let academy" class="firm-academy-column"> {{academy.abbreviation}} </td>
                 </ng-container>
 
