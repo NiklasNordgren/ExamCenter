@@ -90,9 +90,18 @@ export class ExamComponent implements OnInit, OnDestroy {
 			console.log("pdfBlob: " + pdfBlob);
 				
 			const fileURL = URL.createObjectURL(pdfBlob);
-			console.log("fileURL: " + fileURL);
-			console.log("filename: " + filename);
-			window.open(fileURL, "_blank");
+
+			// test start
+			var anchor = document.createElement("a");
+			anchor.download = filename;
+			anchor.href = fileURL;
+			anchor.click();
+
+			// test end
+
+			//console.log("fileURL: " + fileURL);
+			//console.log("filename: " + filename);
+			//window.open(fileURL, "_blank");
 
 		},
 		error => {
