@@ -1,6 +1,6 @@
 <div class="wrapper">
-    <h2 style="margin: 10px;">
-        <fa-icon [icon]="faUpload" style="margin-right: 5pt;"></fa-icon>Upload Exams
+    <h2>
+        <fa-icon [icon]="faUpload"></fa-icon> Upload Exams
     </h2>
     
     <input #fileInput type="file" accept=".pdf" ng2FileSelect [uploader]="uploader" multiple />
@@ -15,7 +15,7 @@
         </span>
     </div>
     
-    <div class="margin-10">
+    <div>
     
         <h3>Upload queue</h3>
         <p>Queue length: {{ examsToUpload?.length }}</p>
@@ -106,7 +106,7 @@
     
     </div>
     
-    <mat-radio-group class="margin-10">
+    <mat-radio-group>
         <button mat-raised-button color="accent" (click)="uploader.uploadAll()" [disabled]="isUploadAllDisabled()">
             <fa-icon [icon]="faUpload"></fa-icon> Upload all
         </button>
