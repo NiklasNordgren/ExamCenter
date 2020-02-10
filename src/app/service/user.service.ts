@@ -19,11 +19,11 @@ export class UserService {
 	}
 
 	saveUser(user: User) {
-		return this.http.post<User>('/api/users', user);
+		return this.http.post<User>('api/users', user);
 	}
 
 	deleteUser(id: number) {
-		return this.http.delete('/api/users/' + id);
+		return this.http.delete('api/users/' + id);
 	}
 
 	isUserLoggedInAsAdmin(): Observable<boolean> {
