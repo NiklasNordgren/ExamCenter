@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -19,6 +19,7 @@ import { SubjectService } from 'src/app/service/subject.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
+import { MatTableDataSource, MatSort } from '@angular/material';
 
 @Component({
 	selector: 'app-exam-handler',
@@ -27,6 +28,7 @@ import { StatusMessageService } from 'src/app/service/status-message.service';
 	providers: [Navigator]
 })
 export class ExamHandlerComponent implements OnInit, OnDestroy {
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	subscriptions: Subscription = new Subscription();
 	faPlus = faPlus;
 	faUsersCog = faUsersCog;
@@ -40,8 +42,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	academies = [];
 	subjects = [];
 	courses = [];
-	exams: Exam[] = [];
-	dataSource = [];
+	examSource = new MatTableDataSource<Exam>();
 
 	public selectedAcademyValue: number;
 	public selectedSubjectValue: number;
@@ -68,17 +69,17 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
-			const sub = this.academyService
+		this.examSource.sort = this.sort;
+		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
 				this.academies = responseAcademies;
 				this.selectedAcademyValue = this.academies[0].id;
 				this.selectedAcademy(this.selectedAcademyValue);
-				this.dataSource = this.academies;
 			});
 
 		this.subscriptions.add(sub);
-		}
+	}
 
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
@@ -99,7 +100,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 			});
 		this.subscriptions.add(sub);
 	}
-	
+
 
 	selectedSubject(id: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(id).subscribe(responseResult => {
@@ -111,15 +112,14 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 				this.selectedCourseValue = 0;
 				this.selectedCourse(this.selectedCourseValue);
 			}
-			
+
 		});
 		this.subscriptions.add(sub);
 	}
 
 	selectedCourse(id: number) {
 		const sub = this.examService.getAllExamsByCourseId(id).subscribe(responseResult => {
-			this.exams = responseResult;
-			this.dataSource = this.exams;
+			this.examSource.data = responseResult;
 		});
 		this.subscriptions.add(sub);
 	}
@@ -134,12 +134,13 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				const selectedExams = this.selection.selected;
-				let dSub;
-					const isUnpublished = true;					
-					dSub = this.examService.publishExams(selectedExams, isUnpublished).subscribe(
+				const isUnpublished = true;
+				this.subscriptions.add(
+					this.examService.publishExams(selectedExams, isUnpublished).subscribe(
 						data => this.onSuccess(data),
 						error => this.onError(error)
-					);
+					)
+				);
 			}
 			this.dialogRef = null;
 		});
@@ -149,7 +150,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		const selectedExams = this.selection.selected;
 		for (let exam of selectedExams) {
-			this.exams = this.exams.filter(x => x.id != exam.id);
+			this.examSource.data = this.examSource.data.filter(x => x.id != exam.id);
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " exam" : " exams") : "";
@@ -173,13 +174,20 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.exams.length;
+		const numRows = this.examSource.data.length;
 		return numSelected === numRows;
+	}
+
+	convertToDate(date: Array<number>) {
+		if (date.length >= 3)
+			return date[0] + '-' + date[1] + '-' + date[2];
+		else
+			return 'No date avalible';
 	}
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected() ? this.selection.clear() : this.exams.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.examSource.data.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {

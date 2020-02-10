@@ -1,16 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'src/app/model/subject.model';
 import { SubjectService } from 'src/app/service/subject.service';
 import { Navigator } from 'src/app/util/navigator';
 import { faPlus, faPen, faTrash, faBook } from '@fortawesome/free-solid-svg-icons';
-import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Subscription } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatTableDataSource, MatSort } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 @Component({
@@ -20,10 +17,11 @@ import { StatusMessageService } from 'src/app/service/status-message.service';
 	providers: [Navigator]
 })
 export class SubjectHandlerComponent implements OnInit, OnDestroy {
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	subscriptions: Subscription = new Subscription();
 	displayedColumns: string[] = ['select', 'name', 'code', 'edit'];
 	academies = [];
-	subjects = [];
+	subjectSource = new MatTableDataSource<Subject>();
 	selection = new SelectionModel<Subject>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
@@ -45,6 +43,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
+		this.subjectSource.sort = this.sort;
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
@@ -63,7 +62,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 		const sub = this.subjectService
 			.getAllPublishedSubjectsByAcademyId(academyId)
 			.subscribe(responseSubjects => {
-				this.subjects = responseSubjects;
+				this.subjectSource.data = responseSubjects;
 			});
 		this.subscriptions.add(sub);
 	}
@@ -85,7 +84,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 
 				this.subscriptions.add(dSub);
 				for (let subject of selectedSubjects) {
-					this.subjects = this.subjects.filter(x => x.id != subject.id);
+					this.subjectSource.data = this.subjectSource.data.filter(x => x.id != subject.id);
 				}
 			}
 			this.dialogRef = null;
@@ -105,12 +104,12 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.subjects.length;
+		const numRows = this.subjectSource.data.length;
 		return numSelected === numRows;
 	}
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected() ? this.selection.clear() : this.subjects.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.subjectSource.data.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
@@ -120,7 +119,7 @@ export class SubjectHandlerComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		const selectedSubjects = this.selection.selected;
 		for (let subject of selectedSubjects) {
-			this.subjects = this.subjects.filter(x => x.id != subject.id);
+			this.subjectSource.data = this.subjectSource.data.filter(x => x.id != subject.id);
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " subject" : " subjects") : "";

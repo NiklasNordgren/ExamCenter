@@ -1,10 +1,11 @@
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { faFileMedical, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ExamService } from '../../service/exam.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Sort, MatTable } from '@angular/material';
 import { Navigator } from 'src/app/util/navigator';
 import { CourseService } from 'src/app/service/course.service';
 import { SubjectService } from 'src/app/service/subject.service';
@@ -55,6 +56,11 @@ export class CustomAcademy {
 	providers: [Navigator]
 })
 export class OutboxComponent implements OnInit, OnDestroy {
+	@ViewChild(MatTable, { static: false }) examTable: MatTable<Exam>;
+	@ViewChild(MatTable, { static: false }) courseTable: MatTable<Course>;
+	@ViewChild(MatTable, { static: false }) subjectTable: MatTable<Subject>;
+	@ViewChild(MatTable, { static: false }) academyTable: MatTable<Academy>;
+
 	subscriptions: Subscription = new Subscription();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -151,10 +157,10 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	updateLists() {
-		this.getAcademies();
-		this.getSubjects();
-		this.getCourses();
-		this.getExams();
+		this.examTable.renderRows();
+		this.courseTable.renderRows();
+		this.subjectTable.renderRows();
+		this.academyTable.renderRows();
 	}
 
 	ngOnDestroy() {
@@ -162,7 +168,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	examConverter(input: any) {
-		let output;
+		let output: any;
 
 		if (input instanceof CustomExam) {
 			output = new Exam();
@@ -182,7 +188,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	courseConverter(input: any) {
-		let output;
+		let output: any;
 
 		if (input instanceof CustomCourse) {
 			output = new Course();
@@ -201,7 +207,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	subjectConverter(input: any) {
-		let output;
+		let output: any;
 
 		if (input instanceof CustomSubject) {
 			output = new Subject();
@@ -220,7 +226,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	}
 
 	academyConverter(input: any) {
-		let output;
+		let output: any;
 
 		if (input instanceof CustomAcademy) {
 			output = new Academy();
@@ -232,6 +238,13 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		output.abbreviation = input.abbreviation;
 
 		return output;
+	}
+
+	convertToDate(date : Array<number>){
+		if(date.length >= 3)
+			return date[0] + '-' + date[1] + '-' + date[2];
+		else
+			return 'No date avalible';
 	}
 
 	selectionDialogText(examAmount: number, courseAmount: number, subjectAmount: number, academyAmount: number, service: string) {
@@ -770,4 +783,80 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		this.subjectSelection.clear();
 		this.academySelection.clear();
 	}
+
+	sortExam(sort: Sort) {
+		const data = this.exams.slice();
+		if (!sort.active || sort.direction === '') {
+			this.exams = data;
+			return;
+		}
+
+		this.exams = data.sort((a, b) => {			
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'name': return compare(a.filename, b.filename, isAsc);
+				case 'date': return compare(a.date, b.date, isAsc);
+				case 'unpublishDate': return compare(a.unpublishDate, b.unpublishDate, isAsc);
+				case 'courseName': return compare(a.courseName, b.courseName, isAsc);
+				default: return 0;
+			}
+		});
+	} 
+
+	sortCourse(sort: Sort) {
+		const data = this.courses.slice();
+		if (!sort.active || sort.direction === '') {
+			this.courses = data;
+			return;
+		}
+
+		this.courses = data.sort((a, b) => {			
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'name': return compare(a.name, b.name, isAsc);
+				case 'courseCode': return compare(a.courseCode, b.courseCode, isAsc);
+				case 'subjectName': return compare(a.subjectName, b.subjectName, isAsc);
+				default: return 0;
+			}
+		});
+	} 
+
+	sortSubject(sort: Sort) {
+		const data = this.subjects.slice();
+		if (!sort.active || sort.direction === '') {
+			this.subjects = data;
+			return;
+		}
+
+		this.subjects = data.sort((a, b) => {			
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'name': return compare(a.name, b.name, isAsc);
+				case 'code': return compare(a.code, b.code, isAsc);
+				case 'academyName': return compare(a.academyName, b.academyName, isAsc);
+				default: return 0;
+			}
+		});
+	} 
+
+	sortAcademy(sort: Sort) {
+		const data = this.academies.slice();
+		if (!sort.active || sort.direction === '') {
+			this.academies = data;
+			return;
+		}
+
+		this.academies = data.sort((a, b) => {			
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'name': return compare(a.name, b.name, isAsc);
+				case 'abbreviation': return compare(a.abbreviation, b.abbreviation, isAsc);
+				default: return 0;
+			}
+		});
+	} 
 }
+
+function compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+	return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }

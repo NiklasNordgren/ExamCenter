@@ -1,12 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Academy } from 'src/app/model/academy.model';
 import { AcademyService } from 'src/app/service/academy.service';
 import { Navigator } from 'src/app/util/navigator';
 import { faPlus, faPen, faTrash, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -17,9 +17,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 	providers: [Navigator]
 })
 export class AcademyHandlerComponent implements OnInit, OnDestroy {
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	subscriptions: Subscription = new Subscription();
 	displayedColumns: string[] = ['select', 'name', 'abbriviation', 'edit'];
-	academies = [];
+	academySource = new MatTableDataSource<Academy>();
 	selection = new SelectionModel<Academy>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
@@ -35,8 +36,9 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {
+		this.academySource.sort = this.sort;
 		const sub = this.service.getAllAcademies().subscribe(responseAcademies => {
-			this.academies = responseAcademies;
+			this.academySource.data = responseAcademies;
 		});
 		this.subscriptions.add(sub);
 	}
@@ -47,7 +49,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.academies.length;
+		const numRows = this.academySource.data.length;
 		return numSelected === numRows;
 	}
 
@@ -55,7 +57,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	masterToggle() {
 		this.isAllSelected()
 			? this.selection.clear()
-			: this.academies.forEach(row => this.selection.select(row));
+			: this.academySource.data.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
@@ -87,7 +89,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 
 				this.subscriptions.add(dSub);
 				for (let academy of selectedAcademies) {
-					this.academies = this.academies.filter(x => x.id != academy.id);
+					this.academySource.data = this.academySource.data.filter(x => x.id != academy.id);
 				}
 			}
 			this.dialogRef = null;
@@ -98,7 +100,7 @@ export class AcademyHandlerComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		const selectedAcademies = this.selection.selected;
 		for (let academy of selectedAcademies) {
-			this.academies = this.academies.filter(x => x.id != academy.id);
+			this.academySource.data = this.academySource.data.filter(x => x.id != academy.id);
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0) ? successfulAmount + ((successfulAmount == 1) ? " academy" : " academies") : "";

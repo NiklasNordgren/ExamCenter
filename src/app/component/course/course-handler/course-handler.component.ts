@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { SubjectService } from 'src/app/service/subject.service';
 import { AcademyService } from 'src/app/service/academy.service';
 import { faPlus, faPen, faTrash, faBookOpen } from '@fortawesome/free-solid-svg-icons';
@@ -19,12 +19,12 @@ import { StatusMessageService } from 'src/app/service/status-message.service';
 	providers: [Navigator]
 })
 export class CourseHandlerComponent implements OnInit, OnDestroy {
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	subscriptions: Subscription = new Subscription();
 	displayedColumns: string[] = ['select', 'name', 'courseCode', 'edit'];
 	academies = [];
 	subjects = [];
-	courses = [];
-	dataSource = [];
+	courseSource = new MatTableDataSource<Course>();
 	selection = new SelectionModel<Course>(true, []);
 	faPlus = faPlus;
 	faPen = faPen;
@@ -44,6 +44,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 		private statusMessageService: StatusMessageService) { }
 		
 	ngOnInit() {
+		this.courseSource.sort = this.sort;
 		const sub = this.academyService
 			.getAllAcademies()
 			.subscribe(responseAcademies => {
@@ -77,8 +78,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	selectedSubject(subjectId: number) {
 		const sub = this.courseService.getAllCoursesBySubjectId(subjectId).subscribe(
 			responseCourses => {
-				this.courses = responseCourses;
-				this.dataSource = this.courses;
+				this.courseSource.data = responseCourses;
 			});
 		this.subscriptions.add(sub);
 	}
@@ -86,14 +86,14 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	// For the checkboxes
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.dataSource.length;
+		const numRows = this.courseSource.data.length;
 		return numSelected === numRows;
 	}
 	// Selects all rows if they are not all selected; otherwise clear selection.
 	masterToggle() {
 		this.isAllSelected()
 			? this.selection.clear()
-			: this.dataSource.forEach(row => this.selection.select(row));
+			: this.courseSource.data.forEach(row => this.selection.select(row));
 	}
 
 	openDialog() {
@@ -114,7 +114,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 
 				this.subscriptions.add(dSub);
 				for (let course of selectedCourses) {
-					this.courses = this.courses.filter(x => x.id != course.id);
+					this.courseSource.data = this.courseSource.data.filter(x => x.id != course.id);
 				}
 			}
 			this.dialogRef = null;
@@ -135,7 +135,7 @@ export class CourseHandlerComponent implements OnInit, OnDestroy {
 	onSuccess(data: any) {
 		const selectedCourses = this.selection.selected;
 		for (let subject of selectedCourses) {
-			this.courses = this.courses.filter(x => x.id != subject.id);
+			this.courseSource.data = this.courseSource.data.filter(x => x.id != subject.id);
 		}
 		const successfulAmount = data.length;
 		let successfulContentText = (successfulAmount !== 0)

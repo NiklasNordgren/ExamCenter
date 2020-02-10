@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Navigator } from 'src/app/util/navigator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationAckDialogComponent } from '../../confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusMessageService } from 'src/app/service/status-message.service';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-admin-handler',
@@ -24,6 +25,7 @@ import { StatusMessageService } from 'src/app/service/status-message.service';
 	providers: [Navigator]
 })
 export class AdminHandlerComponent implements OnInit, OnDestroy {
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	subscriptions: Subscription = new Subscription();
 	faUserPlus = faUserPlus;
 	faUsersCog = faUsersCog;
@@ -33,7 +35,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	faPen = faPen;
 	faTrash = faTrash;
 
-	users = [];
+	userSource = new MatTableDataSource<User>();
 	dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 	displayedColumns: string[] = ['select', 'name', 'isSuperUser', 'edit'];
 	isDeleteButtonDisabled = true;
@@ -44,8 +46,9 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 		private statusMessageService: StatusMessageService) { }
 
 	ngOnInit() {
+		this.userSource.sort = this.sort;
 		const sub = this.service.getAllUsers().subscribe(responseUsers => {
-			this.users = responseUsers;
+			this.userSource.data = responseUsers;
 		});
 		this.subscriptions.add(sub);
 		
@@ -67,7 +70,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 					for (let user of this.selection.selected) {
 						const dSub = this.service.deleteUser(user.id).subscribe();
 						this.subscriptions.add(dSub);
-						this.users = this.users.filter(x => x.id !== user.id);
+						this.userSource.data = this.userSource.data.filter(x => x.id !== user.id);
 					}
 				}
 				this.onSuccess();
@@ -81,7 +84,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 
 	isLastSuperUsers() {
 		const selectedAdmins = this.selection.selected;
-		const superUsers = this.users.filter(x => x.isSuperUser == true);
+		const superUsers = this.userSource.data.filter(x => x.isSuperUser == true);
 		const union = superUsers.filter(x => selectedAdmins.includes(x));
 		return (union.length == superUsers.length);
 	}
@@ -97,7 +100,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 	onSuccess() {
 		const selectedAdmins = this.selection.selected;
 		for (let admin of selectedAdmins) {
-			this.users = this.users.filter(x => x.id != admin.id);
+			this.userSource.data = this.userSource.data.filter(x => x.id != admin.id);
 		}
 		
 		let successfulContentText = (selectedAdmins.length !== 0)
@@ -113,13 +116,13 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 
 	isAllSelected() {
 		const numSelected = this.selection.selected.length;
-		const numRows = this.users.length;
+		const numRows = this.userSource.data.length;
 		return numSelected === numRows;
 	}
 
 	/** Selects all rows if they are not all selected; otherwise clear selection. */
 	masterToggle() {
-		this.isAllSelected() ? this.selection.clear() : this.users.forEach(row => this.selection.select(row));
+		this.isAllSelected() ? this.selection.clear() : this.userSource.data.forEach(row => this.selection.select(row));
 	}
 
 	isAnyCheckboxSelected() {
