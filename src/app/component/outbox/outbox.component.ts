@@ -758,7 +758,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
 
 	isAnyCheckboxSelected() {
 		(this.examSelection.selected.length !== 0 || this.courseSelection.selected.length !== 0 || this.subjectSelection.selected.length !== 0
-			|| this.academySelection.selected.length !== 0) ? this.isSelectionButtonsDisabled = false : this.isSelectionButtonsDisabled = true;
+			|| this.academySelection.selected.length !== 0) 
+			? this.isSelectionButtonsDisabled = false 
+			: this.isSelectionButtonsDisabled = true;
 	}
 
 	toggleExamTable() {
