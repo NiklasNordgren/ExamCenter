@@ -11,11 +11,11 @@ export class UserService {
 	constructor(private http: HttpClient) {}
 
 	getAllUsers() {
-		return this.http.get<User[]>('api/users/all');
+		return this.http.get<User[]>('/api/users/all');
 	}
 
 	getUserById(id: number) {
-		return this.http.get<User>('api/users/' + id);
+		return this.http.get<User>('/api/users/' + id);
 	}
 
 	saveUser(user: User) {
@@ -23,11 +23,11 @@ export class UserService {
 	}
 
 	deleteUser(id: number) {
-		return this.http.delete('api/users/' + id);
+		return this.http.delete('/api/users/' + id);
 	}
 
 	isUserLoggedInAsAdmin(): Observable<boolean> {
-		return this.http.get<boolean>('api/users/is/admin');
+		return this.http.get<boolean>('/api/users/is/admin');
 	}
 
 	isUserLoggedInAsSuperUser() {
