@@ -234,13 +234,13 @@ export class ExamFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	onSuccess(data: any) {
+	onSuccess(data: Exam) {
 		this.form.reset();
 		(!this.returnNav)
 			? this.navigator.goToPage('/admin/exam-handler')
 			: this.navigator.goToPage('/admin/outbox')
 
-		this.statusMessageService.showSuccessMessage(data.name + " was " +
+		this.statusMessageService.showSuccessMessage(data.filename + " was " +
 			((this.id == this.createFormId) ? "created" : "updated"));
 	}
 
