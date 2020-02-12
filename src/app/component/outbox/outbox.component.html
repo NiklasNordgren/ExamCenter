@@ -28,7 +28,7 @@
         </button>
 
         <div *ngIf="showExams">
-            <table mat-table [dataSource]="exams" matSort (matSortChange)="sortExam($event)" class="mat-elevation-z8">
+            <table mat-table [dataSource]="exams" matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sortExam($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -107,7 +107,7 @@
         </button>
 
         <div *ngIf="showCourses">
-            <table mat-table [dataSource]="courses" matSort (matSortChange)="sortCourse($event)" class="mat-elevation-z8">
+            <table mat-table [dataSource]="courses" matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sortCourse($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -181,7 +181,7 @@
         </button>
 
         <div *ngIf="showSubjects">
-            <table mat-table [dataSource]="subjects" matSort (matSortChange)="sortSubject($event)" class="mat-elevation-z8">
+            <table mat-table [dataSource]="subjects" matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sortSubject($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -255,7 +255,7 @@
         </button>
 
         <div *ngIf="showAcademies">
-            <table mat-table [dataSource]="academies" matSort (matSortChange)="sortAcademy($event)" class="mat-elevation-z8">
+            <table mat-table [dataSource]="academies" matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sortAcademy($event)" class="mat-elevation-z8">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">

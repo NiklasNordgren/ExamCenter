@@ -12,7 +12,7 @@
 
         <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
     </button>
-    <table mat-table [dataSource]="userSource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+    <table mat-table [dataSource]="userSource" matSort matSortActive="name" matSortDirection="asc" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">

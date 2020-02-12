@@ -70,7 +70,7 @@
     </div>
 
 
-    <table mat-table [dataSource]="examSource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+    <table mat-table [dataSource]="examSource" matSort matSortActive="filename" matSortDirection="asc" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
