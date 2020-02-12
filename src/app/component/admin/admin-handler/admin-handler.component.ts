@@ -72,8 +72,8 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 						this.subscriptions.add(dSub);
 						this.userSource.data = this.userSource.data.filter(x => x.id !== user.id);
 					}
+					this.onSuccess();
 				}
-				this.onSuccess();
 				this.dialogRef = null;
 			});
 			this.subscriptions.add(sub);
