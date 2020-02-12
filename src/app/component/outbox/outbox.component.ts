@@ -156,13 +156,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	updateLists() {
-		this.examTable.renderRows();
-		this.courseTable.renderRows();
-		this.subjectTable.renderRows();
-		this.academyTable.renderRows();
-	}
-
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
 	}
@@ -252,7 +245,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		let contentText = (examAmount !== 0) ? "\n" + examAmount + (examAmount == 1 ? " exam" : " exams") : "";
 		contentText = contentText.concat((courseAmount !== 0) ? "\n" + courseAmount + (courseAmount == 1 ? " course" : " courses") : "");
 		contentText = contentText.concat((subjectAmount !== 0) ? "\n" + subjectAmount + (subjectAmount == 1 ? " subject" : " subjects") : "");
-		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " academy" : " academies") : "");
+		contentText = contentText.concat((academyAmount !== 0) ? "\n" + academyAmount + (academyAmount == 1 ? " faculty" : " faculties") : "");
 
 		let serviceText = (contentText.length !== 0) ? "Are you sure you want to " + service + "\n" : "";
 		return serviceText = serviceText.concat(contentText);
@@ -304,7 +297,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		} else if (element instanceof CustomSubject) {
 			content = content.concat("subject?\n\n" + element.name);
 		} else if (element instanceof CustomAcademy) {
-			content = content.concat("academy?\n\n" + element.name);
+			content = content.concat("faculty?\n\n" + element.name);
 		}
 
 		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -460,8 +453,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				)
 			);
 		} else {
-			this.statusMessageService.showErrorMessage("Academy not published", "The academy this subject belongs to is unpublished. \n" +
-				"Please publish the academy if you want this published.");
+			this.statusMessageService.showErrorMessage("Faculty not published", "The faculty this subject belongs to is unpublished. \n" +
+				"Please publish the faculty if you want this published.");
 		}
 	}
 
@@ -490,12 +483,12 @@ export class OutboxComponent implements OnInit, OnDestroy {
 			);
 		}
 		if (errorSubjects.length > 0) {
-			let academyNoun = "academy";
+			let academyNoun = "faculty";
 			let lastAcademyName = "";
 			let subjectMessagePart = "";
 			errorSubjects.forEach(subject => {
 				(academyNoun == "subjects" || lastAcademyName.length == 0) ? lastAcademyName = subject.academyName
-					: (lastAcademyName != subject.academyName) ? academyNoun = "academies" : null
+					: (lastAcademyName != subject.academyName) ? academyNoun = "faculties" : null
 
 				subjectMessagePart = subjectMessagePart + subject.name + " of " + subject.academyName + "\n";
 			});
@@ -630,7 +623,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				}
 			)
 		);
-
 	}
 
 	deleteSubjects() {
@@ -661,7 +653,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 				res => {
 					this.academies = this.academies.filter(x => x.id != element.id);
 					this.academySelection.clear();
-					this.statusMessageService.showSuccessMessage("Academy deleted")
+					this.statusMessageService.showSuccessMessage("Faculty deleted")
 				},
 				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {
@@ -685,7 +677,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 					academies.forEach(academy =>
 						this.academies = this.academies.filter(x => x.id != academy.id));
 						this.academySelection.clear();
-						this.statusMessageService.showSuccessMessage("Academies deleted")
+						this.statusMessageService.showSuccessMessage("Faculties deleted")
 				},
 				err => this.statusMessageService.showErrorMessage("Error", "Error: " + err),
 				() => {

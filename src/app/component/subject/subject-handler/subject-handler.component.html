@@ -17,9 +17,9 @@
         
         <div class="selectors-container">
             <div class="selectors">
-                <h4>Choose Academy</h4>
+                <h4>Choose Faculty</h4>
                 <mat-form-field>
-                    <mat-select placeholder="Academy List" name="academies" [(ngModel)]="selectedAcademyValue">
+                    <mat-select placeholder="Faculty List" name="academies" [(ngModel)]="selectedAcademyValue">
                         <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies"
                             [value]="academy.id">
                             {{academy.name}}
