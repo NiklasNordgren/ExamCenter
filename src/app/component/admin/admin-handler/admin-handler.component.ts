@@ -73,6 +73,7 @@ export class AdminHandlerComponent implements OnInit, OnDestroy {
 						this.userSource.data = this.userSource.data.filter(x => x.id !== user.id);
 					}
 					this.onSuccess();
+					this.isAnyCheckboxSelected();
 				}
 				this.dialogRef = null;
 			});
