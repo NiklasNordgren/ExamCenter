@@ -776,6 +776,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 		this.courseSelection.clear();
 		this.subjectSelection.clear();
 		this.academySelection.clear();
+		this.isAnyCheckboxSelected();
 	}
 
 	sortExam(sort: Sort) {

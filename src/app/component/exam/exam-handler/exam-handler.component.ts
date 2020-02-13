@@ -158,6 +158,7 @@ export class ExamHandlerComponent implements OnInit, OnDestroy {
 		successfulServiceText = successfulContentText.concat(successfulServiceText);
 		this.statusMessageService.showSuccessMessage(successfulServiceText);
 		this.selection.clear();
+		this.isAnyCheckboxSelected();
 	}
 
 	onError(error: HttpErrorResponse) {
