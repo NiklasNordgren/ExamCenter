@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Sort } from '@angular/material/sort';
+import { Sort, MatSort } from '@angular/material/sort';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
 	@Input() icon: IconDefinition;
 	@Input() actionDescription: string;
 	@Output() clicked = new EventEmitter();
-
+	@ViewChild(MatSort, {static: true}) sort: MatSort;
 	columnsToDisplay: string[] = [];
 
 	constructor(private router: Router) { }
@@ -32,13 +32,22 @@ export class ListComponent implements OnInit {
 		this.clicked.emit(clickedRow);
 	}
 
+	ngOnChanges() {
+		if (this.data && this.data.length != 0) {
+			const sortState: Sort = {active: 'name', direction: 'asc'};
+			this.sort.active = sortState.active;
+			this.sort.direction = sortState.direction;
+			this.sortData(this.sort);
+		}
+	}
+
 	sortData(sort: Sort) {
 		const data = this.data.slice();
 		if (!sort.active || sort.direction === '') {
 			this.data = data;
 			return;
 		}
-
+		
 		this.data = data.sort((a, b) => {			
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {

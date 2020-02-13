@@ -1,18 +1,21 @@
 <div class="wrapper">
-    <h2>
-        <fa-icon [icon]="faUsersCog"></fa-icon>
-        Users
-    </h2>
-    <button class="selectionButtons" color="accent" mat-raised-button
-        (click)="this.navigator.goToPage('/admin/admin-form/0')">
-        <fa-icon [icon]="faUserPlus"></fa-icon><span class="buttonText"> New</span>
-    </button>
-    <button class="selectionButtons" color="warn" mat-raised-button (click)="openDeleteDialog()"
-        [disabled]="isDeleteButtonDisabled">
+    <div class="selection-buttons-container">
+        <h2>
+            <fa-icon [icon]="faUsersCog"></fa-icon>
+            Users
+        </h2>
+        <button class="selectionButtons" color="accent" mat-raised-button
+            (click)="this.navigator.goToPage('/admin/admin-form/0')">
+            <fa-icon [icon]="faUserPlus"></fa-icon><span class="buttonText"> New</span>
+        </button>
+        <button class="selectionButtons" color="warn" mat-raised-button (click)="openDeleteDialog()"
+            [disabled]="isDeleteButtonDisabled">
 
-        <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
-    </button>
-    <table mat-table [dataSource]="userSource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+            <fa-icon [icon]="faTrash"></fa-icon><span class="buttonText"> Delete Checked</span>
+        </button>
+    </div>
+    <table mat-table [dataSource]="userSource" matSort matSortActive="name" matSortDirection="asc"
+        class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">

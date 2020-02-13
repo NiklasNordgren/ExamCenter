@@ -3,7 +3,7 @@
         <div class="selection-buttons-container">
             <h2>  
                 <fa-icon [icon]="faGraduationCap"></fa-icon>
-                Academies
+                Faculties
             </h2>
             <button class="selectionButtons" color="accent" mat-raised-button
                 (click)="this.navigator.goToPage('/admin/academy-form/0')">
@@ -16,8 +16,8 @@
         </button>
         </div>
     </div>
-    <mat-divider></mat-divider>
-    <table mat-table [dataSource]="academySource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+    
+    <table mat-table [dataSource]="academySource" matSort matSortActive="name" matSortDirection="asc" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">

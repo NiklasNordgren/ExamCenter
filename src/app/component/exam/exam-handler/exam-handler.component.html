@@ -17,9 +17,9 @@
 
         <div class="selectors-container">
             <div class="selectors">
-                <h4>Choose Academy</h4>
+                <h4>Choose Faculty</h4>
                 <mat-form-field>
-                    <mat-select [(ngModel)]="selectedAcademyValue" placeholder="Academy List" name="academies">
+                    <mat-select [(ngModel)]="selectedAcademyValue" placeholder="Faculty List" name="academies">
                         <mat-option (click)="selectedAcademy(academy.id)" *ngFor="let academy of academies"
                             [value]="academy.id">
                             {{academy.name}}
@@ -70,7 +70,7 @@
     </div>
 
 
-    <table mat-table [dataSource]="examSource" matSort class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
+    <table mat-table [dataSource]="examSource" matSort matSortActive="filename" matSortDirection="asc" class="mat-elevation-z8" (click)="isAnyCheckboxSelected()">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
