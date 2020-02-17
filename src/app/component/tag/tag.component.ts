@@ -21,11 +21,13 @@ export class TagComponent implements OnInit, OnDestroy {
   faTag = faTag;
   faTimes = faTimes;
 
+  searchText = "";
   selection = new SelectionModel<Tag>(true, []);
   isNewButtonDisabled = true;
   tags: Tag[] = [];
   allTags: Tag[];
   displayedColumns: string[] = ['tagName'];
+  isOnChangesDisabled = false;
 
   constructor(private tagService: TagService) { }
 
@@ -38,13 +40,11 @@ export class TagComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
-    if (this.linkedTags) {
-      console.log("now");
-
+    if (!this.isOnChangesDisabled && this.linkedTags) {
       this.linkedTags.forEach(tag => {
         this.tags = this.tags.filter(element => element.tagName != tag.tagName);
       });
-
+      this.isOnChangesDisabled = true;
     }
   }
 
@@ -54,44 +54,27 @@ export class TagComponent implements OnInit, OnDestroy {
 
   addToLinkedTags(tag: Tag) {
     if (!this.linkedTags.find(element => element.tagName === tag.tagName)) {    // Checks if the tag already exists in the linkedTags array
+      this.tags = this.tags.filter(element => element.tagName != tag.tagName);
+      this.linkedTags.push(tag);
+      this.linkedTags.sort((a, b) => compare(a.tagName, b.tagName));
 
-      const index = this.tags.indexOf(tag);
-      console.log(tag);
-      
-      if (index > -1) {   // -1 if not found
-        this.tags.splice(index, 1);
+      this.linkedTagsChange.emit(this.linkedTags);
 
-       
-        console.log("add");
-        
-        console.log(this.tags);
-
-    //    this.tags.sort((a, b) => compare(a.tagName.toLocaleLowerCase + "", b.tagName.toLocaleLowerCase + ""));
-
-        this.linkedTags.push(tag);
-        this.linkedTagsChange.emit(this.linkedTags);
-      }
     }
   }
 
   removeFromLinkedTags(tag: Tag) {
-    const index = this.linkedTags.indexOf(tag);
-    if (index > -1) {   // -1 if not found
-      this.linkedTags.splice(index, 1);
-      this.tags.push(tag);
+    this.linkedTags = this.linkedTags.filter(element => element.tagName != tag.tagName);
+    this.tags.push(tag);
+    this.tags.sort((a, b) => compare(a.tagName, b.tagName));
 
-      console.log("delete");
-      
-      console.log(this.tags);
+    this.linkedTagsChange.emit(this.linkedTags);
 
-   //   this.tags.sort((a, b) => compare(a.tagName.toLocaleLowerCase + "", b.tagName.toLocaleLowerCase + ""));
-
-      this.linkedTagsChange.emit(this.linkedTags);
-    }
   }
 }
 
 function compare(a: string, b: string) {
-  const isAsc = true;
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  var lowercaseA = a.toLocaleLowerCase();
+  var lowercaseB = b.toLocaleLowerCase();
+  return (lowercaseA < lowercaseB ? -1 : 1);
 }
