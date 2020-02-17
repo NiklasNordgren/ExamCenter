@@ -2,9 +2,7 @@
 FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
-
 COPY ./examcentre.pem /examcentre.pem
-
 COPY ./examcentre.key /examcentre.key
 
 WORKDIR /app
