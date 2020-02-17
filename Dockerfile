@@ -3,6 +3,9 @@ FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
 
+COPY ./examcentre.pem /etc/ssl/examcentre.pem
+COPY ./examcentre.key /etc/ssl/examcentre.key
+
 WORKDIR /app
 
 COPY package.json /app/package.json
