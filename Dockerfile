@@ -5,7 +5,7 @@ COPY ./nginx.conf /nginx.conf
 
 RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -days 365 -out ./examcentre.crt
 
-RUN SE
+RUN AU
 RUN .
 RUN .
 RUN .
