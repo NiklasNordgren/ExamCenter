@@ -2,8 +2,8 @@
 FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
-COPY ./examcentre.pem /examcentre.pem
-COPY ./examcentre.key /examcentre.key
+
+RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -days 365 -out ./examcentre.crt
 
 WORKDIR /app
 
@@ -26,7 +26,7 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build-stage /examcentre.pem /etc/ssl/examcentre.pem
+COPY --from=build-stage /examcentre.crt /etc/ssl/examcentre.crt
 COPY --from=build-stage /examcentre.key /etc/ssl/examcentre.key
 
 CMD ["nginx", "-g", "daemon off;"]
