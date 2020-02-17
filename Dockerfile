@@ -3,8 +3,9 @@ FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
 
-COPY ./examcentre.pem /etc/ssl/examcentre.pem
-COPY ./examcentre.key /etc/ssl/examcentre.key
+COPY ./examcentre.pem /examcentre.pem
+
+COPY ./examcentre.key /examcentre.key
 
 WORKDIR /app
 
@@ -26,5 +27,8 @@ FROM nginx:1.15
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build-stage /examcentre.pem /etc/ssl/examcentre.pem
+COPY --from=build-stage /examcentre.key /etc/ssl/examcentre.key
 
 CMD ["nginx", "-g", "daemon off;"]
