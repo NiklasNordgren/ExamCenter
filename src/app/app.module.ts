@@ -64,6 +64,8 @@ import { SettingsComponent } from './component/settings/settings.component';
 import { ConfirmationAckDialogComponent } from './component/confirmation-ack-dialog/confirmation-ack-dialog.component';
 import { NavigatorComponent } from './component/navigator/navigator.component';
 import { GlobalErrorHandler } from './util/error-handler';
+import { TagComponent } from './component/tag/tag.component';
+import { FilterPipe} from './component/tag/filter.pipe';
 
 @NgModule({
 	declarations: [
@@ -94,7 +96,9 @@ import { GlobalErrorHandler } from './util/error-handler';
 		CourseFormComponent,
 		SettingsComponent,
 		ConfirmationAckDialogComponent,
-		NavigatorComponent
+		NavigatorComponent,
+		TagComponent,
+		FilterPipe
 	],
 	imports: [
 		BrowserModule,

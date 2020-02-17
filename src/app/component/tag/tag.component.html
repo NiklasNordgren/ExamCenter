@@ -1,0 +1,33 @@
+<div class="inputRow">
+    <input [(ngModel)]="searchText" class="input" placeholder="search for tags">
+
+    <button class="newButton" color="accent" mat-raised-button (click)="null">
+        <fa-icon [icon]="faPlus"></fa-icon><span class="buttonText"> New</span>
+    </button>
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="panel-body">  
+    <table class="full-width-table">
+        <tr *ngFor="let tag of tags | filter : searchText" class="link" (click)="addToLinkedTags(tag)">
+            <td class="row"> {{tag.tagName}}</td>
+        </tr>
+    </table>  
+
+</div>
+
+<mat-divider></mat-divider>
+
+<ng-container class="tagsLinked-container">
+    <div class="tagsLinked" *ngFor="let tag of linkedTags">
+        <div class="tags">
+            {{tag.tagName}}
+        </div>
+
+        <button class="removeButton" color="warn" mat-raised-button (click)="removeFromLinkedTags(tag)">
+            <fa-icon [icon]="faTimes" [fixedWidth]="true" transform="up-8"></fa-icon>
+        </button>
+
+    </div>
+</ng-container>

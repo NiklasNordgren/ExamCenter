@@ -14,6 +14,7 @@ import { Navigator } from 'src/app/util/navigator';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { StatusMessageService } from 'src/app/service/status-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Tag } from 'src/app/model/tag.model';
 
 @Component({
   selector: 'app-course-form',
@@ -26,6 +27,7 @@ export class CourseFormComponent implements OnInit {
   academies: Academy[];
   subjects: Subject[];
   course: Course = new Course();
+  tags: Tag[];
   form: FormGroup;
   private subscriptions = new Subscription();
   id: number;
@@ -98,6 +100,7 @@ export class CourseFormComponent implements OnInit {
       });
       this.course.unpublished = course.unpublished;
       this.subjectCode = subject.code;
+      this.tags = course.tags;
 
       this.selectedAcademy(subject.academyId, true);
 
@@ -122,6 +125,10 @@ export class CourseFormComponent implements OnInit {
     this.subjectCode = subject.code;
   }
 
+  updateTags(tags: Tag[]) {
+    this.tags = tags;
+  }
+
   onSubmit() {
     if (this.form.valid) {
 
@@ -132,6 +139,7 @@ export class CourseFormComponent implements OnInit {
       this.course.name = this.form.controls.name.value;
       this.course.courseCode = this.form.controls.courseCode.value;
       this.course.subjectId = this.form.controls.subject.value;
+      this.course.tags = this.tags;
 
       const sub = this.courseService.saveCourse(this.course).subscribe(
         data => this.onSuccess(data),
