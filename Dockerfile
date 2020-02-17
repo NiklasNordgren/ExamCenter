@@ -5,6 +5,14 @@ COPY ./nginx.conf /nginx.conf
 
 RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -days 365 -out ./examcentre.crt
 
+RUN .
+RUN .
+RUN .
+RUN .
+RUN .
+RUN .
+RUN .
+
 WORKDIR /app
 
 COPY package.json /app/package.json
