@@ -3,7 +3,7 @@ FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
 
-RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -subj "/C=SE/ST=CA/L=SF/O=Docker-demo/CN=examcentre.hig.se" -days 365 -out ./examcentre.crt
+RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -subj "/C=SE/ST=CA/L=SF/O=Docker-demo/CN=localhost" -days 365 -out ./examcentre.crt
 
 WORKDIR /app
 
