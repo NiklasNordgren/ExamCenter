@@ -26,7 +26,7 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build-stage /examcentre.crt /etc/ssl/examcentre.pem
+COPY --from=build-stage /examcentre.pem /etc/ssl/examcentre.pem
 COPY --from=build-stage /examcentre.key /etc/ssl/examcentre.key
 
 CMD ["nginx", "-g", "daemon off;"]
