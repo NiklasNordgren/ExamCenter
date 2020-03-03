@@ -3,7 +3,7 @@ FROM node:10 as build-stage
 
 COPY ./nginx.conf /nginx.conf
 
-RUN openssl req -newkey rsa:2048 -nodes -keyout ./examcentre.key -x509 -subj "/C=SE/ST=CA/L=SF/O=Docker-demo/CN=localhost" -days 365 -out ./examcentre.pem
+RUN openssl req -x509 -newkey rsa:2048 -nodes -keyout ./localhost.key -subj "/C=SE/ST=CA/L=SF/O=hig/CN=localhost" -days 365 -out ./localhost.crt 
 
 WORKDIR /app
 
@@ -26,7 +26,7 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build-stage /examcentre.pem /etc/ssl/examcentre.pem
-COPY --from=build-stage /examcentre.key /etc/ssl/examcentre.key
+COPY --from=build-stage /localhost.crt /etc/ssl/localhost.crt
+COPY --from=build-stage /localhost.key /etc/ssl/localhost.key
 
 CMD ["nginx", "-g", "daemon off;"]
