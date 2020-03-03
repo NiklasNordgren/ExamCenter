@@ -29,4 +29,7 @@ COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /localhost.crt /etc/ssl/localhost.crt
 COPY --from=build-stage /localhost.key /etc/ssl/localhost.key
 
+EXPOSE 80
+EXPOSE 443
+
 CMD ["nginx", "-g", "daemon off;"]
